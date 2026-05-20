@@ -89,6 +89,8 @@ apis:
       - type: Documentation
         url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/ansible
   - type: Portal
     url: https://www.redhat.com/en/technologies/management/ansible
   - type: Documentation
