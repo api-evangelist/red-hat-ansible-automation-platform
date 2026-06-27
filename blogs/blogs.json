@@ -2,11 +2,11 @@
   "repo": "red-hat-ansible-automation-platform",
   "feeds": [
     {
-      "source": "https://www.redhat.com/en/blog/channel/open-source-communities",
-      "feed_url": "https://www.redhat.com/en/blog/channel/open-source-communities",
+      "source": "https://www.redhat.com/en/rss/blog/channel/open-source-communities",
+      "feed_url": "https://www.redhat.com/en/rss/blog/channel/open-source-communities",
       "title": "",
       "saved": 0,
-      "method": "none"
+      "method": "feed"
     },
     {
       "source": "https://www.redhat.com/en/technologies/management/ansible/trial",
@@ -17,5 +17,5 @@
     }
   ],
   "post_count": 1,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T12:03:07Z"
 }
