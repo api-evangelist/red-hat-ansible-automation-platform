@@ -89,6 +89,10 @@ apis:
       - type: Documentation
         url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
 common:
+  - type: VulnerabilityDisclosure
+    url: security/red-hat-ansible-automation-platform-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/red-hat-ansible-automation-platform-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/ansible
   - type: Portal
