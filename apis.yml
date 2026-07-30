@@ -7,7 +7,19 @@ description: >-
   Lightspeed with IBM watsonx Code Assistant, providing REST APIs for managing
   automation across hybrid cloud infrastructure.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Freemium
+  confidence: medium
+  source:
+  - plans
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/red-hat-ansible-automation-platform.png
 url: >-
   https://raw.githubusercontent.com/api-evangelist/red-hat-ansible-automation-platform/refs/heads/main/apis.yml
 created: '2024-01-01'
