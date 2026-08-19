@@ -24,7 +24,7 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/red-hat-ansible-automation-platform/refs/heads/main/apis.yml
 created: '2024-01-01'
 modified: '2026-04-18'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 tags:
   - Automation
   - Configuration Management
