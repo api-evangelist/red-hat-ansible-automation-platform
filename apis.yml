@@ -61,6 +61,11 @@ apis:
     humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
     baseURL: https://hub-host/api/galaxy/
     tags:
+      - Collection
+      - Content Hub
+      - Enterprise
+      - REST
+    tags_raw:
       - Collections
       - Content Hub
       - Enterprise
