@@ -1,0 +1,59 @@
+generated: '2026-08-29'
+method: searched
+source: https://www.redhat.com/en/trust and https://access.redhat.com/compliance
+description: >-
+  Red Hat operates a corporate trust surface and a product compliance catalog covering the
+  portfolio that Ansible Automation Platform belongs to. There is no AAP-specific trust portal;
+  these are Red Hat programs AAP inherits.
+trust_center:
+  url: https://www.redhat.com/en/trust
+  status: 200
+  hosted_by: self
+product_compliance_catalog:
+  url: https://access.redhat.com/compliance
+  status: 200
+  aap_entries: >-
+    The catalog's own product filter lists 9 compliance items under "Red Hat Ansible Automation
+    Platform Service on AWS".
+certifications:
+- name: Common Criteria
+- name: FIPS 140
+- name: ISO/IEC 27001
+- name: ISO/IEC 27018
+- name: ISO 42001
+  note: AI management system
+- name: ISO/SAE 21434
+  note: automotive cybersecurity engineering
+- name: DISA STIG
+- name: HIPAA
+- name: HDS
+  note: French health data hosting
+- name: CIS Benchmarks
+- name: BSI
+- name: CCN-STIC / ENS
+  note: Spanish national security framework
+- name: EU Cyber Resilience Act
+- name: EU AI Act
+- name: Accessibility Conformance Reports (VPAT)
+security_program:
+  disclosure_policy: https://access.redhat.com/security/team/contact/
+  contact: secalert@redhat.com
+  security_txt: https://www.redhat.com/.well-known/security.txt
+  acknowledgments: https://access.redhat.com/articles/66234
+  encryption_key: https://security.access.redhat.com/data/97f5eac4.txt
+  cve_numbering_authority: true
+  csaf_vex_feed: https://security.access.redhat.com/data/csaf/v2/provider-metadata.json
+  security_data_api: https://access.redhat.com/hydra/rest/securitydata/csaf.json
+  bug_bounty: none published
+  rfc2350: https://www.redhat.com/en/trust/RFC-2350
+evidence:
+- url: https://www.redhat.com/en/trust
+  status: 200
+- url: https://access.redhat.com/compliance
+  status: 200
+- url: https://www.redhat.com/.well-known/security.txt
+  status: 200
+- url: https://access.redhat.com/hydra/rest/securitydata/csaf.json?package=automation-controller
+  status: 200
+- url: https://access.redhat.com/security/team/contact/
+  status: 200

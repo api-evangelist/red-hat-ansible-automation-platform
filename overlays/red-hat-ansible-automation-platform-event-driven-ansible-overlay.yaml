@@ -1,0 +1,24 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist overlay — Red Hat Event-Driven Ansible Controller API
+  version: 1.0.0
+extends: openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+x-generated: '2026-08-29'
+x-method: generated
+x-source: openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json plus openapi/_sources.yml
+x-finding: servers[] is the relative path /api/eda/v1 with no host.
+x-note: This overlay records API Evangelist enhancements only. It is never applied to the harvested document,
+  which is kept verbatim.
+actions:
+- target: $
+  update:
+    servers:
+    - url: https://{aap-gateway-host}/api/eda/v1
+      description: Event-Driven Ansible behind the AAP Platform Gateway
+      variables:
+        aap-gateway-host:
+          default: aap.example.com
+- target: $.info
+  update:
+    x-api-evangelist-note: 'Richest error vocabulary in the platform: 409 is used for referential integrity,
+      concurrency and capacity conditions.'

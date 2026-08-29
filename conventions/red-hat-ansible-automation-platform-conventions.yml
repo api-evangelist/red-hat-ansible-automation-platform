@@ -1,0 +1,185 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/*.json in this repo, plus
+  https://raw.githubusercontent.com/ansible/aap-mcp-server/main/README.md and
+  https://access.redhat.com/support/policy/updates/ansible-automation-platform
+description: >-
+  Cross-cutting runtime semantics for the Red Hat Ansible Automation Platform APIs — auth
+  style, pagination, filtering, versioning, error envelope, rate-limit signaling, idempotency
+  and reversibility. Derived from the five harvested OpenAPI documents; every claim names the
+  spec evidence behind it.
+auth:
+  styles:
+  - OAuth 2.0 authorization_code and password grants (Platform Gateway, Ansible Lightspeed);
+    /o/authorize/ and /o/token/, scopes read and write
+  - HTTP Basic (Platform Gateway, Automation Hub)
+  - Bearer personal/application token (Automation Controller, Automation Hub)
+  - JWT header X-DAB-JW-TOKEN (Event-Driven Ansible, minted by the Gateway for service-to-service)
+  - Session cookie (gateway_sessionid, sessionid) for browser callers
+  single_front_door: >-
+    From AAP 2.5 the Platform Gateway fronts every component, so one token issued at the
+    Gateway is exchanged for the downstream component call. See authentication/ and scopes/.
+  detail: authentication/red-hat-ansible-automation-platform-authentication.yml
+pagination:
+  controller_and_gateway_and_eda:
+    style: page-number
+    params: [page, page_size]
+    response_fields: [count, next, previous, results]
+    schemas: "Paginated*List (e.g. PaginatedJobList, PaginatedTeamList)"
+    evidence: 224 Controller operations declare page and page_size query parameters
+  automation_hub:
+    style: limit-offset
+    params: [limit, offset]
+    response_fields: [meta.count, links.first, links.previous, links.next, links.last]
+    evidence: observed live on galaxy.ansible.com/api/v3/.../collections/index/?limit=1
+  mcp_default_page_size: 10 (configurable 1-200 via DEFAULT_PAGE_SIZE in the AAP MCP service)
+filtering_and_sorting:
+  params: [search, order, order_by, type, role_level]
+  field_lookups: "Django-style suffixes — id__gt, id__gte, id__lt, id__lte, name__icontains"
+  evidence: 223 Controller operations declare order_by; 221 declare search
+  note: >-
+    A genuinely strong query surface for an agent: nearly every Controller collection accepts
+    free-text search and field-level comparison lookups without a bespoke query language.
+agent_oriented_descriptions:
+  present: true
+  extension: x-ai-description
+  coverage: 630 of 632 Automation Controller operations
+  finding: >-
+    Red Hat stamps an `x-ai-description` vendor extension on essentially every Automation
+    Controller operation — a deliberate, agent-facing description layer. The same spec carries
+    ZERO standard `summary` fields, so a generic OpenAPI reader sees an undocumented API while
+    an AI-aware reader sees a fully described one. Notable both ways: real agent investment,
+    and a contract-quality gap for every tool that reads `summary`.
+  source: openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json
+
+field_expansion:
+  supported: partial
+  mechanism: >-
+    Every Controller object embeds `related` (a map of URLs to associated collections) and
+    `summary_fields` (denormalised parent objects). There is no ?expand= parameter — an agent
+    follows `related` links instead.
+metadata:
+  mechanism: >-
+    Controller and EDA objects carry free-form `variables`/`extra_vars` payloads and `labels`;
+    there is no generic `metadata` map on every resource.
+request_id_tracing:
+  documented: false
+  detail: >-
+    No X-Request-Id / traceparent header is declared in any harvested spec. The nearest
+    published trace surfaces are the Controller and Gateway activity streams
+    (controller.activity_stream_list, gateway.activitystream_list), which record who changed
+    what, and the AAP MCP service's Prometheus metrics at /metrics.
+versioning:
+  style: path
+  detail: /api/controller/v2/, /api/gateway/v1/, /api/eda/v1/, /api/galaxy/v3/, /api/lightspeed/v1/
+  detail_artifact: lifecycle/red-hat-ansible-automation-platform-lifecycle.yml
+error_envelope:
+  rfc9457: false
+  detail: errors/red-hat-ansible-automation-platform-problem-types.yml
+rate_limit_signaling:
+  headers_declared: none
+  status_declared: 429 on 14 Ansible Lightspeed operations ("Request was throttled")
+  detail: rate-limits/red-hat-ansible-automation-platform-rate-limits.yml
+idempotency:
+  supported: false
+  header: null
+  evidence: >-
+    No Idempotency-Key parameter or header appears in any of the 1,767 operations across the
+    five harvested specs, and none is documented. Launch operations
+    (job_templates_launch_create, workflow_job_templates_launch_create,
+    ad_hoc_commands_create) are NOT idempotent: repeating the POST starts another job run.
+  mitigation_available: >-
+    PUT/PATCH on a named object is naturally idempotent, and the Controller enforces unique
+    (name, organization) on most objects, so create-by-name collides rather than duplicating.
+    That is a property of the data model, not an idempotency contract.
+dry_run_mode:
+  supported: partial
+  evidence: >-
+    controller.job_templates_launch_retrieve (GET on the launch endpoint) returns the
+    launch-time prompts, required credential passwords, survey spec and whether the template
+    can be launched — a real pre-flight for the highest-consequence write in the API. Ansible
+    itself has --check mode, exposed on job templates via the `job_type: check` field. There is
+    no generic dry-run flag across the API.
+reversibility:
+  grade: verified
+  summary: >-
+    AAP publishes explicit reversal operations for its running-work surface, and the semantics
+    of each are stated in the contract. What it does NOT publish is a time window: reversal
+    here is bounded by object state (a job can be cancelled while it is running, not after it
+    finishes), not by a clock.
+  operations:
+  - surface: Automation Controller — job runs
+    write: controller.job_templates_launch_create
+    reversal: controller.jobs_cancel_create
+    inspect: controller.jobs_cancel_retrieve
+    window: >-
+      While the job is in a cancellable state. jobs_cancel_retrieve returns
+      {"can_cancel": true|false} for the specific job, so the window is queryable rather than
+      time-based. Once the job has finished it cannot be cancelled; its effects on managed
+      hosts are not undone by AAP.
+    window_stated_by_provider: true
+    source: openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json
+  - surface: Automation Controller — workflow runs
+    write: controller.workflow_job_templates_launch_create
+    reversal: controller.workflow_jobs_cancel_create
+    inspect: controller.workflow_jobs_cancel_retrieve
+    window: while the workflow job is running; can_cancel is queryable
+    window_stated_by_provider: true
+  - surface: Automation Controller — ad hoc commands
+    write: controller.ad_hoc_commands_create
+    reversal: controller.ad_hoc_commands_cancel_create
+    window: while the command is running
+    window_stated_by_provider: true
+  - surface: Automation Controller — project / inventory / system syncs
+    write: controller.inventory_sources_update_create, controller.projects_update_create
+    reversal: controller.inventory_updates_cancel_create, controller.project_updates_cancel_create,
+      controller.system_jobs_cancel_create
+    window: while the update job is running
+    window_stated_by_provider: true
+  - surface: Automation Controller — re-run after failure
+    operation: controller.jobs_relaunch_create, controller.workflow_jobs_relaunch_create,
+      controller.ad_hoc_commands_relaunch_create
+    note: >-
+      Relaunch is a forward operation, not an undo — it re-executes the same job with the same
+      inputs. Recorded here because an agent looking for "put it back" will find relaunch first
+      and must not mistake it for a rollback.
+  - surface: Event-Driven Ansible — rulebook activations
+    write: eda.activations_create
+    reversal: eda.activations_disable_create
+    restart: eda.activations_restart_create
+    window: >-
+      Any time while the activation exists. Disable stops the activation consuming events;
+      events that already fired have already run their actions and are not reversed.
+    window_stated_by_provider: true
+  - surface: Automation Hub — long-running tasks
+    write: upload_collection and the sync/import operations (202-accepted tasks)
+    reversal: tasks_cancel
+    window: while the task is in waiting or running state
+    window_stated_by_provider: true
+  - surface: Automation Hub — collection versions
+    write: upload_collection
+    reversal: >-
+      Deletion operations exist (api_automation_hub_content_v3_collections_versions_delete), and
+      Automation Hub additionally
+      models certification as a move between repositories
+      (api_automation_hub_content_v3_collections_versions_move_move_content /
+      _copy_copy_content) — so a certification can
+      be reversed by moving the version back.
+    window: >-
+      Not stated. Deleting a published collection version is destructive and no restore window
+      is documented.
+    window_stated_by_provider: false
+  not_reversible:
+  - >-
+      The side effects of an executed playbook on managed hosts. AAP can cancel a running job;
+      it cannot undo changes a completed job made to the infrastructure. This is the single
+      most important reversibility fact for an agent driving AAP, and the provider does not
+      state it in the API contract — it is inherent to the product.
+cross_links:
+  authentication: authentication/red-hat-ansible-automation-platform-authentication.yml
+  scopes: scopes/red-hat-ansible-automation-platform-scopes.yml
+  errors: errors/red-hat-ansible-automation-platform-problem-types.yml
+  lifecycle: lifecycle/red-hat-ansible-automation-platform-lifecycle.yml
+  rate_limits: rate-limits/red-hat-ansible-automation-platform-rate-limits.yml
+  mcp: mcp/red-hat-ansible-automation-platform-mcp.yml

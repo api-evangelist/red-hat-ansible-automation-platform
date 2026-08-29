@@ -1,11 +1,11 @@
-generated: '2026-07-11'
+generated: '2026-08-29'
 method: probed
 source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
 hosts:
 - host: www.redhat.com
   https: true
   tls_version: TLSv1.3
-  cert_expires: Oct 10 23:59:59 2026 GMT
+  cert_expires: Mar 10 23:59:59 2027 GMT
   hsts: true
   hsts_max_age: 31536000
 - host: access.redhat.com
@@ -14,6 +14,8 @@ hosts:
   cert_expires: Oct 27 23:59:59 2026 GMT
   hsts: true
   hsts_max_age: 86400
+- host: automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local
+  https: false
 domains:
 - domain: redhat.com
   dnssec: false
@@ -25,3 +27,8 @@ domains:
   spf: true
   dmarc: true
   dmarc_policy: quarantine
+- domain: cluster.local
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false

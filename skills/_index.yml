@@ -1,0 +1,39 @@
+generated: '2026-08-29'
+method: generated
+source: >-
+  openapi/*.json in this repo, grounded on verified operationIds; conventions/, errors/ and
+  lifecycle/ supply the runtime rules each skill carries.
+provider: Red Hat Ansible Automation Platform
+providerId: red-hat-ansible-automation-platform
+description: >-
+  Packaged Agent Skills for Red Hat Ansible Automation Platform. Every operationId named in
+  these skills was checked against the harvested OpenAPI documents; none is invented. Red Hat
+  publishes no AGENTS.md or skills of its own — its agent investment is the AAP MCP server (see
+  mcp/) and the x-ai-description extension it stamps on 630 of 632 Controller operations.
+skills:
+- file: red-hat-ansible-automation-platform-launch-and-monitor-a-job.md
+  name: launch-and-monitor-an-ansible-job
+  api: Automation Controller
+  operations: 10
+  theme: the platform's highest-consequence write, with its pre-flight, cancel and non-undo semantics
+- file: red-hat-ansible-automation-platform-manage-inventory-and-hosts.md
+  name: manage-ansible-inventory-and-hosts
+  api: Automation Controller
+  operations: 12
+  theme: inventory, groups, hosts, host variables and dynamic source syncs
+- file: red-hat-ansible-automation-platform-operate-event-driven-activations.md
+  name: operate-event-driven-ansible-activations
+  api: Event-Driven Ansible
+  operations: 14
+  theme: rulebook activations, enable/disable/restart, audit trail, and the 409 vocabulary
+- file: red-hat-ansible-automation-platform-publish-and-certify-collections.md
+  name: publish-and-certify-ansible-collections
+  api: Automation Hub
+  operations: 8
+  theme: collections, the async task lifecycle, and certification as a reversible repository move
+- file: red-hat-ansible-automation-platform-audit-platform-access.md
+  name: audit-aap-platform-access
+  api: Platform Gateway
+  operations: 15
+  theme: users, teams, role assignments, identity federation and the deprecated membership endpoints
+provider_published_skills: none found

@@ -1,0 +1,61 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://www.redhat.com/en/technologies/management/ansible/trial,
+  https://www.redhat.com/en/interactive-labs/ansible and
+  https://raw.githubusercontent.com/ansible/aap-mcp-server/main/README.md
+description: >-
+  Red Hat does not run a hosted API sandbox for Ansible Automation Platform, and there are no
+  test-mode keys or magic test identifiers to record — AAP is installed software, so the
+  "sandbox" is a trial installation the developer controls. What Red Hat does publish is a
+  product trial, a set of browser-based interactive labs, and — inside the AAP MCP server
+  repository — a mock AAP server for testing agent integrations without a real installation.
+test_mode_keys: none
+test_identifiers: none
+surfaces:
+- name: Ansible Automation Platform product trial
+  kind: trial
+  url: https://www.redhat.com/en/technologies/management/ansible/trial
+  status: 200
+  requires_account: true
+  requires_card: false
+  note: A full AAP subscription for evaluation; the developer installs and operates it.
+- name: Interactive labs
+  kind: hosted-lab
+  url: https://www.redhat.com/en/interactive-labs/ansible
+  status: 200
+  note: >-
+    Browser-based, no install, no credit card. Teaches the product rather than exposing an API
+    endpoint a developer can point a client at.
+- name: Hybrid Cloud Console
+  kind: hosted-service
+  url: https://console.redhat.com/ansible/ansible-dashboard
+  status: 200
+  note: >-
+    The hosted Automation Hub and Automation Analytics services. Their APIs are real and
+    reachable (console.redhat.com/api/automation-hub/, /api/tower-analytics/) but require a Red
+    Hat account with an AAP entitlement — anonymous calls return
+    {"errors":[{"status":401,"detail":"Missing Authentication"}]}.
+- name: AWX
+  kind: upstream-open-source
+  url: https://github.com/ansible/awx
+  note: >-
+    The upstream community project behind Automation Controller. Self-installable at no cost
+    and API-compatible enough to develop against, which is how most integrators build before
+    they have an AAP subscription. Not a Red Hat-supported sandbox.
+- name: aap-mcp-server mock AAP server
+  kind: local-mock
+  url: https://github.com/ansible/aap-mcp-server/blob/main/scripts/mock-aap-server.ts
+  run: scripts/run-with-mock-aap.sh
+  note: >-
+    Red Hat ships a mock AAP server and a client simulator in its MCP repository, specifically
+    so an agent integration can be exercised without a live AAP. The most sandbox-like thing
+    the provider publishes for API consumers.
+safety_controls:
+  mcp_write_operations_default: disabled (ALLOW_WRITE_OPERATIONS=false)
+  check_mode: >-
+    Job templates accept job_type "check", which runs the playbook in Ansible check mode — a
+    real dry run against production inventory rather than a separate sandbox environment.
+  launch_preflight: >-
+    GET on controller.job_templates_launch_retrieve returns what a launch would require
+    (prompts, credential passwords, survey spec, whether it can launch) without launching.

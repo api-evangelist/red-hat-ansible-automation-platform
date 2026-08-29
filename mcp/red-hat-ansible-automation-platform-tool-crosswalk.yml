@@ -1,0 +1,1172 @@
+generated: '2026-08-29'
+method: derived
+source: https://raw.githubusercontent.com/ansible/aap-mcp-server/main/aap-mcp.sample.yaml bound against
+  openapi/*.json in this repo
+description: Crosswalk between the Red Hat AAP MCP Service tool surface and the AAP REST operations that
+  back it. The AAP MCP server generates one tool per OpenAPI operation and names it {service}.{operationId},
+  so the binding is exact by construction; this file verifies each tool name Red Hat curates into its
+  shipped toolsets against the operationIds actually present in the harvested specs. Every tool inherits
+  its backing operation's parameters and requestBody as its real inputSchema.
+surfaces:
+  openapi:
+  - service: controller
+    file: openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json
+    operations: 632
+  - service: gateway
+    file: openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+    operations: 206
+  - service: eda
+    file: openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+    operations: 120
+  - service: galaxy
+    file: openapi/red-hat-ansible-automation-platform-automation-hub-openapi.json
+    operations: 786
+  - service: lightspeed
+    file: openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+    operations: 23
+  graphql: null
+  mcp:
+    endpoint: http://<operator-host>:3000/mcp
+    gated: true
+    note: Customer-run; requires an AAP bearer token, so live tools/list could not be introspected anonymously.
+      The tool set is nonetheless fully determined by the OpenAPI documents the server loads.
+coverage:
+  curated_tools_checked: 147
+  distinct_tools: 140
+  bound_to_operationId: 136
+  unbound: 4
+  total_rest_operations: 1767
+  note: Red Hat's shipped configuration curates 147 tool references across 7 toolsets; 143 of them bind
+    exactly to an operationId in the harvested specs. The 4 that do not are the entire content_discovery
+    toolset plus its lightspeed entry. Beyond the curated toolsets the server exposes a tool for EVERY
+    operation in the five loaded specs — 1,767 operations in total — so rest_only below is a very long
+    tail and is summarised rather than enumerated.
+crosswalk:
+- tool: controller.job_templates_launch_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_launch_retrieve
+  http: GET /api/v2/job_templates/{id}/launch/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_launch_create
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_launch_create
+  http: POST /api/v2/job_templates/{id}/launch/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_job_templates_launch_create
+  category: job_management
+  service: controller
+  rest:
+  - workflow_job_templates_launch_create
+  http: POST /api/v2/workflow_job_templates/{id}/launch/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - jobs_retrieve
+  http: GET /api/v2/jobs/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_jobs_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - workflow_jobs_retrieve
+  http: GET /api/v2/workflow_jobs/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_stdout_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - jobs_stdout_retrieve
+  http: GET /api/v2/jobs/{id}/stdout/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_job_events_list
+  category: job_management
+  service: controller
+  rest:
+  - jobs_job_events_list
+  http: GET /api/v2/jobs/{id}/job_events/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_cancel_create
+  category: job_management
+  service: controller
+  rest:
+  - jobs_cancel_create
+  http: POST /api/v2/jobs/{id}/cancel/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_jobs_cancel_create
+  category: job_management
+  service: controller
+  rest:
+  - workflow_jobs_cancel_create
+  http: POST /api/v2/workflow_jobs/{id}/cancel/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_relaunch_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - jobs_relaunch_retrieve
+  http: GET /api/v2/jobs/{id}/relaunch/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_relaunch_create
+  category: job_management
+  service: controller
+  rest:
+  - jobs_relaunch_create
+  http: POST /api/v2/jobs/{id}/relaunch/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_jobs_relaunch_create
+  category: job_management
+  service: controller
+  rest:
+  - workflow_jobs_relaunch_create
+  http: POST /api/v2/workflow_jobs/{id}/relaunch/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_list
+  category: job_management/security_compliance
+  service: controller
+  rest:
+  - jobs_list
+  http: GET /api/v2/jobs/
+  binding: operationId
+  confidence: high
+- tool: eda.activation_instances_list
+  category: job_management
+  service: eda
+  rest:
+  - activation_instances_list
+  http: GET /activation-instances/
+  binding: operationId
+  confidence: high
+- tool: eda.activation_instances_logs_list
+  category: job_management
+  service: eda
+  rest:
+  - activation_instances_logs_list
+  http: GET /activation-instances/{id}/logs/
+  binding: operationId
+  confidence: high
+- tool: controller.analytics_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - analytics_retrieve
+  http: GET /api/v2/analytics/
+  binding: operationId
+  confidence: high
+- tool: controller.metrics_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - metrics_retrieve
+  http: GET /api/v2/metrics/
+  binding: operationId
+  confidence: high
+- tool: controller.projects_list
+  category: job_management
+  service: controller
+  rest:
+  - projects_list
+  http: GET /api/v2/projects/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_list
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_list
+  http: GET /api/v2/job_templates/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_job_templates_list
+  category: job_management
+  service: controller
+  rest:
+  - workflow_job_templates_list
+  http: GET /api/v2/workflow_job_templates/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_retrieve
+  http: GET /api/v2/job_templates/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_job_templates_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - workflow_job_templates_retrieve
+  http: GET /api/v2/workflow_job_templates/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.jobs_job_host_summaries_list
+  category: job_management
+  service: controller
+  rest:
+  - jobs_job_host_summaries_list
+  http: GET /api/v2/jobs/{id}/job_host_summaries/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_jobs_list
+  category: job_management
+  service: controller
+  rest:
+  - workflow_jobs_list
+  http: GET /api/v2/workflow_jobs/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_jobs_workflow_nodes_list
+  category: job_management
+  service: controller
+  rest:
+  - workflow_jobs_workflow_nodes_list
+  http: GET /api/v2/workflow_jobs/{id}/workflow_nodes/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_create
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_create
+  http: POST /api/v2/job_templates/
+  binding: operationId
+  confidence: high
+- tool: controller.schedules_create
+  category: job_management
+  service: controller
+  rest:
+  - schedules_create
+  http: POST /api/v2/schedules/
+  binding: operationId
+  confidence: high
+- tool: controller.projects_create
+  category: job_management
+  service: controller
+  rest:
+  - projects_create
+  http: POST /api/v2/projects/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_credentials_create
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_credentials_create
+  http: POST /api/v2/job_templates/{id}/credentials/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_credentials_list
+  category: job_management/security_compliance
+  service: controller
+  rest:
+  - job_templates_credentials_list
+  http: GET /api/v2/job_templates/{id}/credentials/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_survey_spec_create
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_survey_spec_create
+  http: POST /api/v2/job_templates/{id}/survey_spec/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_notification_templates_started_create
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_notification_templates_started_create
+  http: POST /api/v2/job_templates/{id}/notification_templates_started/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_notification_templates_success_create
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_notification_templates_success_create
+  http: POST /api/v2/job_templates/{id}/notification_templates_success/
+  binding: operationId
+  confidence: high
+- tool: controller.job_templates_notification_templates_error_create
+  category: job_management
+  service: controller
+  rest:
+  - job_templates_notification_templates_error_create
+  http: POST /api/v2/job_templates/{id}/notification_templates_error/
+  binding: operationId
+  confidence: high
+- tool: controller.unified_job_templates_list
+  category: job_management
+  service: controller
+  rest:
+  - unified_job_templates_list
+  http: GET /api/v2/unified_job_templates/
+  binding: operationId
+  confidence: high
+- tool: controller.projects_playbooks_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - projects_playbooks_retrieve
+  http: GET /api/v2/projects/{id}/playbooks/
+  binding: operationId
+  confidence: high
+- tool: controller.workflow_job_template_nodes_credentials_list
+  category: job_management
+  service: controller
+  rest:
+  - workflow_job_template_nodes_credentials_list
+  http: GET /api/v2/workflow_job_template_nodes/{id}/credentials/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_create
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_create
+  http: POST /api/v2/ad_hoc_commands/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_list
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_list
+  http: GET /api/v2/ad_hoc_commands/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_retrieve
+  http: GET /api/v2/ad_hoc_commands/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_stdout_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_stdout_retrieve
+  http: GET /api/v2/ad_hoc_commands/{id}/stdout/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_events_list
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_events_list
+  http: GET /api/v2/ad_hoc_commands/{id}/events/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_cancel_create
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_cancel_create
+  http: POST /api/v2/ad_hoc_commands/{id}/cancel/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_relaunch_create
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_relaunch_create
+  http: POST /api/v2/ad_hoc_commands/{id}/relaunch/
+  binding: operationId
+  confidence: high
+- tool: controller.ad_hoc_commands_relaunch_retrieve
+  category: job_management
+  service: controller
+  rest:
+  - ad_hoc_commands_relaunch_retrieve
+  http: GET /api/v2/ad_hoc_commands/{id}/relaunch/
+  binding: operationId
+  confidence: high
+- tool: controller.hosts_ad_hoc_commands_create
+  category: job_management
+  service: controller
+  rest:
+  - hosts_ad_hoc_commands_create
+  http: POST /api/v2/hosts/{id}/ad_hoc_commands/
+  binding: operationId
+  confidence: high
+- tool: controller.inventories_ad_hoc_commands_create
+  category: job_management
+  service: controller
+  rest:
+  - inventories_ad_hoc_commands_create
+  http: POST /api/v2/inventories/{id}/ad_hoc_commands/
+  binding: operationId
+  confidence: high
+- tool: controller.groups_ad_hoc_commands_create
+  category: job_management
+  service: controller
+  rest:
+  - groups_ad_hoc_commands_create
+  http: POST /api/v2/groups/{id}/ad_hoc_commands/
+  binding: operationId
+  confidence: high
+- tool: controller.inventories_list
+  category: inventory_management
+  service: controller
+  rest:
+  - inventories_list
+  http: GET /api/v2/inventories/
+  binding: operationId
+  confidence: high
+- tool: controller.inventory_sources_update_create
+  category: inventory_management
+  service: controller
+  rest:
+  - inventory_sources_update_create
+  http: POST /api/v2/inventory_sources/{id}/update/
+  binding: operationId
+  confidence: high
+- tool: controller.hosts_list
+  category: inventory_management
+  service: controller
+  rest:
+  - hosts_list
+  http: GET /api/v2/hosts/
+  binding: operationId
+  confidence: high
+- tool: controller.hosts_retrieve
+  category: inventory_management
+  service: controller
+  rest:
+  - hosts_retrieve
+  http: GET /api/v2/hosts/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.hosts_variable_data_retrieve
+  category: inventory_management
+  service: controller
+  rest:
+  - hosts_variable_data_retrieve
+  http: GET /api/v2/hosts/{id}/variable_data/
+  binding: operationId
+  confidence: high
+- tool: controller.groups_list
+  category: inventory_management
+  service: controller
+  rest:
+  - groups_list
+  http: GET /api/v2/groups/
+  binding: operationId
+  confidence: high
+- tool: controller.groups_create
+  category: inventory_management
+  service: controller
+  rest:
+  - groups_create
+  http: POST /api/v2/groups/
+  binding: operationId
+  confidence: high
+- tool: controller.inventories_create
+  category: inventory_management
+  service: controller
+  rest:
+  - inventories_create
+  http: POST /api/v2/inventories/
+  binding: operationId
+  confidence: high
+- tool: controller.hosts_create
+  category: inventory_management
+  service: controller
+  rest:
+  - hosts_create
+  http: POST /api/v2/hosts/
+  binding: operationId
+  confidence: high
+- tool: controller.inventory_sources_create
+  category: inventory_management
+  service: controller
+  rest:
+  - inventory_sources_create
+  http: POST /api/v2/inventory_sources/
+  binding: operationId
+  confidence: high
+- tool: controller.hosts_ansible_facts_retrieve
+  category: inventory_management
+  service: controller
+  rest:
+  - hosts_ansible_facts_retrieve
+  http: GET /api/v2/hosts/{id}/ansible_facts/
+  binding: operationId
+  confidence: high
+- tool: controller.inventory_sources_list
+  category: inventory_management
+  service: controller
+  rest:
+  - inventory_sources_list
+  http: GET /api/v2/inventory_sources/
+  binding: operationId
+  confidence: high
+- tool: controller.inventories_inventory_sources_list
+  category: inventory_management
+  service: controller
+  rest:
+  - inventories_inventory_sources_list
+  http: GET /api/v2/inventories/{id}/inventory_sources/
+  binding: operationId
+  confidence: high
+- tool: controller.instance_groups_list
+  category: system_monitoring
+  service: controller
+  rest:
+  - instance_groups_list
+  http: GET /api/v2/instance_groups/
+  binding: operationId
+  confidence: high
+- tool: controller.instance_groups_create
+  category: system_monitoring
+  service: controller
+  rest:
+  - instance_groups_create
+  http: POST /api/v2/instance_groups/
+  binding: operationId
+  confidence: high
+- tool: controller.instance_groups_retrieve
+  category: system_monitoring
+  service: controller
+  rest:
+  - instance_groups_retrieve
+  http: GET /api/v2/instance_groups/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.mesh_visualizer_retrieve
+  category: system_monitoring
+  service: controller
+  rest:
+  - mesh_visualizer_retrieve
+  http: GET /api/v2/mesh_visualizer/
+  binding: operationId
+  confidence: high
+- tool: controller.instances_create
+  category: system_monitoring
+  service: controller
+  rest:
+  - instances_create
+  http: POST /api/v2/instances/
+  binding: operationId
+  confidence: high
+- tool: gateway.activitystream_list
+  category: security_compliance/system_monitoring/user_management
+  service: gateway
+  rest:
+  - activitystream_list
+  http: GET /api/gateway/v1/activitystream/
+  binding: operationId
+  confidence: high
+- tool: gateway.activitystream_retrieve
+  category: system_monitoring
+  service: gateway
+  rest:
+  - activitystream_retrieve
+  http: GET /api/gateway/v1/activitystream/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.authenticators_list
+  category: system_monitoring/user_management
+  service: gateway
+  rest:
+  - authenticators_list
+  http: GET /api/gateway/v1/authenticators/
+  binding: operationId
+  confidence: high
+- tool: controller.activity_stream_list
+  category: security_compliance/system_monitoring/user_management
+  service: controller
+  rest:
+  - activity_stream_list
+  http: GET /api/v2/activity_stream/
+  binding: operationId
+  confidence: high
+- tool: controller.activity_stream_retrieve
+  category: system_monitoring
+  service: controller
+  rest:
+  - activity_stream_retrieve
+  http: GET /api/v2/activity_stream/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.instances_retrieve
+  category: system_monitoring
+  service: controller
+  rest:
+  - instances_retrieve
+  http: GET /api/v2/instances/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.status_retrieve
+  category: system_monitoring
+  service: gateway
+  rest:
+  - status_retrieve
+  http: GET /api/gateway/v1/status/
+  binding: operationId
+  confidence: high
+- tool: gateway.feature_flags_state_retrieve
+  category: system_monitoring
+  service: gateway
+  rest:
+  - feature_flags_state_retrieve
+  http: GET /api/gateway/v1/feature_flags_state/
+  binding: operationId
+  confidence: high
+- tool: gateway.teams_list
+  category: user_management
+  service: gateway
+  rest:
+  - teams_list
+  http: GET /api/gateway/v1/teams/
+  binding: operationId
+  confidence: high
+- tool: gateway.teams_retrieve
+  category: user_management
+  service: gateway
+  rest:
+  - teams_retrieve
+  http: GET /api/gateway/v1/teams/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.teams_create
+  category: user_management
+  service: gateway
+  rest:
+  - teams_create
+  http: POST /api/gateway/v1/teams/
+  binding: operationId
+  confidence: high
+- tool: gateway.teams_update
+  category: user_management
+  service: gateway
+  rest:
+  - teams_update
+  http: PUT /api/gateway/v1/teams/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.teams_destroy
+  category: user_management
+  service: gateway
+  rest:
+  - teams_destroy
+  http: DELETE /api/gateway/v1/teams/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.teams_users_list
+  category: user_management
+  service: gateway
+  rest:
+  - teams_users_list
+  http: GET /api/gateway/v1/teams/{id}/users/
+  binding: operationId
+  confidence: high
+- tool: gateway.me_list
+  category: user_management
+  service: gateway
+  rest:
+  - me_list
+  http: GET /api/gateway/v1/me/
+  binding: operationId
+  confidence: high
+- tool: gateway.role_definitions_list
+  category: user_management
+  service: gateway
+  rest:
+  - role_definitions_list
+  http: GET /api/gateway/v1/role_definitions/
+  binding: operationId
+  confidence: high
+- tool: gateway.role_team_assignments_list
+  category: user_management
+  service: gateway
+  rest:
+  - role_team_assignments_list
+  http: GET /api/gateway/v1/role_team_assignments/
+  binding: operationId
+  confidence: high
+- tool: gateway.role_user_assignments_list
+  category: user_management
+  service: gateway
+  rest:
+  - role_user_assignments_list
+  http: GET /api/gateway/v1/role_user_assignments/
+  binding: operationId
+  confidence: high
+- tool: gateway.role_user_assignments_create
+  category: user_management
+  service: gateway
+  rest:
+  - role_user_assignments_create
+  http: POST /api/gateway/v1/role_user_assignments/
+  binding: operationId
+  confidence: high
+- tool: gateway.role_user_assignments_destroy
+  category: user_management
+  service: gateway
+  rest:
+  - role_user_assignments_destroy
+  http: DELETE /api/gateway/v1/role_user_assignments/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.organizations_list
+  category: user_management
+  service: gateway
+  rest:
+  - organizations_list
+  http: GET /api/gateway/v1/organizations/
+  binding: operationId
+  confidence: high
+- tool: gateway.organizations_retrieve
+  category: user_management
+  service: gateway
+  rest:
+  - organizations_retrieve
+  http: GET /api/gateway/v1/organizations/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.organizations_create
+  category: user_management
+  service: gateway
+  rest:
+  - organizations_create
+  http: POST /api/gateway/v1/organizations/
+  binding: operationId
+  confidence: high
+- tool: gateway.organizations_update
+  category: user_management
+  service: gateway
+  rest:
+  - organizations_update
+  http: PUT /api/gateway/v1/organizations/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.organizations_destroy
+  category: user_management
+  service: gateway
+  rest:
+  - organizations_destroy
+  http: DELETE /api/gateway/v1/organizations/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.users_list
+  category: user_management
+  service: gateway
+  rest:
+  - users_list
+  http: GET /api/gateway/v1/users/
+  binding: operationId
+  confidence: high
+- tool: gateway.users_retrieve
+  category: user_management
+  service: gateway
+  rest:
+  - users_retrieve
+  http: GET /api/gateway/v1/users/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.users_create
+  category: user_management
+  service: gateway
+  rest:
+  - users_create
+  http: POST /api/gateway/v1/users/
+  binding: operationId
+  confidence: high
+- tool: gateway.users_update
+  category: user_management
+  service: gateway
+  rest:
+  - users_update
+  http: PUT /api/gateway/v1/users/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.users_destroy
+  category: user_management
+  service: gateway
+  rest:
+  - users_destroy
+  http: DELETE /api/gateway/v1/users/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.users_teams_list
+  category: user_management
+  service: gateway
+  rest:
+  - users_teams_list
+  http: GET /api/gateway/v1/users/{id}/teams/
+  binding: operationId
+  confidence: high
+- tool: gateway.authenticators_retrieve
+  category: user_management
+  service: gateway
+  rest:
+  - authenticators_retrieve
+  http: GET /api/gateway/v1/authenticators/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.authenticators_create
+  category: user_management
+  service: gateway
+  rest:
+  - authenticators_create
+  http: POST /api/gateway/v1/authenticators/
+  binding: operationId
+  confidence: high
+- tool: gateway.authenticators_update
+  category: user_management
+  service: gateway
+  rest:
+  - authenticators_update
+  http: PUT /api/gateway/v1/authenticators/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.authenticators_destroy
+  category: user_management
+  service: gateway
+  rest:
+  - authenticators_destroy
+  http: DELETE /api/gateway/v1/authenticators/{id}/
+  binding: operationId
+  confidence: high
+- tool: gateway.authenticator_maps_list
+  category: user_management
+  service: gateway
+  rest:
+  - authenticator_maps_list
+  http: GET /api/gateway/v1/authenticator_maps/
+  binding: operationId
+  confidence: high
+- tool: gateway.authenticator_maps_create
+  category: user_management
+  service: gateway
+  rest:
+  - authenticator_maps_create
+  http: POST /api/gateway/v1/authenticator_maps/
+  binding: operationId
+  confidence: high
+- tool: controller.users_activity_stream_list
+  category: user_management
+  service: controller
+  rest:
+  - users_activity_stream_list
+  http: GET /api/v2/users/{id}/activity_stream/
+  binding: operationId
+  confidence: high
+- tool: controller.credentials_list
+  category: security_compliance
+  service: controller
+  rest:
+  - credentials_list
+  http: GET /api/v2/credentials/
+  binding: operationId
+  confidence: high
+- tool: controller.credentials_create
+  category: security_compliance
+  service: controller
+  rest:
+  - credentials_create
+  http: POST /api/v2/credentials/
+  binding: operationId
+  confidence: high
+- tool: controller.credentials_retrieve
+  category: security_compliance
+  service: controller
+  rest:
+  - credentials_retrieve
+  http: GET /api/v2/credentials/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.credentials_test_create
+  category: security_compliance
+  service: controller
+  rest:
+  - credentials_test_create
+  http: POST /api/v2/credentials/{id}/test/
+  binding: operationId
+  confidence: high
+- tool: controller.credential_types_list
+  category: security_compliance
+  service: controller
+  rest:
+  - credential_types_list
+  http: GET /api/v2/credential_types/
+  binding: operationId
+  confidence: high
+- tool: controller.credential_types_create
+  category: security_compliance
+  service: controller
+  rest:
+  - credential_types_create
+  http: POST /api/v2/credential_types/
+  binding: operationId
+  confidence: high
+- tool: controller.credential_types_retrieve
+  category: security_compliance
+  service: controller
+  rest:
+  - credential_types_retrieve
+  http: GET /api/v2/credential_types/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.credential_types_update
+  category: security_compliance
+  service: controller
+  rest:
+  - credential_types_update
+  http: PUT /api/v2/credential_types/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.credential_types_destroy
+  category: security_compliance
+  service: controller
+  rest:
+  - credential_types_destroy
+  http: DELETE /api/v2/credential_types/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.credentials_input_sources_create
+  category: security_compliance
+  service: controller
+  rest:
+  - credentials_input_sources_create
+  http: POST /api/v2/credentials/{id}/input_sources/
+  binding: operationId
+  confidence: high
+- tool: controller.credential_input_sources_list
+  category: security_compliance
+  service: controller
+  rest:
+  - credential_input_sources_list
+  http: GET /api/v2/credential_input_sources/
+  binding: operationId
+  confidence: high
+- tool: controller.settings_list
+  category: platform_configuration
+  service: controller
+  rest:
+  - settings_list
+  http: GET /api/v2/settings/
+  binding: operationId
+  confidence: high
+- tool: controller.settings_retrieve
+  category: platform_configuration
+  service: controller
+  rest:
+  - settings_retrieve
+  http: GET /api/v2/settings/{category_slug}/
+  binding: operationId
+  confidence: high
+- tool: controller.settings_partial_update
+  category: platform_configuration
+  service: controller
+  rest:
+  - settings_partial_update
+  http: PATCH /api/v2/settings/{category_slug}/
+  binding: operationId
+  confidence: high
+- tool: gateway.settings_list
+  category: platform_configuration
+  service: gateway
+  rest:
+  - settings_list
+  http: GET /api/gateway/v1/settings/
+  binding: operationId
+  confidence: high
+- tool: gateway.settings_getter
+  category: platform_configuration
+  service: gateway
+  rest:
+  - settings_getter
+  http: GET /api/gateway/v1/settings/{category_slug}/
+  binding: operationId
+  confidence: high
+- tool: gateway.settings_update
+  category: platform_configuration
+  service: gateway
+  rest:
+  - settings_update
+  http: PUT /api/gateway/v1/settings/{category_slug}/
+  binding: operationId
+  confidence: high
+- tool: controller.config_retrieve
+  category: platform_configuration
+  service: controller
+  rest:
+  - config_retrieve
+  http: GET /api/v2/config/
+  binding: operationId
+  confidence: high
+- tool: controller.config_create
+  category: platform_configuration
+  service: controller
+  rest:
+  - config_create
+  http: POST /api/v2/config/
+  binding: operationId
+  confidence: high
+- tool: controller.notification_templates_list
+  category: platform_configuration
+  service: controller
+  rest:
+  - notification_templates_list
+  http: GET /api/v2/notification_templates/
+  binding: operationId
+  confidence: high
+- tool: controller.notification_templates_create
+  category: platform_configuration
+  service: controller
+  rest:
+  - notification_templates_create
+  http: POST /api/v2/notification_templates/
+  binding: operationId
+  confidence: high
+- tool: controller.notification_templates_retrieve
+  category: platform_configuration
+  service: controller
+  rest:
+  - notification_templates_retrieve
+  http: GET /api/v2/notification_templates/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.notification_templates_update
+  category: platform_configuration
+  service: controller
+  rest:
+  - notification_templates_update
+  http: PUT /api/v2/notification_templates/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.notification_templates_destroy
+  category: platform_configuration
+  service: controller
+  rest:
+  - notification_templates_destroy
+  http: DELETE /api/v2/notification_templates/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.execution_environments_list
+  category: platform_configuration
+  service: controller
+  rest:
+  - execution_environments_list
+  http: GET /api/v2/execution_environments/
+  binding: operationId
+  confidence: high
+- tool: controller.execution_environments_create
+  category: platform_configuration
+  service: controller
+  rest:
+  - execution_environments_create
+  http: POST /api/v2/execution_environments/
+  binding: operationId
+  confidence: high
+- tool: controller.execution_environments_retrieve
+  category: platform_configuration
+  service: controller
+  rest:
+  - execution_environments_retrieve
+  http: GET /api/v2/execution_environments/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.execution_environments_update
+  category: platform_configuration
+  service: controller
+  rest:
+  - execution_environments_update
+  http: PUT /api/v2/execution_environments/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.execution_environments_destroy
+  category: platform_configuration
+  service: controller
+  rest:
+  - execution_environments_destroy
+  http: DELETE /api/v2/execution_environments/{id}/
+  binding: operationId
+  confidence: high
+- tool: controller.organizations_execution_environments_create
+  category: platform_configuration
+  service: controller
+  rest:
+  - organizations_execution_environments_create
+  http: POST /api/v2/organizations/{id}/execution_environments/
+  binding: operationId
+  confidence: high
+- tool: controller.organizations_instance_groups_create
+  category: platform_configuration
+  service: controller
+  rest:
+  - organizations_instance_groups_create
+  http: POST /api/v2/organizations/{id}/instance_groups/
+  binding: operationId
+  confidence: high
+- tool: controller.organizations_galaxy_credentials_create
+  category: platform_configuration
+  service: controller
+  rest:
+  - organizations_galaxy_credentials_create
+  http: POST /api/v2/organizations/{id}/galaxy_credentials/
+  binding: operationId
+  confidence: high
+mcp_only:
+- tool: galaxy.ansible_content_collections_index
+  category: content_discovery
+  service: galaxy
+  reason: operationId not present in any harvested AAP OpenAPI document
+  note: No operationId of this name in the harvested Automation Hub spec. Semantically closest published
+    operations are api_automation_hub_content_v3_plugin_ansible_content_collections_index_list / _read,
+    but the binding is not exact.
+  confidence: low
+- tool: galaxy.ansible_content_collections_index_versions_get_distro_base_pa
+  category: content_discovery
+  service: galaxy
+  reason: operationId not present in any harvested AAP OpenAPI document
+  note: No operationId of this name, and no close match on "distro_base" in the harvested Automation Hub
+    spec.
+  confidence: low
+- tool: galaxy.execution_environments_repositories_get_repositories
+  category: content_discovery
+  service: galaxy
+  reason: operationId not present in any harvested AAP OpenAPI document
+  note: No operationId of this name and no "execution_environments_repositories" match in the harvested
+    Automation Hub spec.
+  confidence: low
+- tool: lightspeed.aap_rag_search
+  category: content_discovery
+  service: lightspeed
+  reason: operationId not present in any harvested AAP OpenAPI document
+  note: No counterpart in the harvested Ansible Lightspeed spec (v1.0.0); appears to target a newer RAG
+    search surface than the document Red Hat ships in the same repository.
+  confidence: low
+rest_only:
+  count: 1631
+  summary: Operations present in the loaded OpenAPI documents but not named in any shipped toolset. They
+    are still reachable through the default /mcp endpoint when the operator has not restricted to a toolset.
+  by_service:
+    controller: 632
+    gateway: 206
+    eda: 120
+    galaxy: 786
+    lightspeed: 23

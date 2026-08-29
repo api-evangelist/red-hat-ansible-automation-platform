@@ -1,0 +1,125 @@
+generated: '2026-08-29'
+method: derived
+source: openapi/*.json (4xx/5xx responses declared across the five harvested AAP specs)
+description: >-
+  Error catalog for Red Hat Ansible Automation Platform, derived from the declared 4xx/5xx
+  responses in the harvested OpenAPI documents. AAP does NOT use RFC 9457
+  application/problem+json — errors are plain application/json objects, and two of the five
+  component specs declare no error responses at all.
+format: json
+rfc9457: false
+envelope:
+  controller_and_gateway: >-
+    Django REST Framework style. Field validation errors return an object keyed by field name
+    with an array of message strings; non-field errors return {"detail": "<message>"}. Neither
+    the Controller nor the Gateway document declares any 4xx/5xx response, so this shape is
+    read from the runtime framework and the docs, not from the contract.
+  event_driven_ansible: >-
+    Same DRF shape. Error responses carry a human-readable `description` in the contract but no
+    response schema, except EDA 500 which references components.schemas.StatusResponse.
+  automation_hub: >-
+    Pulp/galaxy_ng style: {"errors": [{"status": "<code>", "code": "<slug>", "title":
+    "<message>"}]}. Observed live on
+    https://galaxy.ansible.com/api/v3/openapi.json -> 401
+    {"errors":[{"status":"401","code":"not_authenticated","title":"Authentication credentials
+    were not provided."}]}
+  console_gateway: >-
+    Red Hat Hybrid Cloud Console front door: {"errors":[{"status":401,"detail":"Missing
+    Authentication","meta":{"response_by":"gateway"}}]}
+coverage:
+  specs_declaring_error_responses: 2
+  specs_declaring_none: 3
+  note: >-
+    automation-controller (632 ops) and automation-hub (786 ops) declare ONLY 2xx/3xx
+    responses. An agent reading those contracts cannot learn what a failure looks like — the
+    single largest contract-quality gap in this profile.
+problem_types:
+- status: 400
+  title: Bad Request
+  source_specs: [event-driven-ansible, ansible-lightspeed]
+  occurrences: 27
+  examples:
+  - Invalid data to create activation.
+  - Activation not enabled.
+  - Rulebook not parseable.
+  - Test failed.
+  - Prompt too long is 413, but oversized/invalid payloads otherwise return 400.
+  remediation: Correct the request body against the operation schema and retry.
+- status: 401
+  title: Unauthorized
+  source_specs: [ansible-lightspeed]
+  occurrences: 16
+  remediation: >-
+    Supply a valid AAP token. Controller/Gateway accept OAuth2 bearer tokens or Basic auth; EDA
+    accepts the X-DAB-JW-TOKEN header; Automation Hub accepts token or basic auth.
+- status: 403
+  title: Forbidden
+  source_specs: [event-driven-ansible, ansible-lightspeed]
+  occurrences: 12
+  examples:
+  - Invalid credentials or user is disabled.
+  - Update is prohibited
+  remediation: The principal is authenticated but lacks the AAP RBAC role for the object.
+- status: 404
+  title: Not Found
+  source_specs: [event-driven-ansible, platform-gateway]
+  occurrences: 4
+  examples:
+  - Activation not found.
+  - EDA credential not found.
+- status: 409
+  title: Conflict
+  source_specs: [event-driven-ansible, automation-hub]
+  occurrences: 9
+  examples:
+  - Activation blocked while Workers offline.
+  - CredentialType in use by Credentials.
+  - Decision Environment in use by Activations.
+  - Project import or sync is already running.
+  remediation: >-
+    The richest error class in the AAP contract. It signals referential integrity (object still
+    referenced), concurrency (a sync already running) and capacity (workers offline) — an agent
+    should treat 409 as "retry later or resolve the dependency", not as a client bug.
+- status: 413
+  title: Prompt too long
+  source_specs: [ansible-lightspeed]
+  occurrences: 2
+- status: 422
+  title: Validation failed
+  source_specs: [ansible-lightspeed]
+  occurrences: 2
+- status: 429
+  title: Request was throttled
+  source_specs: [ansible-lightspeed]
+  occurrences: 14
+  remediation: >-
+    The only throttling signal declared anywhere in the AAP contract, and it is confined to
+    Ansible Lightspeed. No limit values and no RateLimit-*/Retry-After response headers are
+    declared in the spec.
+- status: 500
+  title: Internal server error
+  source_specs: [event-driven-ansible, ansible-lightspeed]
+  occurrences: 13
+  examples:
+  - EDA is unavailable (database failure).  # schema StatusResponse
+  - One or more backend services are unavailable.
+- status: 501
+  title: Not implemented
+  source_specs: [ansible-lightspeed]
+  occurrences: 9
+  remediation: >-
+    Lightspeed returns 501 where a deployment has not enabled the underlying model service — an
+    honest capability signal rather than a fault.
+- status: 502
+  title: Bad Gateway
+  source_specs: [event-driven-ansible]
+  occurrences: 3
+  examples:
+  - Gateway API error during certificate sync.
+- status: 503
+  title: Service Unavailable
+  source_specs: [event-driven-ansible, ansible-lightspeed]
+  occurrences: 14
+  examples:
+  - Project workers unavailable.
+  - Dependent service issues

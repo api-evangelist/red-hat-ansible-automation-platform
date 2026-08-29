@@ -1,0 +1,103 @@
+generated: '2026-08-29'
+method: probed
+source: live HTTP probes of every http(s) url in apis.yml common[] and apis[].properties[]
+description: >-
+  Pointer liveness verification for the 2026-08-29 enrichment pass. No pointer was confirmed
+  dead, so none was removed. Two Red Hat documentation hosts answer a bot challenge to a
+  non-browser client — docs.redhat.com returns 403 (Akamai) and docs.ansible.com returns 429
+  (Cloudflare) — which is an ordinary edge policy, not a missing page.
+pointers:
+- type: Compliance
+  url: https://access.redhat.com/compliance
+  status: 200
+- type: Console
+  url: https://www.redhat.com/en/interactive-labs/ansible
+  status: 200
+- type: LinkedIn
+  url: https://www.linkedin.com/company/ansible
+  status: 200
+- type: Portal
+  url: https://www.redhat.com/en/technologies/management/ansible
+  status: 200
+- type: Documentation
+  url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  status: 403
+  verdict: live-behind-bot-challenge
+  note: 301s to docs.redhat.com, which serves an Akamai Access Denied page to non-browser clients.
+- type: GettingStarted
+  url: https://www.redhat.com/en/technologies/management/ansible/trial
+  status: 200
+- type: Blog
+  url: https://www.redhat.com/en/blog/channel/red-hat-ansible-automation
+  status: 200
+  note: >-
+    Replaced https://www.ansible.com/blog this pass — that URL still resolves but 301s to the
+    generic "open source communities" channel rather than the Ansible automation channel.
+- type: GitHubOrganization
+  url: https://github.com/ansible
+  status: 200
+- type: Support
+  url: https://access.redhat.com/support/
+  status: 200
+- type: TermsOfService
+  url: https://www.redhat.com/en/about/agreements
+  status: 200
+- type: PrivacyPolicy
+  url: https://www.redhat.com/en/about/privacy-policy
+  status: 200
+- type: Training
+  url: https://www.redhat.com/en/services/training/do007-ansible-essentials-simplicity-automation-technical-overview
+  status: 200
+- type: Pricing
+  url: https://www.redhat.com/en/technologies/management/ansible/pricing
+  status: 200
+- type: StatusPage
+  url: https://status.redhat.com/
+  status: 200
+- type: APIReference
+  url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
+  status: 429
+  verdict: live-behind-bot-challenge
+  note: Cloudflare "Just a moment..." interstitial on docs.ansible.com.
+- type: Authentication
+  url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
+  status: 429
+  verdict: live-behind-bot-challenge
+- type: Documentation
+  url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
+  status: 403
+  verdict: live-behind-bot-challenge
+- type: Documentation
+  url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
+  status: 403
+  verdict: live-behind-bot-challenge
+- type: Lifecycle
+  url: https://access.redhat.com/page/ansible-automation-platform-self-service-automation-portal-lifecycle
+  status: 200
+- type: humanURL
+  url: https://c.ai.ansible.redhat.com/
+  status: 200
+- type: Console
+  url: https://console.redhat.com/ansible/ansible-dashboard
+  status: 200
+  note: Hybrid Cloud Console SPA shell; the page exists but requires a Red Hat login to render.
+- type: humanURL
+  url: https://console.redhat.com/ansible/automation-hub
+  status: 200
+  note: same SPA shell
+removed: []
+not_added:
+- type: Postman
+  reason: >-
+    https://www.postman.com/redhat and https://www.postman.com/ansible both return HTTP 200 with
+    the generic "Postman" SPA shell — a soft-404 rather than a public workspace. No pointer emitted.
+- type: Roadmap
+  reason: https://www.redhat.com/en/technologies/management/ansible/roadmap -> 404; no public roadmap found.
+- type: Idempotency
+  reason: >-
+    AAP declares no Idempotency-Key or equivalent anywhere in 1,767 harvested operations. Emitting
+    the pointer would assert support the provider does not have.
+- type: AgentCard
+  reason: no /.well-known/agent-card.json or /.well-known/agent.json on any probed host
+- type: AsyncAPI
+  reason: no AsyncAPI document published; the event surface is captured as Webhooks instead

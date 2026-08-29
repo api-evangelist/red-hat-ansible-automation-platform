@@ -1,0 +1,134 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json and
+  openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+description: >-
+  Red Hat Ansible Automation Platform has a substantial event surface in BOTH directions, but
+  publishes no AsyncAPI document for any of it. This artifact catalogs what the OpenAPI
+  contracts actually declare: inbound webhook receivers that launch automation, outbound
+  notifications that report on it, and the Event-Driven Ansible event ingress that is the
+  product's whole reason for existing.
+asyncapi_published: false
+asyncapi_probe:
+  note: >-
+    No /asyncapi.json or /asyncapi.yaml is served by any reachable Red Hat/Ansible host, and no
+    AsyncAPI document appears in the ansible GitHub organization's AAP repositories. Recorded as
+    absent, not fabricated.
+inbound_webhooks:
+  summary: >-
+    Automation Controller job templates and workflow job templates can be triggered by a webhook
+    from a source-control provider. The receiver is created per template, and the shared secret
+    is minted through the API.
+  services:
+  - github
+  - gitlab
+  - bitbucket_dc
+  source_field: JobTemplate.webhook_service (enum) in the Controller spec
+  key_management:
+  - operationId: job_templates_webhook_key_retrieve
+    method: GET
+    path: /api/v2/job_templates/{id}/webhook_key/
+    description: read the current shared secret for this template's webhook receiver
+  - operationId: job_templates_webhook_key_create
+    method: POST
+    path: /api/v2/job_templates/{id}/webhook_key/
+    description: rotate the shared secret
+  - operationId: workflow_job_templates_webhook_key_retrieve
+    method: GET
+    path: /api/v2/workflow_job_templates/{id}/webhook_key/
+  - operationId: workflow_job_templates_webhook_key_create
+    method: POST
+    path: /api/v2/workflow_job_templates/{id}/webhook_key/
+  status_callback: >-
+    JobTemplate.webhook_credential holds a "Personal Access Token for posting back the status to
+    the service API" — AAP writes the run result back to the originating SCM provider.
+outbound_notifications:
+  summary: >-
+    Notification templates fire on job start, success and failure and are attached to job
+    templates, workflow job templates, inventory sources, projects and organizations.
+  transports:
+  - webhook
+  - slack
+  - email
+  - pagerduty
+  - grafana
+  - irc
+  - mattermost
+  - rocketchat
+  - twilio
+  - awssns
+  source_field: NotificationTemplate.notification_type (enum) in the Controller spec
+  operations:
+  - notification_templates_list
+  - notification_templates_create
+  - notification_templates_retrieve
+  - notification_templates_update
+  - notification_templates_destroy
+  - notification_templates_test_create
+  - notification_templates_notifications_list
+  attachment_points:
+  - job_templates_notification_templates_started_create
+  - job_templates_notification_templates_success_create
+  - job_templates_notification_templates_error_create
+  - inventory_sources_notification_templates_started_create
+  - inventory_sources_notification_templates_success_create
+  - inventory_sources_notification_templates_error_create
+  event_types: [started, success, error]
+event_driven_ansible:
+  summary: >-
+    Event-Driven Ansible is the platform's event consumer. Event streams are external ingress
+    points; rulebook activations bind an event source to rules that fire actions; audit rules
+    record what fired.
+  event_streams:
+  - operationId: event_streams_list
+    method: GET
+    path: /event-streams/
+  - operationId: event_streams_create
+    method: POST
+    path: /event-streams/
+  - operationId: event_streams_retrieve
+    method: GET
+    path: /event-streams/{id}/
+  - operationId: event_streams_partial_update
+    method: PATCH
+    path: /event-streams/{id}/
+  - operationId: event_streams_destroy
+    method: DELETE
+    path: /event-streams/{id}/
+  - operationId: event_streams_activations_list
+    method: GET
+    path: /event-streams/{id}/activations/
+  event_stream_fields:
+    event_stream_type: derived from the attached EDA credential type
+    additional_data_headers: comma-delimited list of HTTP headers copied into the event payload
+    test_mode: boolean, lets a stream be exercised without firing actions
+  activations:
+  - activations_create
+  - activations_enable_create
+  - activations_disable_create
+  - activations_restart_create
+  - activation_instances_list
+  - activation_instances_logs_list
+  audit:
+  - audit_rules_list
+  - audit_rules_actions_list
+  - audit_rules_events_list
+  note: >-
+    The concrete event source types (kafka, webhook, aws sqs, azure service bus, url_check, ...)
+    are shipped as the ansible.eda content collection (v2.13.0, 2026-07-07), not as part of the
+    REST contract — so the catalog of event types an EDA deployment can consume lives in Galaxy,
+    not in the API.
+job_event_stream:
+  summary: >-
+    Job execution itself produces a dense event stream, readable but not pushable.
+  operations:
+  - jobs_job_events_list
+  - ad_hoc_commands_events_list
+  - activation_instances_logs_list
+  - jobs_stdout_retrieve
+  transport: HTTP polling only; no server-sent events or websocket surface is declared in the contract
+gaps:
+- No AsyncAPI or CloudEvents description of any of the above.
+- No documented outbound webhook signature scheme for notification_type=webhook.
+- No documented retry/redelivery policy for outbound notifications.

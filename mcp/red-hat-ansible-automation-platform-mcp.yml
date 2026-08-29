@@ -1,0 +1,136 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://github.com/ansible/aap-mcp-server (README.md, aap-mcp.sample.yaml,
+  src/openapi-loader.ts) and
+  https://access.redhat.com/support/policy/updates/ansible-automation-platform (MCP Servers
+  Lifecycle section)
+name: AAP MCP Service
+description: >-
+  Red Hat ships a first-party Model Context Protocol server for Ansible Automation Platform.
+  It is a Node.js service (Apache-2.0, github.com/ansible/aap-mcp-server) that reads the AAP
+  component OpenAPI documents at start-up and generates one MCP tool per REST operation across
+  five services — controller, gateway, eda, galaxy (Automation Hub) and lightspeed. It is NOT
+  a Red Hat-hosted endpoint: the customer runs it against their own AAP installation, and it
+  listens on their host (default http://localhost:3000/mcp). Red Hat also ships supported MCP
+  Server builds as container images and RPMs with a published 12-month lifecycle.
+status: published
+official: true
+vendor: Red Hat
+repository: https://github.com/ansible/aap-mcp-server
+license: Apache-2.0
+last_commit_observed: '2026-08-27'
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: "git clone https://github.com/ansible/aap-mcp-server && npm install && npm run build && npm start"
+  package: https://github.com/ansible/aap-mcp-server
+  auth: api-key
+  verified: searched
+  note: >-
+    Recorded as local-stdio because an operator must install and run it before any agent can
+    reach it — there is no Red Hat-hosted URL. Its transport is streamable HTTP rather than
+    stdio: once running it answers MCP at http://<operator-host>:3000/mcp and at
+    /mcp/{toolset}. Registration is `claude mcp add aap-mcp -t http http://localhost:3000/mcp
+    -H 'Authorization: Bearer <aap_token>'`. Not published to npm as of 2026-08-29 — install is
+    clone-and-build, or the Red Hat-shipped container image / RPM for subscribers.
+transport: streamable-http
+endpoints:
+  base: http://<operator-host>:3000/mcp
+  per_toolset: http://<operator-host>:3000/mcp/{toolset}
+  health: http://<operator-host>:3000/api/v1/health
+  metrics: http://<operator-host>:3000/metrics
+authentication:
+  scheme: bearer
+  header: "Authorization: Bearer <aap_token>"
+  env_alternative: BEARER_TOKEN_OAUTH2_AUTHENTICATION
+  session: >-
+    Session-based — POST to initialize with the token, then carry the returned Mcp-Session-Id
+    header. The service validates the AAP token and filters visible tools by the caller's AAP
+    permissions.
+  oauth_protected_resource: >-
+    The service implements RFC 9728 OAuth 2.0 protected-resource metadata
+    (src/oauth2/protected-resource-metadata.ts).
+safety:
+  write_operations_default: disabled
+  write_operations_flag: ALLOW_WRITE_OPERATIONS=true
+  note: >-
+    POST/PATCH/DELETE-backed tools are OFF by default and must be explicitly enabled. Tool
+    visibility is additionally filtered per user by AAP RBAC. This is a real agentic-access
+    control, published by the provider.
+services:
+- name: controller
+  default_spec_url: https://s3.amazonaws.com/awx-public-ci-files/release_4.6/schema.json
+  repo_spec: data/controller-schema.json
+  local_openapi: openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json
+  operations: 632
+- name: gateway
+  default_spec_url: "{BASE_URL}/api/gateway/v1/docs/schema/"
+  repo_spec: data/gateway-schema.json
+  local_openapi: openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+  operations: 206
+- name: eda
+  default_spec_url: "{BASE_URL}/api/eda/v1/openapi.json"
+  repo_spec: data/eda-openapi.json
+  local_openapi: openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+  operations: 120
+- name: galaxy
+  default_spec_url: "{BASE_URL}/api/galaxy/v3/openapi.json"
+  repo_spec: data/galaxy-openapi.json
+  local_openapi: openapi/red-hat-ansible-automation-platform-automation-hub-openapi.json
+  operations: 786
+- name: lightspeed
+  default_spec_url: "{BASE_URL}/api/lightspeed/v1/openapi.json"
+  repo_spec: data/lightspeed.json
+  local_openapi: openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+  operations: 23
+tool_naming: "{service}.{openapi_operationId}  e.g. controller.job_templates_launch_create"
+toolsets:
+- name: job_management
+  tools: 47
+  endpoint_suffix: /mcp/job_management
+- name: inventory_management
+  tools: 13
+  endpoint_suffix: /mcp/inventory_management
+- name: system_monitoring
+  tools: 13
+  endpoint_suffix: /mcp/system_monitoring
+- name: user_management
+  tools: 28
+  endpoint_suffix: /mcp/user_management
+- name: security_compliance
+  tools: 16
+  endpoint_suffix: /mcp/security_compliance
+- name: platform_configuration
+  tools: 21
+  endpoint_suffix: /mcp/platform_configuration
+- name: content_discovery
+  tools: 4
+  endpoint_suffix: /mcp/content_discovery
+lifecycle:
+  cadence: "12-month support window per GA release"
+  phases:
+  - phase: Full Support
+    window: months 0-8
+  - phase: Maintenance Support
+    window: months 9-12
+  - phase: End of Life
+    window: month 12+
+  release_tag_format: "{AAP_VERSION}.{YYYYMMDD}[.{patch}]  e.g. 2.6.20260315"
+  support_requirement: "deployments must stay on the latest or N-1 MCP Server GA release"
+  source: https://access.redhat.com/support/policy/updates/ansible-automation-platform
+probes:
+- url: https://github.com/ansible/aap-mcp-server
+  status: 200
+- url: https://raw.githubusercontent.com/ansible/aap-mcp-server/main/aap-mcp.sample.yaml
+  status: 200
+- url: https://s3.amazonaws.com/awx-public-ci-files/release_4.6/schema.json
+  status: 200
+  finding: >-
+    The controller service's DEFAULT spec URL is a public S3 object that parses as Swagger 2.0
+    with unedited drf-yasg boilerplate metadata — info.title "Snippets API", contact
+    contact@snippets.local, termsOfService google.com/policies/terms. The paths are genuinely
+    AWX/Controller (380 of them), but the document fails a self-description ownership check, so
+    it was NOT saved. openapi/ carries the properly-identified copy from the same repo instead.
+- url: https://www.npmjs.com/package/@ansible/aap-mcp-server
+  status: not-published

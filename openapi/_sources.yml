@@ -1,0 +1,120 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://github.com/ansible/aap-mcp-server (Apache-2.0, github.com/ansible — Red Hat's
+  official Ansible organization) and https://console.redhat.com/api/automation-hub/v3/openapi.json
+description: >-
+  Provenance for every OpenAPI definition harvested into openapi/. Red Hat Ansible
+  Automation Platform is installed by the customer, so most component specs are served
+  from the customer's own installation (/api/controller/v2/schema/, /api/eda/v1/openapi.json,
+  /api/gateway/v1/schema/) and are not fetchable from a Red Hat host. Red Hat publishes the
+  same generated documents in its own aap-mcp-server repository, which loads them at runtime
+  to build MCP tools; those are the copies captured here. The Automation Hub spec is the LIVE
+  document served anonymously from Red Hat's Hybrid Cloud Console.
+ownership_check:
+  verdict: owned-by-provider
+  note: >-
+    Every spec identifies itself as a Red Hat Ansible Automation Platform component.
+    automation-controller declares info.contact.email ansible-community@redhat.com (Automation
+    Controller is the productized AWX, and Red Hat's own MCP server registers this document as
+    its `controller` service); automation-hub declares contact ansible-galaxy-team@redhat.com
+    and info.contact.url https://www.ansible.com/products/automation-hub; event-driven-ansible
+    declares servers[] /api/eda/v1, matching the AAP EDA base path; platform-gateway is titled
+    "AAP gateway API"; ansible-lightspeed declares servers[] https://aap/api/lightspeed/v1
+    "Access through an Ansible Automation Platform gateway". No sibling-product contamination.
+specs:
+- file: red-hat-ansible-automation-platform-automation-controller-openapi.json
+  api: Red Hat Ansible Automation Controller API
+  title: AWX API
+  version: v2
+  openapi: 3.0.3
+  operations: 632
+  paths: 379
+  source: https://raw.githubusercontent.com/ansible/aap-mcp-server/main/data/controller-schema.json
+  http_status: 200
+  fetched: '2026-08-29'
+  live_path_on_customer_install: /api/controller/v2/schema/
+- file: red-hat-ansible-automation-platform-automation-hub-openapi.json
+  api: Red Hat Ansible Automation Hub API
+  title: Automation Hub API
+  version: v3
+  openapi: 3.0.3
+  operations: 786
+  paths: 535
+  source: https://console.redhat.com/api/automation-hub/v3/openapi.json
+  http_status: 200
+  fetched: '2026-08-29'
+  note: >-
+    Live, anonymously readable from Red Hat's Hybrid Cloud Console. servers[] in the document
+    leaks an internal cluster address
+    (http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/); the real
+    public base is https://console.redhat.com/api/automation-hub/. Recorded, not rewritten —
+    the spec is saved verbatim.
+- file: red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+  api: Red Hat Event-Driven Ansible Controller API
+  title: Event Driven Ansible API
+  version: 0.2.0
+  openapi: 3.0.3
+  operations: 120
+  paths: 83
+  source: https://raw.githubusercontent.com/ansible/aap-mcp-server/main/data/eda-openapi.json
+  http_status: 200
+  fetched: '2026-08-29'
+  live_path_on_customer_install: /api/eda/v1/openapi.json
+- file: red-hat-ansible-automation-platform-platform-gateway-openapi.json
+  api: Red Hat Ansible Automation Platform Gateway API
+  title: AAP gateway API
+  version: v1
+  openapi: 3.0.3
+  operations: 206
+  paths: 125
+  source: https://raw.githubusercontent.com/ansible/aap-mcp-server/main/data/gateway-schema.json
+  http_status: 200
+  fetched: '2026-08-29'
+  live_path_on_customer_install: /api/gateway/v1/schema/
+- file: red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+  api: Red Hat Ansible Lightspeed with IBM watsonx Code Assistant API
+  title: Ansible AI Connect.
+  version: 1.0.0 (v1)
+  openapi: 3.0.3
+  operations: 23
+  paths: 19
+  source: https://raw.githubusercontent.com/ansible/aap-mcp-server/main/data/lightspeed.json
+  http_status: 200
+  fetched: '2026-08-29'
+probes_that_missed:
+- url: https://galaxy.ansible.com/api/v3/openapi.json
+  status: 401
+  note: community Galaxy requires authentication for its schema endpoint
+- url: https://console.redhat.com/api/tower-analytics/v1/openapi.json
+  status: 401
+  note: Automation Analytics schema is gated behind console authentication
+- url: https://c.ai.ansible.redhat.com/api/schema/
+  status: 404
+- url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
+  status: 429
+  note: Cloudflare bot challenge on docs.ansible.com
+other_contract_probes:
+- kind: GraphQL
+  url: https://console.redhat.com/api/automation-hub/graphql
+  status: 401
+  result: no GraphQL surface; the console gateway rejects unauthenticated POSTs on every path
+- kind: GraphQL
+  url: https://galaxy.ansible.com/graphql
+  status: 405
+  result: method not allowed — no GraphQL endpoint
+- kind: gRPC/Protobuf
+  url: https://buf.build/ansible
+  status: 200
+  result: >-
+    SPA shell with no owner-specific content returned to a non-browser client; no published
+    .proto found for any AAP component. AAP's automation mesh (receptor) uses its own wire
+    protocol, not a published gRPC service. Recorded as absent.
+- kind: WSDL
+  url: https://console.redhat.com/api/automation-hub/?wsdl
+  status: 401
+  result: no SOAP surface; AAP publishes no WSDL
+- kind: A2A agent card
+  url: https://www.redhat.com/.well-known/agent-card.json
+  status: 404
+  result: no agent card on any probed host; see well-known/ for the full matrix

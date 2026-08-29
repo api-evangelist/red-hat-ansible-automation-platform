@@ -1,0 +1,86 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://raw.githubusercontent.com/ansible/awx/devel/awxkit/README.md,
+  https://raw.githubusercontent.com/ansible/awx/devel/awxkit/awxkit/cli/docs/source/usage.rst,
+  https://pypi.org/project/awxkit/json
+description: >-
+  Red Hat Ansible Automation Platform's first-party command line client is `awx`, shipped in
+  the awxkit Python distribution. It is a thin, fully generic front end over the Automation
+  Controller REST API: it discovers the resource and action surface from the running server at
+  invocation time, so its command set IS the Controller API rather than a hand-written subset.
+clis:
+- name: awx
+  package: awxkit
+  registry: pypi
+  version: 24.6.1
+  published: '2024-07-02'
+  official: true
+  license: Apache-2.0
+  repository: https://github.com/ansible/awx/tree/devel/awxkit
+  install:
+  - pip install awxkit
+  synopsis: "awx [<global-options>] <resource> <action> [<arguments>]"
+  discovery: >-
+    "The list of resources and actions may vary based on context" — `awx --help` enumerates
+    resources from the connected server, and RBAC filters what appears (e.g. `launch` is hidden
+    on job templates the caller may not launch). Verbatim from the published usage docs.
+  base_path_note: >-
+    On AAP 2.5 and later the client must be pointed at the gateway-fronted Controller path:
+    AWXKIT_API_BASE_PATH=/api/controller/
+  actions:
+    base: [get, list, create, modify, delete]
+    special: [launch]
+    note: "Special actions are per-resource, e.g. `awx job_templates launch`."
+  global_options:
+  - flag: --conf.host
+    env: CONTROLLER_HOST
+    description: full URL of the AAP/AWX host
+  - flag: --conf.username
+    env: CONTROLLER_USERNAME
+  - flag: --conf.password
+    env: CONTROLLER_PASSWORD
+  - flag: "-k, --conf.insecure"
+    env: CONTROLLER_VERIFY_SSL
+  - flag: "-f, --conf.format"
+    description: output format; default is JSON
+  - flag: "-v, --verbose"
+    description: debug logs including the HTTP requests made
+  output: valid JSON by default; job stdout commands print raw text
+  currency_warning: >-
+    awxkit's last PyPI release is 2024-07-02 (24.6.1) — over two years old at time of writing,
+    against a Controller API this pipeline harvested with 632 operations. Because the CLI
+    discovers its surface from the server rather than hard-coding it, staleness bites at the
+    client/auth layer rather than the resource layer, but it is still the oldest first-party
+    artifact in this profile.
+- name: ansible-navigator
+  package: ansible-navigator
+  registry: pypi
+  version: 26.8.0
+  published: '2026-08-12'
+  official: true
+  install:
+  - pip install ansible-navigator
+  scope: >-
+    Text UI and CLI for running and inspecting automation inside AAP execution environments
+    (run, collections, images, doc, inventory, config, replay). Not an AAP REST client.
+- name: ansible-builder
+  package: ansible-builder
+  registry: pypi
+  version: 3.1.1
+  published: '2025-10-27'
+  official: true
+  scope: Builds AAP execution environment container images from a definition file.
+- name: ansible-galaxy
+  package: ansible-core
+  registry: pypi
+  version: 2.21.3
+  published: '2026-08-10'
+  official: true
+  scope: >-
+    Ships with ansible-core and speaks the Automation Hub / Galaxy v3 API directly
+    (`ansible-galaxy collection publish|install`), authenticated with an Automation Hub token.
+    It is the CLI most consumers of the Hub API actually use.
+not_a_cli:
+  aap-mcp-server: >-
+    Started with `npm start`, but it is a service, not a command line client. See mcp/.

@@ -1,0 +1,147 @@
+generated: '2026-08-29'
+method: probed
+source: live HTTP probes of /.well-known/* on every Red Hat / Ansible host in this profile
+description: >-
+  /.well-known/ discovery probe for Red Hat Ansible Automation Platform. One real document was
+  served: www.redhat.com/.well-known/security.txt, an RFC 9116 file (PGP-signed) that redirects
+  to security.access.redhat.com and carries Contact, Encryption, Acknowledgments, CSAF and CNA
+  fields. Every other path missed. Two hosts answer HTTP 200 with an SPA shell for EVERY
+  /.well-known/* path (console.redhat.com and galaxy.ansible.com) — those are recorded as
+  misses, not documents.
+hosts:
+- host: www.redhat.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: red-hat-ansible-automation-platform-security.txt
+    content_type: text/plain
+    note: 307/redirect to https://security.access.redhat.com/data/meta/v1/security.txt; Expires 2027-07-29
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: access.redhat.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: console.redhat.com
+  note: >-
+    SPA catch-all — every path below returned HTTP 200 with the identical 1703-byte Hybrid
+    Cloud Console HTML shell. None is a document; all are recorded as misses.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/agent.json
+    status: 200
+    served: html-shell
+    document: false
+- host: galaxy.ansible.com
+  note: SPA catch-all — identical 646-byte HTML shell on every path. All misses.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/openid-configuration
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/api-catalog
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/agent-card.json
+    status: 200
+    served: html-shell
+    document: false
+  - path: /.well-known/agent.json
+    status: 200
+    served: html-shell
+    document: false
+- host: c.ai.ansible.redhat.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+note_on_self_hosted_hosts: >-
+  The Automation Controller, Gateway and EDA APIs run on the customer's own installation, so
+  their /.well-known/ surface cannot be probed from outside. Red Hat's own AAP MCP server
+  implements RFC 9728 OAuth protected-resource metadata
+  (src/oauth2/protected-resource-metadata.ts in github.com/ansible/aap-mcp-server), which means
+  a running AAP MCP deployment does serve /.well-known/oauth-protected-resource — on the
+  customer's host, not on a Red Hat one.

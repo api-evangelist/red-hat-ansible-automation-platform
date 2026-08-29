@@ -1,0 +1,142 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://access.redhat.com/compliance, https://www.redhat.com/en/trust,
+  https://www.redhat.com/.well-known/security.txt and the OpenAPI documents in openapi/
+description: >-
+  Cross-cutting standards and compliance posture for Red Hat Ansible Automation Platform.
+  Conformance claims that come from the contract are marked with the spec location that proves
+  them; certification claims come from Red Hat's published product compliance catalog.
+standards:
+- id: openapi
+  conforms: true
+  evidence: >-
+    Five OpenAPI 3.0.3 documents across the platform (Controller 632 ops, Automation Hub 786,
+    Platform Gateway 206, Event-Driven Ansible 120, Ansible Lightspeed 23). See openapi/.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    openapi/...-platform-gateway-openapi.json components.securitySchemes.OAuth2_Authentication
+    declares authorizationCode and password flows (authorizationUrl /o/authorize/, tokenUrl
+    /o/token/, scopes read/write); openapi/...-ansible-lightspeed-openapi.json declares an
+    authorizationCode flow with read/write/delete.
+- id: oauth2-password-grant
+  conforms: true
+  deprecated_in_spec: false
+  evidence: >-
+    The Gateway still exposes the resource-owner password credentials grant
+    (components.securitySchemes.OAuth2_Authentication.flows.password), which OAuth 2.1 removes.
+    Recorded as a fact about the contract, not as an endorsement.
+- id: oidc
+  conforms: partial
+  evidence: >-
+    No openIdConnect securityScheme in any harvested spec and no /.well-known/openid-configuration
+    on any probed Red Hat host (all 404 or SPA shell). AAP's Gateway does support OIDC as an
+    authenticator type for logging users IN (gateway authenticators_* operations), but it does
+    not publish OIDC discovery for its own API.
+- id: rfc9728
+  conforms: true
+  evidence: >-
+    Red Hat's AAP MCP server implements OAuth 2.0 Protected Resource Metadata
+    (src/oauth2/protected-resource-metadata.ts in github.com/ansible/aap-mcp-server), served
+    from the operator's own deployment.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    No application/problem+json media type appears in any harvested spec. Errors are plain
+    application/json; the Controller and Automation Hub documents declare no 4xx/5xx responses
+    at all.
+- id: pagination
+  conforms: true
+  evidence: >-
+    Controller/Gateway use page + page_size + order_by + search query parameters with
+    Paginated*List response envelopes (count/next/previous/results). Automation Hub v3 uses
+    limit + offset with meta.count and links.first/previous/next/last.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header or equivalent parameter in any harvested spec, and none
+    documented. Re-issuing a launch POST starts another job.
+- id: json-api
+  conforms: false
+  evidence: no application/vnd.api+json media types in any harvested spec
+- id: odata
+  conforms: false
+  evidence: no $metadata surface
+- id: scim
+  conforms: false
+  evidence: >-
+    No urn:ietf:params:scim URN and no /scim/v2 path in the Gateway spec. Gateway user/team
+    provisioning is done through its own users_*/teams_*/authenticator_maps_* operations plus
+    LDAP/SAML/OIDC authenticators, not SCIM.
+- id: mcp
+  conforms: true
+  evidence: >-
+    First-party MCP server shipped by Red Hat (github.com/ansible/aap-mcp-server, Apache-2.0)
+    with a published 12-month per-release support lifecycle. See mcp/.
+- id: prometheus-exposition
+  conforms: true
+  evidence: >-
+    Controller exposes controller.metrics_retrieve (/api/v2/metrics/), and the AAP MCP service
+    exposes /metrics when enable_metrics is set.
+- id: x-ai-description
+  conforms: true
+  evidence: >-
+    630 of 632 Automation Controller operations carry an `x-ai-description` vendor extension
+    (openapi/...-automation-controller-openapi.json). Not a standard, but a provider-authored
+    agent description layer worth recording — the same document declares no `summary` on any
+    operation.
+- id: asyncapi
+  conforms: false
+  evidence: no AsyncAPI document published for the Event-Driven Ansible event surface
+domain_standard:
+  market: IT automation / configuration management
+  finding: >-
+    No formal domain interchange standard is declared in the contract, and none is expected —
+    IT automation has no equivalent of FHIR/OpenRTB/ISO 20022. The nearest domain artifacts AAP
+    does standardise on are its own Ansible Content Collection format (galaxy.yml / collection
+    tarball, served over the Galaxy v3 API) and the Event-Driven Ansible rulebook format, both
+    of which are Ansible-defined rather than cross-vendor. Reward-only check: nothing invented
+    to fill the slot.
+  declared_conformance: null
+certifications:
+  source: https://access.redhat.com/compliance
+  status: 200
+  scope_note: >-
+    Red Hat publishes a product compliance catalog covering the portfolio; its own filter counts
+    9 compliance items under "Red Hat Ansible Automation Platform Service on AWS". The catalog
+    is not AAP-exclusive, so the named validations below are Red Hat programs that AAP inherits
+    or participates in rather than AAP-only certificates.
+  programs:
+  - Common Criteria
+  - FIPS 140
+  - DISA STIG
+  - ISO/IEC 27001
+  - ISO/IEC 27018
+  - ISO 42001 (AI management system)
+  - HIPAA
+  - HDS (Hebergeur de Donnees de Sante)
+  - CIS Benchmarks
+  - BSI
+  - CCN-STIC / ENS
+  - EU Cyber Resilience Act
+  - EU AI Act
+  - ISO/SAE 21434
+  - Accessibility Conformance Reports (VPAT)
+security_program:
+  csaf_vex: https://security.access.redhat.com/data/csaf/v2/provider-metadata.json
+  cve_program_role: CNA (Red Hat is a CVE Numbering Authority; see security.txt CNA fields)
+  security_data_api: https://access.redhat.com/security/data
+  note: >-
+    Red Hat publishes machine-readable security advisories as CSAF/VEX and operates as a CVE
+    Numbering Authority — a stronger machine-readable security posture than most providers in
+    this catalog.
+evidence:
+- url: https://access.redhat.com/compliance
+  status: 200
+- url: https://www.redhat.com/en/trust
+  status: 200
+- url: https://www.redhat.com/.well-known/security.txt
+  status: 200
+- url: https://access.redhat.com/security/data
+  status: 200

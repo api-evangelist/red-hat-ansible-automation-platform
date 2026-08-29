@@ -1,0 +1,261 @@
+generated: '2026-08-29'
+method: derived
+source: openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json, openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json,
+  openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+description: Entity-relationship model for Red Hat Ansible Automation Platform, derived from the components.schemas
+  of the harvested OpenAPI documents. Relationships are read from integer foreign-key fields on each schema
+  (AAP uses integer primary keys and names the FK after the target resource), plus the `related` link
+  map every Controller object carries.
+identifiers:
+  style: integer primary keys
+  exposure: Every object exposes id (integer), url (its own API path), related (map of associated collection
+    URLs) and summary_fields (denormalised parents).
+  no_prefixes: AAP does not use typed/prefixed identifiers (no job_ / inv_ style prefixes), so an id is
+    only meaningful together with its resource path.
+schema_counts:
+  automation_controller: 247
+  platform_gateway: 121
+  event_driven_ansible: 116
+  automation_hub: 390
+entities:
+- name: Organization
+  service: controller + gateway
+  role: top-level tenancy boundary; nearly every object belongs to one
+- name: Project
+  service: controller
+  role: source of playbooks (SCM repository or manual path)
+- name: Inventory
+  service: controller
+  role: collection of hosts and groups automation runs against
+- name: Host
+  service: controller
+  role: a managed node; the unit AAP is licensed on
+- name: Group
+  service: controller
+  role: grouping of hosts inside an inventory
+- name: InventorySource
+  service: controller
+  role: dynamic inventory feed (cloud provider, SCM, script)
+- name: Credential
+  service: controller
+  role: secret material used by jobs; typed by CredentialType
+- name: CredentialType
+  service: controller
+  role: schema for a class of credential
+- name: JobTemplate
+  service: controller
+  role: the executable unit — binds a project playbook to an inventory and credentials
+- name: Job
+  service: controller
+  role: a single run of a JobTemplate (exposed through the jobs_* operations)
+- name: WorkflowJobTemplate
+  service: controller
+  role: graph of job templates and approvals
+- name: WorkflowJobTemplateNode
+  service: controller
+  role: a node in that graph, with success/failure/always edges
+- name: WorkflowJob
+  service: controller
+  role: a run of a workflow
+- name: Schedule
+  service: controller
+  role: rrule-based trigger for a template
+- name: NotificationTemplate
+  service: controller
+  role: outbound notification target (webhook, slack, email, pagerduty, ...)
+- name: ExecutionEnvironment
+  service: controller
+  role: container image the automation runs inside
+- name: InstanceGroup
+  service: controller
+  role: capacity pool of execution nodes
+- name: Label
+  service: controller
+  role: free-form tag on templates and jobs
+- name: Team
+  service: gateway + controller
+  role: group of users for RBAC
+- name: User
+  service: gateway + controller
+  role: principal
+- name: RoleDefinition
+  service: gateway
+  role: named permission set assigned via role_user_assignments / role_team_assignments
+- name: Authenticator
+  service: gateway
+  role: identity provider binding (LDAP, SAML, OIDC, local)
+- name: Activation
+  service: eda
+  role: a running rulebook consuming an event source
+- name: ActivationInstance
+  service: eda
+  role: one execution of an activation, with logs
+- name: DecisionEnvironment
+  service: eda
+  role: container image rulebooks run inside
+- name: Rulebook
+  service: eda
+  role: the event-to-action rules
+- name: EventStream
+  service: eda
+  role: external event ingress
+- name: AuditRule
+  service: eda
+  role: record of a rule that fired and the action it took
+- name: Namespace
+  service: automation-hub
+  role: collection namespace owner
+- name: Collection
+  service: automation-hub
+  role: a distributable content collection
+- name: CollectionVersion
+  service: automation-hub
+  role: an immutable version of a collection; certification is modelled as moving a version between repositories
+- name: Repository / Distribution
+  service: automation-hub
+  role: Pulp repository and its serving endpoint
+- name: Task
+  service: automation-hub
+  role: async unit of work returned by 202 responses; cancellable
+relationships:
+- from: JobTemplate
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: JobTemplate
+  to: Project
+  kind: belongs_to
+  via: project
+- from: JobTemplate
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: JobTemplate
+  to: ExecutionEnvironment
+  kind: belongs_to
+  via: execution_environment
+- from: WorkflowJobTemplate
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: WorkflowJobTemplate
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: WorkflowJob
+  to: WorkflowJobTemplate
+  kind: belongs_to
+  via: workflow_job_template
+- from: WorkflowJob
+  to: JobTemplate
+  kind: belongs_to
+  via: job_template
+- from: WorkflowJob
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: Inventory
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: Host
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: Group
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: InventorySource
+  to: Credential
+  kind: belongs_to
+  via: credential
+- from: InventorySource
+  to: ExecutionEnvironment
+  kind: belongs_to
+  via: execution_environment
+- from: InventorySource
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: InventorySource
+  to: Project
+  kind: belongs_to
+  via: source_project
+- from: Project
+  to: Credential
+  kind: belongs_to
+  via: credential
+- from: Project
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: Project
+  to: ExecutionEnvironment
+  kind: belongs_to
+  via: default_environment
+- from: Organization
+  to: ExecutionEnvironment
+  kind: belongs_to
+  via: default_environment
+- from: Team
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: Credential
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: Credential
+  to: CredentialType
+  kind: belongs_to
+  via: credential_type
+- from: Schedule
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: Schedule
+  to: ExecutionEnvironment
+  kind: belongs_to
+  via: execution_environment
+- from: NotificationTemplate
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: ExecutionEnvironment
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: ExecutionEnvironment
+  to: Credential
+  kind: belongs_to
+  via: credential
+- from: InstanceGroup
+  to: Credential
+  kind: belongs_to
+  via: credential
+- from: Label
+  to: Organization
+  kind: belongs_to
+  via: organization
+- from: WorkflowJobTemplateNode
+  to: Inventory
+  kind: belongs_to
+  via: inventory
+- from: WorkflowJobTemplateNode
+  to: ExecutionEnvironment
+  kind: belongs_to
+  via: execution_environment
+- from: WorkflowJobTemplateNode
+  to: WorkflowJobTemplate
+  kind: belongs_to
+  via: workflow_job_template
+traversal:
+  related_map: Follow Controller `related` to reach child collections without constructing URLs (e.g.
+    a JobTemplate related.jobs, related.survey_spec, related.launch).
+  summary_fields: Read `summary_fields` to avoid an extra GET for parent names.
+notes:
+- The Job and AdHocCommand schemas are not declared as standalone components in the Controller document
+  even though jobs_* and ad_hoc_commands_* operations exist — a contract gap, not a product gap.
+- Automation Hub is a Pulp application, so its 390 schemas are dominated by Pulp plumbing (repositories,
+  remotes, distributions, tasks, publications) rather than Ansible-specific entities.

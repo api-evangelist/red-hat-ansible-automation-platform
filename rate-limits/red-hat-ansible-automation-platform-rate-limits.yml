@@ -3,106 +3,66 @@ specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
 provider: Red Hat Ansible Automation Platform
 providerId: red-hat-ansible-automation-platform
+generated: '2026-08-29'
+method: searched
+source: >-
+  openapi/*.json in this repo, plus
+  https://www.redhat.com/en/technologies/management/ansible/pricing and
+  https://access.redhat.com/support/policy/updates/ansible-automation-platform
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - Automation
-  - Configuration Management
-  - DevOps
-  - Enterprise
-  - Red Hat
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Red Hat Ansible Automation Platform API surface.
-  Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold
-  values to be replaced with published provider limits.
+modified: '2026-08-29'
+supersedes: >-
+  A 2026-05-04 bulk-sweep scaffold that asserted free/professional/enterprise tiers with
+  10 rpm / 1,000 per month / 100 rpm / 100,000 per month / 1,000 rpm limits and a full
+  X-RateLimit-* header set. None of that was published by Red Hat. It was fabricated scaffold
+  data and has been replaced with the honest finding below.
+description: >-
+  Red Hat publishes NO API rate limits for Ansible Automation Platform. This is expected rather
+  than a gap: AAP is software the customer installs and operates, so throughput is bounded by
+  the customer's own control-plane sizing (instance groups, execution nodes, task capacity),
+  not by a vendor quota. The one throttling signal anywhere in the contract is on Ansible
+  Lightspeed, the hosted AI service.
+limit_count: 0
+limits: []
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  documented: none
+  detail: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After response header is declared in any of the
+    1,767 operations across the five harvested OpenAPI documents.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Red Hat Ansible Automation Controller API
-      - Red Hat Ansible Private Automation Hub API
-      - Red Hat Event-Driven Ansible Controller API
-      - Red Hat Automation Services Catalog API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Red Hat Ansible Automation Controller API
-      - Red Hat Ansible Private Automation Hub API
-      - Red Hat Event-Driven Ansible Controller API
-      - Red Hat Automation Services Catalog API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Red Hat Ansible Automation Controller API
-      - Red Hat Ansible Private Automation Hub API
-      - Red Hat Event-Driven Ansible Controller API
-      - Red Hat Automation Services Catalog API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Red Hat Ansible Automation Controller API
-      - Red Hat Ansible Private Automation Hub API
-      - Red Hat Event-Driven Ansible Controller API
-      - Red Hat Automation Services Catalog API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Red Hat Ansible Automation Controller API
-      - Red Hat Ansible Private Automation Hub API
-      - Red Hat Event-Driven Ansible Controller API
-      - Red Hat Automation Services Catalog API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  throttled_scope: Ansible Lightspeed only
+  evidence: >-
+    14 operations in openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+    declare a 429 response described as "Request was throttled". No limit value, window or
+    Retry-After header accompanies it.
+capacity_model:
+  kind: self-managed capacity, not vendor quota
+  detail: >-
+    AAP meters work through job execution capacity — instance groups, container groups,
+    execution nodes and the `max_concurrent_jobs` / `max_forks` settings on instance groups —
+    all of which are configured through the Controller API itself
+    (controller.instance_groups_list / _create / _retrieve). An agent that needs to pace itself
+    against AAP should read instance-group capacity, not a rate-limit header.
+subscription_model:
+  metric: managed nodes
+  detail: >-
+    Commercially AAP is sold per managed node, not per API call. Nothing in the subscription
+    meters API requests.
+  source: https://www.redhat.com/en/technologies/management/ansible/pricing
+hosted_services_note: >-
+  The Hybrid Cloud Console surfaces (console.redhat.com Automation Hub and Automation
+  Analytics) sit behind Red Hat's shared console gateway. Anonymous probes returned
+  {"errors":[{"status":401,"detail":"Missing Authentication","meta":{"response_by":"gateway"}}]}
+  with no rate-limit headers; any console-side limits are undocumented publicly.
+evidence:
+- url: https://www.redhat.com/en/technologies/management/ansible/pricing
+  status: 200
+- url: https://console.redhat.com/api/automation-hub/v3/openapi.json
+  status: 200
+- url: https://console.redhat.com/api/automation-hub/v3/
+  status: 401
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
-    url: https://apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+  url: https://apievangelist.com

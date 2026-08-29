@@ -1,0 +1,102 @@
+generated: '2026-08-29'
+method: probed
+source: >-
+  https://access.redhat.com/hydra/rest/securitydata/csaf.json (Red Hat Security Data API,
+  anonymous) and
+  https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/release_notes/index
+description: >-
+  Red Hat does not publish a developer-style dated changelog for the Ansible Automation
+  Platform APIs. What it does publish, and what is genuinely machine-readable, is (a) versioned
+  Release Notes per product minor on docs.redhat.com and (b) the Red Hat Security Data API,
+  which returns dated CSAF/VEX advisory records per package and answers anonymously. The recent
+  window below is real advisory data pulled from that API on 2026-08-29.
+scheme:
+  product_versioning: major.minor (2.4, 2.5, 2.6)
+  errata_ids: "RHSA-YYYY:NNNNN (security), RHBA (bug fix), RHEA (enhancement)"
+  api_versioning: path-versioned per component; see lifecycle/
+release_notes:
+  url: https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/release_notes/index
+  status: 403
+  note: >-
+    Akamai bot challenge on docs.redhat.com for a non-browser client. The document is linked
+    from the product life cycle page and demonstrably exists; the structured entries below come
+    from the Security Data API instead, which is machine-readable and unchallenged.
+machine_readable_feeds:
+- name: Red Hat Security Data API (CSAF)
+  url: https://access.redhat.com/hydra/rest/securitydata/csaf.json?package=automation-controller
+  status: 200
+  auth: none
+- name: CSAF provider metadata
+  url: https://security.access.redhat.com/data/csaf/v2/provider-metadata.json
+  advertised_by: /.well-known/security.txt
+current_version: '2.6'
+entries:
+- id: RHSA-2026:59136
+  date: '2026-08-24'
+  package: automation-controller
+  severity: important
+  cves: 18
+  type: security
+- id: RHSA-2026:59135
+  date: '2026-08-24'
+  package: automation-controller
+  severity: important
+  cves: 16
+  type: security
+- id: RHSA-2026:59137
+  date: '2026-08-24'
+  package: automation-controller
+  severity: important
+  cves: 2
+  type: security
+- id: RHSA-2026:59159
+  date: '2026-08-24'
+  package: ansible-automation-platform
+  severity: important
+  type: security
+- id: RHSA-2026:59155
+  date: '2026-08-24'
+  package: ansible-automation-platform
+  severity: important
+  type: security
+- id: RHSA-2026:56357
+  date: '2026-08-18'
+  package: ansible-automation-platform
+  type: security
+- id: RHSA-2026:50336
+  date: '2026-08-04'
+  package: automation-controller
+  severity: important
+  cves: 14
+  type: security
+- id: RHSA-2026:50319
+  date: '2026-08-04'
+  package: automation-controller
+  severity: important
+  cves: 14
+  type: security
+- id: RHSA-2026:42079
+  date: '2026-07-20'
+  package: automation-controller
+  severity: important
+  cves: 14
+  type: security
+- id: RHSA-2026:42078
+  date: '2026-07-20'
+  package: automation-controller
+  severity: important
+  cves: 24
+  type: security
+window:
+  from: '2026-07-20'
+  to: '2026-08-24'
+  note: >-
+    Ten advisories in five weeks across automation-controller and the platform packages — an
+    actively maintained product. These are security errata, NOT API change records: nothing in
+    this feed tells a consumer whether an endpoint changed shape.
+breaking_changes_feed:
+  published: false
+  note: >-
+    There is no per-release API changelog. The closest signals a consumer has are the
+    `deprecated: true` flags in the OpenAPI documents (53 operations in Automation Hub, 14 in
+    the Platform Gateway — see lifecycle/) and the version-scoped Release Notes documents.

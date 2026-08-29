@@ -1,0 +1,101 @@
+generated: '2026-08-29'
+method: searched
+source: https://access.redhat.com/support/policy/updates/ansible-automation-platform
+description: >-
+  Versioning, support-phase and deprecation posture for Red Hat Ansible Automation Platform,
+  read from Red Hat's published product life cycle page, plus deprecated operations counted
+  directly in the harvested OpenAPI documents.
+versioning:
+  scheme: "major.minor (product), e.g. 2.4 / 2.5 / 2.6"
+  api_versioning: >-
+    Path-versioned per component: /api/controller/v2/ (Controller, v2), /api/gateway/v1/
+    (Platform Gateway, v1), /api/eda/v1/ (Event-Driven Ansible, 0.2.0 document version),
+    /api/galaxy/v3/ (Automation Hub, v3), /api/lightspeed/v1/ (Ansible Lightspeed).
+  policy_url: https://access.redhat.com/support/policy/updates/ansible-automation-platform
+support_phases:
+- phase: Full Support
+  security_fixes: Critical, Important and Moderate (CVSS 7.0+)
+  bug_fix_errata: yes
+  enhancements: select software enhancements
+- phase: Maintenance Support 1
+  security_fixes: Critical and Important
+  bug_fix_errata: yes
+  enhancements: no
+- phase: Maintenance Support 2
+  security_fixes: Critical only
+  bug_fix_errata: no
+  enhancements: no
+- phase: Extended Life-cycle Support (add-on)
+  security_fixes: qualified critical security fixes only
+  bug_fix_errata: no
+  enhancements: no
+mcp_server_lifecycle:
+  window: 12 months per GA release
+  phases:
+  - phase: Full Support
+    months: 0-8
+  - phase: Maintenance Support
+    months: 9-12
+  - phase: End of Life
+    months: 12+
+  release_tag: "{AAP_VERSION}.{YYYYMMDD}[.{patch}]"
+  requirement: customers must stay on the latest or N-1 MCP Server GA release
+  note: >-
+    Red Hat gives its shipped MCP Servers a deliberately shorter, independent lifecycle than
+    the platform, because the MCP protocol moves faster than the AAP component cadence. An MCP
+    Server is supported only against the AAP minor named in its version prefix.
+deprecation:
+  policy_published: true
+  policy_url: https://access.redhat.com/support/policy/updates/ansible-automation-platform
+  preview_and_deprecated_features_doc: https://access.redhat.com/support/policy/updates/ansible-automation-platform
+  sunset_headers: not documented
+  rfc8594: false
+  deprecated_operations:
+  - spec: openapi/red-hat-ansible-automation-platform-automation-hub-openapi.json
+    count: 53
+    examples:
+    - upload_collection
+    - api_automation_hub_content_v3_collections_list
+    - api_automation_hub_v3_collections_versions_list
+    note: >-
+      The whole legacy /content/v3/ and /v3/ collection surface is marked deprecated in favour
+      of the /content/v3/plugin/ansible/ paths.
+  - spec: openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+    count: 14
+    examples:
+    - organizations_admins_list
+    - organizations_users_associate_create
+    - teams_users_disassociate_create
+    - users_organizations_list
+    note: >-
+      The direct organization/team membership association endpoints are deprecated in favour of
+      the role_user_assignments / role_team_assignments model.
+  - spec: openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json
+    count: 0
+  - spec: openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+    count: 0
+  - spec: openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+    count: 0
+status_page:
+  url: https://status.redhat.com/
+  status: 200
+  scope: >-
+    Red Hat-hosted services, including the Hybrid Cloud Console surfaces AAP subscribers use
+    (Automation Hub, Automation Analytics). Self-managed AAP installations are not covered by a
+    Red Hat status page — availability is the customer's own.
+sla:
+  published: partial
+  detail: >-
+    Support SLAs are sold as subscription tiers rather than API availability numbers: Standard
+    (9x5) and Premium (24x7). Managed and marketplace deployments are described as including
+    "24x7 Premium SLA technical support". No numeric API uptime commitment is published.
+  source: https://www.redhat.com/en/technologies/management/ansible/pricing
+release_notes: https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/release_notes/index
+evidence:
+- url: https://access.redhat.com/support/policy/updates/ansible-automation-platform
+  status: 200
+- url: https://status.redhat.com/
+  status: 200
+- url: https://docs.redhat.com/en/documentation/red_hat_ansible_automation_platform/2.6/html/release_notes/index
+  status: 403
+  note: Akamai bot challenge on docs.redhat.com; the page is linked from the life cycle page and demonstrably exists.

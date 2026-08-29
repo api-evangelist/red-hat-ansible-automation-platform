@@ -34,7 +34,7 @@ image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/red-hat-an
 url: >-
   https://raw.githubusercontent.com/api-evangelist/red-hat-ansible-automation-platform/refs/heads/main/apis.yml
 created: '2024-01-01'
-modified: '2026-04-18'
+modified: '2026-08-29'
 specificationVersion: '0.23'
 tags:
   - Automation
@@ -42,6 +42,11 @@ tags:
   - DevOps
   - Enterprise
   - Red Hat
+  - Ansible
+  - IT Operations
+  - Event-Driven Architecture
+  - Infrastructure as Code
+  - MCP
 apis:
   - aid: red-hat-ansible-automation-platform:controller-api
     name: Red Hat Ansible Automation Controller API
@@ -63,6 +68,10 @@ apis:
         url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
       - type: Authentication
         url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
+      - type: OpenAPI
+        url: openapi/red-hat-ansible-automation-platform-automation-controller-openapi.json
+      - type: Overlay
+        url: overlays/red-hat-ansible-automation-platform-automation-controller-overlay.yaml
   - aid: red-hat-ansible-automation-platform:private-hub-api
     name: Red Hat Ansible Private Automation Hub API
     description: >-
@@ -84,6 +93,10 @@ apis:
     properties:
       - type: Documentation
         url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
+      - type: OpenAPI
+        url: openapi/red-hat-ansible-automation-platform-automation-hub-openapi.json
+      - type: Overlay
+        url: overlays/red-hat-ansible-automation-platform-automation-hub-overlay.yaml
   - aid: red-hat-ansible-automation-platform:eda-controller-api
     name: Red Hat Event-Driven Ansible Controller API
     description: >-
@@ -100,6 +113,10 @@ apis:
     properties:
       - type: Documentation
         url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
+      - type: OpenAPI
+        url: openapi/red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+      - type: Overlay
+        url: overlays/red-hat-ansible-automation-platform-event-driven-ansible-overlay.yaml
   - aid: red-hat-ansible-automation-platform:services-catalog-api
     name: Red Hat Automation Services Catalog API
     description: >-
@@ -116,7 +133,122 @@ apis:
     properties:
       - type: Documentation
         url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+      - type: Lifecycle
+        url: https://access.redhat.com/page/ansible-automation-platform-self-service-automation-portal-lifecycle
+  - aid: red-hat-ansible-automation-platform:platform-gateway-api
+    name: Red Hat Ansible Automation Platform Gateway API
+    description: >-
+      REST API for the Ansible Automation Platform Gateway, the single front door introduced in
+      AAP 2.5 that fronts every platform component. Manages users, teams, organizations, role
+      definitions and assignments, identity authenticators (LDAP/SAML/OIDC), OAuth applications
+      and tokens, HTTP routing and platform settings.
+    humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+    baseURL: https://gateway-host/api/gateway/v1/
+    tags:
+      - Gateway
+      - Identity
+      - RBAC
+      - REST
+    properties:
+      - type: OpenAPI
+        url: openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+      - type: Overlay
+        url: overlays/red-hat-ansible-automation-platform-platform-gateway-overlay.yaml
+      - type: Documentation
+        url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  - aid: red-hat-ansible-automation-platform:ansible-lightspeed-api
+    name: Red Hat Ansible Lightspeed with IBM watsonx Code Assistant API
+    description: >-
+      REST API for Ansible Lightspeed, the generative AI service that produces and explains
+      Ansible content. Provides playbook and role generation, content explanations, chat and
+      streaming chat, content-match attribution against training data, feedback capture and
+      watsonx Code Assistant model/key configuration.
+    humanURL: https://c.ai.ansible.redhat.com/
+    baseURL: https://lightspeed-instance/api/v1
+    tags:
+      - AI
+      - Code Assistant
+      - Lightspeed
+      - REST
+    properties:
+      - type: OpenAPI
+        url: openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+      - type: Overlay
+        url: overlays/red-hat-ansible-automation-platform-ansible-lightspeed-overlay.yaml
+  - aid: red-hat-ansible-automation-platform:hosted-automation-hub-api
+    name: Red Hat Automation Hub API (Hybrid Cloud Console)
+    description: >-
+      The Red Hat-hosted Automation Hub on console.redhat.com, where subscribers consume Red Hat
+      certified and validated Ansible Content Collections. Same galaxy_ng/Pulp contract as a
+      private hub, served from Red Hat's own infrastructure; its OpenAPI document is readable
+      anonymously while the API itself requires an entitled Red Hat account.
+    humanURL: https://console.redhat.com/ansible/automation-hub
+    baseURL: https://console.redhat.com/api/automation-hub/
+    tags:
+      - Content Hub
+      - Collections
+      - Hosted
+      - REST
+    properties:
+      - type: OpenAPI
+        url: openapi/red-hat-ansible-automation-platform-automation-hub-openapi.json
+      - type: Console
+        url: https://console.redhat.com/ansible/ansible-dashboard
 common:
+  - type: Website
+    url: https://www.redhat.com/en/technologies/management/ansible
+  - type: SDKs
+    url: packages/red-hat-ansible-automation-platform-packages.yml
+  - type: Deprecation
+    url: lifecycle/red-hat-ansible-automation-platform-lifecycle.yml
+  - type: Security
+    url: security/red-hat-ansible-automation-platform-vulnerability-disclosure.yml
+  - type: Compliance
+    url: https://access.redhat.com/compliance
+  - type: Console
+    url: https://www.redhat.com/en/interactive-labs/ansible
+  - type: Plans
+    url: plans/red-hat-ansible-automation-platform-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/red-hat-ansible-automation-platform-rate-limits.yml
+  - type: Sandbox
+    url: sandbox/red-hat-ansible-automation-platform-sandbox.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Webhooks
+    url: asyncapi/red-hat-ansible-automation-platform-webhooks.yml
+  - type: DataModel
+    url: data-model/red-hat-ansible-automation-platform-data-model.yml
+  - type: CLI
+    url: cli/red-hat-ansible-automation-platform-cli.yml
+  - type: ChangeLog
+    url: changelog/red-hat-ansible-automation-platform-changelog.yml
+  - type: Conventions
+    url: conventions/red-hat-ansible-automation-platform-conventions.yml
+  - type: TrustCenter
+    url: security/red-hat-ansible-automation-platform-trust-center.yml
+  - type: Lifecycle
+    url: lifecycle/red-hat-ansible-automation-platform-lifecycle.yml
+  - type: ErrorCatalog
+    url: errors/red-hat-ansible-automation-platform-problem-types.yml
+  - type: Conformance
+    url: conformance/red-hat-ansible-automation-platform-conformance.yml
+  - type: LLMsTxt
+    url: llms/red-hat-ansible-automation-platform-llms.txt
+  - type: ToolCrosswalk
+    url: mcp/red-hat-ansible-automation-platform-tool-crosswalk.yml
+  - type: MCPServer
+    url: mcp/red-hat-ansible-automation-platform-mcp.yml
+  - type: SecurityTxt
+    url: well-known/red-hat-ansible-automation-platform-security.txt
+  - type: WellKnown
+    url: well-known/red-hat-ansible-automation-platform-well-known.yml
+  - type: Packages
+    url: packages/red-hat-ansible-automation-platform-packages.yml
+  - type: Authentication
+    url: authentication/red-hat-ansible-automation-platform-authentication.yml
+  - type: OAuthScopes
+    url: scopes/red-hat-ansible-automation-platform-scopes.yml
   - type: VulnerabilityDisclosure
     url: security/red-hat-ansible-automation-platform-vulnerability-disclosure.yml
   - type: DomainSecurity
@@ -130,7 +262,7 @@ common:
   - type: GettingStarted
     url: https://www.redhat.com/en/technologies/management/ansible/trial
   - type: Blog
-    url: https://www.ansible.com/blog
+    url: https://www.redhat.com/en/blog/channel/red-hat-ansible-automation
   - type: GitHubOrganization
     url: https://github.com/ansible
   - type: Support
@@ -189,3 +321,10 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
     url: https://apievangelist.com
+x-enrichment:
+  date: '2026-08-29'
+  status: enriched
+  artifacts_added: 37
+  pass: local-v1
+x-parent: red-hat
+x-relationship: product

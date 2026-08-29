@@ -1,0 +1,25 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist overlay — Red Hat Ansible Automation Platform Gateway API
+  version: 1.0.0
+extends: openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+x-generated: '2026-08-29'
+x-method: generated
+x-source: openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json plus openapi/_sources.yml
+x-finding: No servers[] block. Declares the platform OAuth2 scheme (read/write) including the resource-owner
+  password grant. 14 operations deprecated in favour of the role assignment model.
+x-note: This overlay records API Evangelist enhancements only. It is never applied to the harvested document,
+  which is kept verbatim.
+actions:
+- target: $
+  update:
+    servers:
+    - url: https://{aap-gateway-host}/api/gateway/v1
+      description: AAP Platform Gateway on the customer installation
+      variables:
+        aap-gateway-host:
+          default: aap.example.com
+- target: $.info
+  update:
+    x-api-evangelist-note: Single front door for every AAP component from 2.5 onward. The password grant
+      it exposes is removed in OAuth 2.1.

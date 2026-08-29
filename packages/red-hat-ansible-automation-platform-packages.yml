@@ -1,0 +1,194 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org/pypi/<pkg>/json and
+  galaxy.ansible.com/api/v3/plugin/ansible/content/published/collections/index/ — all queried
+  unauthenticated on 2026-08-29
+description: >-
+  First-party client libraries, SDKs and content packages for Red Hat Ansible Automation
+  Platform. Red Hat does not ship conventional per-language REST SDKs for the Automation
+  Controller / Gateway / EDA APIs; the supported programmatic clients are the Python
+  distributions (awxkit is the Controller API client and `awx` CLI) and the certified Ansible
+  Content Collections that wrap the same REST surface as Ansible modules.
+packages:
+- name: ansible
+  registry: pypi
+  url: https://pypi.org/project/ansible/
+  official: true
+  version: 14.3.1
+  published: '2026-08-14'
+  language: Python
+  license: GPL-3.0-or-later
+  kind: distribution
+  note: The Ansible community package (ansible-core plus curated collections), published by Ansible, Inc.
+- name: ansible-core
+  registry: pypi
+  url: https://pypi.org/project/ansible-core/
+  official: true
+  version: 2.21.3
+  published: '2026-08-10'
+  language: Python
+  kind: engine
+  note: The automation engine AAP ships and supports per its Ansible Core support matrix.
+- name: awxkit
+  registry: pypi
+  url: https://pypi.org/project/awxkit/
+  official: true
+  version: 24.6.1
+  published: '2024-07-02'
+  language: Python
+  license: Apache-2.0
+  kind: api-client
+  repository: https://github.com/ansible/awx
+  note: >-
+    The Automation Controller REST API client and the `awx` command line tool. This is the
+    closest thing AAP has to a first-party REST SDK, and its last PyPI release is 2024-07-02 —
+    more than two years behind the Controller API this pipeline harvested, which is the
+    clearest published decay signal on the provider's client surface.
+- name: ansible-runner
+  registry: pypi
+  url: https://pypi.org/project/ansible-runner/
+  official: true
+  version: 2.4.3
+  published: '2026-03-16'
+  language: Python
+  license: Apache-2.0
+  kind: embedding-library
+  note: Programmatic interface for running Ansible from Python; the execution library AAP builds on.
+- name: ansible-navigator
+  registry: pypi
+  url: https://pypi.org/project/ansible-navigator/
+  official: true
+  version: 26.8.0
+  published: '2026-08-12'
+  language: Python
+  license: Apache-2.0
+  kind: cli
+- name: ansible-builder
+  registry: pypi
+  url: https://pypi.org/project/ansible-builder/
+  official: true
+  version: 3.1.1
+  published: '2025-10-27'
+  language: Python
+  license: Apache-2.0
+  kind: cli
+  note: Builds AAP execution environment container images.
+- name: ansible-lint
+  registry: pypi
+  url: https://pypi.org/project/ansible-lint/
+  official: true
+  version: 26.8.0
+  published: '2026-08-12'
+  language: Python
+  kind: cli
+- name: ansible-dev-tools
+  registry: pypi
+  url: https://pypi.org/project/ansible-dev-tools/
+  official: true
+  version: 26.8.0
+  published: '2026-08-12'
+  language: Python
+  kind: meta-package
+  note: The Ansible Development Tools bundle shipped with AAP 2.4+.
+- name: ansible-creator
+  registry: pypi
+  url: https://pypi.org/project/ansible-creator/
+  official: true
+  version: 26.8.0
+  published: '2026-08-12'
+  language: Python
+  license: Apache-2.0
+  kind: cli
+- name: ansible-sign
+  registry: pypi
+  url: https://pypi.org/project/ansible-sign/
+  official: true
+  version: 0.1.6
+  published: '2026-06-30'
+  language: Python
+  kind: cli
+  note: Content signing/verification for AAP project signature validation.
+- name: '@ansible/ansible-language-server'
+  registry: npm
+  url: https://www.npmjs.com/package/@ansible/ansible-language-server
+  official: true
+  version: 26.6.0
+  published: '2026-06-01'
+  language: TypeScript
+  license: MIT
+  repository: https://github.com/ansible/vscode-ansible
+  kind: language-server
+  note: Backs the Red Hat Ansible VS Code extension; not a REST client for the AAP APIs.
+- name: ansible.eda
+  registry: ansible-galaxy
+  url: https://galaxy.ansible.com/ui/repo/published/ansible/eda/
+  official: true
+  version: 2.13.0
+  published: '2026-07-07'
+  kind: content-collection
+  note: Event-Driven Ansible event source plugins and rulebook content.
+- name: ansible.hub
+  registry: ansible-galaxy
+  url: https://galaxy.ansible.com/ui/repo/published/ansible/hub/
+  official: true
+  version: 1.1.0
+  published: '2026-06-26'
+  kind: content-collection
+  note: Modules that drive the Automation Hub API (namespaces, collections, remotes, sync).
+- name: awx.awx
+  registry: ansible-galaxy
+  url: https://galaxy.ansible.com/ui/repo/published/awx/awx/
+  official: true
+  version: 24.6.1
+  published: '2024-07-02'
+  kind: content-collection
+  note: >-
+    Upstream collection wrapping the Controller API as Ansible modules. Its supported
+    downstream equivalents, ansible.controller and ansible.platform, are certified content
+    and are NOT published to public Galaxy — both returned 404 there and are distributed only
+    through console.redhat.com Automation Hub with an AAP subscription.
+gated_packages:
+- name: ansible.controller
+  registry: red-hat-automation-hub
+  url: https://console.redhat.com/ansible/automation-hub/repo/published/ansible/controller
+  official: true
+  version: null
+  published: null
+  note: >-
+    Certified collection; subscription-gated. Probed
+    galaxy.ansible.com/api/v3/.../index/ansible/controller/ -> HTTP 404 (not on public Galaxy).
+    Version could not be read without an AAP entitlement.
+- name: ansible.platform
+  registry: red-hat-automation-hub
+  url: https://console.redhat.com/ansible/automation-hub/repo/published/ansible/platform
+  official: true
+  version: null
+  published: null
+  note: >-
+    Certified collection for the AAP 2.5+ platform Gateway API; subscription-gated. Probed
+    galaxy.ansible.com/api/v3/.../index/ansible/platform/ -> HTTP 404.
+sdk_summary:
+  official_sdk_count: 3
+  official_sdk_note: >-
+    Counting the packages that actually wrap the AAP REST APIs for a consumer: awxkit (Python
+    client + `awx` CLI), ansible.hub and awx.awx (collections that call the Hub and Controller
+    APIs). The remaining entries are the automation engine, developer tooling and content.
+registries_checked:
+- registry: pypi
+  status: 200
+- registry: npm
+  status: 200
+- registry: ansible-galaxy
+  status: 200
+- registry: maven-central
+  status: not-applicable
+  note: no first-party Java client published
+- registry: nuget
+  status: not-applicable
+- registry: rubygems
+  status: not-applicable
+- registry: crates.io
+  status: not-applicable
+- registry: pkg.go.dev
+  status: not-applicable

@@ -1,0 +1,58 @@
+generated: '2026-08-29'
+method: derived
+source: openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json, openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+schemes:
+- name: oauth2
+  source: openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: /o/authorize/
+    tokenUrl: /o/token/
+- name: OAuth2_Authentication
+  source: openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: /o/authorize/
+    tokenUrl: /o/token/
+  - flow: password
+    tokenUrl: /o/token/
+scopes:
+- scope: delete
+  description: 'Ansible Lightspeed only: "Delete resources".'
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+- scope: read
+  description: 'Platform Gateway: "Read access to resources". Ansible Lightspeed: "Read basic user information".'
+  flows:
+  - authorizationCode
+  - password
+  sources:
+  - openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+  - openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+- scope: write
+  description: 'Platform Gateway: "Write access to resources (includes read)". Ansible Lightspeed: "Request
+    Ansible content suggestions".'
+  flows:
+  - authorizationCode
+  - password
+  sources:
+  - openapi/red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+  - openapi/red-hat-ansible-automation-platform-platform-gateway-openapi.json
+note: 'AAP''s OAuth scope surface is deliberately coarse: the Platform Gateway issues only `read` and
+  `write`. Authorization is enforced by AAP RBAC AFTER the token is accepted (role definitions, role user/team
+  assignments in the Gateway API), not by scope. An agent cannot request a least-privilege token for a
+  single resource type — it gets read or write across everything the user can reach. Ansible Lightspeed
+  adds a third scope, `delete`.'
+warning: The Gateway declares BOTH authorizationCode and password (resource-owner) grants. The password
+  grant is removed in OAuth 2.1; recorded as a fact about the contract.
+token_endpoints:
+  authorization: https://{aap-gateway-host}/o/authorize/
+  token: https://{aap-gateway-host}/o/token/
+related:
+  authentication: authentication/red-hat-ansible-automation-platform-authentication.yml
+  rbac_operations:
+  - role_definitions_list
+  - role_user_assignments_list
+  - role_team_assignments_list
