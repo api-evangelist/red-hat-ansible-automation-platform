@@ -166,6 +166,11 @@ apis:
     humanURL: https://c.ai.ansible.redhat.com/
     baseURL: https://lightspeed-instance/api/v1
     tags:
+      - Artificial Intelligence
+      - Code Assistant
+      - Lightspeed
+      - REST
+    tags_raw:
       - AI
       - Code Assistant
       - Lightspeed
@@ -185,6 +190,11 @@ apis:
     humanURL: https://console.redhat.com/ansible/automation-hub
     baseURL: https://console.redhat.com/api/automation-hub/
     tags:
+      - Content Hub
+      - Collection
+      - Hosted
+      - REST
+    tags_raw:
       - Content Hub
       - Collections
       - Hosted
