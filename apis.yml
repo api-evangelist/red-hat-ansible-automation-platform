@@ -19,16 +19,20 @@ deliveryModel:
   generated: '2026-08-28'
   method: derived
 accessModel:
-  pricing: freemium
-  onboarding: unknown
+  pricing: paid
+  onboarding: approval
   trial: false
   try_now: false
   public: false
-  label: Freemium
-  confidence: medium
+  label: Paid · Requires approval
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
+  - authentication
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-09-03'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/red-hat-ansible-automation-platform.png
 url: >-
