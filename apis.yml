@@ -204,33 +204,6 @@ apis:
   - type: Console
     url: https://console.redhat.com/ansible/ansible-dashboard
 - aid: >-
-    red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-activitystream-api
-  name: Red Hat Ansible Automation Platform Activitystream API
-  description: >-
-    The activitystream API from Red Hat Ansible Automation Platform — 2 operation(s) for activitystream.
-  humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
-  baseURL: https://controller-host/api/v2/
-  tags:
-  - activitystream
-  properties:
-  - type: OpenAPI
-    url: openapi/red-hat-ansible-automation-platform-activitystream-api-openapi.yml
-  - type: Documentation
-    url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
-  - type: APIReference
-    url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
-  - type: Authentication
-    url: >-
-      https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
-  - type: Documentation
-    url: >-
-      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
-  - type: Documentation
-    url: >-
-      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
-  - type: Console
-    url: https://console.redhat.com/ansible/ansible-dashboard
-- aid: >-
     red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-ad-hoc-command-events-api
   name: Red Hat Ansible Automation Platform Ad Hoc Command Events API
   description: >-
@@ -3740,33 +3713,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/red-hat-ansible-automation-platform-bulk-api-openapi.yml
-  - type: Documentation
-    url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
-  - type: APIReference
-    url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
-  - type: Authentication
-    url: >-
-      https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
-  - type: Documentation
-    url: >-
-      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
-  - type: Documentation
-    url: >-
-      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
-  - type: Console
-    url: https://console.redhat.com/ansible/ansible-dashboard
-- aid: >-
-    red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-ca-certificates-api
-  name: Red Hat Ansible Automation Platform Ca Certificates API
-  description: >-
-    The ca_certificates API from Red Hat Ansible Automation Platform — 2 operation(s) for ca_certificates.
-  humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
-  baseURL: https://controller-host/api/v2/
-  tags:
-  - ca_certificates
-  properties:
-  - type: OpenAPI
-    url: openapi/red-hat-ansible-automation-platform-ca-certificates-api-openapi.yml
   - type: Documentation
     url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   - type: APIReference
@@ -9267,6 +9213,33 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/red-hat-ansible-automation-platform-workflow-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  - type: APIReference
+    url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
+  - type: Authentication
+    url: >-
+      https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
+  - type: Documentation
+    url: >-
+      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
+  - type: Documentation
+    url: >-
+      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
+  - type: Console
+    url: https://console.redhat.com/ansible/ansible-dashboard
+- aid: >-
+    red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-cacertificates-api
+  name: Red Hat Ansible Automation Platform Cacertificates API
+  description: >-
+    The Cacertificates API from Red Hat Ansible Automation Platform — 2 operation(s) for cacertificates.
+  humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  baseURL: https://catalog-host/api/v1/
+  tags:
+  - Cacertificates
+  properties:
+  - type: OpenAPI
+    url: openapi/red-hat-ansible-automation-platform-cacertificates-api-openapi.yml
   - type: Documentation
     url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   - type: APIReference
