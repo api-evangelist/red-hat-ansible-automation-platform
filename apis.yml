@@ -78,6 +78,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Access Policies
+  tags_raw:
   - Access_Policies
   properties:
   - type: OpenAPI
@@ -157,6 +159,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Activations
+  tags_raw:
   - activations
   properties:
   - type: OpenAPI
@@ -184,6 +188,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Activity Stream
+  tags_raw:
   - activity_stream
   properties:
   - type: OpenAPI
@@ -210,7 +216,8 @@ apis:
     The ad_hoc_command_events API from Red Hat Ansible Automation Platform — 1 operation(s) for ad_hoc_command_events.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - ad_hoc_command_events
   properties:
   - type: OpenAPI
@@ -237,7 +244,8 @@ apis:
     The ad_hoc_commands API from Red Hat Ansible Automation Platform — 8 operation(s) for ad_hoc_commands.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - ad_hoc_commands
   properties:
   - type: OpenAPI
@@ -263,6 +271,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Artificial Intelligence
+  tags_raw:
   - ai
   properties:
   - type: OpenAPI
@@ -289,6 +299,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Analytics
+  tags_raw:
   - analytics
   properties:
   - type: OpenAPI
@@ -366,7 +378,8 @@ apis:
   description: The api API from Red Hat Ansible Automation Platform — 6 operation(s) for api.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - api
   properties:
   - type: OpenAPI
@@ -851,7 +864,8 @@ apis:
     Platform — 1 operation(s) for api: content v3 plugin ansible content collections all-collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Collections All-Collections'
   properties:
   - type: OpenAPI
@@ -882,7 +896,8 @@ apis:
     Platform — 1 operation(s) for api: content v3 plugin ansible content collections all-versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Collections All-Versions'
   properties:
   - type: OpenAPI
@@ -912,7 +927,8 @@ apis:
     — 1 operation(s) for api: content v3 plugin ansible content collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Collections'
   properties:
   - type: OpenAPI
@@ -942,7 +958,8 @@ apis:
     Platform — 1 operation(s) for api: content v3 plugin ansible content collections artifacts.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Collections Artifacts'
   properties:
   - type: OpenAPI
@@ -972,7 +989,8 @@ apis:
     — 2 operation(s) for api: content v3 plugin ansible content collections index.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Collections Index'
   properties:
   - type: OpenAPI
@@ -1003,7 +1021,8 @@ apis:
     Platform — 2 operation(s) for api: content v3 plugin ansible content collections index versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Collections Index Versions'
   properties:
   - type: OpenAPI
@@ -1035,7 +1054,8 @@ apis:
     versions docs-blob.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Collections Index Versions Docs-Blob'
   properties:
   - type: OpenAPI
@@ -1065,7 +1085,8 @@ apis:
     — 2 operation(s) for api: content v3 plugin ansible content namespaces.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Content Namespaces'
   properties:
   - type: OpenAPI
@@ -1095,7 +1116,8 @@ apis:
     — 1 operation(s) for api: content v3 plugin ansible imports collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Imports Collections'
   properties:
   - type: OpenAPI
@@ -1125,7 +1147,8 @@ apis:
     Platform — 1 operation(s) for api: content v3 plugin ansible search collection-versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: Content V3 Plugin Ansible Search Collection-Versions'
   properties:
   - type: OpenAPI
@@ -3154,7 +3177,8 @@ apis:
     Platform — 1 operation(s) for api: v3 plugin ansible content collections all-collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: V3 Plugin Ansible Content Collections All-Collections'
   properties:
   - type: OpenAPI
@@ -3184,7 +3208,8 @@ apis:
     — 1 operation(s) for api: v3 plugin ansible content collections all-versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: V3 Plugin Ansible Content Collections All-Versions'
   properties:
   - type: OpenAPI
@@ -3243,7 +3268,8 @@ apis:
     — 1 operation(s) for api: v3 plugin ansible content collections artifacts.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: V3 Plugin Ansible Content Collections Artifacts'
   properties:
   - type: OpenAPI
@@ -3272,7 +3298,8 @@ apis:
     — 2 operation(s) for api: v3 plugin ansible content collections index.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: V3 Plugin Ansible Content Collections Index'
   properties:
   - type: OpenAPI
@@ -3302,7 +3329,8 @@ apis:
     Platform — 2 operation(s) for api: v3 plugin ansible content collections index versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: V3 Plugin Ansible Content Collections Index Versions'
   properties:
   - type: OpenAPI
@@ -3333,7 +3361,8 @@ apis:
     Platform — 1 operation(s) for api: v3 plugin ansible content collections index versions docs-blob.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Api: V3 Plugin Ansible Content Collections Index Versions Docs-Blob'
   properties:
   - type: OpenAPI
@@ -3447,7 +3476,8 @@ apis:
   description: The app_urls API from Red Hat Ansible Automation Platform — 1 operation(s) for app_urls.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - app_urls
   properties:
   - type: OpenAPI
@@ -3474,6 +3504,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Application
+  tags_raw:
   - applications
   properties:
   - type: OpenAPI
@@ -3551,6 +3583,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Authentication
+  tags_raw:
   - auth
   properties:
   - type: OpenAPI
@@ -3577,7 +3611,8 @@ apis:
     The authenticator_maps API from Red Hat Ansible Automation Platform — 5 operation(s) for authenticator_maps.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - authenticator_maps
   properties:
   - type: OpenAPI
@@ -3604,7 +3639,8 @@ apis:
     The authenticator_plugins API from Red Hat Ansible Automation Platform — 1 operation(s) for authenticator_plugins.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - authenticator_plugins
   properties:
   - type: OpenAPI
@@ -3631,7 +3667,8 @@ apis:
     The authenticator_users API from Red Hat Ansible Automation Platform — 3 operation(s) for authenticator_users.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - authenticator_users
   properties:
   - type: OpenAPI
@@ -3659,6 +3696,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Authenticators
+  tags_raw:
   - authenticators
   properties:
   - type: OpenAPI
@@ -3709,6 +3748,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Bulk
+  tags_raw:
   - bulk
   properties:
   - type: OpenAPI
@@ -3734,6 +3775,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Config
+  tags_raw:
   - config
   properties:
   - type: OpenAPI
@@ -3760,7 +3803,8 @@ apis:
     The constructed_inventories API from Red Hat Ansible Automation Platform — 2 operation(s) for constructed_inventories.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - constructed_inventories
   properties:
   - type: OpenAPI
@@ -4091,6 +4135,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Content - Tags
+  tags_raw:
   - 'Content: Tags'
   properties:
   - type: OpenAPI
@@ -4313,7 +4359,8 @@ apis:
     The credential_input_sources API from Red Hat Ansible Automation Platform — 4 operation(s) for credential_input_sources.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - credential_input_sources
   properties:
   - type: OpenAPI
@@ -4341,6 +4388,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Credential Types
+  tags_raw:
   - credential_types
   properties:
   - type: OpenAPI
@@ -4367,6 +4416,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Credentials
+  tags_raw:
   - credentials
   properties:
   - type: OpenAPI
@@ -4393,6 +4444,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Dashboards
+  tags_raw:
   - dashboard
   properties:
   - type: OpenAPI
@@ -4639,6 +4692,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Docs
+  tags_raw:
   - docs
   properties:
   - type: OpenAPI
@@ -4745,6 +4800,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Event Streams
+  tags_raw:
   - event-streams
   properties:
   - type: OpenAPI
@@ -4771,7 +4828,8 @@ apis:
     The execution_environments API from Red Hat Ansible Automation Platform — 5 operation(s) for execution_environments.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - execution_environments
   properties:
   - type: OpenAPI
@@ -4910,6 +4968,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Feature Flags
+  tags_raw:
   - feature_flags
   properties:
   - type: OpenAPI
@@ -4936,7 +4996,8 @@ apis:
     The feature_flags_state API from Red Hat Ansible Automation Platform — 3 operation(s) for feature_flags_state.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - feature_flags_state
   properties:
   - type: OpenAPI
@@ -5019,6 +5080,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Gateways
+  tags_raw:
   - Gateway
   properties:
   - type: OpenAPI
@@ -5044,6 +5107,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Group
+  tags_raw:
   - groups
   properties:
   - type: OpenAPI
@@ -5096,6 +5161,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Groups > Users
+  tags_raw:
   - 'Groups: Users'
   properties:
   - type: OpenAPI
@@ -5121,6 +5188,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Health
+  tags_raw:
   - health
   properties:
   - type: OpenAPI
@@ -5148,7 +5217,8 @@ apis:
     host_metric_summary_monthly.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - host_metric_summary_monthly
   properties:
   - type: OpenAPI
@@ -5174,7 +5244,8 @@ apis:
     The host_metrics API from Red Hat Ansible Automation Platform — 2 operation(s) for host_metrics.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - host_metrics
   properties:
   - type: OpenAPI
@@ -5200,6 +5271,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Hosts
+  tags_raw:
   - hosts
   properties:
   - type: OpenAPI
@@ -5225,7 +5298,8 @@ apis:
     The http_ports API from Red Hat Ansible Automation Platform — 5 operation(s) for http_ports.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - http_ports
   properties:
   - type: OpenAPI
@@ -5336,6 +5410,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Instance Groups
+  tags_raw:
   - instance_groups
   properties:
   - type: OpenAPI
@@ -5362,6 +5438,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Instances
+  tags_raw:
   - instances
   properties:
   - type: OpenAPI
@@ -5388,6 +5466,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Inventories
+  tags_raw:
   - inventories
   properties:
   - type: OpenAPI
@@ -5415,6 +5495,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Inventory Sources
+  tags_raw:
   - inventory_sources
   properties:
   - type: OpenAPI
@@ -5441,7 +5523,8 @@ apis:
     The inventory_updates API from Red Hat Ansible Automation Platform — 7 operation(s) for inventory_updates.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - inventory_updates
   properties:
   - type: OpenAPI
@@ -5467,7 +5550,8 @@ apis:
     The job_events API from Red Hat Ansible Automation Platform — 2 operation(s) for job_events.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - job_events
   properties:
   - type: OpenAPI
@@ -5494,7 +5578,8 @@ apis:
     The job_host_summaries API from Red Hat Ansible Automation Platform — 1 operation(s) for job_host_summaries.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - job_host_summaries
   properties:
   - type: OpenAPI
@@ -5522,6 +5607,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Job Templates
+  tags_raw:
   - job_templates
   properties:
   - type: OpenAPI
@@ -5547,6 +5634,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Job
+  tags_raw:
   - jobs
   properties:
   - type: OpenAPI
@@ -5572,7 +5661,8 @@ apis:
     The jwt_claims API from Red Hat Ansible Automation Platform — 1 operation(s) for jwt_claims.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - jwt_claims
   properties:
   - type: OpenAPI
@@ -5598,6 +5688,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - JWT Key
+  tags_raw:
   - jwt_key
   properties:
   - type: OpenAPI
@@ -5623,6 +5715,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Labels
+  tags_raw:
   - labels
   properties:
   - type: OpenAPI
@@ -5648,6 +5742,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Me
+  tags_raw:
   - me
   properties:
   - type: OpenAPI
@@ -5674,7 +5770,8 @@ apis:
     The mesh_visualizer API from Red Hat Ansible Automation Platform — 1 operation(s) for mesh_visualizer.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - mesh_visualizer
   properties:
   - type: OpenAPI
@@ -5700,6 +5797,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Metrics
+  tags_raw:
   - metrics
   properties:
   - type: OpenAPI
@@ -5727,6 +5826,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Notification Templates
+  tags_raw:
   - notification_templates
   properties:
   - type: OpenAPI
@@ -5754,6 +5855,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Notification
+  tags_raw:
   - notifications
   properties:
   - type: OpenAPI
@@ -5781,6 +5884,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Organization
+  tags_raw:
   - organizations
   properties:
   - type: OpenAPI
@@ -5858,6 +5963,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Ping
+  tags_raw:
   - ping
   properties:
   - type: OpenAPI
@@ -5885,6 +5992,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Project Updates
+  tags_raw:
   - project_updates
   properties:
   - type: OpenAPI
@@ -5911,6 +6020,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Project
+  tags_raw:
   - projects
   properties:
   - type: OpenAPI
@@ -6370,7 +6481,8 @@ apis:
     Automation Platform — 1 operation(s) for pulp_ansible: api v3 plugin ansible content collections all-collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Collections All-Collections'
   properties:
   - type: OpenAPI
@@ -6401,7 +6513,8 @@ apis:
     Automation Platform — 1 operation(s) for pulp_ansible: api v3 plugin ansible content collections all-versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Collections All-Versions'
   properties:
   - type: OpenAPI
@@ -6431,7 +6544,8 @@ apis:
     — 1 operation(s) for pulp_ansible: api v3 plugin ansible content collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Collections'
   properties:
   - type: OpenAPI
@@ -6462,7 +6576,8 @@ apis:
     Platform — 1 operation(s) for pulp_ansible: api v3 plugin ansible content collections artifacts.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Collections Artifacts'
   properties:
   - type: OpenAPI
@@ -6493,7 +6608,8 @@ apis:
     Platform — 2 operation(s) for pulp_ansible: api v3 plugin ansible content collections index.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Collections Index'
   properties:
   - type: OpenAPI
@@ -6525,7 +6641,8 @@ apis:
     versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Collections Index Versions'
   properties:
   - type: OpenAPI
@@ -6557,7 +6674,8 @@ apis:
     index versions docs-blob.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Collections Index Versions Docs-Blob'
   properties:
   - type: OpenAPI
@@ -6587,7 +6705,8 @@ apis:
     — 2 operation(s) for pulp_ansible: api v3 plugin ansible content namespaces.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Content Namespaces'
   properties:
   - type: OpenAPI
@@ -6617,7 +6736,8 @@ apis:
     — 1 operation(s) for pulp_ansible: api v3 plugin ansible imports collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Imports Collections'
   properties:
   - type: OpenAPI
@@ -6648,7 +6768,8 @@ apis:
     Platform — 1 operation(s) for pulp_ansible: api v3 plugin ansible search collection-versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Api V3 Plugin Ansible Search Collection-Versions'
   properties:
   - type: OpenAPI
@@ -6911,7 +7032,8 @@ apis:
     Platform — 1 operation(s) for pulp_ansible: default api v3 collections versions docs-blob.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Collections Versions Docs-Blob'
   properties:
   - type: OpenAPI
@@ -7000,7 +7122,8 @@ apis:
     Platform — 1 operation(s) for pulp_ansible: default api v3 plugin ansible client-configuration.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Client-Configuration'
   properties:
   - type: OpenAPI
@@ -7032,7 +7155,8 @@ apis:
     collections all-collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Collections All-Collections'
   properties:
   - type: OpenAPI
@@ -7064,7 +7188,8 @@ apis:
     collections all-versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Collections All-Versions'
   properties:
   - type: OpenAPI
@@ -7095,7 +7220,8 @@ apis:
     Platform — 1 operation(s) for pulp_ansible: default api v3 plugin ansible content collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Collections'
   properties:
   - type: OpenAPI
@@ -7127,7 +7253,8 @@ apis:
     artifacts.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Collections Artifacts'
   properties:
   - type: OpenAPI
@@ -7159,7 +7286,8 @@ apis:
     index.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Collections Index'
   properties:
   - type: OpenAPI
@@ -7191,7 +7319,8 @@ apis:
     collections index versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Collections Index Versions'
   properties:
   - type: OpenAPI
@@ -7223,7 +7352,8 @@ apis:
     content collections index versions docs-blob.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Collections Index Versions Docs-Blob'
   properties:
   - type: OpenAPI
@@ -7254,7 +7384,8 @@ apis:
     Platform — 2 operation(s) for pulp_ansible: default api v3 plugin ansible content namespaces.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Namespaces'
   properties:
   - type: OpenAPI
@@ -7285,7 +7416,8 @@ apis:
     Platform — 1 operation(s) for pulp_ansible: default api v3 plugin ansible imports collections.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Imports Collections'
   properties:
   - type: OpenAPI
@@ -7316,7 +7448,8 @@ apis:
     Automation Platform — 1 operation(s) for pulp_ansible: default api v3 plugin ansible search collection-versions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - 'Pulp_Ansible: Default Api V3 Plugin Ansible Search Collection-Versions'
   properties:
   - type: OpenAPI
@@ -7482,7 +7615,8 @@ apis:
     The receptor_addresses API from Red Hat Ansible Automation Platform — 2 operation(s) for receptor_addresses.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - receptor_addresses
   properties:
   - type: OpenAPI
@@ -8029,7 +8163,8 @@ apis:
     The role_definitions API from Red Hat Ansible Automation Platform — 12 operation(s) for role_definitions.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - role_definitions
   properties:
   - type: OpenAPI
@@ -8056,7 +8191,8 @@ apis:
     The role_metadata API from Red Hat Ansible Automation Platform — 2 operation(s) for role_metadata.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - role_metadata
   properties:
   - type: OpenAPI
@@ -8083,7 +8219,8 @@ apis:
     The role_team_access API from Red Hat Ansible Automation Platform — 6 operation(s) for role_team_access.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - role_team_access
   properties:
   - type: OpenAPI
@@ -8110,7 +8247,8 @@ apis:
     The role_team_assignments API from Red Hat Ansible Automation Platform — 6 operation(s) for role_team_assignments.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - role_team_assignments
   properties:
   - type: OpenAPI
@@ -8137,7 +8275,8 @@ apis:
     The role_user_access API from Red Hat Ansible Automation Platform — 6 operation(s) for role_user_access.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - role_user_access
   properties:
   - type: OpenAPI
@@ -8164,7 +8303,8 @@ apis:
     The role_user_assignments API from Red Hat Ansible Automation Platform — 6 operation(s) for role_user_assignments.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - role_user_assignments
   properties:
   - type: OpenAPI
@@ -8190,6 +8330,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Roles
+  tags_raw:
   - roles
   properties:
   - type: OpenAPI
@@ -8215,6 +8357,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Routes
+  tags_raw:
   - routes
   properties:
   - type: OpenAPI
@@ -8241,6 +8385,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Rulebooks
+  tags_raw:
   - rulebooks
   properties:
   - type: OpenAPI
@@ -8267,6 +8413,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Schedule
+  tags_raw:
   - schedules
   properties:
   - type: OpenAPI
@@ -8293,7 +8441,8 @@ apis:
     The service_clusters API from Red Hat Ansible Automation Platform — 10 operation(s) for service_clusters.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - service_clusters
   properties:
   - type: OpenAPI
@@ -8321,6 +8470,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - ServiceIndex
+  tags_raw:
   - service-index
   properties:
   - type: OpenAPI
@@ -8346,7 +8497,8 @@ apis:
     The service_keys API from Red Hat Ansible Automation Platform — 2 operation(s) for service_keys.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - service_keys
   properties:
   - type: OpenAPI
@@ -8373,7 +8525,8 @@ apis:
     The service_nodes API from Red Hat Ansible Automation Platform — 2 operation(s) for service_nodes.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - service_nodes
   properties:
   - type: OpenAPI
@@ -8401,6 +8554,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Service Types
+  tags_raw:
   - service_types
   properties:
   - type: OpenAPI
@@ -8426,6 +8581,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Services
+  tags_raw:
   - services
   properties:
   - type: OpenAPI
@@ -8451,6 +8608,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Sessions
+  tags_raw:
   - session
   properties:
   - type: OpenAPI
@@ -8476,6 +8635,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Settings
+  tags_raw:
   - settings
   properties:
   - type: OpenAPI
@@ -8554,7 +8715,8 @@ apis:
     The system_job_templates API from Red Hat Ansible Automation Platform — 8 operation(s) for system_job_templates.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - system_job_templates
   properties:
   - type: OpenAPI
@@ -8580,7 +8742,8 @@ apis:
     The system_jobs API from Red Hat Ansible Automation Platform — 5 operation(s) for system_jobs.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - system_jobs
   properties:
   - type: OpenAPI
@@ -8659,6 +8822,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
@@ -8684,6 +8849,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Team
+  tags_raw:
   - teams
   properties:
   - type: OpenAPI
@@ -8710,6 +8877,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Telemetry
+  tags_raw:
   - telemetry
   properties:
   - type: OpenAPI
@@ -8735,6 +8904,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Tokens
+  tags_raw:
   - Token
   properties:
   - type: OpenAPI
@@ -8760,6 +8931,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Tokens
+  tags_raw:
   - tokens
   properties:
   - type: OpenAPI
@@ -8786,7 +8959,8 @@ apis:
     The trigger_definition API from Red Hat Ansible Automation Platform — 1 operation(s) for trigger_definition.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - trigger_definition
   properties:
   - type: OpenAPI
@@ -8811,7 +8985,8 @@ apis:
   description: The ui_auth API from Red Hat Ansible Automation Platform — 1 operation(s) for ui_auth.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - ui_auth
   properties:
   - type: OpenAPI
@@ -8838,7 +9013,8 @@ apis:
     The ui_plugin_routes API from Red Hat Ansible Automation Platform — 2 operation(s) for ui_plugin_routes.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - ui_plugin_routes
   properties:
   - type: OpenAPI
@@ -8865,7 +9041,8 @@ apis:
     The unified_job_templates API from Red Hat Ansible Automation Platform — 1 operation(s) for unified_job_templates.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - unified_job_templates
   properties:
   - type: OpenAPI
@@ -8891,7 +9068,8 @@ apis:
     The unified_jobs API from Red Hat Ansible Automation Platform — 1 operation(s) for unified_jobs.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - unified_jobs
   properties:
   - type: OpenAPI
@@ -8969,6 +9147,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - User
+  tags_raw:
   - users
   properties:
   - type: OpenAPI
@@ -8995,6 +9175,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Users - Roles
+  tags_raw:
   - 'Users: Roles'
   properties:
   - type: OpenAPI
@@ -9072,7 +9254,8 @@ apis:
     workflow_approval_templates.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - workflow_approval_templates
   properties:
   - type: OpenAPI
@@ -9099,7 +9282,8 @@ apis:
     The workflow_approvals API from Red Hat Ansible Automation Platform — 4 operation(s) for workflow_approvals.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - workflow_approvals
   properties:
   - type: OpenAPI
@@ -9126,7 +9310,8 @@ apis:
     The workflow_job_nodes API from Red Hat Ansible Automation Platform — 8 operation(s) for workflow_job_nodes.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - workflow_job_nodes
   properties:
   - type: OpenAPI
@@ -9154,7 +9339,8 @@ apis:
     workflow_job_template_nodes.
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
-  tags:
+  tags: []
+  tags_raw:
   - workflow_job_template_nodes
   properties:
   - type: OpenAPI
@@ -9182,6 +9368,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Workflow Job Templates
+  tags_raw:
   - workflow_job_templates
   properties:
   - type: OpenAPI
@@ -9209,6 +9397,8 @@ apis:
   humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   baseURL: https://controller-host/api/v2/
   tags:
+  - Workflow Jobs
+  tags_raw:
   - workflow_jobs
   properties:
   - type: OpenAPI
