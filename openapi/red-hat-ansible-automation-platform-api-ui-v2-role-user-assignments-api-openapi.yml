@@ -1,0 +1,322 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V2 Role_User_Assignments API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V2 Role_User_Assignments'
+paths:
+  /api/automation-hub/_ui/v2/role_user_assignments/:
+    get:
+      operationId: api_automation_hub__ui_v2_role_user_assignments_list
+      description: 'Use this endpoint to give a user permission to a resource or an organization.
+
+        The needed data is the user, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Role_User_Assignments'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleUserAssignmentResponseList'
+          description: ''
+      summary: Api automation hub ui v2 role user assignments list
+      x-summary-source: derived
+    post:
+      operationId: api_automation_hub__ui_v2_role_user_assignments_create
+      description: 'Use this endpoint to give a user permission to a resource or an organization.
+
+        The needed data is the user, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      tags:
+      - 'Api: _Ui V2 Role_User_Assignments'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleUserAssignment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RoleUserAssignment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoleUserAssignment'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleUserAssignmentResponse'
+          description: ''
+      summary: Api automation hub ui v2 role user assignments create
+      x-summary-source: derived
+  /api/automation-hub/_ui/v2/role_user_assignments/{id}/:
+    get:
+      operationId: api_automation_hub__ui_v2_role_user_assignments_read
+      description: 'Use this endpoint to give a user permission to a resource or an organization.
+
+        The needed data is the user, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Role_User_Assignments'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleUserAssignmentResponse'
+          description: ''
+      summary: Api automation hub ui v2 role user assignments read
+      x-summary-source: derived
+    delete:
+      operationId: api_automation_hub__ui_v2_role_user_assignments_delete
+      description: 'Use this endpoint to give a user permission to a resource or an organization.
+
+        The needed data is the user, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V2 Role_User_Assignments'
+      responses:
+        '204':
+          description: No response body
+      summary: Api automation hub ui v2 role user assignments delete
+      x-summary-source: derived
+components:
+  schemas:
+    RoleUserAssignmentResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          format: int64
+          description: The role definition which defines permissions conveyed by this assignment.
+        user:
+          type: integer
+          format: int64
+        user_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
+      required:
+      - role_definition
+    RoleUserAssignment:
+      type: object
+      properties:
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          format: int64
+          description: The role definition which defines permissions conveyed by this assignment.
+        user:
+          type: integer
+          format: int64
+        user_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
+      required:
+      - role_definition
+    PaginatedRoleUserAssignmentResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignmentResponse'

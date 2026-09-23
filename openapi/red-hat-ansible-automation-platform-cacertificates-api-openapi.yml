@@ -1,0 +1,508 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Ca Certificates API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Cacertificates
+paths:
+  /api/gateway/v1/ca_certificates/:
+    get:
+      operationId: ca_certificates_list
+      description: API endpoint that allows to manage a CA Certificate
+      parameters:
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: pem_data
+        schema:
+          type: string
+        description: Filter by pem_data (exact match)
+      - in: query
+        name: pem_data__icontains
+        schema:
+          type: string
+        description: Filter by pem_data (case-insensitive partial match)
+      - in: query
+        name: related_id_reference
+        schema:
+          type: string
+        description: Filter by related_id_reference (exact match)
+      - in: query
+        name: related_id_reference__icontains
+        schema:
+          type: string
+        description: Filter by related_id_reference (case-insensitive partial match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: sha256
+        schema:
+          type: string
+        description: Filter by sha256 (exact match)
+      - in: query
+        name: sha256__icontains
+        schema:
+          type: string
+        description: Filter by sha256 (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Cacertificates
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCACertificateList'
+          description: ''
+      x-ai-description: List all ca certificates
+      summary: Ca certificates list
+      x-summary-source: derived
+    post:
+      operationId: ca_certificates_create
+      description: API endpoint that allows to manage a CA Certificate
+      tags:
+      - Cacertificates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+          description: ''
+      x-ai-description: Create new ca certificate
+      summary: Ca certificates create
+      x-summary-source: derived
+  /api/gateway/v1/ca_certificates/{id}/:
+    get:
+      operationId: ca_certificates_retrieve
+      description: API endpoint that allows to manage a CA Certificate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ca certificate.
+        required: true
+      tags:
+      - Cacertificates
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+          description: ''
+      x-ai-description: Retrieve single ca certificate
+      summary: Ca certificates retrieve
+      x-summary-source: derived
+    put:
+      operationId: ca_certificates_update
+      description: API endpoint that allows to manage a CA Certificate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ca certificate.
+        required: true
+      tags:
+      - Cacertificates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CACertificate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+          description: ''
+      x-ai-description: Update existing ca certificate
+      summary: Ca certificates update
+      x-summary-source: derived
+    patch:
+      operationId: ca_certificates_partial_update
+      description: API endpoint that allows to manage a CA Certificate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ca certificate.
+        required: true
+      tags:
+      - Cacertificates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCACertificate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCACertificate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCACertificate'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CACertificate'
+          description: ''
+      x-ai-description: Partially update existing ca certificate
+      summary: Ca certificates partial update
+      x-summary-source: derived
+    delete:
+      operationId: ca_certificates_destroy
+      description: API endpoint that allows to manage a CA Certificate
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this ca certificate.
+        required: true
+      tags:
+      - Cacertificates
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing ca certificate
+      summary: Ca certificates destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedCACertificateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CACertificate'
+    CACertificate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        pem_data:
+          type: string
+        sha256:
+          type: string
+        related_id_reference:
+          type: string
+          description: Reference to an object that is related to this CA.
+          maxLength: 64
+      required:
+      - name
+      - pem_data
+      - sha256
+    PatchedCACertificate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        pem_data:
+          type: string
+        sha256:
+          type: string
+        related_id_reference:
+          type: string
+          description: Reference to an object that is related to this CA.
+          maxLength: 64
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

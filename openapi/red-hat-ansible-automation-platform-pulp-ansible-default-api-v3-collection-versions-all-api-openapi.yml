@@ -1,0 +1,224 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Default Api V3…'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Default Api V3 Collection_Versions All'
+paths:
+  /pulp_ansible/galaxy/default/api/v3/collection_versions/all/:
+    get:
+      operationId: pulp_ansible_galaxy_default_api_v3_collection_versions_all_list
+      description: Legacy v3 endpoint.
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Collection_Versions All'
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnpaginatedCollectionVersionResponse'
+          description: ''
+        '302':
+          description: No response body
+      summary: Pulp ansible galaxy default api v3 collection versions all list
+      x-summary-source: derived
+components:
+  schemas:
+    CollectionMetadataResponse:
+      type: object
+      description: A serializer for a CollectionVersion metadata.
+      properties:
+        authors:
+          type: array
+          items:
+            type: string
+            maxLength: 64
+          readOnly: true
+        contents:
+          type: object
+          readOnly: true
+        dependencies:
+          type: object
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+        documentation:
+          type: string
+          readOnly: true
+        homepage:
+          type: string
+          readOnly: true
+        issues:
+          type: string
+          readOnly: true
+        license:
+          type: array
+          items:
+            type: string
+            maxLength: 32
+          readOnly: true
+        repository:
+          type: string
+          readOnly: true
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+      - tags
+    UnpaginatedCollectionVersionResponse:
+      type: object
+      description: A serializer for unpaginated CollectionVersion.
+      properties:
+        version:
+          type: string
+          maxLength: 128
+        href:
+          type: string
+          description: Get href.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        requires_ansible:
+          type:
+          - string
+          - 'null'
+          maxLength: 255
+        marks:
+          type: array
+          items:
+            type: string
+          description: Get a list of mark values filtering only those in the current repo.
+          readOnly: true
+        artifact:
+          allOf:
+          - $ref: '#/components/schemas/ArtifactRefResponse'
+          readOnly: true
+        collection:
+          allOf:
+          - $ref: '#/components/schemas/CollectionRefResponse'
+          readOnly: true
+        download_url:
+          type: string
+          description: Get artifact download URL.
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        namespace:
+          allOf:
+          - $ref: '#/components/schemas/CollectionNamespaceResponse'
+          readOnly: true
+        signatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionVersionSignatureResponse'
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/CollectionMetadataResponse'
+          readOnly: true
+        git_url:
+          type: string
+          description: Get the git URL.
+          readOnly: true
+        git_commit_sha:
+          type: string
+          description: Get the git commit sha.
+          readOnly: true
+      required:
+      - created_at
+      - signatures
+      - updated_at
+      - version
+    CollectionRefResponse:
+      type: object
+      description: A serializer for a Collection reference.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        href:
+          type: string
+          description: Returns link to a collection.
+          readOnly: true
+      required:
+      - id
+      - name
+    CollectionNamespaceResponse:
+      type: object
+      description: A serializer for a Collection Version namespace field.
+      properties:
+        name:
+          type: string
+        metadata_sha256:
+          type:
+          - string
+          - 'null'
+      required:
+      - metadata_sha256
+      - name
+    ArtifactRefResponse:
+      type: object
+      description: A serializer for an Artifact reference.
+      properties:
+        filename:
+          type: string
+        sha256:
+          type: string
+        size:
+          type: integer
+          format: int64
+      required:
+      - filename
+      - sha256
+      - size
+    CollectionVersionSignatureResponse:
+      type: object
+      description: A serializer for the signatures on a Collection Version.
+      properties:
+        signature:
+          type: string
+          readOnly: true
+        pubkey_fingerprint:
+          type: string
+          maxLength: 64
+        signing_service:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - pubkey_fingerprint

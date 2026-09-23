@@ -1,0 +1,3162 @@
+openapi: 3.2.0
+info:
+  title: AWX Workflow Job Templates API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: Workflow Job Templates
+paths:
+  /api/v2/workflow_job_templates/:
+    get:
+      operationId: workflow_job_templates_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkflowJobTemplateList'
+          description: ''
+      x-ai-description: Returns a paginated list of all workflow job templates. Workflow templates chain multiple node types—job templates, other workflows, project syncs, inventory syncs, management jobs, and approval gates—into a single automated workflow.
+      summary: Workflow job templates list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_create
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplate'
+          description: ''
+      x-ai-description: Create a workflow job template
+      summary: Workflow job templates create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/:
+    get:
+      operationId: workflow_job_templates_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplate'
+          description: ''
+      x-ai-description: Retrieve a workflow job template
+      summary: Workflow job templates retrieve
+      x-summary-source: derived
+    put:
+      operationId: workflow_job_templates_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplate'
+          description: ''
+      x-ai-description: Update a workflow job template
+      summary: Workflow job templates update
+      x-summary-source: derived
+    patch:
+      operationId: workflow_job_templates_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkflowJobTemplateRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplate'
+          description: ''
+      x-ai-description: Update a workflow job template
+      summary: Workflow job templates partial update
+      x-summary-source: derived
+    delete:
+      operationId: workflow_job_templates_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a workflow job template
+      summary: Workflow job templates destroy
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/access_list/:
+    get:
+      operationId: workflow_job_templates_access_list_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceAccessListElementList'
+          description: ''
+      x-ai-description: List users who can access a workflow job template
+      summary: Workflow job templates access list list
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/activity_stream/:
+    get:
+      operationId: workflow_job_templates_activity_stream_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivityStreamList'
+          description: ''
+      x-ai-description: List activity stream of a workflow job template
+      summary: Workflow job templates activity stream list
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/bitbucket_dc/:
+    post:
+      operationId: workflow_job_templates_bitbucket_dc_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Receive a webhook event and trigger a job
+      summary: Workflow job templates bitbucket dc create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/copy/:
+    get:
+      operationId: workflow_job_templates_copy_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Copy'
+          description: ''
+      x-ai-description: Get workflow job template copy status
+      summary: Workflow job templates copy retrieve
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_copy_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Copy'
+          description: ''
+      x-ai-description: Create a copy a workflow job template
+      summary: Workflow job templates copy create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/github/:
+    post:
+      operationId: workflow_job_templates_github_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Receive a webhook event and trigger a job
+      summary: Workflow job templates github create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/gitlab/:
+    post:
+      operationId: workflow_job_templates_gitlab_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Receive a webhook event and trigger a job
+      summary: Workflow job templates gitlab create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/labels/:
+    get:
+      operationId: workflow_job_templates_labels_list
+      description: 'For related labels lists like /api/v2/inventories/N/labels/
+
+
+        We want want the last instance to be deleted from the database
+
+        when the last disassociate happens.
+
+
+        Subclasses need to define parent_model'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLabelList'
+          description: ''
+      x-ai-description: List labels of a workflow job template
+      summary: Workflow job templates labels list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_labels_create
+      description: 'For related labels lists like /api/v2/inventories/N/labels/
+
+
+        We want want the last instance to be deleted from the database
+
+        when the last disassociate happens.
+
+
+        Subclasses need to define parent_model'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+          description: ''
+      x-ai-description: Create or attach a label to a resource
+      summary: Workflow job templates labels create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/launch/:
+    get:
+      operationId: workflow_job_templates_launch_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobLaunch'
+          description: ''
+      x-ai-description: Retrieve a launch a workflow job from a workflow job template
+      summary: Workflow job templates launch retrieve
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_launch_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobLaunchRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobLaunch'
+          description: ''
+      x-ai-description: Launch the workflow job template.
+      summary: Workflow job templates launch create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/notification_templates_approvals/:
+    get:
+      operationId: workflow_job_templates_notification_templates_approvals_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationTemplateList'
+          description: ''
+      x-ai-description: List notification templates triggered on workflow approval
+      summary: Workflow job templates notification templates approvals list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_notification_templates_approvals_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+          description: ''
+      x-ai-description: Create a notification templates triggered on workflow approval
+      summary: Workflow job templates notification templates approvals create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/notification_templates_error/:
+    get:
+      operationId: workflow_job_templates_notification_templates_error_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationTemplateList'
+          description: ''
+      x-ai-description: List notification templates triggered on workflow job error
+      summary: Workflow job templates notification templates error list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_notification_templates_error_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+          description: ''
+      x-ai-description: Create a notification templates triggered on workflow job error
+      summary: Workflow job templates notification templates error create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/notification_templates_started/:
+    get:
+      operationId: workflow_job_templates_notification_templates_started_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationTemplateList'
+          description: ''
+      x-ai-description: List notification templates triggered on workflow job start
+      summary: Workflow job templates notification templates started list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_notification_templates_started_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+          description: ''
+      x-ai-description: Create a notification templates triggered on workflow job start
+      summary: Workflow job templates notification templates started create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/notification_templates_success/:
+    get:
+      operationId: workflow_job_templates_notification_templates_success_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationTemplateList'
+          description: ''
+      x-ai-description: List notification templates triggered on workflow job success
+      summary: Workflow job templates notification templates success list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_notification_templates_success_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+          description: ''
+      x-ai-description: Create a notification templates triggered on workflow job success
+      summary: Workflow job templates notification templates success create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/object_roles/:
+    get:
+      operationId: workflow_job_templates_object_roles_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleList'
+          description: ''
+      x-ai-description: List roles of a workflow job template
+      summary: Workflow job templates object roles list
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/schedules/:
+    get:
+      operationId: workflow_job_templates_schedules_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedScheduleList'
+          description: ''
+      x-ai-description: List schedules of a workflow job template
+      summary: Workflow job templates schedules list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_schedules_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+      x-ai-description: Create a schedule of a workflow job template
+      summary: Workflow job templates schedules create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/survey_spec/:
+    get:
+      operationId: workflow_job_templates_survey_spec_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get job template survey specification
+      summary: Workflow job templates survey spec retrieve
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_survey_spec_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Create or update the survey specification for a job template. Surveys prompt users for input variables at launch time.
+      summary: Workflow job templates survey spec create
+      x-summary-source: derived
+    delete:
+      operationId: workflow_job_templates_survey_spec_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete job template survey specification
+      summary: Workflow job templates survey spec destroy
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/webhook_key/:
+    get:
+      operationId: workflow_job_templates_webhook_key_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get the webhook key for a template
+      summary: Workflow job templates webhook key retrieve
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_webhook_key_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Rotate the webhook key for a template
+      summary: Workflow job templates webhook key create
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/workflow_jobs/:
+    get:
+      operationId: workflow_job_templates_workflow_jobs_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkflowJobListList'
+          description: ''
+      x-ai-description: List workflow jobs of a workflow job template
+      summary: Workflow job templates workflow jobs list
+      x-summary-source: derived
+  /api/v2/workflow_job_templates/{id}/workflow_nodes/:
+    get:
+      operationId: workflow_job_templates_workflow_nodes_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Workflow Job Templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkflowJobTemplateNodeList'
+          description: ''
+      x-ai-description: List all nodes for a workflow_job_template
+      summary: Workflow job templates workflow nodes list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_templates_workflow_nodes_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Workflow Job Templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateNodeRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNode'
+          description: ''
+      x-ai-description: Create new node for a workflow_job_template
+      summary: Workflow job templates workflow nodes create
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    PaginatedWorkflowJobTemplateNodeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowJobTemplateNode'
+    WorkflowJobLaunchRequest:
+      type: object
+      properties:
+        extra_vars:
+          type: string
+          writeOnly: true
+        inventory:
+          type: integer
+          writeOnly: true
+        limit:
+          type: string
+          writeOnly: true
+        scm_branch:
+          type: string
+          writeOnly: true
+        labels:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        skip_tags:
+          type: string
+          writeOnly: true
+        job_tags:
+          type: string
+          writeOnly: true
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    PaginatedWorkflowJobTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowJobTemplate'
+    PatchedWorkflowJobTemplateRequest:
+      type: object
+      description: Provide recent jobs and survey details in summary_fields
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        survey_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
+    ResourceAccessListElement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    WorkflowJobList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        workflow_job_template:
+          type:
+          - integer
+          - 'null'
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        job_template:
+          type:
+          - integer
+          - 'null'
+          description: If automatically created for a sliced job run, the job template the workflow job was created from.
+        is_sliced_job:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        webhook_guid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier of the event that triggered this webhook
+          maxLength: 128
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+    WorkflowJobTemplateNodeRequest:
+      type: object
+      properties:
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        workflow_job_template:
+          type: integer
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        identifier:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An identifier for this node that is unique within its workflow. It is copied to workflow job nodes corresponding to this node.
+          maxLength: 512
+      required:
+      - workflow_job_template
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    PaginatedLabelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+    PaginatedNotificationTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTemplate'
+    LabelRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    PaginatedWorkflowJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowJobList'
+    WorkflowJobTemplate:
+      type: object
+      description: Provide recent jobs and survey details in summary_fields
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - ok
+          - missing
+          - none
+          - updating
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `ok` - OK
+
+            * `missing` - Missing
+
+            * `none` - No External Source
+
+            * `updating` - Updating'
+          x-spec-enum-id: b387d72f4f16647d
+          readOnly: true
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        survey_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+    WorkflowJobTemplateRequest:
+      type: object
+      description: Provide recent jobs and survey details in summary_fields
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        survey_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+    NotificationTemplateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    Schedule:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          description: A value representing the schedules iCal recurrence rule.
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        unified_job_template:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Enables processing of this schedule.
+        dtstart:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The first occurrence of the schedule occurs on or after this time.
+        dtend:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
+        next_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The next time that the scheduled action will run.
+        timezone:
+          type: string
+          readOnly: true
+          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
+        until:
+          type: string
+          readOnly: true
+          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
+      required:
+      - name
+      - rrule
+      - unified_job_template
+    Copy:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    WorkflowJobTemplateNode:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        workflow_job_template:
+          type: integer
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+        success_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        failure_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        always_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An identifier for this node that is unique within its workflow. It is copied to workflow job nodes corresponding to this node.
+          maxLength: 512
+      required:
+      - workflow_job_template
+    ScheduleRequest:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A value representing the schedules iCal recurrence rule.
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        unified_job_template:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Enables processing of this schedule.
+      required:
+      - name
+      - rrule
+      - unified_job_template
+    NotificationTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    CopyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+    WorkflowJobLaunch:
+      type: object
+      properties:
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          readOnly: true
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          readOnly: true
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          readOnly: true
+        can_start_without_user_input:
+          type: boolean
+          readOnly: true
+        defaults:
+          type: string
+          readOnly: true
+        survey_enabled:
+          type: string
+          readOnly: true
+        variables_needed_to_start:
+          type: string
+          readOnly: true
+        node_templates_missing:
+          type: string
+          readOnly: true
+        node_prompts_rejected:
+          type: string
+          readOnly: true
+        workflow_job_template_data:
+          type: string
+          readOnly: true
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          readOnly: true
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          readOnly: true
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          readOnly: true
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          readOnly: true
+    PaginatedScheduleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+    PaginatedResourceAccessListElementList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceAccessListElement'

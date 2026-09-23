@@ -1,0 +1,103 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Ping API
+  version: '1.0'
+  description: 'Operations tagged ping across 2 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+tags:
+- name: Ping
+paths:
+  /api/v2/ping/:
+    get:
+      operationId: ping_retrieve
+      description: 'Return some basic information about this instance
+
+
+        Everything returned here should be considered public / insecure, as
+
+        this requires no auth and is intended for use by the installer process.'
+      tags:
+      - Ping
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Return basic information about this instance
+      summary: Ping retrieve
+      x-summary-source: derived
+  /api/gateway/v1/ping/:
+    get:
+      operationId: ping_retrieve
+      tags:
+      - Ping
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ping'
+          description: ''
+      x-ai-description: Retrieve single ping
+      summary: Ping retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    Ping:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        version:
+          type: string
+        pong:
+          type: string
+          format: date-time
+        db_connected:
+          type: boolean
+        db_exception:
+          type: string
+        proxy_connected:
+          type: boolean
+        proxy_status_code:
+          type: integer
+        proxy_exception_type:
+          type: string
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

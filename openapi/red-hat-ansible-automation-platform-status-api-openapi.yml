@@ -1,0 +1,615 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Status API
+  x-refined-note:
+  - x-logo differs across the merged source definitions and was not carried
+  - x-pulp-app-versions differs across the merged source definitions and was not carried
+  - x-pulp-domain-enabled differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Status across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-hub-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+- url: /api/eda/v1
+tags:
+- name: Status
+paths:
+  /api/automation-hub/pulp/api/v3/status/:
+    get:
+      operationId: status_read
+      description: 'Returns status and app information about Pulp.
+
+
+        Information includes:
+
+        * version of pulpcore and loaded pulp plugins
+
+        * known workers
+
+        * known content apps
+
+        * database connection status
+
+        * redis connection status
+
+        * disk usage information'
+      summary: Inspect status of Pulp
+      tags:
+      - Status
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+          description: ''
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /status/:
+    get:
+      operationId: status_retrieve
+      description: Get the current status of EDA.
+      tags:
+      - Status
+      security:
+      - EDAJWTAuthentication: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse_2'
+          description: EDA is healthy or degraded (workers down but database is available).
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse_2'
+          description: EDA is unavailable (database failure).
+      summary: Status retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /api/gateway/v1/status/:
+    get:
+      operationId: status_retrieve
+      description: API endpoint that shows status of platform services.
+      parameters:
+      - in: query
+        name: service_keys
+        schema:
+          type: boolean
+        description: Use a dictionary to describe services instead of a list
+      tags:
+      - Status
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponseOptions'
+          description: ''
+      x-ai-description: Returns the current Gateway platform status, including service health and version.
+      summary: Status retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    WorkerResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
+        current_task:
+          type: string
+          format: uri
+          readOnly: true
+          description: The task this worker is currently executing, or empty if the worker is not currently assigned to a task.
+    ContentAppStatusResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
+    ContentSettingsResponse:
+      type: object
+      description: Serializer for information about content-app-settings for the pulp instance
+      properties:
+        content_origin:
+          type: string
+          description: The CONTENT_ORIGIN setting for this Pulp instance
+        content_path_prefix:
+          type: string
+          description: The CONTENT_PATH_PREFIX setting for this Pulp instance
+      required:
+      - content_origin
+      - content_path_prefix
+    ApiAppStatusResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
+    VersionResponse:
+      type: object
+      description: Serializer for the version information of Pulp components
+      properties:
+        component:
+          type: string
+          description: Name of a versioned component of Pulp
+        version:
+          type: string
+          description: Version of the component (e.g. 3.0.0)
+        package:
+          type: string
+          description: Python package name providing the component
+        module:
+          type: string
+          description: Python module name of the component
+        domain_compatible:
+          type: boolean
+          description: Domain feature compatibility of component
+      required:
+      - component
+      - domain_compatible
+      - module
+      - package
+      - version
+    StatusResponse:
+      type: object
+      description: Serializer for the status information of the app
+      properties:
+        versions:
+          type: array
+          items:
+            $ref: '#/components/schemas/VersionResponse'
+          description: Version information of Pulp components
+        online_workers:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkerResponse'
+          description: List of online workers known to the application. An online worker is actively heartbeating and can respond to new work.
+        online_api_apps:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiAppStatusResponse'
+          description: List of online api apps known to the application. An online api app is actively heartbeating and can serve the rest api to clients.
+        online_content_apps:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentAppStatusResponse'
+          description: List of online content apps known to the application. An online content app is actively heartbeating and can serve data to clients.
+        database_connection:
+          allOf:
+          - $ref: '#/components/schemas/DatabaseConnectionResponse'
+          description: Database connection information
+        redis_connection:
+          allOf:
+          - $ref: '#/components/schemas/RedisConnectionResponse'
+          description: Redis connection information
+        storage:
+          allOf:
+          - $ref: '#/components/schemas/StorageResponse'
+          description: Storage information
+        content_settings:
+          allOf:
+          - $ref: '#/components/schemas/ContentSettingsResponse'
+          description: Content-app settings
+        domain_enabled:
+          type: boolean
+          description: Is Domains enabled
+      required:
+      - content_settings
+      - database_connection
+      - domain_enabled
+      - online_api_apps
+      - online_content_apps
+      - online_workers
+      - versions
+    RedisConnectionResponse:
+      type: object
+      description: Serializer for information about the Redis connection
+      properties:
+        connected:
+          type: boolean
+          description: Info about whether the app can connect to Redis
+      required:
+      - connected
+    DatabaseConnectionResponse:
+      type: object
+      description: Serializer for the database connection information
+      properties:
+        connected:
+          type: boolean
+          description: Info about whether the app can connect to the database
+      required:
+      - connected
+    StorageResponse:
+      type: object
+      description: Serializer for information about the storage system
+      properties:
+        total:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of bytes
+          minimum: 0
+        used:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Number of bytes in use
+          minimum: 0
+        free:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Number of free bytes
+          minimum: 0
+      required:
+      - free
+      - total
+      - used
+    StatusResponse_2:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      required:
+      - status
+    Ping:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        version:
+          type: string
+        pong:
+          type: string
+          format: date-time
+        db_connected:
+          type: boolean
+        db_exception:
+          type: string
+        proxy_connected:
+          type: boolean
+        proxy_status_code:
+          type: integer
+        proxy_exception_type:
+          type: string
+    StatusResponseOptions:
+      oneOf:
+      - $ref: '#/components/schemas/Status'
+      - $ref: '#/components/schemas/ServiceKeysStatus'
+    Status:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        time:
+          type: string
+          format: date-time
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusService'
+      required:
+      - services
+      - time
+    StatusNode:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        url:
+          type: string
+        exception:
+          type: string
+        response:
+          $ref: '#/components/schemas/Ping'
+        response_code:
+          type: integer
+        node_id:
+          type: string
+        hostname:
+          type: string
+        flags:
+          type: string
+        master_id:
+          type: string
+        last_ping_sent:
+          type: string
+        last_pong_rcvd:
+          type: string
+        epoch:
+          type: string
+        slots:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        migrations:
+          type: array
+          items:
+            type: string
+        connected:
+          type: boolean
+        body:
+          type: string
+    ServiceKeysStatus:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        time:
+          type: string
+          format: date-time
+        services:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StatusService'
+      required:
+      - services
+      - time
+    RedisResponse:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        mode:
+          enum:
+          - cluster
+          - standalone
+          - Unknown
+          type: string
+          description: '* `cluster` - cluster
+
+            * `standalone` - standalone
+
+            * `Unknown` - Unknown'
+          x-spec-enum-id: 108317a9f228ac79
+        ping:
+          type: boolean
+        cluster_info:
+          $ref: '#/components/schemas/ClusterInfo'
+    StatusService:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        service_name:
+          type: string
+        nodes:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StatusNode'
+        response:
+          $ref: '#/components/schemas/RedisResponse'
+      required:
+      - nodes
+    ClusterInfo:
+      type: object
+      properties:
+        cluster_state:
+          type: string
+        cluster_slots_assigned:
+          type: string
+        cluster_slots_ok:
+          type: string
+        cluster_slots_pfail:
+          type: string
+        cluster_slots_fail:
+          type: string
+        cluster_known_nodes:
+          type: string
+        cluster_size:
+          type: string
+        cluster_current_epoch:
+          type: string
+        cluster_my_epoch:
+          type: string
+        cluster_stats_messages_ping_sent:
+          type: string
+        cluster_stats_messages_pong_sent:
+          type: string
+        cluster_stats_messages_sent:
+          type: string
+        cluster_stats_messages_ping_received:
+          type: string
+        cluster_stats_messages_pong_received:
+          type: string
+        cluster_stats_messages_received:
+          type: string
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-hub-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

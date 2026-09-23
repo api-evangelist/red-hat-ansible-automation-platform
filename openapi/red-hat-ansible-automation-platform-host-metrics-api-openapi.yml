@@ -1,0 +1,192 @@
+openapi: 3.2.0
+info:
+  title: AWX Host Metrics API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: host_metrics
+paths:
+  /api/v2/host_metrics/:
+    get:
+      operationId: host_metrics_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - host_metrics
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedHostMetricList'
+          description: ''
+      x-ai-description: List host metrics
+      summary: Host metrics list
+      x-summary-source: derived
+  /api/v2/host_metrics/{id}/:
+    get:
+      operationId: host_metrics_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - host_metrics
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostMetric'
+          description: ''
+      x-ai-description: Retrieve a host metric
+      summary: Host metrics retrieve
+      x-summary-source: derived
+    delete:
+      operationId: host_metrics_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - host_metrics
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Soft delete a host metric
+      summary: Host metrics destroy
+      x-summary-source: derived
+components:
+  schemas:
+    HostMetric:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        hostname:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        url:
+          type: string
+          readOnly: true
+        first_automation:
+          type: string
+          format: date-time
+          readOnly: true
+          description: When the host was first automated against
+        last_automation:
+          type: string
+          format: date-time
+          description: When the host was last automated against
+        last_deleted:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When the host was last deleted
+        automated_counter:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: How many times was the host automated
+        deleted_counter:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: How many times was the host deleted
+        deleted:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Boolean flag saying whether the host is deleted and therefore not counted into the subscription consumption
+        used_in_inventories:
+          type:
+          - integer
+          - 'null'
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          description: How many inventories contain this host
+      required:
+      - hostname
+      - last_automation
+    PaginatedHostMetricList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HostMetric'

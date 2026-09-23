@@ -1,0 +1,404 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Content: Signatures API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Content: Signatures'
+paths:
+  /api/automation-hub/pulp/api/v3/content/container/signatures/:
+    get:
+      operationId: content_container_signatures_list
+      description: ViewSet for image signatures.
+      summary: List manifest signatures
+      parameters:
+      - in: query
+        name: digest
+        schema:
+          type: string
+        description: Filter results where digest matches value
+      - in: query
+        name: digest__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where digest is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: key_id
+        schema:
+          type: string
+        description: Filter results where key_id matches value
+      - in: query
+        name: key_id__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where key_id is in a comma-separated list of values
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: manifest
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -creator
+            - -data
+            - -digest
+            - -key_id
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -pulp_type
+            - -timestamp
+            - -timestamp_of_interest
+            - -type
+            - -upstream_id
+            - creator
+            - data
+            - digest
+            - key_id
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - pulp_type
+            - timestamp
+            - timestamp_of_interest
+            - type
+            - upstream_id
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `upstream_id` - Upstream id
+
+          * `-upstream_id` - Upstream id (descending)
+
+          * `timestamp_of_interest` - Timestamp of interest
+
+          * `-timestamp_of_interest` - Timestamp of interest (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `digest` - Digest
+
+          * `-digest` - Digest (descending)
+
+          * `type` - Type
+
+          * `-type` - Type (descending)
+
+          * `key_id` - Key id
+
+          * `-key_id` - Key id (descending)
+
+          * `timestamp` - Timestamp
+
+          * `-timestamp` - Timestamp (descending)
+
+          * `creator` - Creator
+
+          * `-creator` - Creator (descending)
+
+          * `data` - Data
+
+          * `-data` - Data (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: orphaned_for
+        schema:
+          type: number
+        description: Minutes Content has been orphaned for. -1 uses ORPHAN_PROTECTION_TIME.
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_added
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_removed
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Signatures'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedcontainer.ManifestSignatureResponseList'
+          description: ''
+  /api/automation-hub/pulp/api/v3/content/container/signatures/{pulp_id}/:
+    get:
+      operationId: content_container_signatures_read
+      description: ViewSet for image signatures.
+      summary: Inspect a manifest signature
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this manifest signature.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Signatures'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/container.ManifestSignatureResponse'
+          description: ''
+components:
+  schemas:
+    container.ManifestSignatureResponse:
+      type: object
+      description: Serializer for image manifest signatures.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: Signature name in the format of `digest_algo:manifest_digest@random_32_chars`
+        digest:
+          type: string
+          description: sha256 digest of the signature blob
+        type:
+          type: string
+          description: Container signature type, e.g. 'atomic'
+        key_id:
+          type: string
+          description: Signing key ID
+        timestamp:
+          type: integer
+          format: int64
+          description: Timestamp of a signature
+        creator:
+          type: string
+          description: Signature creator
+        signed_manifest:
+          type: string
+          format: uri
+          description: Manifest that is signed
+      required:
+      - creator
+      - digest
+      - key_id
+      - name
+      - signed_manifest
+      - timestamp
+      - type
+    Paginatedcontainer.ManifestSignatureResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/container.ManifestSignatureResponse'

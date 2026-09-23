@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Orphans: Cleanup API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Orphans: Cleanup'
+paths:
+  /api/automation-hub/pulp/api/v3/orphans/cleanup/:
+    post:
+      operationId: orphans_cleanup_cleanup
+      description: Trigger an asynchronous orphan cleanup operation.
+      tags:
+      - 'Orphans: Cleanup'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrphansCleanup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrphansCleanup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrphansCleanup'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+      summary: Orphans cleanup cleanup
+      x-summary-source: derived
+components:
+  schemas:
+    OrphansCleanup:
+      type: object
+      properties:
+        content_hrefs:
+          type: array
+          items: {}
+          description: Will delete specified content and associated Artifacts if they are orphans.
+        orphan_protection_time:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: The time in minutes for how long Pulp will hold orphan Content and Artifacts before they become candidates for deletion by this orphan cleanup task. This should ideally be longer than your longest running task otherwise any content created during that task could be cleaned up before the task finishes. If not specified, a default value is taken from the setting ORPHAN_PROTECTION_TIME.
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

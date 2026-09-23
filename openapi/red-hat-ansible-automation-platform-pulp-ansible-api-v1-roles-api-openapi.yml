@@ -1,0 +1,116 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Api V1 Roles API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Api V1 Roles'
+paths:
+  /pulp_ansible/galaxy/{path}/api/v1/roles/:
+    get:
+      operationId: pulp_ansible_galaxy_api_v1_roles_get
+      description: APIView for Roles.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Api V1 Roles'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGalaxyRoleResponseList'
+          description: ''
+      summary: Pulp ansible galaxy api v1 roles get
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedGalaxyRoleResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GalaxyRoleResponse'
+    GalaxyRoleResponse:
+      type: object
+      description: A serializer for Galaxy's representation of Roles.
+      properties:
+        id:
+          type: string
+          description: Get id.
+          readOnly: true
+        name:
+          type: string
+        namespace:
+          type: string
+      required:
+      - name
+      - namespace

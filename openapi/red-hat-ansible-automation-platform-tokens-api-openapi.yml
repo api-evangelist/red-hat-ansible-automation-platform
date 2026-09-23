@@ -1,0 +1,609 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Tokens API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Tokens
+paths:
+  /api/gateway/v1/tokens/:
+    get:
+      operationId: tokens_list
+      parameters:
+      - in: query
+        name: application
+        schema:
+          type: string
+        description: Filter by application (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by description (exact match)
+      - in: query
+        name: description__icontains
+        schema:
+          type: string
+        description: Filter by description (case-insensitive partial match)
+      - in: query
+        name: expires
+        schema:
+          type: string
+        description: Filter by expires (exact match)
+      - in: query
+        name: expires__gt
+        schema:
+          type: string
+        description: Filter by expires (gt)
+      - in: query
+        name: expires__gte
+        schema:
+          type: string
+        description: Filter by expires (gte)
+      - in: query
+        name: expires__lt
+        schema:
+          type: string
+        description: Filter by expires (lt)
+      - in: query
+        name: expires__lte
+        schema:
+          type: string
+        description: Filter by expires (lte)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: id_token
+        schema:
+          type: string
+        description: Filter by id_token (exact match)
+      - in: query
+        name: last_used
+        schema:
+          type: string
+        description: Filter by last_used (exact match)
+      - in: query
+        name: last_used__gt
+        schema:
+          type: string
+        description: Filter by last_used (gt)
+      - in: query
+        name: last_used__gte
+        schema:
+          type: string
+        description: Filter by last_used (gte)
+      - in: query
+        name: last_used__lt
+        schema:
+          type: string
+        description: Filter by last_used (lt)
+      - in: query
+        name: last_used__lte
+        schema:
+          type: string
+        description: Filter by last_used (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: refresh_token
+        schema:
+          type: string
+        description: Filter by refresh_token (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - in: query
+        name: scope
+        schema:
+          type: string
+        description: Filter by scope (exact match)
+      - in: query
+        name: scope__icontains
+        schema:
+          type: string
+        description: Filter by scope (case-insensitive partial match)
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: source_refresh_token
+        schema:
+          type: string
+        description: Filter by source_refresh_token (exact match)
+      - in: query
+        name: token
+        schema:
+          type: string
+        description: Filter by token (exact match)
+      - in: query
+        name: token__icontains
+        schema:
+          type: string
+        description: Filter by token (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: user
+        schema:
+          type: string
+        description: Filter by user (exact match)
+      tags:
+      - Tokens
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOAuth2TokenList'
+          description: ''
+      x-ai-description: List all tokens
+      summary: Tokens list
+      x-summary-source: derived
+    post:
+      operationId: tokens_create
+      tags:
+      - Tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuth2Token'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OAuth2Token'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OAuth2Token'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Token'
+          description: ''
+      x-ai-description: Create new token
+      summary: Tokens create
+      x-summary-source: derived
+  /api/gateway/v1/tokens/{id}/:
+    get:
+      operationId: tokens_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Tokens
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Token'
+          description: ''
+      x-ai-description: Retrieve single token
+      summary: Tokens retrieve
+      x-summary-source: derived
+    put:
+      operationId: tokens_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuth2Token'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OAuth2Token'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OAuth2Token'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Token'
+          description: ''
+      x-ai-description: Update existing token
+      summary: Tokens update
+      x-summary-source: derived
+    patch:
+      operationId: tokens_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOAuth2Token'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOAuth2Token'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOAuth2Token'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Token'
+          description: ''
+      x-ai-description: Partially update existing token
+      summary: Tokens partial update
+      x-summary-source: derived
+    delete:
+      operationId: tokens_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this access token.
+        required: true
+      tags:
+      - Tokens
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing token
+      summary: Tokens destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedOAuth2TokenList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuth2Token'
+    PatchedOAuth2Token:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        expires:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+          description: The user representing the token owner.
+        application:
+          type:
+          - integer
+          - 'null'
+          description: The related application. If None, this is a user token instead of an application token.
+        description:
+          type: string
+          description: A description for this token.
+        last_used:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: A timestamp of when this token was last used.
+        scope:
+          type: string
+          description: Allowed scopes, further restricts user permissions. Must be a simple space-separated string with allowed scopes ['read', 'write', 'openid', 'roles'].
+          maxLength: 128
+        token:
+          type: string
+          readOnly: true
+          description: The generated token value.
+        refresh_token:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+    OAuth2Token:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        expires:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+          description: The user representing the token owner.
+        application:
+          type:
+          - integer
+          - 'null'
+          description: The related application. If None, this is a user token instead of an application token.
+        description:
+          type: string
+          description: A description for this token.
+        last_used:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: A timestamp of when this token was last used.
+        scope:
+          type: string
+          description: Allowed scopes, further restricts user permissions. Must be a simple space-separated string with allowed scopes ['read', 'write', 'openid', 'roles'].
+          maxLength: 128
+        token:
+          type: string
+          readOnly: true
+          description: The generated token value.
+        refresh_token:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

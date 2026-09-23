@@ -1,0 +1,364 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Content: Files API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Content: Files'
+paths:
+  /api/automation-hub/pulp/api/v3/content/file/files/:
+    get:
+      operationId: content_file_files_list
+      description: 'FileContent represents a single file and its metadata, which can be added and removed from
+
+        repositories.'
+      summary: List file contents
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -digest
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -pulp_type
+            - -relative_path
+            - -timestamp_of_interest
+            - -upstream_id
+            - digest
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - pulp_type
+            - relative_path
+            - timestamp_of_interest
+            - upstream_id
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `upstream_id` - Upstream id
+
+          * `-upstream_id` - Upstream id (descending)
+
+          * `timestamp_of_interest` - Timestamp of interest
+
+          * `-timestamp_of_interest` - Timestamp of interest (descending)
+
+          * `relative_path` - Relative path
+
+          * `-relative_path` - Relative path (descending)
+
+          * `digest` - Digest
+
+          * `-digest` - Digest (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: orphaned_for
+        schema:
+          type: number
+        description: Minutes Content has been orphaned for. -1 uses ORPHAN_PROTECTION_TIME.
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: relative_path
+        schema:
+          type: string
+        description: Filter results where relative_path matches value
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_added
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_removed
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: sha256
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Files'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedfile.FileContentResponseList'
+          description: ''
+    post:
+      operationId: content_file_files_create
+      description: Trigger an asynchronous task to create content,optionally create new repository version.
+      summary: Create a file content
+      tags:
+      - 'Content: Files'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/file.FileContent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/file.FileContent'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/content/file/files/{pulp_id}/:
+    get:
+      operationId: content_file_files_read
+      description: 'FileContent represents a single file and its metadata, which can be added and removed from
+
+        repositories.'
+      summary: Inspect a file content
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this file content.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Files'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.FileContentResponse'
+          description: ''
+components:
+  schemas:
+    file.FileContent:
+      type: object
+      description: Serializer for File Content.
+      properties:
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        relative_path:
+          type: string
+          minLength: 1
+          description: Path where the artifact is located relative to distributions base_path
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: An uploaded file that may be turned into the content unit.
+        upload:
+          type: string
+          format: uri
+          writeOnly: true
+          description: An uncommitted upload that may be turned into the content unit.
+      required:
+      - relative_path
+    file.FileContentResponse:
+      type: object
+      description: Serializer for File Content.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        relative_path:
+          type: string
+          description: Path where the artifact is located relative to distributions base_path
+        md5:
+          type: string
+          readOnly: true
+          description: The MD5 checksum if available.
+        sha1:
+          type: string
+          readOnly: true
+          description: The SHA-1 checksum if available.
+        sha224:
+          type: string
+          readOnly: true
+          description: The SHA-224 checksum if available.
+        sha256:
+          type: string
+          readOnly: true
+          description: The SHA-256 checksum if available.
+        sha384:
+          type: string
+          readOnly: true
+          description: The SHA-384 checksum if available.
+        sha512:
+          type: string
+          readOnly: true
+          description: The SHA-512 checksum if available.
+      required:
+      - relative_path
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    Paginatedfile.FileContentResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.FileContentResponse'

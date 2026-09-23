@@ -1,0 +1,2138 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Tasks API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Tasks
+paths:
+  /api/automation-hub/content/{path}/v3/tasks/:
+    get:
+      operationId: _api_automation-hub_content_{path}_v3_tasks_tasks_list
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: List tasks
+      parameters:
+      - in: query
+        name: child_tasks
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where child_tasks matches value
+      - in: query
+        name: created_resources
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: exclusive_resources
+        schema:
+          type: string
+      - in: query
+        name: exclusive_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: finished_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at matches value
+      - in: query
+        name: finished_at__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is greater than value
+      - in: query
+        name: finished_at__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is greater than or equal to value
+      - in: query
+        name: finished_at__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is less than value
+      - in: query
+        name: finished_at__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is less than or equal to value
+      - in: query
+        name: finished_at__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where finished_at is between two comma separated values
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: logging_cid
+        schema:
+          type: string
+        description: Filter results where logging_cid matches value
+      - in: query
+        name: logging_cid__contains
+        schema:
+          type: string
+        description: Filter results where logging_cid contains value
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__ne
+        schema:
+          type: string
+        description: Filter results where name not equal to value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -enc_args
+            - -enc_kwargs
+            - -error
+            - -finished_at
+            - -logging_cid
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -reserved_resources_record
+            - -started_at
+            - -state
+            - -unblocked_at
+            - -versions
+            - enc_args
+            - enc_kwargs
+            - error
+            - finished_at
+            - logging_cid
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - reserved_resources_record
+            - started_at
+            - state
+            - unblocked_at
+            - versions
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `state` - State
+
+          * `-state` - State (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `logging_cid` - Logging cid
+
+          * `-logging_cid` - Logging cid (descending)
+
+          * `unblocked_at` - Unblocked at
+
+          * `-unblocked_at` - Unblocked at (descending)
+
+          * `started_at` - Started at
+
+          * `-started_at` - Started at (descending)
+
+          * `finished_at` - Finished at
+
+          * `-finished_at` - Finished at (descending)
+
+          * `error` - Error
+
+          * `-error` - Error (descending)
+
+          * `enc_args` - Enc args
+
+          * `-enc_args` - Enc args (descending)
+
+          * `enc_kwargs` - Enc kwargs
+
+          * `-enc_kwargs` - Enc kwargs (descending)
+
+          * `reserved_resources_record` - Reserved resources record
+
+          * `-reserved_resources_record` - Reserved resources record (descending)
+
+          * `versions` - Versions
+
+          * `-versions` - Versions (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: parent_task
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where parent_task matches value
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: reserved_resources
+        schema:
+          type: string
+      - in: query
+        name: reserved_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: reserved_resources_record
+        schema:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      - in: query
+        name: shared_resources
+        schema:
+          type: string
+      - in: query
+        name: shared_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: started_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at matches value
+      - in: query
+        name: started_at__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is greater than value
+      - in: query
+        name: started_at__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is greater than or equal to value
+      - in: query
+        name: started_at__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is less than value
+      - in: query
+        name: started_at__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is less than or equal to value
+      - in: query
+        name: started_at__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where started_at is between two comma separated values
+        explode: false
+        style: form
+      - in: query
+        name: state
+        schema:
+          type: string
+          enum:
+          - canceled
+          - canceling
+          - completed
+          - failed
+          - running
+          - skipped
+          - waiting
+        description: 'Filter results where state matches value
+
+
+          * `waiting` - Waiting
+
+          * `skipped` - Skipped
+
+          * `running` - Running
+
+          * `completed` - Completed
+
+          * `failed` - Failed
+
+          * `canceled` - Canceled
+
+          * `canceling` - Canceling'
+      - in: query
+        name: state__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where state is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: state__ne
+        schema:
+          type: string
+        description: Filter results where state not equal to value
+      - in: query
+        name: task_group
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where task_group matches value
+      - in: query
+        name: worker
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where worker matches value
+      - in: query
+        name: worker__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter results where worker is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: worker__isnull
+        schema:
+          type: boolean
+        description: Filter results where worker has a null value
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaskSummaryResponseList'
+          description: ''
+  /api/automation-hub/content/{path}/v3/tasks/{pulp_id}/:
+    get:
+      operationId: _api_automation-hub_content_{path}_v3_tasks_{pulp_id}_tasks_read
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Inspect a task
+      parameters:
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/tasks/:
+    get:
+      operationId: _api_automation-hub_pulp_api_v3_tasks_tasks_list
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: List tasks
+      parameters:
+      - in: query
+        name: child_tasks
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where child_tasks matches value
+      - in: query
+        name: created_resources
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: exclusive_resources
+        schema:
+          type: string
+      - in: query
+        name: exclusive_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: finished_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at matches value
+      - in: query
+        name: finished_at__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is greater than value
+      - in: query
+        name: finished_at__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is greater than or equal to value
+      - in: query
+        name: finished_at__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is less than value
+      - in: query
+        name: finished_at__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is less than or equal to value
+      - in: query
+        name: finished_at__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where finished_at is between two comma separated values
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: logging_cid
+        schema:
+          type: string
+        description: Filter results where logging_cid matches value
+      - in: query
+        name: logging_cid__contains
+        schema:
+          type: string
+        description: Filter results where logging_cid contains value
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__ne
+        schema:
+          type: string
+        description: Filter results where name not equal to value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -enc_args
+            - -enc_kwargs
+            - -error
+            - -finished_at
+            - -logging_cid
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -reserved_resources_record
+            - -started_at
+            - -state
+            - -unblocked_at
+            - -versions
+            - enc_args
+            - enc_kwargs
+            - error
+            - finished_at
+            - logging_cid
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - reserved_resources_record
+            - started_at
+            - state
+            - unblocked_at
+            - versions
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `state` - State
+
+          * `-state` - State (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `logging_cid` - Logging cid
+
+          * `-logging_cid` - Logging cid (descending)
+
+          * `unblocked_at` - Unblocked at
+
+          * `-unblocked_at` - Unblocked at (descending)
+
+          * `started_at` - Started at
+
+          * `-started_at` - Started at (descending)
+
+          * `finished_at` - Finished at
+
+          * `-finished_at` - Finished at (descending)
+
+          * `error` - Error
+
+          * `-error` - Error (descending)
+
+          * `enc_args` - Enc args
+
+          * `-enc_args` - Enc args (descending)
+
+          * `enc_kwargs` - Enc kwargs
+
+          * `-enc_kwargs` - Enc kwargs (descending)
+
+          * `reserved_resources_record` - Reserved resources record
+
+          * `-reserved_resources_record` - Reserved resources record (descending)
+
+          * `versions` - Versions
+
+          * `-versions` - Versions (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: parent_task
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where parent_task matches value
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: reserved_resources
+        schema:
+          type: string
+      - in: query
+        name: reserved_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: reserved_resources_record
+        schema:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      - in: query
+        name: shared_resources
+        schema:
+          type: string
+      - in: query
+        name: shared_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: started_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at matches value
+      - in: query
+        name: started_at__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is greater than value
+      - in: query
+        name: started_at__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is greater than or equal to value
+      - in: query
+        name: started_at__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is less than value
+      - in: query
+        name: started_at__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is less than or equal to value
+      - in: query
+        name: started_at__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where started_at is between two comma separated values
+        explode: false
+        style: form
+      - in: query
+        name: state
+        schema:
+          type: string
+          enum:
+          - canceled
+          - canceling
+          - completed
+          - failed
+          - running
+          - skipped
+          - waiting
+        description: 'Filter results where state matches value
+
+
+          * `waiting` - Waiting
+
+          * `skipped` - Skipped
+
+          * `running` - Running
+
+          * `completed` - Completed
+
+          * `failed` - Failed
+
+          * `canceled` - Canceled
+
+          * `canceling` - Canceling'
+      - in: query
+        name: state__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where state is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: state__ne
+        schema:
+          type: string
+        description: Filter results where state not equal to value
+      - in: query
+        name: task_group
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where task_group matches value
+      - in: query
+        name: worker
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where worker matches value
+      - in: query
+        name: worker__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter results where worker is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: worker__isnull
+        schema:
+          type: boolean
+        description: Filter results where worker has a null value
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaskResponseList'
+          description: ''
+  /api/automation-hub/pulp/api/v3/tasks/{pulp_id}/:
+    get:
+      operationId: _api_automation-hub_pulp_api_v3_tasks_{pulp_id}_tasks_read
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Inspect a task
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+          description: ''
+    patch:
+      operationId: tasks_cancel
+      description: This operation cancels a task.
+      summary: Cancel a task
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTaskCancel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTaskCancel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTaskCancel'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+          description: ''
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+          description: ''
+    delete:
+      operationId: tasks_delete
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Delete a task
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - Tasks
+      responses:
+        '204':
+          description: No response body
+  /api/automation-hub/pulp/api/v3/tasks/{pulp_id}/add_role/:
+    post:
+      operationId: tasks_add_role
+      description: Add a role for this object to users/groups.
+      summary: Add a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/tasks/{pulp_id}/list_roles/:
+    get:
+      operationId: tasks_list_roles
+      description: List roles assigned to this object.
+      summary: List roles
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRolesResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/tasks/{pulp_id}/my_permissions/:
+    get:
+      operationId: tasks_my_permissions
+      description: List permissions available to the current user on this object.
+      summary: List user permissions
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPermissionsResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/tasks/{pulp_id}/remove_role/:
+    post:
+      operationId: tasks_remove_role
+      description: Remove a role for this object from users/groups.
+      summary: Remove a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      tags:
+      - Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/tasks/purge/:
+    post:
+      operationId: tasks_purge
+      description: Trigger an asynchronous task that deletes completed tasks that finished prior to a specified timestamp.
+      summary: Purge Completed Tasks
+      tags:
+      - Tasks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Purge'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Purge'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Purge'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/v3/tasks/:
+    get:
+      operationId: _api_automation-hub_v3_tasks_tasks_list
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: List tasks
+      parameters:
+      - in: query
+        name: child_tasks
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where child_tasks matches value
+      - in: query
+        name: created_resources
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: exclusive_resources
+        schema:
+          type: string
+      - in: query
+        name: exclusive_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: finished_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at matches value
+      - in: query
+        name: finished_at__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is greater than value
+      - in: query
+        name: finished_at__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is greater than or equal to value
+      - in: query
+        name: finished_at__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is less than value
+      - in: query
+        name: finished_at__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where finished_at is less than or equal to value
+      - in: query
+        name: finished_at__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where finished_at is between two comma separated values
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: logging_cid
+        schema:
+          type: string
+        description: Filter results where logging_cid matches value
+      - in: query
+        name: logging_cid__contains
+        schema:
+          type: string
+        description: Filter results where logging_cid contains value
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__ne
+        schema:
+          type: string
+        description: Filter results where name not equal to value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -enc_args
+            - -enc_kwargs
+            - -error
+            - -finished_at
+            - -logging_cid
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -reserved_resources_record
+            - -started_at
+            - -state
+            - -unblocked_at
+            - -versions
+            - enc_args
+            - enc_kwargs
+            - error
+            - finished_at
+            - logging_cid
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - reserved_resources_record
+            - started_at
+            - state
+            - unblocked_at
+            - versions
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `state` - State
+
+          * `-state` - State (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `logging_cid` - Logging cid
+
+          * `-logging_cid` - Logging cid (descending)
+
+          * `unblocked_at` - Unblocked at
+
+          * `-unblocked_at` - Unblocked at (descending)
+
+          * `started_at` - Started at
+
+          * `-started_at` - Started at (descending)
+
+          * `finished_at` - Finished at
+
+          * `-finished_at` - Finished at (descending)
+
+          * `error` - Error
+
+          * `-error` - Error (descending)
+
+          * `enc_args` - Enc args
+
+          * `-enc_args` - Enc args (descending)
+
+          * `enc_kwargs` - Enc kwargs
+
+          * `-enc_kwargs` - Enc kwargs (descending)
+
+          * `reserved_resources_record` - Reserved resources record
+
+          * `-reserved_resources_record` - Reserved resources record (descending)
+
+          * `versions` - Versions
+
+          * `-versions` - Versions (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: parent_task
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where parent_task matches value
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: reserved_resources
+        schema:
+          type: string
+      - in: query
+        name: reserved_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: reserved_resources_record
+        schema:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+      - in: query
+        name: shared_resources
+        schema:
+          type: string
+      - in: query
+        name: shared_resources__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: started_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at matches value
+      - in: query
+        name: started_at__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is greater than value
+      - in: query
+        name: started_at__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is greater than or equal to value
+      - in: query
+        name: started_at__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is less than value
+      - in: query
+        name: started_at__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where started_at is less than or equal to value
+      - in: query
+        name: started_at__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where started_at is between two comma separated values
+        explode: false
+        style: form
+      - in: query
+        name: state
+        schema:
+          type: string
+          enum:
+          - canceled
+          - canceling
+          - completed
+          - failed
+          - running
+          - skipped
+          - waiting
+        description: 'Filter results where state matches value
+
+
+          * `waiting` - Waiting
+
+          * `skipped` - Skipped
+
+          * `running` - Running
+
+          * `completed` - Completed
+
+          * `failed` - Failed
+
+          * `canceled` - Canceled
+
+          * `canceling` - Canceling'
+      - in: query
+        name: state__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where state is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: state__ne
+        schema:
+          type: string
+        description: Filter results where state not equal to value
+      - in: query
+        name: task_group
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where task_group matches value
+      - in: query
+        name: worker
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where worker matches value
+      - in: query
+        name: worker__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter results where worker is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: worker__isnull
+        schema:
+          type: boolean
+        description: Filter results where worker has a null value
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTaskSummaryResponseList'
+          description: ''
+  /api/automation-hub/v3/tasks/{pulp_id}/:
+    get:
+      operationId: _api_automation-hub_v3_tasks_{pulp_id}_tasks_read
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Inspect a task
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this task.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Tasks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskResponse'
+          description: ''
+components:
+  schemas:
+    StatesEnum:
+      enum:
+      - skipped
+      - completed
+      - failed
+      - canceled
+      type: string
+      description: '* `skipped` - skipped
+
+        * `completed` - completed
+
+        * `failed` - failed
+
+        * `canceled` - canceled'
+    ProgressReportResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: The message shown to the user for the progress report.
+        code:
+          type: string
+          readOnly: true
+          description: Identifies the type of progress report'.
+        state:
+          type: string
+          readOnly: true
+          description: 'The current state of the progress report. The possible values are: ''waiting'', ''skipped'', ''running'', ''completed'', ''failed'', ''canceled'' and ''canceling''. The default is ''waiting''.'
+        total:
+          type: integer
+          format: int64
+          readOnly: true
+          description: The total count of items.
+        done:
+          type: integer
+          format: int64
+          readOnly: true
+          description: The count of items already processed. Defaults to 0.
+        suffix:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The suffix to be shown with the progress report.
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    PaginatedTaskResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskResponse'
+    PatchedTaskCancel:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        state:
+          type: string
+          minLength: 1
+          description: The desired state of the task. Only 'canceled' is accepted.
+    TaskResponse:
+      type: object
+      properties:
+        pulp_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        state:
+          type: string
+        error:
+          type:
+          - object
+          - 'null'
+        worker:
+          type:
+          - object
+          - 'null'
+          readOnly: true
+        parent_task:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        child_tasks:
+          type: array
+          items:
+            type: string
+            format: uuid
+        progress_reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProgressReportResponse'
+          readOnly: true
+      required:
+      - child_tasks
+      - created_at
+      - finished_at
+      - name
+      - pulp_id
+      - started_at
+      - state
+      - updated_at
+    PaginatedTaskSummaryResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskSummaryResponse'
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    Purge:
+      type: object
+      properties:
+        finished_before:
+          type: string
+          format: date-time
+          default: '2026-07-19'
+          description: Purge tasks completed earlier than this timestamp. Format '%Y-%m-%d[T%H:%M:%S]'
+        states:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatesEnum'
+          default:
+          - completed
+          description: List of task-states to be purged. Only 'final' states are allowed.
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    TaskSummaryResponse:
+      type: object
+      description: 'TaskSerializer but without detail fields.
+
+
+        For use in /tasks/<str:pk>/ detail views.'
+      properties:
+        pulp_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        state:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        href:
+          type: string
+          readOnly: true
+      required:
+      - finished_at
+      - name
+      - pulp_id
+      - started_at
+      - state

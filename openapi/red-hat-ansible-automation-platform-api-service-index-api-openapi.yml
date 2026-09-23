@@ -1,0 +1,38 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: Service-Index API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: Service-Index'
+paths:
+  /api/automation-hub/service-index/:
+    get:
+      operationId: api_automation_hub_service_index_get
+      description: Link other resource registry endpoints
+      tags:
+      - 'Api: Service-Index'
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub service index get
+      x-summary-source: derived

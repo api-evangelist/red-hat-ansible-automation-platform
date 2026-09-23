@@ -1,0 +1,62 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V2 Role_Metadata API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V2 Role_Metadata'
+paths:
+  /api/automation-hub/_ui/v2/role_metadata/:
+    get:
+      operationId: api_automation_hub__ui_v2_role_metadata_get
+      description: 'General data about models and permissions tracked by django-ansible-base RBAC
+
+
+        Information from this endpoint should be static given a server version.
+
+        This reflects model definitions, registrations with the permission registry,
+
+        and enablement of RBAC features in settings.
+
+
+        allowed_permissions: Valid permissions for a role of a given content_type'
+      tags:
+      - 'Api: _Ui V2 Role_Metadata'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleMetadataResponse'
+          description: ''
+      summary: Api automation hub ui v2 role metadata get
+      x-summary-source: derived
+components:
+  schemas:
+    RoleMetadataResponse:
+      type: object
+      properties:
+        allowed_permissions:
+          type: object
+          description: A List of permissions allowed for a role definition, given its content type.
+      required:
+      - allowed_permissions

@@ -1,0 +1,545 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Artifacts API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Artifacts
+paths:
+  /api/automation-hub/pulp/api/v3/artifacts/:
+    get:
+      operationId: artifacts_list
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: List artifacts
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: md5
+        schema:
+          type: string
+        description: Filter results where md5 matches value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -file
+            - -md5
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -sha1
+            - -sha224
+            - -sha256
+            - -sha384
+            - -sha512
+            - -size
+            - -timestamp_of_interest
+            - file
+            - md5
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - sha1
+            - sha224
+            - sha256
+            - sha384
+            - sha512
+            - size
+            - timestamp_of_interest
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `file` - File
+
+          * `-file` - File (descending)
+
+          * `size` - Size
+
+          * `-size` - Size (descending)
+
+          * `md5` - Md5
+
+          * `-md5` - Md5 (descending)
+
+          * `sha1` - Sha1
+
+          * `-sha1` - Sha1 (descending)
+
+          * `sha224` - Sha224
+
+          * `-sha224` - Sha224 (descending)
+
+          * `sha256` - Sha256
+
+          * `-sha256` - Sha256 (descending)
+
+          * `sha384` - Sha384
+
+          * `-sha384` - Sha384 (descending)
+
+          * `sha512` - Sha512
+
+          * `-sha512` - Sha512 (descending)
+
+          * `timestamp_of_interest` - Timestamp of interest
+
+          * `-timestamp_of_interest` - Timestamp of interest (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: orphaned_for
+        schema:
+          type: number
+        description: Minutes Artifacts have been orphaned for. -1 uses ORPHAN_PROTECTION_TIME.
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: sha1
+        schema:
+          type: string
+        description: Filter results where sha1 matches value
+      - in: query
+        name: sha224
+        schema:
+          type: string
+        description: Filter results where sha224 matches value
+      - in: query
+        name: sha256
+        schema:
+          type: string
+        description: Filter results where sha256 matches value
+      - in: query
+        name: sha384
+        schema:
+          type: string
+        description: Filter results where sha384 matches value
+      - in: query
+        name: sha512
+        schema:
+          type: string
+        description: Filter results where sha512 matches value
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Artifacts
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedArtifactResponseList'
+          description: ''
+    post:
+      operationId: artifacts_create
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Create an artifact
+      tags:
+      - Artifacts
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Artifact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Artifact'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/artifacts/{pulp_id}/:
+    get:
+      operationId: artifacts_read
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Inspect an artifact
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this artifact.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Artifacts
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtifactResponse'
+          description: ''
+    delete:
+      operationId: artifacts_delete
+      description: Remove Artifact only if it is not associated with any Content.
+      summary: Delete an artifact
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this artifact.
+        required: true
+      tags:
+      - Artifacts
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    ArtifactResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        file:
+          type: string
+          description: The stored file.
+        size:
+          type: integer
+          format: int64
+          description: The size of the file in bytes.
+        md5:
+          type:
+          - string
+          - 'null'
+          description: The MD5 checksum of the file if available.
+        sha1:
+          type:
+          - string
+          - 'null'
+          description: The SHA-1 checksum of the file if available.
+        sha224:
+          type:
+          - string
+          - 'null'
+          description: The SHA-224 checksum of the file if available.
+        sha256:
+          type:
+          - string
+          - 'null'
+          description: The SHA-256 checksum of the file if available.
+        sha384:
+          type:
+          - string
+          - 'null'
+          description: The SHA-384 checksum of the file if available.
+        sha512:
+          type:
+          - string
+          - 'null'
+          description: The SHA-512 checksum of the file if available.
+      required:
+      - file
+    Artifact:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        file:
+          type: string
+          format: binary
+          description: The stored file.
+        size:
+          type: integer
+          format: int64
+          description: The size of the file in bytes.
+        md5:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The MD5 checksum of the file if available.
+        sha1:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-1 checksum of the file if available.
+        sha224:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-224 checksum of the file if available.
+        sha256:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-256 checksum of the file if available.
+        sha384:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-384 checksum of the file if available.
+        sha512:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-512 checksum of the file if available.
+      required:
+      - file
+    PaginatedArtifactResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArtifactResponse'

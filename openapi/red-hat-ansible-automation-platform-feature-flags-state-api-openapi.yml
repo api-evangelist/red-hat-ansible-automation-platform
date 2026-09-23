@@ -1,0 +1,234 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Feature Flags State API
+  version: '1.0'
+  description: 'Operations tagged feature_flags_state across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: feature_flags_state
+paths:
+  /api/v2/feature_flags_state/:
+    get:
+      operationId: feature_flags_state_retrieve
+      description: A view class for displaying feature flags
+      tags:
+      - feature_flags_state
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                Featureflags:
+                  value:
+                    FLAG1: true
+                    FLAG2: false
+                  summary: featureflags
+          description: ''
+      x-ai-description: Retrieve single feature flags state
+      summary: Feature flags state retrieve
+      x-summary-source: derived
+  /feature_flags_state/:
+    get:
+      operationId: feature_flags_state_retrieve
+      description: A view class for displaying feature flags
+      tags:
+      - feature_flags_state
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OldFeatureFlag'
+          description: ''
+      summary: Feature flags state retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /api/gateway/v1/feature_flags_state/:
+    get:
+      operationId: feature_flags_state_retrieve
+      description: A view class for displaying feature flags
+      tags:
+      - feature_flags_state
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+              examples:
+                Featureflags:
+                  value:
+                    FLAG1: true
+                    FLAG2: false
+                  summary: featureflags
+          description: ''
+      x-ai-description: Retrieve single feature flags state
+      summary: Feature flags state retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    ToggleTypeEnum:
+      enum:
+      - install-time
+      - run-time
+      type: string
+      description: '* `install-time` - install-time
+
+        * `run-time` - run-time'
+    OldFeatureFlag:
+      type: object
+      description: Serialize list of feature flags
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          readOnly: true
+          description: The name of the feature flag. Must follow the format of FEATURE_<flag-name>_ENABLED.
+        ui_name:
+          type: string
+          description: The pretty name to display in the application User Interface
+          maxLength: 64
+        condition:
+          type: string
+          readOnly: true
+          default: boolean
+          description: Used to specify a condition, which if met, will enable the feature flag.
+        value:
+          type: string
+          description: The value used to evaluate the conditional specified.
+          maxLength: 127
+        required:
+          type: boolean
+          readOnly: true
+          description: If multiple conditions are required to be met to enable a feature flag, 'required' can be used to specify the necessary conditionals.
+        support_level:
+          type: string
+          readOnly: true
+          description: The support criteria for the feature flag. Must be one of (DEVELOPER_PREVIEW or TECHNOLOGY_PREVIEW).
+        visibility:
+          type: boolean
+          readOnly: true
+          description: Controls whether the feature is visible in the UI.
+        toggle_type:
+          allOf:
+          - $ref: '#/components/schemas/ToggleTypeEnum'
+          readOnly: true
+          description: 'Details whether a flag is toggle-able at run-time or install-time. (Default: ''run-time'').
+
+
+            * `install-time` - install-time
+
+            * `run-time` - run-time'
+        description:
+          type: string
+          readOnly: true
+          description: A detailed description giving an overview of the feature flag.
+        support_url:
+          type: string
+          description: A link to the documentation support URL for the feature
+          maxLength: 250
+        labels:
+          readOnly: true
+          description: A list of labels for the feature flag.
+      required:
+      - condition
+      - created
+      - created_by
+      - description
+      - id
+      - labels
+      - modified
+      - modified_by
+      - name
+      - related
+      - required
+      - summary_fields
+      - support_level
+      - toggle_type
+      - ui_name
+      - url
+      - visibility
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

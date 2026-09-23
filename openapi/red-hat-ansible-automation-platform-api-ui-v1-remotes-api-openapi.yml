@@ -1,0 +1,637 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V1 Remotes API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V1 Remotes'
+paths:
+  /api/automation-hub/_ui/v1/remotes/:
+    get:
+      operationId: api_automation_hub__ui_v1_remotes_list
+      summary: List collection remotes
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 Remotes'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedansible.CollectionRemoteResponseList'
+          description: ''
+    post:
+      operationId: api_automation_hub__ui_v1_remotes_create
+      summary: Create a collection remote
+      tags:
+      - 'Api: _Ui V1 Remotes'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+          description: ''
+  /api/automation-hub/_ui/v1/remotes/{pulp_id}/:
+    get:
+      operationId: api_automation_hub__ui_v1_remotes_read
+      summary: Inspect a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 Remotes'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+          description: ''
+    put:
+      operationId: api_automation_hub__ui_v1_remotes_update
+      summary: Update a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Api: _Ui V1 Remotes'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+          description: ''
+    patch:
+      operationId: api_automation_hub__ui_v1_remotes_partial_update
+      summary: Update a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Api: _Ui V1 Remotes'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.CollectionRemote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.CollectionRemote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.CollectionRemote'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+          description: ''
+    delete:
+      operationId: api_automation_hub__ui_v1_remotes_delete
+      summary: Delete a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Api: _Ui V1 Remotes'
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    AnsibleRepositoryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        next_version:
+          type: integer
+          format: int64
+          maximum: 2147483647
+          minimum: 0
+        distributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsibleDistributionResponse'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        last_sync_task:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
+    AnsibleDistributionResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        base_path:
+          type: string
+        content_guard:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - base_path
+      - created_at
+      - name
+      - updated_at
+    ansible.CollectionRemote:
+      type: object
+      description: A serializer for Collection Remotes.
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: The URL of an external content source.
+        auth_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          maxLength: 2000
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The string version of Collection requirements yaml.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Remote user.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Remote password.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: User for proxy authentication.
+        proxy_password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Password for proxy authentication.
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
+      required:
+      - url
+    Patchedansible.CollectionRemote:
+      type: object
+      description: A serializer for Collection Remotes.
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: The URL of an external content source.
+        auth_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          maxLength: 2000
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The string version of Collection requirements yaml.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Remote user.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Remote password.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: User for proxy authentication.
+        proxy_password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Password for proxy authentication.
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
+    Paginatedansible.CollectionRemoteResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+    ansible.CollectionRemoteResponse:
+      type: object
+      description: A serializer for Collection Remotes.
+      properties:
+        pk:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Pulp id
+        name:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          description: The URL of an external content source.
+        auth_url:
+          type:
+          - string
+          - 'null'
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          description: The string version of Collection requirements yaml.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          description: Remote user.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        last_sync_task:
+          type: string
+          readOnly: true
+        repositories:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsibleRepositoryResponse'
+          readOnly: true
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          description: User for proxy authentication.
+        write_only_fields:
+          type: array
+          items: {}
+          readOnly: true
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
+      required:
+      - url
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'

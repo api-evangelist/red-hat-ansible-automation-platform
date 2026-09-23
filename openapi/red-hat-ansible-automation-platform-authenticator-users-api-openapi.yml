@@ -1,0 +1,387 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Authenticator Users API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: authenticator_users
+paths:
+  /api/gateway/v1/authenticator_users/:
+    get:
+      operationId: authenticator_users_list
+      description: API endpoint that allows AuthenticatorUsers to be viewed and listed.
+      parameters:
+      - in: query
+        name: access_allowed
+        schema:
+          type: string
+        description: Filter by access_allowed (exact match)
+      - in: query
+        name: claims
+        schema:
+          type: string
+        description: Filter by claims (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: email
+        schema:
+          type: string
+        description: Filter by email (exact match)
+      - in: query
+        name: email__icontains
+        schema:
+          type: string
+        description: Filter by email (case-insensitive partial match)
+      - in: query
+        name: extra_data
+        schema:
+          type: string
+        description: Filter by extra_data (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: last_login_map_results
+        schema:
+          type: string
+        description: Filter by last_login_map_results (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: provider
+        schema:
+          type: string
+        description: Filter by provider (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: uid
+        schema:
+          type: string
+        description: Filter by uid (exact match)
+      - in: query
+        name: uid__icontains
+        schema:
+          type: string
+        description: Filter by uid (case-insensitive partial match)
+      - in: query
+        name: user
+        schema:
+          type: string
+        description: Filter by user (exact match)
+      tags:
+      - authenticator_users
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuthenticatorUserList'
+          description: ''
+      x-ai-description: List all authenticator users
+      summary: Authenticator users list
+      x-summary-source: derived
+  /api/gateway/v1/authenticator_users/{id}/:
+    get:
+      operationId: authenticator_users_retrieve
+      description: API endpoint that allows AuthenticatorUsers to be viewed and listed.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator user.
+        required: true
+      tags:
+      - authenticator_users
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorUser'
+          description: ''
+      x-ai-description: Retrieve single authenticator user
+      summary: Authenticator users retrieve
+      x-summary-source: derived
+  /api/gateway/v1/authenticator_users/{id}/move/:
+    post:
+      operationId: authenticator_users_move_create
+      description: API endpoint that allows AuthenticatorUsers to be viewed and listed.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator user.
+        required: true
+      tags:
+      - authenticator_users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorUserMove'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorUserMove'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorUserMove'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorUserMove'
+          description: ''
+      x-ai-description: Create new move for an authenticator_user
+      summary: Authenticator users move create
+      x-summary-source: derived
+components:
+  schemas:
+    AuthenticatorUserMove:
+      type: object
+      properties:
+        new_authenticator:
+          type: integer
+          description: The ID of the authenticator to which the user will be moved.
+        keep_memberships:
+          type: boolean
+          description: If false, remove the user's existing memberships and let the authenticator map for the new authenticator manage it instead.
+        merge_with_user:
+          type:
+          - integer
+          - 'null'
+          description: An optional user to merge this account with.
+        new_uid:
+          type:
+          - string
+          - 'null'
+          description: Provide a new UID for the user. This value is used to link the users login with the local AAP account.  It must match the user identifier from the new authentication provider.
+        merge_accounts_with_same_uid:
+          type: boolean
+          description: If true, automatically merge accounts with the same uid. Mutually exclusive with merge_with_user.
+        remove_other_authenticators:
+          type: boolean
+          description: If true, delete any other authenticator_user entries the user has from old_authenticator.
+      required:
+      - keep_memberships
+      - merge_accounts_with_same_uid
+      - new_authenticator
+      - remove_other_authenticators
+    PaginatedAuthenticatorUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthenticatorUser'
+    AuthenticatorUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        provider:
+          type: string
+          description: The provider this user authenticated from.
+        user:
+          type: integer
+          description: The local DB user related to this authenticator user.
+        claims:
+          description: The claims for the user as generated by the authenticator maps on their last login.
+        last_login_map_results:
+          description: A data structure indicating how the authenticator maps were evaluated for the last login attempt.
+        access_allowed:
+          type:
+          - boolean
+          - 'null'
+          description: Tracks if this user was allowed access to the system from the authenticator maps.
+        uid:
+          type: string
+          maxLength: 255
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - provider
+      - uid
+      - user
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

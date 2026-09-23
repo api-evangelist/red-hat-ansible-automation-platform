@@ -1,0 +1,123 @@
+openapi: 3.2.0
+info:
+  title: AWX Host Metric Summary Monthly API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: host_metric_summary_monthly
+paths:
+  /api/v2/host_metric_summary_monthly/:
+    get:
+      operationId: host_metric_summary_monthly_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - host_metric_summary_monthly
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedHostMetricSummaryMonthlyList'
+          description: ''
+      x-ai-description: List monthly summaries for host metrics
+      summary: Host metric summary monthly list
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedHostMetricSummaryMonthlyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HostMetricSummaryMonthly'
+    HostMetricSummaryMonthly:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        date:
+          type: string
+          format: date
+          readOnly: true
+        license_consumed:
+          type: integer
+          readOnly: true
+          description: How many unique hosts are consumed from the license
+        license_capacity:
+          type: integer
+          readOnly: true
+          description: '''License capacity as max. number of unique hosts'
+        hosts_added:
+          type: integer
+          readOnly: true
+          description: How many hosts were added in the associated month, consuming more license capacity
+        hosts_deleted:
+          type: integer
+          readOnly: true
+          description: How many hosts were deleted in the associated month, freeing the license capacity
+        indirectly_managed_hosts:
+          type: integer
+          readOnly: true
+          description: Manually entered number indirectly managed hosts for a certain month

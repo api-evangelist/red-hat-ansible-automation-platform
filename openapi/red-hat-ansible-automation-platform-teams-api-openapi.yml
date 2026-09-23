@@ -1,0 +1,3198 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Teams API
+  version: '1.0'
+  description: 'Operations tagged teams across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: Teams
+paths:
+  /api/v2/teams/:
+    get:
+      operationId: teams_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamList'
+          description: ''
+      x-ai-description: List teams
+      summary: Teams list
+      x-summary-source: derived
+    post:
+      operationId: teams_create
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+      x-ai-description: Create a team
+      summary: Teams create
+      x-summary-source: derived
+  /api/v2/teams/{id}/:
+    get:
+      operationId: teams_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+      x-ai-description: Retrieve a team
+      summary: Teams retrieve
+      x-summary-source: derived
+    put:
+      operationId: teams_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+      x-ai-description: Update a team
+      summary: Teams update
+      x-summary-source: derived
+    patch:
+      operationId: teams_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeamRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+          description: ''
+      x-ai-description: Update a team
+      summary: Teams partial update
+      x-summary-source: derived
+    delete:
+      operationId: teams_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a team
+      summary: Teams destroy
+      x-summary-source: derived
+  /api/v2/teams/{id}/access_list/:
+    get:
+      operationId: teams_access_list_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceAccessListElementList'
+          description: ''
+      x-ai-description: List users who can access the team
+      summary: Teams access list list
+      x-summary-source: derived
+  /api/v2/teams/{id}/activity_stream/:
+    get:
+      operationId: teams_activity_stream_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivityStreamList'
+          description: ''
+      x-ai-description: List activity stream for a team
+      summary: Teams activity stream list
+      x-summary-source: derived
+  /api/v2/teams/{id}/credentials/:
+    get:
+      operationId: teams_credentials_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamCredentialSerializerCreateList'
+          description: ''
+      x-ai-description: List credentials owned by a team
+      summary: Teams credentials list
+      x-summary-source: derived
+    post:
+      operationId: teams_credentials_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCredentialSerializerCreateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamCredentialSerializerCreate'
+          description: ''
+      x-ai-description: Create a credentials owned by a team
+      summary: Teams credentials create
+      x-summary-source: derived
+  /api/v2/teams/{id}/object_roles/:
+    get:
+      operationId: teams_object_roles_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleList'
+          description: ''
+      x-ai-description: List object roles of a team
+      summary: Teams object roles list
+      x-summary-source: derived
+  /api/v2/teams/{id}/projects/:
+    get:
+      operationId: teams_projects_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProjectList'
+          description: ''
+      x-ai-description: List projects accessible to a team
+      summary: Teams projects list
+      x-summary-source: derived
+  /api/v2/teams/{id}/roles/:
+    get:
+      operationId: teams_roles_list
+      description: Derived version of SubListCreateAttachDetachAPIView that prohibits creation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleSerializerWithParentAccessList'
+          description: ''
+      x-ai-description: List roles of a team
+      summary: Teams roles list
+      x-summary-source: derived
+    post:
+      operationId: teams_roles_create
+      description: Derived version of SubListCreateAttachDetachAPIView that prohibits creation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleSerializerWithParentAccess'
+          description: ''
+      x-ai-description: Add a role to a team
+      summary: Teams roles create
+      x-summary-source: derived
+  /api/v2/teams/{id}/users/:
+    get:
+      operationId: teams_users_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+      x-ai-description: List users of a team
+      summary: Teams users list
+      x-summary-source: derived
+    post:
+      operationId: teams_users_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+      x-ai-description: Create a user of a team
+      summary: Teams users create
+      x-summary-source: derived
+  /teams/:
+    get:
+      operationId: teams_list
+      description: List all teams.
+      parameters:
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by team description.
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by team name.
+      - in: query
+        name: organization_id
+        schema:
+          type: number
+        description: Filter by organization ID.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: resource__ansible_id
+        schema:
+          type: string
+        description: Filter by resource ansible ID.
+      tags:
+      - Teams
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamList_2'
+          description: Return a list of teams.
+      summary: Teams list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /teams/{id}/:
+    get:
+      operationId: teams_retrieve
+      description: Get team by its id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - Teams
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDetail'
+          description: Return a team by its id.
+      summary: Teams retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /api/gateway/v1/teams/:
+    get:
+      operationId: teams_list
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by description (exact match)
+      - in: query
+        name: description__icontains
+        schema:
+          type: string
+        description: Filter by description (case-insensitive partial match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: organization
+        schema:
+          type: string
+        description: Filter by organization (exact match)
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: resource
+        schema:
+          type: string
+        description: Filter by resource (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Teams
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamList'
+          description: ''
+      x-ai-description: List organization subdivisions that group users for bulk permission assignment and role-based access control
+      summary: Teams list
+      x-summary-source: derived
+    post:
+      operationId: teams_create
+      description: API endpoint that allows groups to be viewed or edited.
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team_3'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Team_3'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Team_3'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team_3'
+          description: ''
+      x-ai-description: Create a organization subdivisions that group user for bulk permission assignment and role-based access control
+      summary: Teams create
+      x-summary-source: derived
+  /api/gateway/v1/teams/{id}/:
+    get:
+      operationId: teams_retrieve
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - Teams
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team_3'
+          description: ''
+      x-ai-description: Retrieve a organization subdivisions that group user for bulk permission assignment and role-based access control
+      summary: Teams retrieve
+      x-summary-source: derived
+    put:
+      operationId: teams_update
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team_3'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Team_3'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Team_3'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team_3'
+          description: ''
+      x-ai-description: Update a organization subdivisions that group user for bulk permission assignment and role-based access control
+      summary: Teams update
+      x-summary-source: derived
+    patch:
+      operationId: teams_partial_update
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team_3'
+          description: ''
+      x-ai-description: Update a organization subdivisions that group user for bulk permission assignment and role-based access control
+      summary: Teams partial update
+      x-summary-source: derived
+    delete:
+      operationId: teams_destroy
+      description: API endpoint that allows groups to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - Teams
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a organization subdivisions that group user for bulk permission assignment and role-based access control
+      summary: Teams destroy
+      x-summary-source: derived
+  /api/gateway/v1/teams/{id}/admins/:
+    get:
+      operationId: teams_admins_list
+      description: 'Manage User objects in the ''admins'' relationship of this particular Team.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/admins/ to show users currently in the relationship
+
+
+        POST a list of instances to /:id/admins/associate/ to add those users to the relationship
+
+
+        POST a list of instances to /:id/admins/disassociate/ to remove those users from the relationshp'
+      parameters:
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: date_joined
+        schema:
+          type: string
+        description: Filter by date_joined (exact match)
+      - in: query
+        name: date_joined__gt
+        schema:
+          type: string
+        description: Filter by date_joined (gt)
+      - in: query
+        name: date_joined__gte
+        schema:
+          type: string
+        description: Filter by date_joined (gte)
+      - in: query
+        name: date_joined__lt
+        schema:
+          type: string
+        description: Filter by date_joined (lt)
+      - in: query
+        name: date_joined__lte
+        schema:
+          type: string
+        description: Filter by date_joined (lte)
+      - in: query
+        name: email
+        schema:
+          type: string
+        description: Filter by email (exact match)
+      - in: query
+        name: email__icontains
+        schema:
+          type: string
+        description: Filter by email (case-insensitive partial match)
+      - in: query
+        name: first_name
+        schema:
+          type: string
+        description: Filter by first_name (exact match)
+      - in: query
+        name: first_name__icontains
+        schema:
+          type: string
+        description: Filter by first_name (case-insensitive partial match)
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: is_active
+        schema:
+          type: string
+        description: Filter by is_active (exact match)
+      - in: query
+        name: is_staff
+        schema:
+          type: string
+        description: Filter by is_staff (exact match)
+      - in: query
+        name: is_superuser
+        schema:
+          type: string
+        description: Filter by is_superuser (exact match)
+      - in: query
+        name: last_login
+        schema:
+          type: string
+        description: Filter by last_login (exact match)
+      - in: query
+        name: last_login__gt
+        schema:
+          type: string
+        description: Filter by last_login (gt)
+      - in: query
+        name: last_login__gte
+        schema:
+          type: string
+        description: Filter by last_login (gte)
+      - in: query
+        name: last_login__lt
+        schema:
+          type: string
+        description: Filter by last_login (lt)
+      - in: query
+        name: last_login__lte
+        schema:
+          type: string
+        description: Filter by last_login (lte)
+      - in: query
+        name: last_login_from
+        schema:
+          type: string
+        description: Filter by last_login_from (exact match)
+      - in: query
+        name: last_name
+        schema:
+          type: string
+        description: Filter by last_name (exact match)
+      - in: query
+        name: last_name__icontains
+        schema:
+          type: string
+        description: Filter by last_name (case-insensitive partial match)
+      - in: query
+        name: managed
+        schema:
+          type: string
+        description: Filter by managed (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: password
+        schema:
+          type: string
+        description: Filter by password (exact match)
+      - in: query
+        name: password__icontains
+        schema:
+          type: string
+        description: Filter by password (case-insensitive partial match)
+      - in: query
+        name: resource
+        schema:
+          type: string
+        description: Filter by resource (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: username
+        schema:
+          type: string
+        description: Filter by username (exact match)
+      - in: query
+        name: username__icontains
+        schema:
+          type: string
+        description: Filter by username (case-insensitive partial match)
+      tags:
+      - Teams
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+      x-ai-description: List all admins for a team
+      summary: Teams admins list
+      x-summary-source: derived
+  /api/gateway/v1/teams/{id}/admins/associate/:
+    post:
+      operationId: teams_admins_associate_create
+      description: 'Manage User objects in the ''admins'' relationship of this particular Team.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/admins/ to show users currently in the relationship
+
+
+        POST a list of instances to /:id/admins/associate/ to add those users to the relationship
+
+
+        POST a list of instances to /:id/admins/disassociate/ to remove those users from the relationshp'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAssociate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserAssociate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserAssociate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAssociate'
+          description: ''
+      x-ai-description: Associate admins with a team
+      summary: Teams admins associate create
+      x-summary-source: derived
+  /api/gateway/v1/teams/{id}/admins/disassociate/:
+    post:
+      operationId: teams_admins_disassociate_create
+      description: 'Manage User objects in the ''admins'' relationship of this particular Team.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/admins/ to show users currently in the relationship
+
+
+        POST a list of instances to /:id/admins/associate/ to add those users to the relationship
+
+
+        POST a list of instances to /:id/admins/disassociate/ to remove those users from the relationshp'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDisassociate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDisassociate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDisassociate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDisassociate'
+          description: ''
+      x-ai-description: Disassociate admins from a team
+      summary: Teams admins disassociate create
+      x-summary-source: derived
+  /api/gateway/v1/teams/{id}/users/:
+    get:
+      operationId: teams_users_list
+      description: 'Manage User objects in the ''users'' relationship of this particular Team.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/users/ to show users currently in the relationship
+
+
+        POST a list of instances to /:id/users/associate/ to add those users to the relationship
+
+
+        POST a list of instances to /:id/users/disassociate/ to remove those users from the relationshp'
+      parameters:
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: date_joined
+        schema:
+          type: string
+        description: Filter by date_joined (exact match)
+      - in: query
+        name: date_joined__gt
+        schema:
+          type: string
+        description: Filter by date_joined (gt)
+      - in: query
+        name: date_joined__gte
+        schema:
+          type: string
+        description: Filter by date_joined (gte)
+      - in: query
+        name: date_joined__lt
+        schema:
+          type: string
+        description: Filter by date_joined (lt)
+      - in: query
+        name: date_joined__lte
+        schema:
+          type: string
+        description: Filter by date_joined (lte)
+      - in: query
+        name: email
+        schema:
+          type: string
+        description: Filter by email (exact match)
+      - in: query
+        name: email__icontains
+        schema:
+          type: string
+        description: Filter by email (case-insensitive partial match)
+      - in: query
+        name: first_name
+        schema:
+          type: string
+        description: Filter by first_name (exact match)
+      - in: query
+        name: first_name__icontains
+        schema:
+          type: string
+        description: Filter by first_name (case-insensitive partial match)
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: is_active
+        schema:
+          type: string
+        description: Filter by is_active (exact match)
+      - in: query
+        name: is_staff
+        schema:
+          type: string
+        description: Filter by is_staff (exact match)
+      - in: query
+        name: is_superuser
+        schema:
+          type: string
+        description: Filter by is_superuser (exact match)
+      - in: query
+        name: last_login
+        schema:
+          type: string
+        description: Filter by last_login (exact match)
+      - in: query
+        name: last_login__gt
+        schema:
+          type: string
+        description: Filter by last_login (gt)
+      - in: query
+        name: last_login__gte
+        schema:
+          type: string
+        description: Filter by last_login (gte)
+      - in: query
+        name: last_login__lt
+        schema:
+          type: string
+        description: Filter by last_login (lt)
+      - in: query
+        name: last_login__lte
+        schema:
+          type: string
+        description: Filter by last_login (lte)
+      - in: query
+        name: last_login_from
+        schema:
+          type: string
+        description: Filter by last_login_from (exact match)
+      - in: query
+        name: last_name
+        schema:
+          type: string
+        description: Filter by last_name (exact match)
+      - in: query
+        name: last_name__icontains
+        schema:
+          type: string
+        description: Filter by last_name (case-insensitive partial match)
+      - in: query
+        name: managed
+        schema:
+          type: string
+        description: Filter by managed (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: password
+        schema:
+          type: string
+        description: Filter by password (exact match)
+      - in: query
+        name: password__icontains
+        schema:
+          type: string
+        description: Filter by password (case-insensitive partial match)
+      - in: query
+        name: resource
+        schema:
+          type: string
+        description: Filter by resource (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: username
+        schema:
+          type: string
+        description: Filter by username (exact match)
+      - in: query
+        name: username__icontains
+        schema:
+          type: string
+        description: Filter by username (case-insensitive partial match)
+      tags:
+      - Teams
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+      x-ai-description: List all users for a team
+      summary: Teams users list
+      x-summary-source: derived
+  /api/gateway/v1/teams/{id}/users/associate/:
+    post:
+      operationId: teams_users_associate_create
+      description: 'Manage User objects in the ''users'' relationship of this particular Team.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/users/ to show users currently in the relationship
+
+
+        POST a list of instances to /:id/users/associate/ to add those users to the relationship
+
+
+        POST a list of instances to /:id/users/disassociate/ to remove those users from the relationshp'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAssociate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserAssociate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserAssociate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAssociate'
+          description: ''
+      x-ai-description: Associate users with a team
+      summary: Teams users associate create
+      x-summary-source: derived
+  /api/gateway/v1/teams/{id}/users/disassociate/:
+    post:
+      operationId: teams_users_disassociate_create
+      description: 'Manage User objects in the ''users'' relationship of this particular Team.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/users/ to show users currently in the relationship
+
+
+        POST a list of instances to /:id/users/associate/ to add those users to the relationship
+
+
+        POST a list of instances to /:id/users/disassociate/ to remove those users from the relationshp'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDisassociate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDisassociate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDisassociate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDisassociate'
+          description: ''
+      x-ai-description: Disassociate users from a team
+      summary: Teams users disassociate create
+      x-summary-source: derived
+components:
+  schemas:
+    TeamCredentialSerializerCreateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        team:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: Write-only field used to add team to owner role. If provided, do not give either user or organization. Only valid for creation.
+      required:
+      - credential_type
+      - name
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    PaginatedTeamCredentialSerializerCreateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamCredentialSerializerCreate'
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    TeamCredentialSerializerCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
+          type: string
+          readOnly: true
+        cloud:
+          type: string
+          readOnly: true
+        kubernetes:
+          type: string
+          readOnly: true
+      required:
+      - credential_type
+      - name
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    RoleSerializerWithParentAccess:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    ResourceAccessListElement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    PaginatedTeamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    PaginatedProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        scm_revision:
+          type: string
+          readOnly: true
+          description: The last revision fetched by a project update
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - ok
+          - missing
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `ok` - OK
+
+            * `missing` - Missing'
+          x-spec-enum-id: 6d29d630b4939828
+          readOnly: true
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        scm_update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Update the project when a job is launched that uses the project.
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
+        allow_override:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Allow changing the SCM branch or revision in a job template that uses this project.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Local absolute file path containing a custom Python virtualenv to use
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run using this project.
+        signature_validation_credential:
+          type:
+          - integer
+          - 'null'
+          description: An optional credential used for validating files in the project against unexpected changes.
+        last_update_failed:
+          type: boolean
+          readOnly: true
+        last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+      required:
+      - username
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PaginatedRoleSerializerWithParentAccessList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleSerializerWithParentAccess'
+    PatchedTeamRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+    TeamRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    PaginatedResourceAccessListElementList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceAccessListElement'
+    TeamDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The team description.
+        organization:
+          $ref: '#/components/schemas/OrganizationRef'
+        resource:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+      required:
+      - created
+      - created_by
+      - id
+      - modified
+      - modified_by
+      - name
+      - organization
+      - resource
+    Team_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The team description.
+        organization_id:
+          type: integer
+          description: The organization of this team.
+          readOnly: true
+        resource:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+      required:
+      - created
+      - created_by
+      - id
+      - modified
+      - modified_by
+      - name
+      - organization_id
+      - resource
+    OrganizationRef:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The organization description.
+      required:
+      - id
+      - name
+    PaginatedTeamList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team_2'
+    User_2:
+      type: object
+      description: Disallows editing of system user and enforces superuser requirement.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_login_from:
+          type: string
+          readOnly: true
+          description: Read-only field indicating the last authenticator used for successful login. Value is null if user has never logged in. This field is automatically updated on successful authentication. Cannot be set via API.
+        password:
+          type: string
+          maxLength: 128
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_platform_auditor:
+          type: boolean
+          readOnly: true
+        authenticators:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+          writeOnly: true
+          description: 'DEPRECATED: This field is deprecated and will be removed in a future version. Please use ''associated_authenticators'' instead.'
+          deprecated: true
+        authenticator_uid:
+          type: string
+          writeOnly: true
+          description: 'DEPRECATED: This field is deprecated and will be removed in a future version. Please use ''associated_authenticators'' instead.'
+          deprecated: true
+        associated_authenticators:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              uid:
+                type: string
+              email:
+                type: string
+          writeOnly: true
+        managed:
+          type: boolean
+          readOnly: true
+          description: Indicates if this user is managed by the system. It cannot be modified once created.
+      required:
+      - username
+    UserAssociate:
+      type: object
+      description: Serializer used for adding objects to a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of users to add to this relationship.
+      required:
+      - instances
+    UserDisassociate:
+      type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of users to remove from this relationship.
+      required:
+      - instances
+    Team_3:
+      type: object
+      description: 'Class to be used by apps to check permissions to related objects
+
+
+        This is a core part of integrating permission checks with REST APIs.
+
+        Full enablement of checks is accomplished by this plus
+
+        the permission class.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        organization:
+          type: integer
+          description: The organization of this team.
+        description:
+          type: string
+          description: The team description.
+      required:
+      - name
+      - organization
+    PatchedTeam:
+      type: object
+      description: 'Class to be used by apps to check permissions to related objects
+
+
+        This is a core part of integrating permission checks with REST APIs.
+
+        Full enablement of checks is accomplished by this plus
+
+        the permission class.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        organization:
+          type: integer
+          readOnly: true
+          description: The organization of this team.
+        description:
+          type: string
+          description: The team description.
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

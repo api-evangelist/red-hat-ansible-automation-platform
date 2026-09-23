@@ -1,0 +1,106 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Role Metadata API
+  version: '1.0'
+  description: 'Operations tagged role_metadata across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: role_metadata
+paths:
+  /api/v2/role_metadata/:
+    get:
+      operationId: role_metadata_retrieve
+      description: 'General data about models and permissions tracked by django-ansible-base RBAC
+
+
+        Information from this endpoint should be static given a server version.
+
+        This reflects model definitions, registrations with the permission registry,
+
+        and enablement of RBAC features in settings.
+
+
+        allowed_permissions: Valid permissions for a role of a given content_type'
+      tags:
+      - role_metadata
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleMetadata'
+          description: ''
+      x-ai-description: Retrieve single role metadatum
+      summary: Role metadata retrieve
+      x-summary-source: derived
+  /role_metadata/:
+    get:
+      operationId: role_metadata_retrieve
+      description: 'General data about models and permissions tracked by django-ansible-base RBAC
+
+
+        Information from this endpoint should be static given a server version.
+
+        This reflects model definitions, registrations with the permission registry,
+
+        and enablement of RBAC features in settings.
+
+
+        allowed_permissions: Valid permissions for a role of a given content_type'
+      tags:
+      - role_metadata
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          description: No response body
+      summary: Role metadata retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+components:
+  schemas:
+    RoleMetadata:
+      type: object
+      properties:
+        allowed_permissions:
+          type: object
+          additionalProperties: {}
+          description: A List of permissions allowed for a role definition, given its content type.
+      required:
+      - allowed_permissions
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

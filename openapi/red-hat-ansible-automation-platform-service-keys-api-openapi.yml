@@ -1,0 +1,559 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Service Keys API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: service_keys
+paths:
+  /api/gateway/v1/service_keys/:
+    get:
+      operationId: service_keys_list
+      description: API endpoint that allows configuring service authentication keys.
+      parameters:
+      - in: query
+        name: algorithm
+        schema:
+          type: string
+        description: Filter by algorithm (exact match)
+      - in: query
+        name: algorithm__icontains
+        schema:
+          type: string
+        description: Filter by algorithm (case-insensitive partial match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: is_active
+        schema:
+          type: string
+        description: Filter by is_active (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: secret
+        schema:
+          type: string
+        description: Filter by secret (exact match)
+      - in: query
+        name: secret__icontains
+        schema:
+          type: string
+        description: Filter by secret (case-insensitive partial match)
+      - in: query
+        name: service_cluster
+        schema:
+          type: string
+        description: Filter by service_cluster (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - service_keys
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceKeyList'
+          description: ''
+      x-ai-description: List all service keys
+      summary: Service keys list
+      x-summary-source: derived
+    post:
+      operationId: service_keys_create
+      description: API endpoint that allows configuring service authentication keys.
+      tags:
+      - service_keys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceKey'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceKey'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceKey'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceKey'
+          description: ''
+      x-ai-description: Create new service key
+      summary: Service keys create
+      x-summary-source: derived
+  /api/gateway/v1/service_keys/{id}/:
+    get:
+      operationId: service_keys_retrieve
+      description: API endpoint that allows configuring service authentication keys.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service key.
+        required: true
+      tags:
+      - service_keys
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceKey'
+          description: ''
+      x-ai-description: Retrieve single service key
+      summary: Service keys retrieve
+      x-summary-source: derived
+    put:
+      operationId: service_keys_update
+      description: API endpoint that allows configuring service authentication keys.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service key.
+        required: true
+      tags:
+      - service_keys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceKey'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceKey'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceKey'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceKey'
+          description: ''
+      x-ai-description: Update existing service key
+      summary: Service keys update
+      x-summary-source: derived
+    patch:
+      operationId: service_keys_partial_update
+      description: API endpoint that allows configuring service authentication keys.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service key.
+        required: true
+      tags:
+      - service_keys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceKey'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceKey'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceKey'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceKey'
+          description: ''
+      x-ai-description: Partially update existing service key
+      summary: Service keys partial update
+      x-summary-source: derived
+    delete:
+      operationId: service_keys_destroy
+      description: API endpoint that allows configuring service authentication keys.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service key.
+        required: true
+      tags:
+      - service_keys
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing service key
+      summary: Service keys destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedServiceKey:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of this resource.
+          maxLength: 512
+        service_cluster:
+          type: integer
+          description: The service cluster this key is for
+        is_active:
+          type: boolean
+          description: Is this service key active.
+        algorithm:
+          enum:
+          - HS256
+          - HS384
+          - HS512
+          type: string
+          description: '* `HS256` - HMAC with SHA256
+
+            * `HS384` - HMAC with SHA384
+
+            * `HS512` - HMAC with SHA512'
+          x-spec-enum-id: 3ba520121d72bd56
+          default: HS256
+        secret_length:
+          type: integer
+          maximum: 512
+          minimum: 64
+          writeOnly: true
+          default: 64
+        mark_previous_inactive:
+          type: boolean
+          writeOnly: true
+        secret:
+          type: string
+          readOnly: true
+          description: The secret will only be plain text on generation, afterwards it will be encrypted.
+    ServiceKey:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of this resource.
+          maxLength: 512
+        service_cluster:
+          type: integer
+          description: The service cluster this key is for
+        is_active:
+          type: boolean
+          description: Is this service key active.
+        algorithm:
+          enum:
+          - HS256
+          - HS384
+          - HS512
+          type: string
+          description: '* `HS256` - HMAC with SHA256
+
+            * `HS384` - HMAC with SHA384
+
+            * `HS512` - HMAC with SHA512'
+          x-spec-enum-id: 3ba520121d72bd56
+          default: HS256
+        secret_length:
+          type: integer
+          maximum: 512
+          minimum: 64
+          writeOnly: true
+          default: 64
+        mark_previous_inactive:
+          type: boolean
+          writeOnly: true
+        secret:
+          type: string
+          readOnly: true
+          description: The secret will only be plain text on generation, afterwards it will be encrypted.
+      required:
+      - mark_previous_inactive
+      - service_cluster
+    PaginatedServiceKeyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceKey'
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

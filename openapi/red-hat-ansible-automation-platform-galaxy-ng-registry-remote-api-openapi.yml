@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Galaxy_Ng: Registry-Remote API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Galaxy_Ng: Registry-Remote'
+paths:
+  /api/automation-hub/pulp/api/v3/galaxy_ng/registry-remote/{pulp_id}/:
+    get:
+      operationId: galaxy_ng_registry_remote_read
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Inspect a container registry remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this container registry remote.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Galaxy_Ng: Registry-Remote'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.ContainerRegistryRemoteResponse'
+          description: ''
+components:
+  schemas:
+    galaxy.ContainerRegistryRemoteResponse:
+      type: object
+      description: 'Every remote defined by a plugin should have a Remote serializer that inherits from this
+
+        class. Please import from `pulpcore.plugin.serializers` rather than from this module directly.'
+      properties:
+        id:
+          type: string
+          format: uuid
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          description: A unique name for this remote.
+        url:
+          type: string
+          description: The URL of an external content source.
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        last_sync_task:
+          type: string
+          readOnly: true
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          description: 'The proxy URL. Format: scheme://host:port'
+        write_only_fields:
+          type: array
+          items: {}
+          readOnly: true
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        is_indexable:
+          type: boolean
+          readOnly: true
+      required:
+      - name
+      - url
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'

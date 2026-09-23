@@ -1,0 +1,310 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V1 Search API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V1 Search'
+paths:
+  /api/automation-hub/_ui/v1/search/:
+    get:
+      operationId: api_automation_hub__ui_v1_search_list
+      description: 'Lists Search results for Collections + Roles.
+
+        Aggregates search from Collections and Roles in the same results set.
+
+
+        ## filtering
+
+
+        - **search_type:** ["sql", "websearch"]
+
+        - **keywords:** string
+
+        - queried against name,namespace,description,tags,platform
+
+        - when search_type is websearch allows operators e.g: "this OR that AND (A OR B) -C"
+
+        - when search_type is sql performs a SQL ilike on the same fields
+
+        - **type:** ["collection", "role"]
+
+        - **deprecated:** boolean
+
+        - **name:** string (iexact query)
+
+        - **namespace:** string (iexact query)
+
+        - **tags:** string[] (allows multiple &tags=..&tags=..)
+
+        - **platform:** string
+
+
+        ## Sorting
+
+
+        Sorting is performed by passing `order_by` parameter, optionally prefixed with `-` for DESC,
+
+        the allowed fields are:
+
+
+        - name
+
+        - namespace_name
+
+        - download_count
+
+        - last_updated
+
+        - relevance (only when search_type is websearch)
+
+
+        ## Pagination
+
+
+        Pagination is based on `limit` and `offset` parameters.
+
+
+        ## Results
+
+
+        Results are embedded in the pagination serializer including
+
+        `meta:count` and `links:first,previous,next,last`.
+
+
+        The `data` key contains the results in the format::
+
+
+        ```python
+
+        {
+
+        "name": "brunogphmzthghu",
+
+        "namespace": "brunovrhvjkdh",
+
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+
+        "type": "role",
+
+        "latest_version": "1.4.9",
+
+        "avatar_url": "https://github.com/brunogphmzthghu.png,
+
+        "contents": [],
+
+        "download_count": 9999,
+
+        "last_updated": "2023-11-09T15:17:01.235457Z",
+
+        "deprecated": false,
+
+        "tags": ["development", "java", "python"],
+
+        "platforms": [{"name": "Ubuntu", "versions": ["jammy", "focal"]}]
+
+        }
+
+        ```'
+      parameters:
+      - in: query
+        name: deprecated
+        schema:
+          type: boolean
+      - in: query
+        name: keywords
+        schema:
+          type: string
+        description: Search term to be queried against search vector if search_type is websearch or SQL ilike if search_type is sql
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Executes iexact filter on name
+      - in: query
+        name: namespace
+        schema:
+          type: string
+        description: Executes iexact filter on namespace
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: order_by
+        schema:
+          type: string
+          enum:
+          - -download_count
+          - -last_updated
+          - -name
+          - -namespace_name
+          - -relevance
+          - download_count
+          - last_updated
+          - name
+          - namespace_name
+          - relevance
+      - in: query
+        name: platform
+        schema:
+          type: string
+      - in: query
+        name: search_type
+        schema:
+          type: string
+          enum:
+          - sql
+          - websearch
+          default: websearch
+      - in: query
+        name: tags
+        schema:
+          type: array
+          items:
+            type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - collection
+          - role
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 Search'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSearchResultsResponseList'
+          description: ''
+      summary: Api automation hub ui v1 search list
+      x-summary-source: derived
+components:
+  schemas:
+    SearchResultsResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        namespace:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+        latest_version:
+          type: string
+        avatar_url:
+          type: string
+        contents:
+          type: object
+        download_count:
+          type: integer
+          format: int64
+        last_updated:
+          type: string
+          format: date-time
+        deprecated:
+          type: boolean
+        tags:
+          type: object
+        platforms:
+          type: object
+        relevance:
+          type: number
+          format: double
+        search:
+          type: string
+      required:
+      - avatar_url
+      - contents
+      - deprecated
+      - description
+      - download_count
+      - last_updated
+      - latest_version
+      - name
+      - namespace
+      - platforms
+      - relevance
+      - search
+      - tags
+      - type
+    PaginatedSearchResultsResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultsResponse'

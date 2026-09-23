@@ -1,0 +1,98 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway UI Auth API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: ui_auth
+paths:
+  /api/gateway/v1/ui_auth/:
+    get:
+      operationId: ui_auth_retrieve
+      description: Get UI authentication configuration including available authenticators and settings.
+      tags:
+      - ui_auth
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UIAuthResponse'
+          description: ''
+      x-ai-description: Retrieve single ui auth
+      summary: Ui auth retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    SSOAuthenticator:
+      type: object
+      description: Serializer for SSO authenticator items in UI auth response.
+      properties:
+        name:
+          type: string
+          readOnly: true
+        login_url:
+          type: string
+          format: uri
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+    UIAuthResponse:
+      type: object
+      description: Serializer for UI authentication configuration response.
+      properties:
+        passwords:
+          type: array
+          items:
+            $ref: '#/components/schemas/PasswordAuthenticator'
+          readOnly: true
+        ssos:
+          type: array
+          items:
+            $ref: '#/components/schemas/SSOAuthenticator'
+          readOnly: true
+        show_login_form:
+          type: boolean
+          readOnly: true
+        login_redirect_override:
+          type: string
+          readOnly: true
+        custom_login_info:
+          type: string
+          readOnly: true
+        custom_logo:
+          type: string
+          readOnly: true
+        managed_cloud_install:
+          type: boolean
+          readOnly: true
+    PasswordAuthenticator:
+      type: object
+      description: Serializer for password authenticator items in UI auth response.
+      properties:
+        name:
+          type: string
+          readOnly: true
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

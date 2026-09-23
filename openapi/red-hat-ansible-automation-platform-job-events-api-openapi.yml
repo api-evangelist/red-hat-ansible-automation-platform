@@ -1,0 +1,316 @@
+openapi: 3.2.0
+info:
+  title: AWX Job Events API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: job_events
+paths:
+  /api/v2/job_events/{id}/:
+    get:
+      operationId: job_events_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - job_events
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobEvent'
+          description: ''
+      x-ai-description: Retrieve a job event detail
+      summary: Job events retrieve
+      x-summary-source: derived
+  /api/v2/job_events/{id}/children/:
+    get:
+      operationId: job_events_children_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - job_events
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJobEventList'
+          description: ''
+      x-ai-description: List child events of a job event
+      summary: Job events children list
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedJobEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobEvent'
+    JobEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        event:
+          enum:
+          - runner_on_failed
+          - runner_on_start
+          - runner_on_ok
+          - runner_on_error
+          - runner_on_skipped
+          - runner_on_unreachable
+          - runner_on_no_hosts
+          - runner_on_async_poll
+          - runner_on_async_ok
+          - runner_on_async_failed
+          - runner_item_on_ok
+          - runner_item_on_failed
+          - runner_item_on_skipped
+          - runner_retry
+          - runner_on_file_diff
+          - playbook_on_start
+          - playbook_on_notify
+          - playbook_on_include
+          - playbook_on_no_hosts_matched
+          - playbook_on_no_hosts_remaining
+          - playbook_on_task_start
+          - playbook_on_vars_prompt
+          - playbook_on_setup
+          - playbook_on_import_for_host
+          - playbook_on_not_import_for_host
+          - playbook_on_play_start
+          - playbook_on_stats
+          - debug
+          - verbose
+          - deprecated
+          - warning
+          - system_warning
+          - error
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `runner_on_failed` - Host Failed
+
+            * `runner_on_start` - Host Started
+
+            * `runner_on_ok` - Host OK
+
+            * `runner_on_error` - Host Failure
+
+            * `runner_on_skipped` - Host Skipped
+
+            * `runner_on_unreachable` - Host Unreachable
+
+            * `runner_on_no_hosts` - No Hosts Remaining
+
+            * `runner_on_async_poll` - Host Polling
+
+            * `runner_on_async_ok` - Host Async OK
+
+            * `runner_on_async_failed` - Host Async Failure
+
+            * `runner_item_on_ok` - Item OK
+
+            * `runner_item_on_failed` - Item Failed
+
+            * `runner_item_on_skipped` - Item Skipped
+
+            * `runner_retry` - Host Retry
+
+            * `runner_on_file_diff` - File Difference
+
+            * `playbook_on_start` - Playbook Started
+
+            * `playbook_on_notify` - Running Handlers
+
+            * `playbook_on_include` - Including File
+
+            * `playbook_on_no_hosts_matched` - No Hosts Matched
+
+            * `playbook_on_no_hosts_remaining` - No Hosts Remaining
+
+            * `playbook_on_task_start` - Task Started
+
+            * `playbook_on_vars_prompt` - Variables Prompted
+
+            * `playbook_on_setup` - Gathering Facts
+
+            * `playbook_on_import_for_host` - internal: on Import for Host
+
+            * `playbook_on_not_import_for_host` - internal: on Not Import for Host
+
+            * `playbook_on_play_start` - Play Started
+
+            * `playbook_on_stats` - Playbook Complete
+
+            * `debug` - Debug
+
+            * `verbose` - Verbose
+
+            * `deprecated` - Deprecated
+
+            * `warning` - Warning
+
+            * `system_warning` - System Warning
+
+            * `error` - Error'
+          x-spec-enum-id: c0ba91bdee205c59
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
+          type: string
+          readOnly: true
+        event_data:
+          default: {}
+        event_level:
+          type: integer
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        changed:
+          type: boolean
+          readOnly: true
+        uuid:
+          type: string
+          readOnly: true
+        parent_uuid:
+          type: string
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        host_name:
+          type: string
+          readOnly: true
+        playbook:
+          type: string
+          readOnly: true
+        play:
+          type: string
+          readOnly: true
+        task:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+        stdout:
+          type: string
+          readOnly: true
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+      required:
+      - event

@@ -1,0 +1,346 @@
+openapi: 3.2.0
+info:
+  title: AWX Bulk API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: Bulk
+paths:
+  /api/v2/bulk/:
+    get:
+      operationId: bulk_retrieve
+      description: List top level resources
+      tags:
+      - Bulk
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieves a list of available bulk actions
+      summary: Bulk retrieve
+      x-summary-source: derived
+  /api/v2/bulk/host_create/:
+    get:
+      operationId: bulk_host_create_retrieve
+      tags:
+      - Bulk
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get information about bulk host create endpoint
+      summary: Bulk host create retrieve
+      x-summary-source: derived
+    post:
+      operationId: bulk_host_create_create
+      tags:
+      - Bulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkHostCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Bulk create hosts
+      summary: Bulk host create create
+      x-summary-source: derived
+  /api/v2/bulk/host_delete/:
+    get:
+      operationId: bulk_host_delete_retrieve
+      tags:
+      - Bulk
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get information about bulk host delete endpoint
+      summary: Bulk host delete retrieve
+      x-summary-source: derived
+    post:
+      operationId: bulk_host_delete_create
+      tags:
+      - Bulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkHostDeleteRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Bulk delete hosts
+      summary: Bulk host delete create
+      x-summary-source: derived
+  /api/v2/bulk/job_launch/:
+    get:
+      operationId: bulk_job_launch_retrieve
+      tags:
+      - Bulk
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get information about bulk job launch endpoint
+      summary: Bulk job launch retrieve
+      x-summary-source: derived
+    post:
+      operationId: bulk_job_launch_create
+      tags:
+      - Bulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkJobLaunchRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Bulk launch job templates
+      summary: Bulk job launch create
+      x-summary-source: derived
+components:
+  schemas:
+    BulkJobLaunchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          writeOnly: true
+          default: Bulk Job Launch
+          maxLength: 512
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkJobNodeRequest'
+          writeOnly: true
+          description: 'List of jobs to be launched, JSON. e.g. [{"unified_job_template": 7}, {"unified_job_template": 10}]'
+        description:
+          type: string
+          writeOnly: true
+          minLength: 1
+        extra_vars:
+          writeOnly: true
+        organization:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: Inherit permissions from this organization. If not provided, a organization the user is a member of will be selected automatically.
+        inventory:
+          type: integer
+          writeOnly: true
+        limit:
+          type: string
+          writeOnly: true
+          minLength: 1
+        scm_branch:
+          type: string
+          writeOnly: true
+          minLength: 1
+        skip_tags:
+          type: string
+          writeOnly: true
+          minLength: 1
+        job_tags:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - jobs
+    BulkHostCreateRequest:
+      type: object
+      properties:
+        inventory:
+          type: integer
+          writeOnly: true
+          description: Primary Key ID of inventory to add hosts to.
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkHostRequest'
+          writeOnly: true
+          description: 'List of hosts to be created, JSON. e.g. [{"name": "example.com"}, {"name": "127.0.0.1"}]'
+          maxItems: 100000
+      required:
+      - hosts
+      - inventory
+    BulkJobNodeRequest:
+      type: object
+      properties:
+        extra_data:
+          default: {}
+        inventory:
+          type: integer
+          minimum: 1
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type: integer
+          minimum: 1
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        job:
+          type:
+          - integer
+          - 'null'
+        workflow_job:
+          type:
+          - integer
+          - 'null'
+        unified_job_template:
+          type: integer
+          minimum: 1
+          description: Primary key of the template for this job, can be a job template or inventory source.
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        do_not_run:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Indicates that a job will not be created when True. Workflow runtime semantics will mark this True if the node is in a path that will decidedly not be ran. A value of False means the node may not run.
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An identifier coresponding to the workflow job template node that this node was created from.
+          maxLength: 512
+        credentials:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        labels:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+        instance_groups:
+          type: array
+          items:
+            type: integer
+            minimum: 1
+      required:
+      - unified_job_template
+    BulkHostDeleteRequest:
+      type: object
+      properties:
+        hosts:
+          type: array
+          items: {}
+          writeOnly: true
+          description: List of hosts ids to be deleted, e.g. [105, 130, 131, 200]
+          maxItems: 100000
+      required:
+      - hosts
+    BulkHostRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+      required:
+      - name

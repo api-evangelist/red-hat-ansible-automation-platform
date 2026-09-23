@@ -1,0 +1,840 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Services API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Services
+paths:
+  /api/gateway/v1/services/:
+    get:
+      operationId: services_list
+      description: API endpoint that allows service API routes to be viewed or edited.
+      parameters:
+      - in: query
+        name: api_slug
+        schema:
+          type: string
+        description: Filter by api_slug (exact match)
+      - in: query
+        name: api_slug__icontains
+        schema:
+          type: string
+        description: Filter by api_slug (case-insensitive partial match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by description (exact match)
+      - in: query
+        name: description__icontains
+        schema:
+          type: string
+        description: Filter by description (case-insensitive partial match)
+      - in: query
+        name: enable_gateway_auth
+        schema:
+          type: string
+        description: Filter by enable_gateway_auth (exact match)
+      - in: query
+        name: enable_mtls
+        schema:
+          type: string
+        description: Filter by enable_mtls (exact match)
+      - in: query
+        name: envoy_cluster_name
+        schema:
+          type: string
+        description: Filter by envoy_cluster_name (exact match)
+      - in: query
+        name: envoy_cluster_name__icontains
+        schema:
+          type: string
+        description: Filter by envoy_cluster_name (case-insensitive partial match)
+      - in: query
+        name: gateway_path
+        schema:
+          type: string
+        description: Filter by gateway_path (exact match)
+      - in: query
+        name: gateway_path__icontains
+        schema:
+          type: string
+        description: Filter by gateway_path (case-insensitive partial match)
+      - in: query
+        name: http_port
+        schema:
+          type: string
+        description: Filter by http_port (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: idle_timeout_seconds
+        schema:
+          type: string
+        description: Filter by idle_timeout_seconds (exact match)
+      - in: query
+        name: idle_timeout_seconds__gt
+        schema:
+          type: string
+        description: Filter by idle_timeout_seconds (gt)
+      - in: query
+        name: idle_timeout_seconds__gte
+        schema:
+          type: string
+        description: Filter by idle_timeout_seconds (gte)
+      - in: query
+        name: idle_timeout_seconds__lt
+        schema:
+          type: string
+        description: Filter by idle_timeout_seconds (lt)
+      - in: query
+        name: idle_timeout_seconds__lte
+        schema:
+          type: string
+        description: Filter by idle_timeout_seconds (lte)
+      - in: query
+        name: is_internal_route
+        schema:
+          type: string
+        description: Filter by is_internal_route (exact match)
+      - in: query
+        name: is_service_https
+        schema:
+          type: string
+        description: Filter by is_service_https (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: node_tags
+        schema:
+          type: string
+        description: Filter by node_tags (exact match)
+      - in: query
+        name: node_tags__icontains
+        schema:
+          type: string
+        description: Filter by node_tags (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order__gt
+        schema:
+          type: string
+        description: Filter by order (gt)
+      - in: query
+        name: order__gte
+        schema:
+          type: string
+        description: Filter by order (gte)
+      - in: query
+        name: order__lt
+        schema:
+          type: string
+        description: Filter by order (lt)
+      - in: query
+        name: order__lte
+        schema:
+          type: string
+        description: Filter by order (lte)
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: request_timeout_seconds
+        schema:
+          type: string
+        description: Filter by request_timeout_seconds (exact match)
+      - in: query
+        name: request_timeout_seconds__gt
+        schema:
+          type: string
+        description: Filter by request_timeout_seconds (gt)
+      - in: query
+        name: request_timeout_seconds__gte
+        schema:
+          type: string
+        description: Filter by request_timeout_seconds (gte)
+      - in: query
+        name: request_timeout_seconds__lt
+        schema:
+          type: string
+        description: Filter by request_timeout_seconds (lt)
+      - in: query
+        name: request_timeout_seconds__lte
+        schema:
+          type: string
+        description: Filter by request_timeout_seconds (lte)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - in: query
+        name: route_ptr
+        schema:
+          type: string
+        description: Filter by route_ptr (exact match)
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service_cluster
+        schema:
+          type: string
+        description: Filter by service_cluster (exact match)
+      - in: query
+        name: service_path
+        schema:
+          type: string
+        description: Filter by service_path (exact match)
+      - in: query
+        name: service_path__icontains
+        schema:
+          type: string
+        description: Filter by service_path (case-insensitive partial match)
+      - in: query
+        name: service_port
+        schema:
+          type: string
+        description: Filter by service_port (exact match)
+      - in: query
+        name: service_port__gt
+        schema:
+          type: string
+        description: Filter by service_port (gt)
+      - in: query
+        name: service_port__gte
+        schema:
+          type: string
+        description: Filter by service_port (gte)
+      - in: query
+        name: service_port__lt
+        schema:
+          type: string
+        description: Filter by service_port (lt)
+      - in: query
+        name: service_port__lte
+        schema:
+          type: string
+        description: Filter by service_port (lte)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Services
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceAPIRouteList'
+          description: ''
+      x-ai-description: List all services
+      summary: Services list
+      x-summary-source: derived
+    post:
+      operationId: services_create
+      description: API endpoint that allows service API routes to be viewed or edited.
+      tags:
+      - Services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceAPIRoute'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceAPIRoute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceAPIRoute'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAPIRoute'
+          description: ''
+      x-ai-description: Create new service
+      summary: Services create
+      x-summary-source: derived
+  /api/gateway/v1/services/{id}/:
+    get:
+      operationId: services_retrieve
+      description: API endpoint that allows service API routes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service api route.
+        required: true
+      tags:
+      - Services
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAPIRoute'
+          description: ''
+      x-ai-description: Retrieve single service
+      summary: Services retrieve
+      x-summary-source: derived
+    put:
+      operationId: services_update
+      description: API endpoint that allows service API routes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service api route.
+        required: true
+      tags:
+      - Services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceAPIRoute'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceAPIRoute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceAPIRoute'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAPIRoute'
+          description: ''
+      x-ai-description: Update existing service
+      summary: Services update
+      x-summary-source: derived
+    patch:
+      operationId: services_partial_update
+      description: API endpoint that allows service API routes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service api route.
+        required: true
+      tags:
+      - Services
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceAPIRoute'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceAPIRoute'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceAPIRoute'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceAPIRoute'
+          description: ''
+      x-ai-description: Partially update existing service
+      summary: Services partial update
+      x-summary-source: derived
+    delete:
+      operationId: services_destroy
+      description: API endpoint that allows service API routes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service api route.
+        required: true
+      tags:
+      - Services
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing service
+      summary: Services destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedServiceAPIRouteList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceAPIRoute'
+    PatchedServiceAPIRoute:
+      type: object
+      description: 'Base serializer for route models.
+
+
+        Provides common validation logic for routes including:
+
+        - Gateway authentication validation for internal routes
+
+        - Mutual TLS (mTLS) validation with gateway authentication
+
+        - Gateway path normalization (collapsing consecutive slashes)
+
+        - Node tags normalization
+
+        - Timeout floor enforcement (request_timeout_seconds & idle_timeout_seconds)
+
+
+        Subclasses can override validate() and call super().validate()
+
+        to add their own validation logic.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        request_timeout_seconds:
+          type:
+          - integer
+          - 'null'
+          maximum: 604800
+          minimum: 0
+          description: The request timeout in seconds for this route. Values below the global proxy request_timeout setting are rejected. Leave null to use the global proxy timeout setting. See effective_timeout_seconds for the computed value applied to the route.
+        idle_timeout_seconds:
+          type:
+          - integer
+          - 'null'
+          maximum: 86400
+          minimum: 0
+          description: The idle timeout in seconds for this route. Connections with no data transmitted within this period are closed. Values below the global proxy idle_timeout setting are rejected. Leave null to use the global proxy idle timeout setting. See effective_idle_timeout_seconds for the computed value applied to the route.
+        effective_timeout_seconds:
+          type: string
+          readOnly: true
+          description: 'Read-only. The effective request timeout: max(request_timeout_seconds, global request_timeout setting).'
+        effective_idle_timeout_seconds:
+          type: string
+          readOnly: true
+          description: 'Read-only. The effective idle timeout: max(idle_timeout_seconds, global idle_timeout setting).'
+        http_port:
+          type: integer
+          description: The port on the AAP gateway to listen to traffic on.
+        service_cluster:
+          type: integer
+          description: The AAP Service to route traffic to.
+        service_port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+          description: The port on the service cluster to route traffic to.
+        is_service_https:
+          type: boolean
+          description: Set this to true if the service cluster requires HTTPS.
+        is_internal_route:
+          type: boolean
+          description: If true, the AAP gateway will only allow other AAP services to access this route. Requires gateway auth to be enabled.
+        service_path:
+          type: string
+          description: The URL path on the AAP Service cluster to route traffic to.
+          maxLength: 255
+        gateway_path:
+          type: string
+          readOnly: true
+          description: The path on the AAP gateway to listen to traffic on.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A description of this route.
+          maxLength: 255
+        api_slug:
+          type: string
+          description: An internally generated API slug for this Service API Route.
+          maxLength: 20
+          pattern: ^[-a-zA-Z0-9_]+$
+        enable_gateway_auth:
+          type: boolean
+          description: If false, the AAP gateway will not insert a gateway token into the proxied request.
+        order:
+          type: integer
+          maximum: 100
+          minimum: 0
+          description: The order to apply the routes in; lower numbers are first. Items with the same value have no guaranteed order
+        node_tags:
+          type: string
+          description: A comma-separated list of nodes in the service cluster to receive traffic from this route.  Leave blank to select all nodes.
+          maxLength: 255
+        enable_mtls:
+          type: boolean
+          description: If true, the route requires mutual TLS. Connecting clients have to provide one or more certificates.
+    ServiceAPIRoute:
+      type: object
+      description: 'Base serializer for route models.
+
+
+        Provides common validation logic for routes including:
+
+        - Gateway authentication validation for internal routes
+
+        - Mutual TLS (mTLS) validation with gateway authentication
+
+        - Gateway path normalization (collapsing consecutive slashes)
+
+        - Node tags normalization
+
+        - Timeout floor enforcement (request_timeout_seconds & idle_timeout_seconds)
+
+
+        Subclasses can override validate() and call super().validate()
+
+        to add their own validation logic.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        request_timeout_seconds:
+          type:
+          - integer
+          - 'null'
+          maximum: 604800
+          minimum: 0
+          description: The request timeout in seconds for this route. Values below the global proxy request_timeout setting are rejected. Leave null to use the global proxy timeout setting. See effective_timeout_seconds for the computed value applied to the route.
+        idle_timeout_seconds:
+          type:
+          - integer
+          - 'null'
+          maximum: 86400
+          minimum: 0
+          description: The idle timeout in seconds for this route. Connections with no data transmitted within this period are closed. Values below the global proxy idle_timeout setting are rejected. Leave null to use the global proxy idle timeout setting. See effective_idle_timeout_seconds for the computed value applied to the route.
+        effective_timeout_seconds:
+          type: string
+          readOnly: true
+          description: 'Read-only. The effective request timeout: max(request_timeout_seconds, global request_timeout setting).'
+        effective_idle_timeout_seconds:
+          type: string
+          readOnly: true
+          description: 'Read-only. The effective idle timeout: max(idle_timeout_seconds, global idle_timeout setting).'
+        http_port:
+          type: integer
+          description: The port on the AAP gateway to listen to traffic on.
+        service_cluster:
+          type: integer
+          description: The AAP Service to route traffic to.
+        service_port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+          description: The port on the service cluster to route traffic to.
+        is_service_https:
+          type: boolean
+          description: Set this to true if the service cluster requires HTTPS.
+        is_internal_route:
+          type: boolean
+          description: If true, the AAP gateway will only allow other AAP services to access this route. Requires gateway auth to be enabled.
+        service_path:
+          type: string
+          description: The URL path on the AAP Service cluster to route traffic to.
+          maxLength: 255
+        gateway_path:
+          type: string
+          readOnly: true
+          description: The path on the AAP gateway to listen to traffic on.
+        description:
+          type:
+          - string
+          - 'null'
+          description: A description of this route.
+          maxLength: 255
+        api_slug:
+          type: string
+          description: An internally generated API slug for this Service API Route.
+          maxLength: 20
+          pattern: ^[-a-zA-Z0-9_]+$
+        enable_gateway_auth:
+          type: boolean
+          description: If false, the AAP gateway will not insert a gateway token into the proxied request.
+        order:
+          type: integer
+          maximum: 100
+          minimum: 0
+          description: The order to apply the routes in; lower numbers are first. Items with the same value have no guaranteed order
+        node_tags:
+          type: string
+          description: A comma-separated list of nodes in the service cluster to receive traffic from this route.  Leave blank to select all nodes.
+          maxLength: 255
+        enable_mtls:
+          type: boolean
+          description: If true, the route requires mutual TLS. Connecting clients have to provide one or more certificates.
+      required:
+      - api_slug
+      - http_port
+      - is_service_https
+      - name
+      - service_cluster
+      - service_path
+      - service_port
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

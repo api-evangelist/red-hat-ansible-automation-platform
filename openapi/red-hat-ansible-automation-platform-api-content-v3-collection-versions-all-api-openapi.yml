@@ -1,0 +1,57 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: Content V3 Collection_Versions All API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: Content V3 Collection_Versions All'
+paths:
+  /api/automation-hub/content/{path}/v3/collection_versions/all/:
+    get:
+      operationId: api_automation_hub_content_v3_collection_versions_all_get
+      parameters:
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: Content V3 Collection_Versions All'
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub content v3 collection versions all get
+      x-summary-source: derived

@@ -1,0 +1,3112 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Groups API
+  x-refined-note:
+  - x-logo differs across the merged source definitions and was not carried
+  - x-pulp-app-versions differs across the merged source definitions and was not carried
+  - x-pulp-domain-enabled differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged groups across 2 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-automation-hub-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Groups
+paths:
+  /api/v2/groups/:
+    get:
+      operationId: groups_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+          description: ''
+      x-ai-description: Returns a paginated list of all host groups.
+      summary: Groups list
+      x-summary-source: derived
+    post:
+      operationId: groups_create
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      x-ai-description: Create a new host group within an inventory.
+      summary: Groups create
+      x-summary-source: derived
+  /api/v2/groups/{id}/:
+    get:
+      operationId: groups_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      x-ai-description: Retrieve a group
+      summary: Groups retrieve
+      x-summary-source: derived
+    put:
+      operationId: groups_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      x-ai-description: Update a group
+      summary: Groups update
+      x-summary-source: derived
+    patch:
+      operationId: groups_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      x-ai-description: Update a group
+      summary: Groups partial update
+      x-summary-source: derived
+    delete:
+      operationId: groups_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a group
+      summary: Groups destroy
+      x-summary-source: derived
+  /api/v2/groups/{id}/activity_stream/:
+    get:
+      operationId: groups_activity_stream_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivityStreamList'
+          description: ''
+      x-ai-description: List activity stream for a group
+      summary: Groups activity stream list
+      x-summary-source: derived
+  /api/v2/groups/{id}/ad_hoc_commands/:
+    get:
+      operationId: groups_ad_hoc_commands_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAdHocCommandListList'
+          description: ''
+      x-ai-description: List ad hoc commands for a group
+      summary: Groups ad hoc commands list
+      x-summary-source: derived
+    post:
+      operationId: groups_ad_hoc_commands_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdHocCommandListRequest'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdHocCommandList'
+          description: ''
+      x-ai-description: Run an ad hoc command against all hosts in a group. Executes a single Ansible module without a playbook.
+      summary: Groups ad hoc commands create
+      x-summary-source: derived
+  /api/v2/groups/{id}/all_hosts/:
+    get:
+      operationId: groups_all_hosts_list
+      description: the list of all hosts below a group, even including subgroups
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedHostList'
+          description: ''
+      x-ai-description: List all hosts for a group
+      summary: Groups all hosts list
+      x-summary-source: derived
+  /api/v2/groups/{id}/children/:
+    get:
+      operationId: groups_children_list
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+          description: ''
+      x-ai-description: List all children for a group
+      summary: Groups children list
+      x-summary-source: derived
+    post:
+      operationId: groups_children_create
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      x-ai-description: Create new child for a group
+      summary: Groups children create
+      x-summary-source: derived
+  /api/v2/groups/{id}/hosts/:
+    get:
+      operationId: groups_hosts_list
+      description: the list of hosts directly below a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedHostList'
+          description: ''
+      x-ai-description: List hosts of a group
+      summary: Groups hosts list
+      x-summary-source: derived
+    post:
+      operationId: groups_hosts_create
+      description: the list of hosts directly below a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Host'
+          description: ''
+      x-ai-description: Create a host of a group
+      summary: Groups hosts create
+      x-summary-source: derived
+  /api/v2/groups/{id}/inventory_sources/:
+    get:
+      operationId: groups_inventory_sources_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInventorySourceList'
+          description: ''
+      x-ai-description: List inventory sources of a group
+      summary: Groups inventory sources list
+      x-summary-source: derived
+  /api/v2/groups/{id}/job_events/:
+    get:
+      operationId: groups_job_events_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJobEventList'
+          description: ''
+      x-ai-description: List job events for a group
+      summary: Groups job events list
+      x-summary-source: derived
+  /api/v2/groups/{id}/job_host_summaries/:
+    get:
+      operationId: groups_job_host_summaries_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedJobHostSummaryList'
+          description: ''
+      x-ai-description: List job host summaries for a group
+      summary: Groups job host summaries list
+      x-summary-source: derived
+  /api/v2/groups/{id}/potential_children/:
+    get:
+      operationId: groups_potential_children_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+          description: ''
+      x-ai-description: List all children for a group
+      summary: Groups potential children list
+      x-summary-source: derived
+  /api/v2/groups/{id}/variable_data/:
+    get:
+      operationId: groups_variable_data_retrieve
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupVariableData'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/GroupVariableData'
+          description: ''
+      x-ai-description: Retrieve a variable datum for a group
+      summary: Groups variable data retrieve
+      x-summary-source: derived
+    put:
+      operationId: groups_variable_data_update
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupVariableDataRequest'
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/GroupVariableDataRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupVariableData'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/GroupVariableData'
+          description: ''
+      x-ai-description: Update a variable datum for a group
+      summary: Groups variable data update
+      x-summary-source: derived
+    patch:
+      operationId: groups_variable_data_partial_update
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupVariableDataRequest'
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupVariableDataRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupVariableData'
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/GroupVariableData'
+          description: ''
+      x-ai-description: Update a variable datum for a group
+      summary: Groups variable data partial update
+      x-summary-source: derived
+  /api/automation-hub/_ui/v1/groups/:
+    get:
+      operationId: _api_automation-hub__ui_v1_groups_groups_list
+      description: ViewSet for Group.
+      summary: List groups
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -name
+            - name
+        description: 'Ordering
+
+
+          * `name` - Name
+
+          * `-name` - Name (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupResponseList'
+          description: ''
+    post:
+      operationId: _api_automation-hub__ui_v1_groups_groups_create
+      description: ViewSet for Group.
+      summary: Create a group
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /api/automation-hub/_ui/v1/groups/{id}/:
+    get:
+      operationId: _api_automation-hub__ui_v1_groups_{id}_groups_read
+      description: ViewSet for Group.
+      summary: Inspect a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    delete:
+      operationId: _api_automation-hub__ui_v1_groups_{id}_groups_delete
+      description: ViewSet for Group.
+      summary: Delete a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Groups
+      responses:
+        '204':
+          description: No response body
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /api/automation-hub/pulp/api/v3/groups/:
+    get:
+      operationId: _api_automation-hub_pulp_api_v3_groups_groups_list
+      description: ViewSet for Group.
+      summary: List groups
+      parameters:
+      - in: query
+        name: id
+        schema:
+          type: integer
+        description: Filter results where id matches value
+      - in: query
+        name: id__in
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Filter results where id is in a comma-separated list of values
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -id
+            - -name
+            - -pk
+            - id
+            - name
+            - pk
+        description: 'Ordering
+
+
+          * `id` - Id
+
+          * `-id` - Id (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupResponseList'
+          description: ''
+    post:
+      operationId: _api_automation-hub_pulp_api_v3_groups_groups_create
+      description: ViewSet for Group.
+      summary: Create a group
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /api/automation-hub/pulp/api/v3/groups/{id}/:
+    get:
+      operationId: _api_automation-hub_pulp_api_v3_groups_{id}_groups_read
+      description: ViewSet for Group.
+      summary: Inspect a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    put:
+      operationId: groups_update
+      description: ViewSet for Group.
+      summary: Update a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group_2'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    patch:
+      operationId: groups_partial_update
+      description: ViewSet for Group.
+      summary: Update a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    delete:
+      operationId: _api_automation-hub_pulp_api_v3_groups_{id}_groups_delete
+      description: ViewSet for Group.
+      summary: Delete a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - Groups
+      responses:
+        '204':
+          description: No response body
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /api/automation-hub/pulp/api/v3/groups/{id}/add_role/:
+    post:
+      operationId: groups_add_role
+      description: Add a role for this object to users/groups.
+      summary: Add a role
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /api/automation-hub/pulp/api/v3/groups/{id}/list_roles/:
+    get:
+      operationId: groups_list_roles
+      description: List roles assigned to this object.
+      summary: List roles
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRolesResponse'
+          description: ''
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /api/automation-hub/pulp/api/v3/groups/{id}/my_permissions/:
+    get:
+      operationId: groups_my_permissions
+      description: List permissions available to the current user on this object.
+      summary: List user permissions
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPermissionsResponse'
+          description: ''
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+  /api/automation-hub/pulp/api/v3/groups/{id}/remove_role/:
+    post:
+      operationId: groups_remove_role
+      description: Remove a role for this object from users/groups.
+      summary: Remove a role
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+    servers:
+    - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+components:
+  schemas:
+    GroupVariableDataRequest:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+    JobHostSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type: integer
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        constructed_host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
+        host_name:
+          type: string
+          readOnly: true
+          default: ''
+        changed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        dark:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+        ok:
+          type: integer
+          minimum: 0
+          readOnly: true
+        processed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        skipped:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        ignored:
+          type: integer
+          minimum: 0
+          readOnly: true
+        rescued:
+          type: integer
+          minimum: 0
+          readOnly: true
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    PatchedGroupVariableDataRequest:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+    Host:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+        has_active_failures:
+          type: string
+          readOnly: true
+        has_inventory_sources:
+          type: string
+          readOnly: true
+        last_job:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        last_job_host_summary:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        ansible_facts_modified:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time ansible_facts was last modified.
+      required:
+      - inventory
+      - name
+    PaginatedHostList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Host'
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    PaginatedGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    PaginatedInventorySourceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventorySource'
+    PaginatedJobEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobEvent'
+    GroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    AdHocCommandListRequest:
+      type: object
+      properties:
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential:
+          type:
+          - integer
+          - 'null'
+        module_name:
+          enum:
+          - command
+          - shell
+          - yum
+          - apt
+          - apt_key
+          - apt_repository
+          - apt_rpm
+          - service
+          - group
+          - user
+          - mount
+          - ping
+          - selinux
+          - setup
+          - win_ping
+          - win_service
+          - win_updates
+          - win_group
+          - win_user
+          type: string
+          description: '* `command` - command
+
+            * `shell` - shell
+
+            * `yum` - yum
+
+            * `apt` - apt
+
+            * `apt_key` - apt_key
+
+            * `apt_repository` - apt_repository
+
+            * `apt_rpm` - apt_rpm
+
+            * `service` - service
+
+            * `group` - group
+
+            * `user` - user
+
+            * `mount` - mount
+
+            * `ping` - ping
+
+            * `selinux` - selinux
+
+            * `setup` - setup
+
+            * `win_ping` - win_ping
+
+            * `win_service` - win_service
+
+            * `win_updates` - win_updates
+
+            * `win_group` - win_group
+
+            * `win_user` - win_user'
+          x-spec-enum-id: 857230cdbb58eda2
+          default: command
+        module_args:
+          type:
+          - string
+          - 'null'
+          default: ''
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+    PaginatedJobHostSummaryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobHostSummary'
+    AdHocCommandList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        execution_node:
+          type: string
+          readOnly: true
+          description: The node the job executed on.
+        controller_node:
+          type: string
+          readOnly: true
+          description: The instance that managed the execution environment.
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential:
+          type:
+          - integer
+          - 'null'
+        module_name:
+          enum:
+          - command
+          - shell
+          - yum
+          - apt
+          - apt_key
+          - apt_repository
+          - apt_rpm
+          - service
+          - group
+          - user
+          - mount
+          - ping
+          - selinux
+          - setup
+          - win_ping
+          - win_service
+          - win_updates
+          - win_group
+          - win_user
+          type: string
+          description: '* `command` - command
+
+            * `shell` - shell
+
+            * `yum` - yum
+
+            * `apt` - apt
+
+            * `apt_key` - apt_key
+
+            * `apt_repository` - apt_repository
+
+            * `apt_rpm` - apt_rpm
+
+            * `service` - service
+
+            * `group` - group
+
+            * `user` - user
+
+            * `mount` - mount
+
+            * `ping` - ping
+
+            * `selinux` - selinux
+
+            * `setup` - setup
+
+            * `win_ping` - win_ping
+
+            * `win_service` - win_service
+
+            * `win_updates` - win_updates
+
+            * `win_group` - win_group
+
+            * `win_user` - win_user'
+          x-spec-enum-id: 857230cdbb58eda2
+          default: command
+        module_args:
+          type:
+          - string
+          - 'null'
+          default: ''
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+    GroupVariableData:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+    PaginatedAdHocCommandListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdHocCommandList'
+    JobEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        event:
+          enum:
+          - runner_on_failed
+          - runner_on_start
+          - runner_on_ok
+          - runner_on_error
+          - runner_on_skipped
+          - runner_on_unreachable
+          - runner_on_no_hosts
+          - runner_on_async_poll
+          - runner_on_async_ok
+          - runner_on_async_failed
+          - runner_item_on_ok
+          - runner_item_on_failed
+          - runner_item_on_skipped
+          - runner_retry
+          - runner_on_file_diff
+          - playbook_on_start
+          - playbook_on_notify
+          - playbook_on_include
+          - playbook_on_no_hosts_matched
+          - playbook_on_no_hosts_remaining
+          - playbook_on_task_start
+          - playbook_on_vars_prompt
+          - playbook_on_setup
+          - playbook_on_import_for_host
+          - playbook_on_not_import_for_host
+          - playbook_on_play_start
+          - playbook_on_stats
+          - debug
+          - verbose
+          - deprecated
+          - warning
+          - system_warning
+          - error
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `runner_on_failed` - Host Failed
+
+            * `runner_on_start` - Host Started
+
+            * `runner_on_ok` - Host OK
+
+            * `runner_on_error` - Host Failure
+
+            * `runner_on_skipped` - Host Skipped
+
+            * `runner_on_unreachable` - Host Unreachable
+
+            * `runner_on_no_hosts` - No Hosts Remaining
+
+            * `runner_on_async_poll` - Host Polling
+
+            * `runner_on_async_ok` - Host Async OK
+
+            * `runner_on_async_failed` - Host Async Failure
+
+            * `runner_item_on_ok` - Item OK
+
+            * `runner_item_on_failed` - Item Failed
+
+            * `runner_item_on_skipped` - Item Skipped
+
+            * `runner_retry` - Host Retry
+
+            * `runner_on_file_diff` - File Difference
+
+            * `playbook_on_start` - Playbook Started
+
+            * `playbook_on_notify` - Running Handlers
+
+            * `playbook_on_include` - Including File
+
+            * `playbook_on_no_hosts_matched` - No Hosts Matched
+
+            * `playbook_on_no_hosts_remaining` - No Hosts Remaining
+
+            * `playbook_on_task_start` - Task Started
+
+            * `playbook_on_vars_prompt` - Variables Prompted
+
+            * `playbook_on_setup` - Gathering Facts
+
+            * `playbook_on_import_for_host` - internal: on Import for Host
+
+            * `playbook_on_not_import_for_host` - internal: on Not Import for Host
+
+            * `playbook_on_play_start` - Play Started
+
+            * `playbook_on_stats` - Playbook Complete
+
+            * `debug` - Debug
+
+            * `verbose` - Verbose
+
+            * `deprecated` - Deprecated
+
+            * `warning` - Warning
+
+            * `system_warning` - System Warning
+
+            * `error` - Error'
+          x-spec-enum-id: c0ba91bdee205c59
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
+          type: string
+          readOnly: true
+        event_data:
+          default: {}
+        event_level:
+          type: integer
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        changed:
+          type: boolean
+          readOnly: true
+        uuid:
+          type: string
+          readOnly: true
+        parent_uuid:
+          type: string
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        host_name:
+          type: string
+          readOnly: true
+        playbook:
+          type: string
+          readOnly: true
+        play:
+          type: string
+          readOnly: true
+        task:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+        stdout:
+          type: string
+          readOnly: true
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+      required:
+      - event
+    PatchedGroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+    InventorySource:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        source:
+          enum:
+          - azure_rm
+          - controller
+          - ec2
+          - gce
+          - insights
+          - openshift_virtualization
+          - openstack
+          - rhv
+          - satellite6
+          - terraform
+          - vmware
+          - scm
+          - constructed
+          type: string
+          description: '* `azure_rm` - Microsoft Azure Resource Manager
+
+            * `controller` - Red Hat Ansible Automation Platform
+
+            * `ec2` - Amazon EC2
+
+            * `gce` - Google Compute Engine
+
+            * `insights` - Red Hat Insights
+
+            * `openshift_virtualization` - OpenShift Virtualization
+
+            * `openstack` - OpenStack
+
+            * `rhv` - Red Hat Virtualization
+
+            * `satellite6` - Red Hat Satellite 6
+
+            * `terraform` - Terraform State
+
+            * `vmware` - VMware vCenter
+
+            * `scm` - Sourced from a Project
+
+            * `constructed` - Template additional groups and hostvars at runtime'
+          x-spec-enum-id: 2e54dfe09d4f7d8d
+        source_path:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        source_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source variables in YAML or JSON format.
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        credential:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          description: Cloud credential to use for inventory updates.
+        enabled_var:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
+        enabled_value:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
+        overwrite:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local groups and hosts from remote inventory source.
+        overwrite_vars:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local variables from remote inventory source.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Local absolute file path containing a custom Python virtualenv to use
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: '* `0` - 0 (WARNING)
+
+            * `1` - 1 (INFO)
+
+            * `2` - 2 (DEBUG)'
+          x-spec-enum-id: 48197bd695a06691
+          default: 1
+          minimum: 0
+          maximum: 9223372036854775807
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Enter host, group or pattern match
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - none
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `none` - No External Source'
+          x-spec-enum-id: 697673f6ed4abf52
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        inventory:
+          type:
+          - integer
+          - 'null'
+        update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        source_project:
+          type:
+          - integer
+          - 'null'
+          description: Project containing inventory file used as source.
+        last_update_failed:
+          type: boolean
+          readOnly: true
+        last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - inventory
+      - name
+      - source
+    HostRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    Group_2:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name
+          maxLength: 150
+      required:
+      - name
+    PaginatedGroupResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupResponse'
+    PatchedGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 150
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    GroupResponse:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          description: Name
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+      required:
+      - name
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-automation-hub-openapi.json

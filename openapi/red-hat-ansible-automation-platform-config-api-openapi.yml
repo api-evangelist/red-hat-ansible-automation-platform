@@ -1,0 +1,111 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Config API
+  version: '1.0'
+  description: 'Operations tagged config across 2 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: Config
+paths:
+  /api/v2/config/:
+    get:
+      operationId: config_retrieve
+      description: Return various sitewide configuration settings
+      tags:
+      - Config
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Returns platform-level configuration and license info.
+      summary: Config retrieve
+      x-summary-source: derived
+    post:
+      operationId: config_create
+      tags:
+      - Config
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Add or update a subscription manifest license
+      summary: Config create
+      x-summary-source: derived
+    delete:
+      operationId: config_destroy
+      tags:
+      - Config
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Remove the current subscription
+      summary: Config destroy
+      x-summary-source: derived
+  /api/v2/config/attach/:
+    post:
+      operationId: config_attach_create
+      tags:
+      - Config
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Attach a subscription
+      summary: Config attach create
+      x-summary-source: derived
+  /api/v2/config/subscriptions/:
+    post:
+      operationId: config_subscriptions_create
+      tags:
+      - Config
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: List valid AAP subscriptions
+      summary: Config subscriptions create
+      x-summary-source: derived
+  /config/:
+    get:
+      operationId: config_retrieve
+      description: Get the current configuration info of EDA.
+      tags:
+      - Config
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'
+          description: Return the current configuration info of EDA.
+      summary: Config retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+components:
+  schemas:
+    Config:
+      type: object
+      description: Serializer for ConfigView response.
+      properties:
+        time_zone:
+          type: string
+        version:
+          type: string
+        deployment_type:
+          type: string
+      required:
+      - deployment_type
+      - time_zone
+      - version
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json

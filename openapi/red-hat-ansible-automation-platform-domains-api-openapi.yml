@@ -1,0 +1,550 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Domains API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Domains
+paths:
+  /api/automation-hub/pulp/api/v3/domains/:
+    get:
+      operationId: domains_list
+      description: 'ViewSet for Domain.
+
+
+        NOTE: This API endpoint is in "tech preview" and subject to change'
+      summary: List domains
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -description
+            - -hide_guarded_distributions
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -redirect_to_object_storage
+            - -storage_class
+            - -storage_settings
+            - description
+            - hide_guarded_distributions
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - redirect_to_object_storage
+            - storage_class
+            - storage_settings
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `description` - Description
+
+          * `-description` - Description (descending)
+
+          * `storage_class` - Storage class
+
+          * `-storage_class` - Storage class (descending)
+
+          * `storage_settings` - Storage settings
+
+          * `-storage_settings` - Storage settings (descending)
+
+          * `redirect_to_object_storage` - Redirect to object storage
+
+          * `-redirect_to_object_storage` - Redirect to object storage (descending)
+
+          * `hide_guarded_distributions` - Hide guarded distributions
+
+          * `-hide_guarded_distributions` - Hide guarded distributions (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Domains
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDomainResponseList'
+          description: ''
+    post:
+      operationId: domains_create
+      description: 'ViewSet for Domain.
+
+
+        NOTE: This API endpoint is in "tech preview" and subject to change'
+      summary: Create a domain
+      tags:
+      - Domains
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Domain'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/domains/{pulp_id}/:
+    get:
+      operationId: domains_read
+      description: 'ViewSet for Domain.
+
+
+        NOTE: This API endpoint is in "tech preview" and subject to change'
+      summary: Inspect a domain
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this domain.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Domains
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainResponse'
+          description: ''
+    put:
+      operationId: domains_update
+      description: Trigger an asynchronous update task
+      summary: Update a domain
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this domain.
+        required: true
+      tags:
+      - Domains
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Domain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Domain'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+    patch:
+      operationId: domains_partial_update
+      description: Trigger an asynchronous partial update task
+      summary: Update a domain
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this domain.
+        required: true
+      tags:
+      - Domains
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDomain'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDomain'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDomain'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+    delete:
+      operationId: domains_delete
+      description: Trigger an asynchronous delete task
+      summary: Delete a domain
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this domain.
+        required: true
+      tags:
+      - Domains
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+components:
+  schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    Domain:
+      type: object
+      description: Serializer for Domain.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: A name for this domain.
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        storage_class:
+          allOf:
+          - $ref: '#/components/schemas/StorageClassEnum'
+          description: 'Backend storage class for domain.
+
+
+            * `pulpcore.app.models.storage.FileSystem` - Use local filesystem as storage
+
+            * `storages.backends.s3boto3.S3Boto3Storage` - Use Amazon S3 as storage
+
+            * `storages.backends.azure_storage.AzureStorage` - Use Azure Blob as storage'
+        storage_settings:
+          type: object
+          description: Settings for storage class.
+        redirect_to_object_storage:
+          type: boolean
+          default: true
+          description: Boolean to have the content app redirect to object storage.
+        hide_guarded_distributions:
+          type: boolean
+          default: false
+          description: Boolean to hide distributions with a content guard in the content app.
+      required:
+      - name
+      - storage_class
+      - storage_settings
+    DomainResponse:
+      type: object
+      description: Serializer for Domain.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: A name for this domain.
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type:
+          - string
+          - 'null'
+          description: An optional description.
+        storage_class:
+          allOf:
+          - $ref: '#/components/schemas/StorageClassEnum'
+          description: 'Backend storage class for domain.
+
+
+            * `pulpcore.app.models.storage.FileSystem` - Use local filesystem as storage
+
+            * `storages.backends.s3boto3.S3Boto3Storage` - Use Amazon S3 as storage
+
+            * `storages.backends.azure_storage.AzureStorage` - Use Azure Blob as storage'
+        storage_settings:
+          type: object
+          description: Settings for storage class.
+        redirect_to_object_storage:
+          type: boolean
+          default: true
+          description: Boolean to have the content app redirect to object storage.
+        hide_guarded_distributions:
+          type: boolean
+          default: false
+          description: Boolean to hide distributions with a content guard in the content app.
+      required:
+      - name
+      - storage_class
+      - storage_settings
+    PatchedDomain:
+      type: object
+      description: Serializer for Domain.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: A name for this domain.
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        storage_class:
+          allOf:
+          - $ref: '#/components/schemas/StorageClassEnum'
+          description: 'Backend storage class for domain.
+
+
+            * `pulpcore.app.models.storage.FileSystem` - Use local filesystem as storage
+
+            * `storages.backends.s3boto3.S3Boto3Storage` - Use Amazon S3 as storage
+
+            * `storages.backends.azure_storage.AzureStorage` - Use Azure Blob as storage'
+        storage_settings:
+          type: object
+          description: Settings for storage class.
+        redirect_to_object_storage:
+          type: boolean
+          default: true
+          description: Boolean to have the content app redirect to object storage.
+        hide_guarded_distributions:
+          type: boolean
+          default: false
+          description: Boolean to hide distributions with a content guard in the content app.
+    StorageClassEnum:
+      enum:
+      - pulpcore.app.models.storage.FileSystem
+      - storages.backends.s3boto3.S3Boto3Storage
+      - storages.backends.azure_storage.AzureStorage
+      type: string
+      description: '* `pulpcore.app.models.storage.FileSystem` - Use local filesystem as storage
+
+        * `storages.backends.s3boto3.S3Boto3Storage` - Use Amazon S3 as storage
+
+        * `storages.backends.azure_storage.AzureStorage` - Use Azure Blob as storage'
+    PaginatedDomainResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainResponse'

@@ -1,0 +1,280 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V2 Groups API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V2 Groups'
+paths:
+  /api/automation-hub/_ui/v2/groups/:
+    get:
+      operationId: api_automation_hub__ui_v2_groups_list
+      summary: List groups
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Groups'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupResponseList'
+          description: ''
+    post:
+      operationId: api_automation_hub__ui_v2_groups_create
+      summary: Create a group
+      tags:
+      - 'Api: _Ui V2 Groups'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+  /api/automation-hub/_ui/v2/groups/{id}/:
+    get:
+      operationId: api_automation_hub__ui_v2_groups_read
+      summary: Inspect a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Groups'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    put:
+      operationId: api_automation_hub__ui_v2_groups_update
+      summary: Update a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Groups'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    patch:
+      operationId: api_automation_hub__ui_v2_groups_partial_update
+      summary: Update a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Groups'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGroup'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+          description: ''
+    delete:
+      operationId: api_automation_hub__ui_v2_groups_delete
+      summary: Delete a group
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Groups'
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    GroupResponse:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          description: Name
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+      required:
+      - name
+    Group:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name
+          maxLength: 150
+      required:
+      - name
+    PatchedGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 150
+    PaginatedGroupResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupResponse'

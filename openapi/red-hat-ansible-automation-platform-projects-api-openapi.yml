@@ -1,0 +1,3526 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Projects API
+  version: '1.0'
+  description: 'Operations tagged projects across 2 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: Projects
+paths:
+  /api/v2/projects/:
+    get:
+      operationId: projects_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProjectList'
+          description: ''
+      x-ai-description: Returns a paginated list of all projects. Projects represent playbook collections sourced from version control.
+      summary: Projects list
+      x-summary-source: derived
+    post:
+      operationId: projects_create
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      x-ai-description: Create a new project. Projects represent a collection of Ansible playbooks and related files sourced from a version control system.
+      summary: Projects create
+      x-summary-source: derived
+  /api/v2/projects/{id}/:
+    get:
+      operationId: projects_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      x-ai-description: Retrieve a project
+      summary: Projects retrieve
+      x-summary-source: derived
+    put:
+      operationId: projects_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      x-ai-description: Update a project
+      summary: Projects update
+      x-summary-source: derived
+    patch:
+      operationId: projects_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProjectRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      x-ai-description: Update a project
+      summary: Projects partial update
+      x-summary-source: derived
+    delete:
+      operationId: projects_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a project
+      summary: Projects destroy
+      x-summary-source: derived
+  /api/v2/projects/{id}/access_list/:
+    get:
+      operationId: projects_access_list_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceAccessListElementList'
+          description: ''
+      x-ai-description: List users who can access the project
+      summary: Projects access list list
+      x-summary-source: derived
+  /api/v2/projects/{id}/activity_stream/:
+    get:
+      operationId: projects_activity_stream_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivityStreamList'
+          description: ''
+      x-ai-description: List activity stream for a project
+      summary: Projects activity stream list
+      x-summary-source: derived
+  /api/v2/projects/{id}/copy/:
+    get:
+      operationId: projects_copy_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Copy'
+          description: ''
+      x-ai-description: Retrieve a copy of a project
+      summary: Projects copy retrieve
+      x-summary-source: derived
+    post:
+      operationId: projects_copy_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Copy'
+          description: ''
+      x-ai-description: Create a copy of a project
+      summary: Projects copy create
+      x-summary-source: derived
+  /api/v2/projects/{id}/inventories/:
+    get:
+      operationId: projects_inventories_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectInventories'
+          description: ''
+      x-ai-description: Retrieve an inventory from a project
+      summary: Projects inventories retrieve
+      x-summary-source: derived
+  /api/v2/projects/{id}/notification_templates_error/:
+    get:
+      operationId: projects_notification_templates_error_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationTemplateList'
+          description: ''
+      x-ai-description: List notification templates for project error events
+      summary: Projects notification templates error list
+      x-summary-source: derived
+    post:
+      operationId: projects_notification_templates_error_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+          description: ''
+      x-ai-description: Create a notification template for project error events
+      summary: Projects notification templates error create
+      x-summary-source: derived
+  /api/v2/projects/{id}/notification_templates_started/:
+    get:
+      operationId: projects_notification_templates_started_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationTemplateList'
+          description: ''
+      x-ai-description: List notification templates for project started events
+      summary: Projects notification templates started list
+      x-summary-source: derived
+    post:
+      operationId: projects_notification_templates_started_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+          description: ''
+      x-ai-description: Create a notification template for project started events
+      summary: Projects notification templates started create
+      x-summary-source: derived
+  /api/v2/projects/{id}/notification_templates_success/:
+    get:
+      operationId: projects_notification_templates_success_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationTemplateList'
+          description: ''
+      x-ai-description: List notification templates for project success events
+      summary: Projects notification templates success list
+      x-summary-source: derived
+    post:
+      operationId: projects_notification_templates_success_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationTemplateRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationTemplate'
+          description: ''
+      x-ai-description: Create a notification template for project success events
+      summary: Projects notification templates success create
+      x-summary-source: derived
+  /api/v2/projects/{id}/object_roles/:
+    get:
+      operationId: projects_object_roles_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleList'
+          description: ''
+      x-ai-description: List roles of a project
+      summary: Projects object roles list
+      x-summary-source: derived
+  /api/v2/projects/{id}/playbooks/:
+    get:
+      operationId: projects_playbooks_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectPlaybooks'
+          description: ''
+      x-ai-description: Returns the list of playbook files available in a specific project by ID.
+      summary: Projects playbooks retrieve
+      x-summary-source: derived
+  /api/v2/projects/{id}/project_updates/:
+    get:
+      operationId: projects_project_updates_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProjectUpdateListList'
+          description: ''
+      x-ai-description: List project updates of a project
+      summary: Projects project updates list
+      x-summary-source: derived
+  /api/v2/projects/{id}/schedules/:
+    get:
+      operationId: projects_schedules_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedScheduleList'
+          description: ''
+      x-ai-description: List schedules of a project
+      summary: Projects schedules list
+      x-summary-source: derived
+    post:
+      operationId: projects_schedules_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScheduleRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Schedule'
+          description: ''
+      x-ai-description: Create a schedule of a project
+      summary: Projects schedules create
+      x-summary-source: derived
+  /api/v2/projects/{id}/scm_inventory_sources/:
+    get:
+      operationId: projects_scm_inventory_sources_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInventorySourceList'
+          description: ''
+      x-ai-description: List all sources for a project
+      summary: Projects scm inventory sources list
+      x-summary-source: derived
+  /api/v2/projects/{id}/teams/:
+    get:
+      operationId: projects_teams_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamList'
+          description: ''
+      x-ai-description: List teams with access to a project
+      summary: Projects teams list
+      x-summary-source: derived
+  /api/v2/projects/{id}/update/:
+    get:
+      operationId: projects_update_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectUpdateView'
+          description: ''
+      x-ai-description: Retrieve single update for a project
+      summary: Projects update retrieve
+      x-summary-source: derived
+    post:
+      operationId: projects_update_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - Projects
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectUpdateView'
+          description: ''
+      x-ai-description: Trigger a project update
+      summary: Projects update create
+      x-summary-source: derived
+  /projects/:
+    get:
+      operationId: projects_list
+      description: List all projects
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by project name.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: url
+        schema:
+          type: string
+        description: Filter by project url.
+      tags:
+      - Projects
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProjectList_2'
+          description: Return a list of projects.
+      summary: Projects list
+      x-summary-source: derived
+    post:
+      operationId: projects_create
+      description: Import a project.
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectCreateRequest'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_2'
+          description: Return a created project.
+        '503':
+          description: Project workers unavailable.
+      summary: Projects create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /projects/{id}/:
+    get:
+      operationId: projects_retrieve
+      description: Get a project by id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - Projects
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+          description: Return a project by id.
+      summary: Projects retrieve
+      x-summary-source: derived
+    patch:
+      operationId: projects_partial_update
+      description: Partial update of a project
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - Projects
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProjectUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProjectUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProjectUpdateRequest'
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_2'
+          description: Update successful. Return an updated project.
+        '400':
+          description: Update failed with bad request.
+        '409':
+          description: Update failed with integrity checking.
+        '503':
+          description: Project workers unavailable.
+      summary: Projects partial update
+      x-summary-source: derived
+    delete:
+      operationId: projects_destroy
+      description: Delete a project by id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - Projects
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '204':
+          description: Delete successful.
+      summary: Projects destroy
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /projects/{id}/sync/:
+    post:
+      operationId: projects_sync_create
+      description: Sync a project
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this project.
+        required: true
+      tags:
+      - Projects
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project_2'
+          description: ''
+        '409':
+          description: Project import or sync is already running.
+        '503':
+          description: Project workers unavailable.
+      summary: Projects sync create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+components:
+  schemas:
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    ProjectInventories:
+      type: object
+      properties:
+        inventory_files:
+          readOnly: true
+          description: Array of inventory files and directories available within this project, not comprehensive.
+    ProjectRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        scm_update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Update the project when a job is launched that uses the project.
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
+        allow_override:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Allow changing the SCM branch or revision in a job template that uses this project.
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run using this project.
+        signature_validation_credential:
+          type:
+          - integer
+          - 'null'
+          description: An optional credential used for validating files in the project against unexpected changes.
+      required:
+      - name
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    ProjectPlaybooks:
+      type: object
+      properties:
+        playbooks:
+          type: string
+          readOnly: true
+          description: Array of playbooks available within this project.
+    ResourceAccessListElement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    PaginatedTeamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    PaginatedInventorySourceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventorySource'
+    ProjectUpdateList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        execution_node:
+          type: string
+          readOnly: true
+          description: The node the job executed on.
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        scm_revision:
+          type: string
+          readOnly: true
+          description: The SCM Revision discovered by this update for the given project and branch.
+        project:
+          type: integer
+          readOnly: true
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: check
+        job_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Parts of the project update playbook that will be run.
+          maxLength: 1024
+      required:
+      - name
+    PaginatedNotificationTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTemplate'
+    PaginatedProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    PaginatedScheduleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+    ProjectUpdateView:
+      type: object
+      properties:
+        can_update:
+          type: boolean
+          readOnly: true
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        scm_revision:
+          type: string
+          readOnly: true
+          description: The last revision fetched by a project update
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - ok
+          - missing
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `ok` - OK
+
+            * `missing` - Missing'
+          x-spec-enum-id: 6d29d630b4939828
+          readOnly: true
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        scm_update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Update the project when a job is launched that uses the project.
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
+        allow_override:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Allow changing the SCM branch or revision in a job template that uses this project.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Local absolute file path containing a custom Python virtualenv to use
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run using this project.
+        signature_validation_credential:
+          type:
+          - integer
+          - 'null'
+          description: An optional credential used for validating files in the project against unexpected changes.
+        last_update_failed:
+          type: boolean
+          readOnly: true
+        last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    NotificationTemplateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    Schedule:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          description: A value representing the schedules iCal recurrence rule.
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        unified_job_template:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Enables processing of this schedule.
+        dtstart:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The first occurrence of the schedule occurs on or after this time.
+        dtend:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
+        next_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The next time that the scheduled action will run.
+        timezone:
+          type: string
+          readOnly: true
+          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
+        until:
+          type: string
+          readOnly: true
+          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
+      required:
+      - name
+      - rrule
+      - unified_job_template
+    Copy:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
+    ScheduleRequest:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A value representing the schedules iCal recurrence rule.
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        unified_job_template:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Enables processing of this schedule.
+      required:
+      - name
+      - rrule
+      - unified_job_template
+    NotificationTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    InventorySource:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        source:
+          enum:
+          - azure_rm
+          - controller
+          - ec2
+          - gce
+          - insights
+          - openshift_virtualization
+          - openstack
+          - rhv
+          - satellite6
+          - terraform
+          - vmware
+          - scm
+          - constructed
+          type: string
+          description: '* `azure_rm` - Microsoft Azure Resource Manager
+
+            * `controller` - Red Hat Ansible Automation Platform
+
+            * `ec2` - Amazon EC2
+
+            * `gce` - Google Compute Engine
+
+            * `insights` - Red Hat Insights
+
+            * `openshift_virtualization` - OpenShift Virtualization
+
+            * `openstack` - OpenStack
+
+            * `rhv` - Red Hat Virtualization
+
+            * `satellite6` - Red Hat Satellite 6
+
+            * `terraform` - Terraform State
+
+            * `vmware` - VMware vCenter
+
+            * `scm` - Sourced from a Project
+
+            * `constructed` - Template additional groups and hostvars at runtime'
+          x-spec-enum-id: 2e54dfe09d4f7d8d
+        source_path:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        source_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source variables in YAML or JSON format.
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        credential:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          description: Cloud credential to use for inventory updates.
+        enabled_var:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
+        enabled_value:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
+        overwrite:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local groups and hosts from remote inventory source.
+        overwrite_vars:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local variables from remote inventory source.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Local absolute file path containing a custom Python virtualenv to use
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: '* `0` - 0 (WARNING)
+
+            * `1` - 1 (INFO)
+
+            * `2` - 2 (DEBUG)'
+          x-spec-enum-id: 48197bd695a06691
+          default: 1
+          minimum: 0
+          maximum: 9223372036854775807
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Enter host, group or pattern match
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - none
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `none` - No External Source'
+          x-spec-enum-id: 697673f6ed4abf52
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        inventory:
+          type:
+          - integer
+          - 'null'
+        update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        source_project:
+          type:
+          - integer
+          - 'null'
+          description: Project containing inventory file used as source.
+        last_update_failed:
+          type: boolean
+          readOnly: true
+        last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - inventory
+      - name
+      - source
+    CopyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+    PatchedProjectRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        scm_update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Update the project when a job is launched that uses the project.
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
+        allow_override:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Allow changing the SCM branch or revision in a job template that uses this project.
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run using this project.
+        signature_validation_credential:
+          type:
+          - integer
+          - 'null'
+          description: An optional credential used for validating files in the project against unexpected changes.
+    PaginatedProjectUpdateListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectUpdateList'
+    PaginatedResourceAccessListElementList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceAccessListElement'
+    ScmTypeEnum:
+      enum:
+      - git
+      type: string
+      description: '* `git` - Git'
+    PaginatedProjectList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project_2'
+    Project_2:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        organization_id:
+          type: integer
+          readOnly: true
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+        signature_validation_credential_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        scm_branch:
+          type: string
+        scm_refspec:
+          type: string
+        verify_ssl:
+          type: boolean
+        proxy:
+          type: string
+          readOnly: true
+        update_revision_on_launch:
+          type: boolean
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
+        last_synced_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp of the last successful project sync
+        created_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        modified_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        scm_type:
+          allOf:
+          - $ref: '#/components/schemas/ScmTypeEnum'
+          readOnly: true
+        git_hash:
+          type: string
+          readOnly: true
+        import_state:
+          allOf:
+          - $ref: '#/components/schemas/ImportStateEnum'
+          readOnly: true
+        import_error:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - git_hash
+      - id
+      - import_error
+      - import_state
+      - modified_at
+      - modified_by
+      - name
+      - organization_id
+      - proxy
+      - scm_type
+      - signature_validation_credential_id
+      - url
+    PatchedProjectUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the project
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the project
+        organization_id:
+          type: integer
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+          description: EdaCredential id of the project
+        signature_validation_credential_id:
+          type:
+          - integer
+          - 'null'
+          description: ID of an optional credential used for validating files in the project against unexpected changes
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          description: Specific branch, tag or commit to checkout.
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          description: For git projects, an additional refspec to fetch.
+        verify_ssl:
+          type: boolean
+          description: Indicates if SSL verification is enabled
+        proxy:
+          type:
+          - string
+          - 'null'
+          description: Proxy server for http or https connection
+        url:
+          type:
+          - string
+          - 'null'
+          description: Source control repository URL.
+        update_revision_on_launch:
+          type: boolean
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 86400
+          minimum: 0
+          description: Cache timeout in seconds for project updates (0 = no cache, max 86400)
+    EdaCredentialRef:
+      type: object
+      description: Serializer for EdaCredential reference.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        inputs:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        managed:
+          type: boolean
+        credential_type_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        organization_id:
+          type: integer
+          readOnly: true
+      required:
+      - credential_type_id
+      - id
+      - inputs
+      - name
+      - organization_id
+    ProjectCreateRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Source control repository URL.
+        proxy:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        organization_id:
+          type: integer
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+        signature_validation_credential_id:
+          type:
+          - integer
+          - 'null'
+        verify_ssl:
+          type: boolean
+        scm_type:
+          $ref: '#/components/schemas/ScmTypeEnum'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          description: Specific branch, tag or commit to checkout.
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          description: For git projects, an additional refspec to fetch.
+        update_revision_on_launch:
+          type: boolean
+          default: false
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 86400
+          minimum: 0
+          default: 0
+          description: Cache timeout in seconds for project updates (0 = no cache, max 86400)
+      required:
+      - name
+      - organization_id
+      - url
+    ProjectRead:
+      type: object
+      description: Serializer for reading the Project with embedded objects.
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        organization:
+          $ref: '#/components/schemas/OrganizationRef'
+        eda_credential:
+          allOf:
+          - $ref: '#/components/schemas/EdaCredentialRef'
+        signature_validation_credential:
+          allOf:
+          - $ref: '#/components/schemas/EdaCredentialRef'
+        verify_ssl:
+          type: boolean
+        scm_branch:
+          type: string
+        scm_refspec:
+          type: string
+        proxy:
+          type: string
+          readOnly: true
+        update_revision_on_launch:
+          type: boolean
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
+        last_synced_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp of the last successful project sync
+        created_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        modified_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        scm_type:
+          allOf:
+          - $ref: '#/components/schemas/ScmTypeEnum'
+          readOnly: true
+        git_hash:
+          type: string
+          readOnly: true
+        import_state:
+          allOf:
+          - $ref: '#/components/schemas/ImportStateEnum'
+          readOnly: true
+        import_error:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - git_hash
+      - id
+      - import_error
+      - import_state
+      - modified_at
+      - modified_by
+      - name
+      - organization
+      - proxy
+      - scm_type
+      - url
+    ImportStateEnum:
+      enum:
+      - pending
+      - running
+      - failed
+      - completed
+      type: string
+      description: '* `pending` - Pending
+
+        * `running` - Running
+
+        * `failed` - Failed
+
+        * `completed` - Completed'
+    OrganizationRef:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The organization description.
+      required:
+      - id
+      - name
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json

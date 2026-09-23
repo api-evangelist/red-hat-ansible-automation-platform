@@ -1,0 +1,191 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Api V3 Collections All API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Api V3 Collections All'
+paths:
+  /pulp_ansible/galaxy/{path}/api/v3/collections/all/:
+    get:
+      operationId: pulp_ansible_galaxy_api_v3_collections_all_list
+      description: Legacy v3 endpoint.
+      parameters:
+      - in: query
+        name: deprecated
+        schema:
+          type: boolean
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: namespace
+        schema:
+          type: string
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -name
+            - -namespace
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - name
+            - namespace
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `namespace` - Namespace
+
+          * `-namespace` - Namespace (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Api V3 Collections All'
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionResponse'
+          description: ''
+        '302':
+          description: No response body
+      summary: Pulp ansible galaxy api v3 collections all list
+      x-summary-source: derived
+components:
+  schemas:
+    CollectionResponse:
+      type: object
+      description: A serializer for a Collection.
+      properties:
+        href:
+          type: string
+          description: Get href.
+          readOnly: true
+        namespace:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        deprecated:
+          type: boolean
+        versions_url:
+          type: string
+          description: Get a link to a collection versions list.
+          readOnly: true
+        highest_version:
+          type: object
+          description: Get a highest version and its link.
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          description: Get the timestamp of the lowest version CollectionVersion's created timestamp.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Get the timestamp of the latest version CollectionVersion's created timestamp.
+          readOnly: true
+        download_count:
+          type: integer
+          description: Get the download count of the collection
+          readOnly: true
+      required:
+      - deprecated

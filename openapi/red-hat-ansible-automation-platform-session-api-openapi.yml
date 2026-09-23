@@ -1,0 +1,104 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Session API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Session
+paths:
+  /api/gateway/v1/session/:
+    get:
+      operationId: session_retrieve
+      tags:
+      - Session
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session_view'
+          description: ''
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session_view_404'
+          description: ''
+      x-ai-description: Retrieve single session
+      summary: Session retrieve
+      x-summary-source: derived
+    post:
+      operationId: session_create
+      tags:
+      - Session
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session_view_post'
+          description: ''
+      x-ai-description: Create new session
+      summary: Session create
+      x-summary-source: derived
+components:
+  schemas:
+    session_view_post:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+      - message
+    session_view:
+      type: object
+      properties:
+        now:
+          type: string
+          format: date-time
+        expires_on:
+          type: string
+          format: date-time
+        expires_in_seconds:
+          type: integer
+      required:
+      - expires_in_seconds
+      - expires_on
+      - now
+    session_view_404:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

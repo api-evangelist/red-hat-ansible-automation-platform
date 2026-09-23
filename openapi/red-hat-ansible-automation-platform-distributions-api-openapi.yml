@@ -1,0 +1,381 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Distributions API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Distributions
+paths:
+  /api/automation-hub/pulp/api/v3/distributions/:
+    get:
+      operationId: distributions_list
+      description: Provides base viewset for Distributions.
+      summary: List distributions
+      parameters:
+      - in: query
+        name: base_path
+        schema:
+          type: string
+        description: Filter results where base_path matches value
+      - in: query
+        name: base_path__contains
+        schema:
+          type: string
+        description: Filter results where base_path contains value
+      - in: query
+        name: base_path__icontains
+        schema:
+          type: string
+        description: Filter results where base_path contains value
+      - in: query
+        name: base_path__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where base_path is in a comma-separated list of values
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -base_path
+            - -hidden
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_labels
+            - -pulp_last_updated
+            - -pulp_type
+            - base_path
+            - hidden
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_labels
+            - pulp_last_updated
+            - pulp_type
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `pulp_labels` - Pulp labels
+
+          * `-pulp_labels` - Pulp labels (descending)
+
+          * `base_path` - Base path
+
+          * `-base_path` - Base path (descending)
+
+          * `hidden` - Hidden
+
+          * `-hidden` - Hidden (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_label_select
+        schema:
+          type: string
+        description: Filter labels by search string
+      - in: query
+        name: pulp_type
+        schema:
+          type: string
+          enum:
+          - ansible.ansible
+          - container.container
+          - container.pull-through
+          - core.artifact
+          - file.file
+        description: 'Pulp type
+
+
+          * `core.artifact` - core.artifact
+
+          * `ansible.ansible` - ansible.ansible
+
+          * `container.pull-through` - container.pull-through
+
+          * `container.container` - container.container
+
+          * `file.file` - file.file'
+      - in: query
+        name: pulp_type__in
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ansible.ansible
+            - container.container
+            - container.pull-through
+            - core.artifact
+            - file.file
+        description: 'Multiple values may be separated by commas.
+
+
+          * `core.artifact` - core.artifact
+
+          * `ansible.ansible` - ansible.ansible
+
+          * `container.pull-through` - container.pull-through
+
+          * `container.container` - container.container
+
+          * `file.file` - file.file'
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository
+        schema:
+          type: string
+          format: uuid
+        description: Filter results where repository matches value
+      - in: query
+        name: repository__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Filter results where repository is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: with_content
+        schema:
+          type: string
+        description: Filter distributions based on the content served by them
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Distributions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDistributionResponseList'
+          description: ''
+components:
+  schemas:
+    DistributionResponse:
+      type: object
+      properties:
+        pulp_id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        base_path:
+          type: string
+        repository:
+          $ref: '#/components/schemas/RepositoryResponse'
+      required:
+      - base_path
+      - name
+      - repository
+    PaginatedDistributionResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DistributionResponse'
+    RepositoryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        pulp_id:
+          type: string
+          format: uuid
+          readOnly: true
+        pulp_last_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        content_count:
+          type: integer
+          readOnly: true
+        gpgkey:
+          type: string
+      required:
+      - gpgkey
+      - name

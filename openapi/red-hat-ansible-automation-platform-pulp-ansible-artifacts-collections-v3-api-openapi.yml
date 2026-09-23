@@ -1,0 +1,309 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Artifacts Collections V3 API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Artifacts Collections V3'
+paths:
+  /api/automation-hub/content/{path}/v3/artifacts/collections/:
+    post:
+      operationId: api_automation_hub_content_v3_artifacts_collections_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      parameters:
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/content/{path}/v3/plugin/ansible/content/{distro_base_path}/collections/artifacts/:
+    post:
+      operationId: api_automation_hub_content_v3_plugin_ansible_content_collections_artifacts_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/v3/artifacts/collections/:
+    post:
+      operationId: api_automation_hub_v3_artifacts_collections_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/v3/plugin/ansible/content/{distro_base_path}/collections/artifacts/:
+    post:
+      operationId: api_automation_hub_v3_plugin_ansible_content_collections_artifacts_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionUploadWithDownloadUrl'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /pulp_ansible/galaxy/{path}/api/v3/artifacts/collections/:
+    post:
+      operationId: pulp_ansible_galaxy_api_v3_artifacts_collections_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      parameters:
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+        required: true
+      deprecated: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /pulp_ansible/galaxy/{path}/api/v3/plugin/ansible/content/{distro_base_path}/collections/artifacts/:
+    post:
+      operationId: pulp_ansible_galaxy_api_v3_plugin_ansible_content_collections_artifacts_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /pulp_ansible/galaxy/default/api/v3/artifacts/collections/:
+    post:
+      operationId: pulp_ansible_galaxy_default_api_v3_artifacts_collections_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+        required: true
+      deprecated: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /pulp_ansible/galaxy/default/api/v3/plugin/ansible/content/{distro_base_path}/collections/artifacts/:
+    post:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_content_collections_artifacts_create
+      description: Create an artifact and trigger an asynchronous task to create Collection content from it.
+      summary: Upload a collection
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Artifacts Collections V3'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionOneShot'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+components:
+  schemas:
+    CollectionUploadWithDownloadUrl:
+      type: object
+      description: A serializer for the Collection One Shot Upload API.
+      properties:
+        file:
+          type: string
+          format: binary
+        sha256:
+          type: string
+          minLength: 1
+      required:
+      - file
+    CollectionOneShot:
+      type: object
+      description: A serializer for the Collection One Shot Upload API.
+      properties:
+        file:
+          type: string
+          format: binary
+          description: The Collection tarball.
+        sha256:
+          type: string
+          minLength: 1
+          description: An optional sha256 checksum of the uploaded file.
+        expected_namespace:
+          type: string
+          minLength: 1
+          description: The expected 'namespace' of the Collection to be verified against the metadata during import.
+        expected_name:
+          type: string
+          minLength: 1
+          description: The expected 'name' of the Collection to be verified against the metadata during import.
+        expected_version:
+          type: string
+          minLength: 1
+          description: The expected version of the Collection to be verified against the metadata during import.
+      required:
+      - file
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

@@ -1,0 +1,597 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Publications: File API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Publications: File'
+paths:
+  /api/automation-hub/pulp/api/v3/publications/file/file/:
+    get:
+      operationId: publications_file_file_list
+      description: 'A FilePublication contains metadata about all the File Content in a particular File Repository Version.
+
+        Once a FilePublication has been created, it can be hosted using the
+
+        File Distribution API.'
+      summary: List file publications
+      parameters:
+      - in: query
+        name: content
+        schema:
+          type: string
+        description: Content Unit referenced by HREF
+      - in: query
+        name: content__in
+        schema:
+          type: string
+        description: Content Unit referenced by HREF
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -complete
+            - -pass_through
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -pulp_type
+            - complete
+            - pass_through
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - pulp_type
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `complete` - Complete
+
+          * `-complete` - Complete (descending)
+
+          * `pass_through` - Pass through
+
+          * `-pass_through` - Pass through (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_created
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_created matches value
+      - in: query
+        name: pulp_created__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_created is greater than value
+      - in: query
+        name: pulp_created__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_created is greater than or equal to value
+      - in: query
+        name: pulp_created__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_created is less than value
+      - in: query
+        name: pulp_created__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_created is less than or equal to value
+      - in: query
+        name: pulp_created__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where pulp_created is between two comma separated values
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository
+        schema:
+          type: string
+        description: Repository referenced by HREF
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+          format: uuid
+        description: Repository Version referenced by HREF
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Publications: File'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedfile.FilePublicationResponseList'
+          description: ''
+    post:
+      operationId: publications_file_file_create
+      description: Trigger an asynchronous task to publish file content.
+      summary: Create a file publication
+      tags:
+      - 'Publications: File'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file.FilePublication'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/file.FilePublication'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/file.FilePublication'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/publications/file/file/{pulp_id}/:
+    get:
+      operationId: publications_file_file_read
+      description: 'A FilePublication contains metadata about all the File Content in a particular File Repository Version.
+
+        Once a FilePublication has been created, it can be hosted using the
+
+        File Distribution API.'
+      summary: Inspect a file publication
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this file publication.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Publications: File'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file.FilePublicationResponse'
+          description: ''
+    delete:
+      operationId: publications_file_file_delete
+      description: 'A FilePublication contains metadata about all the File Content in a particular File Repository Version.
+
+        Once a FilePublication has been created, it can be hosted using the
+
+        File Distribution API.'
+      summary: Delete a file publication
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this file publication.
+        required: true
+      tags:
+      - 'Publications: File'
+      responses:
+        '204':
+          description: No response body
+  /api/automation-hub/pulp/api/v3/publications/file/file/{pulp_id}/add_role/:
+    post:
+      operationId: publications_file_file_add_role
+      description: Add a role for this object to users/groups.
+      summary: Add a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this file publication.
+        required: true
+      tags:
+      - 'Publications: File'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/publications/file/file/{pulp_id}/list_roles/:
+    get:
+      operationId: publications_file_file_list_roles
+      description: List roles assigned to this object.
+      summary: List roles
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this file publication.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Publications: File'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRolesResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/publications/file/file/{pulp_id}/my_permissions/:
+    get:
+      operationId: publications_file_file_my_permissions
+      description: List permissions available to the current user on this object.
+      summary: List user permissions
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this file publication.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Publications: File'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPermissionsResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/publications/file/file/{pulp_id}/remove_role/:
+    post:
+      operationId: publications_file_file_remove_role
+      description: Remove a role for this object from users/groups.
+      summary: Remove a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this file publication.
+        required: true
+      tags:
+      - 'Publications: File'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+components:
+  schemas:
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    Paginatedfile.FilePublicationResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.FilePublicationResponse'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    file.FilePublication:
+      type: object
+      description: Serializer for File Publications.
+      properties:
+        repository_version:
+          type: string
+          format: uri
+        repository:
+          type: string
+          format: uri
+          description: A URI of the repository to be published.
+        manifest:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          default: PULP_MANIFEST
+          description: Filename to use for manifest file containing metadata for all the files.
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    file.FilePublicationResponse:
+      type: object
+      description: Serializer for File Publications.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        repository_version:
+          type: string
+          format: uri
+        repository:
+          type: string
+          format: uri
+          description: A URI of the repository to be published.
+        distributions:
+          type: array
+          items:
+            type: string
+            format: uri
+          readOnly: true
+          description: This publication is currently hosted as defined by these distributions.
+        manifest:
+          type:
+          - string
+          - 'null'
+          default: PULP_MANIFEST
+          description: Filename to use for manifest file containing metadata for all the files.
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role

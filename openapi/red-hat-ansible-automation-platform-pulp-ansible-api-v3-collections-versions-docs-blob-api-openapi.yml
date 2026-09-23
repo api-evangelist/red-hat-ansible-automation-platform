@@ -1,0 +1,90 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Api V3 Collections Versions…'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Api V3 Collections Versions Docs-Blob'
+paths:
+  /pulp_ansible/galaxy/{path}/api/v3/collections/{namespace}/{name}/versions/{version}/docs-blob/:
+    get:
+      operationId: pulp_ansible_galaxy_api_v3_collections_versions_docs_blob_read
+      description: Legacy v3 endpoint.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: namespace
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: version
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Api V3 Collections Versions Docs-Blob'
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionVersionDocsResponse'
+          description: ''
+        '302':
+          description: No response body
+      summary: Pulp ansible galaxy api v3 collections versions docs blob read
+      x-summary-source: derived
+components:
+  schemas:
+    CollectionVersionDocsResponse:
+      type: object
+      description: A serializer to display the docs_blob of a CollectionVersion.
+      properties:
+        docs_blob:
+          type: object
+      required:
+      - docs_blob

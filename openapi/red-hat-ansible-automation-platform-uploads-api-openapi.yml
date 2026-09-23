@@ -1,0 +1,636 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Uploads API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Uploads
+paths:
+  /api/automation-hub/pulp/api/v3/uploads/:
+    get:
+      operationId: uploads_list
+      description: View for chunked uploads.
+      summary: List uploads
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -size
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - size
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `size` - Size
+
+          * `-size` - Size (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: size
+        schema:
+          type: integer
+        description: Filter results where size matches value
+      - in: query
+        name: size__gt
+        schema:
+          type: integer
+        description: Filter results where size is greater than value
+      - in: query
+        name: size__lt
+        schema:
+          type: integer
+        description: Filter results where size is less than value
+      - in: query
+        name: size__range
+        schema:
+          type: array
+          items:
+            type: integer
+        description: Filter results where size is between two comma separated values
+        explode: false
+        style: form
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Uploads
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUploadResponseList'
+          description: ''
+    post:
+      operationId: uploads_create
+      description: View for chunked uploads.
+      summary: Create an upload
+      tags:
+      - Uploads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Upload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Upload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Upload'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/uploads/{pulp_id}/:
+    get:
+      operationId: uploads_read
+      description: View for chunked uploads.
+      summary: Inspect an upload
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Uploads
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadDetailResponse'
+          description: ''
+    put:
+      operationId: uploads_update
+      description: Upload a chunk for an upload.
+      summary: Upload a file chunk
+      parameters:
+      - in: header
+        name: Content-Range
+        schema:
+          type: string
+        description: The Content-Range header specifies the location of the file chunk within the file.
+        required: true
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      tags:
+      - Uploads
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadChunk'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UploadChunk'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+          description: ''
+    delete:
+      operationId: uploads_delete
+      description: View for chunked uploads.
+      summary: Delete an upload
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      tags:
+      - Uploads
+      responses:
+        '204':
+          description: No response body
+  /api/automation-hub/pulp/api/v3/uploads/{pulp_id}/add_role/:
+    post:
+      operationId: uploads_add_role
+      description: Add a role for this object to users/groups.
+      summary: Add a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      tags:
+      - Uploads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Upload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Upload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Upload'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/uploads/{pulp_id}/commit/:
+    post:
+      operationId: uploads_commit
+      description: Queues a Task that creates an Artifact, and the Upload gets deleted and cannot be re-used.
+      summary: Finish an Upload
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      tags:
+      - Uploads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadCommit'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UploadCommit'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadCommit'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/uploads/{pulp_id}/list_roles/:
+    get:
+      operationId: uploads_list_roles
+      description: List roles assigned to this object.
+      summary: List roles
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Uploads
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRolesResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/uploads/{pulp_id}/my_permissions/:
+    get:
+      operationId: uploads_my_permissions
+      description: List permissions available to the current user on this object.
+      summary: List user permissions
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Uploads
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPermissionsResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/uploads/{pulp_id}/remove_role/:
+    post:
+      operationId: uploads_remove_role
+      description: Remove a role for this object from users/groups.
+      summary: Remove a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upload.
+        required: true
+      tags:
+      - Uploads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Upload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Upload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Upload'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+components:
+  schemas:
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    Upload:
+      type: object
+      description: Serializer for chunked uploads.
+      properties:
+        size:
+          type: integer
+          format: int64
+          description: The size of the upload in bytes.
+      required:
+      - size
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    UploadChunk:
+      type: object
+      description: A mixin for validating unknown serializers' fields.
+      properties:
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: A chunk of the uploaded file.
+        sha256:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The SHA-256 checksum of the chunk if available.
+      required:
+      - file
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    UploadChunkResponse:
+      type: object
+      description: A mixin for validating unknown serializers' fields.
+      properties:
+        offset:
+          type: integer
+          format: int64
+          readOnly: true
+        size:
+          type: integer
+          format: int64
+          readOnly: true
+    UploadCommit:
+      type: object
+      description: A mixin for validating unknown serializers' fields.
+      properties:
+        sha256:
+          type: string
+          minLength: 1
+          description: The expected sha256 checksum for the file.
+      required:
+      - sha256
+    UploadDetailResponse:
+      type: object
+      description: Serializer for chunked uploads.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        size:
+          type: integer
+          format: int64
+          description: The size of the upload in bytes.
+        completed:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp when upload is committed.
+        chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadChunkResponse'
+          readOnly: true
+      required:
+      - size
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    UploadResponse:
+      type: object
+      description: Serializer for chunked uploads.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        size:
+          type: integer
+          format: int64
+          description: The size of the upload in bytes.
+        completed:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp when upload is committed.
+      required:
+      - size
+    PaginatedUploadResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadResponse'

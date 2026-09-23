@@ -1,0 +1,582 @@
+openapi: 3.2.0
+info:
+  title: Event Driven Ansible Audit Rules API
+  version: 0.2.0
+servers:
+- url: /api/eda/v1
+tags:
+- name: audit-rules
+paths:
+  /audit-rules/:
+    get:
+      operationId: audit_rules_list
+      description: List all fired rules
+      parameters:
+      - in: query
+        name: activation_instance_id
+        schema:
+          type: string
+        description: Filter by activation_instance_id
+      - in: query
+        name: created_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter by created_at
+      - in: query
+        name: fired_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter by fired_at
+      - in: query
+        name: id
+        schema:
+          type: number
+        description: Filter by id
+      - in: query
+        name: job_instance_id
+        schema:
+          type: string
+        description: Filter by job_instance_id
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name
+      - in: query
+        name: organization_id
+        schema:
+          type: string
+        description: Filter by organization_id
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: rule_uuid
+        schema:
+          type: string
+        description: Filter by rule_uuid
+      - in: query
+        name: ruleset_name
+        schema:
+          type: string
+        description: Filter by ruleset_name
+      - in: query
+        name: ruleset_uuid
+        schema:
+          type: string
+        description: Filter by ruleset_uuid
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter by status
+      tags:
+      - audit-rules
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditRuleListList'
+          description: Return a list of fired rules.
+      x-ai-description: List fired audit rules. Returns audit rule records. Supports filtering and pagination.
+      summary: Audit rules list
+      x-summary-source: derived
+  /audit-rules/{id}/actions/:
+    get:
+      operationId: audit_rules_actions_list
+      description: Action list of a fired rule by its id
+      parameters:
+      - in: query
+        name: audit_rule_id
+        schema:
+          type: string
+        description: Filter by audit_rule_id
+      - in: query
+        name: fired_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter by fired_at
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rule audit.
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: rule_fired_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter by rule_fired_at
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter by status
+      - in: query
+        name: status_message
+        schema:
+          type: string
+        description: Filter by status_message
+      - in: query
+        name: url
+        schema:
+          type: string
+        description: Filter by url
+      tags:
+      - audit-rules
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditActionList'
+          description: ''
+      summary: Audit rules actions list
+      x-summary-source: derived
+  /audit-rules/{id}/events/:
+    get:
+      operationId: audit_rules_events_list
+      description: Event list of a fired rule by its id
+      parameters:
+      - in: query
+        name: audit_actions
+        schema:
+          type: string
+        description: Filter by audit_actions
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Audit Rule.
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: payload
+        schema:
+          type: string
+        description: Filter by payload
+      - in: query
+        name: received_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter by received_at
+      - in: query
+        name: rule_fired_at
+        schema:
+          type: string
+          format: date-time
+        description: Filter by rule_fired_at
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: source_name
+        schema:
+          type: string
+        description: Filter by source_name
+      - in: query
+        name: source_type
+        schema:
+          type: string
+        description: Filter by source_type
+      tags:
+      - audit-rules
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditEventList'
+          description: ''
+      summary: Audit rules events list
+      x-summary-source: derived
+  /audit-rules/{id}/:
+    get:
+      operationId: audit_rules_retrieve
+      description: Get the fired rule by its id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this audit rule.
+        required: true
+      tags:
+      - audit-rules
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditRuleDetail'
+          description: Return the fired rule by its id.
+      summary: Audit rules retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    AuditEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID of the triggered event
+        source_name:
+          type: string
+          description: Name of the source
+        source_type:
+          type: string
+          description: Type of the source
+        payload:
+          type:
+          - string
+          - 'null'
+          description: The payload in the event
+        audit_actions:
+          type: array
+          items:
+            type: string
+            format: uuid
+        received_at:
+          type: string
+          format: date-time
+          description: The received timestamp of the event
+        rule_fired_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - audit_actions
+      - id
+      - received_at
+      - source_name
+      - source_type
+    PaginatedAuditEventList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditEvent'
+    AuditRuleDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the fired rule
+        name:
+          type: string
+          description: Name of the fired rule
+        status:
+          type: string
+          description: Status of the fired rule
+        activation_instance:
+          type: object
+          properties:
+            id:
+              type:
+              - integer
+              - 'null'
+            name:
+              type: string
+          example:
+            id: 0
+            name: string
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            description:
+              type: string
+          example:
+            id: 0
+            name: string
+            description: string
+          readOnly: true
+        fired_at:
+          type: string
+          format: date-time
+          description: The fired timestamp of the rule
+        ruleset_name:
+          type: string
+          description: Name of the related ruleset
+        created_at:
+          type: string
+          format: date-time
+          description: The created timestamp of the action
+      required:
+      - activation_instance
+      - created_at
+      - fired_at
+      - id
+      - name
+      - organization
+    AuditRuleList:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID of the fired rule
+        name:
+          type: string
+          description: Name of the fired rule
+        status:
+          type: string
+          description: Status of the fired rule
+        activation_instance:
+          type: object
+          properties:
+            id:
+              type:
+              - integer
+              - 'null'
+            name:
+              type: string
+          example:
+            id: 0
+            name: string
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            description:
+              type: string
+          example:
+            id: 0
+            name: string
+            description: string
+          readOnly: true
+        fired_at:
+          type: string
+          format: date-time
+          description: The fired timestamp of the rule
+      required:
+      - activation_instance
+      - fired_at
+      - id
+      - name
+      - organization
+    PaginatedAuditRuleListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditRuleList'
+    AuditAction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: UUID of the triggered action
+        name:
+          type: string
+          description: Name of the action
+        status:
+          type: string
+          description: Status of the action
+        url:
+          type: string
+          format: uri
+          description: The URL in the action
+        fired_at:
+          type: string
+          format: date-time
+          description: The fired timestamp of the action
+        rule_fired_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        audit_rule_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        status_message:
+          type:
+          - string
+          - 'null'
+          description: Message of the action
+      required:
+      - audit_rule_id
+      - fired_at
+      - id
+      - name
+    PaginatedAuditActionList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditAction'
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

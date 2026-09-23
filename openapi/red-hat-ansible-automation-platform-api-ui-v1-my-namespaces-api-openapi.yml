@@ -1,0 +1,437 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V1 My-Namespaces API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V1 My-Namespaces'
+paths:
+  /api/automation-hub/_ui/v1/my-namespaces/:
+    get:
+      operationId: api_automation_hub__ui_v1_my_namespaces_list
+      summary: List namespaces
+      parameters:
+      - in: query
+        name: company
+        schema:
+          type: string
+      - in: query
+        name: keywords
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -company
+            - -id
+            - -name
+            - company
+            - id
+            - name
+        description: 'Ordering
+
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `company` - Company
+
+          * `-company` - Company (descending)
+
+          * `id` - Id
+
+          * `-id` - Id (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 My-Namespaces'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedgalaxy.NamespaceResponseList'
+          description: ''
+    post:
+      operationId: api_automation_hub__ui_v1_my_namespaces_create
+      description: Override to validate for name duplication before serializer validation.
+      summary: Create a namespace
+      tags:
+      - 'Api: _Ui V1 My-Namespaces'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/galaxy.Namespace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/galaxy.Namespace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/galaxy.Namespace'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.NamespaceResponse'
+          description: ''
+  /api/automation-hub/_ui/v1/my-namespaces/{name}/:
+    get:
+      operationId: api_automation_hub__ui_v1_my_namespaces_read
+      summary: Inspect a namespace
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 My-Namespaces'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.NamespaceResponse'
+          description: ''
+    put:
+      operationId: api_automation_hub__ui_v1_my_namespaces_update
+      summary: Update a namespace
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V1 My-Namespaces'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/galaxy.Namespace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/galaxy.Namespace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/galaxy.Namespace'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.NamespaceResponse'
+          description: ''
+    patch:
+      operationId: api_automation_hub__ui_v1_my_namespaces_partial_update
+      summary: Update a namespace
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V1 My-Namespaces'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patchedgalaxy.Namespace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patchedgalaxy.Namespace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patchedgalaxy.Namespace'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.NamespaceResponse'
+          description: ''
+    delete:
+      operationId: api_automation_hub__ui_v1_my_namespaces_delete
+      description: 'Delete a namespace.
+
+
+        1. Perform a check to see if there are any collections in the namespace.
+
+        If there are, return a failure.
+
+        2. Delete the pulp distro and repository
+
+        3. Delete the namespace object.
+
+
+        return: Response(status=204)'
+      summary: Delete a namespace
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V1 My-Namespaces'
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Paginatedgalaxy.NamespaceResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/galaxy.NamespaceResponse'
+    Patchedgalaxy.Namespace:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 256
+        avatar_url:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 256
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLink'
+        groups:
+          type: string
+        users:
+          type: string
+        resources:
+          type: string
+    galaxy.Namespace:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 256
+        avatar_url:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 256
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLink'
+        groups:
+          type: string
+        users:
+          type: string
+        resources:
+          type: string
+      required:
+      - name
+    MyPermissionsFieldResponse:
+      type: object
+    NamespaceLink:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 32
+        url:
+          type: string
+          minLength: 1
+          maxLength: 256
+      required:
+      - name
+      - url
+    galaxy.NamespaceResponse:
+      type: object
+      description: 'NamespaceSerializer but without ''links'' or ''resources''.
+
+
+        For use in _ui/collection detail views.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 256
+        avatar_url:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 256
+        groups:
+          type: string
+        users:
+          type: string
+        related_fields:
+          allOf:
+          - $ref: '#/components/schemas/NamespaceRelatedFieldResponse'
+          readOnly: true
+        metadata_sha256:
+          type: string
+          readOnly: true
+        avatar_sha256:
+          type: string
+          readOnly: true
+    NamespaceRelatedFieldResponse:
+      type: object
+      description: "Serializer only returns fields specified in 'include_related' query param.\n\nThis allows for fields that require more database queries to be optionally\nincluded in API responses, which lowers the load on the backend. This is\nintended as a way to include extra data in list views.\n\nUsage:\n\nThis functions the same as DRF's base `serializers.Serializer` class with the\nexception that it will only return fields specified in the `?include_related=`\nquery parameter.\n\nExample:\n\nMySerializer(RelatedFieldsBaseSerializer):\n    foo = CharField()\n    bar = CharField()\n\nMySerializer will return:\n\n{\"foo\": None} when called with `?include_related=foo` and {\"foo\": None, \"bar\" None}\nwhen called with `?include_related=foo&include_related=bar`."
+      properties:
+        my_permissions:
+          allOf:
+          - $ref: '#/components/schemas/MyPermissionsFieldResponse'
+          readOnly: true

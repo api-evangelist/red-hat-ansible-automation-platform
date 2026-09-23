@@ -1,0 +1,514 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Me API
+  version: '1.0'
+  description: 'Operations tagged me across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json, red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://lightspeed-instance/api/v1
+  description: Direct access to a Lightspeed instance
+- url: https://aap/api/lightspeed/v1
+  description: Access through an Ansible Automation Platfrom gateway
+tags:
+- name: Me
+  description: Authenticated user information
+paths:
+  /me/:
+    get:
+      operationId: me_retrieve
+      tags:
+      - Me
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+          description: ''
+      x-ai-description: Retrieve current user information
+      summary: Me retrieve
+      x-summary-source: derived
+    servers:
+    - url: https://lightspeed-instance/api/v1
+      description: Direct access to a Lightspeed instance
+    - url: https://aap/api/lightspeed/v1
+      description: Access through an Ansible Automation Platfrom gateway
+  /me/summary/:
+    get:
+      operationId: me_summary_retrieve
+      tags:
+      - Me
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarkdownUserResponse'
+          description: ''
+      x-ai-description: Retrieve current logged in user
+      summary: Me summary retrieve
+      x-summary-source: derived
+    servers:
+    - url: https://lightspeed-instance/api/v1
+      description: Direct access to a Lightspeed instance
+    - url: https://aap/api/lightspeed/v1
+      description: Access through an Ansible Automation Platfrom gateway
+  /api/v2/me/:
+    get:
+      operationId: me_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Me
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+      x-ai-description: List current authenticated user
+      summary: Me list
+      x-summary-source: derived
+  /api/gateway/v1/me/:
+    get:
+      operationId: me_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Me
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+      x-ai-description: Retrieve details about the current authenticated user
+      summary: Me list
+      x-summary-source: derived
+components:
+  schemas:
+    MarkdownUserResponse:
+      type: object
+      properties:
+        content:
+          type: string
+          readOnly: true
+      required:
+      - content
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        name:
+          type: string
+          readOnly: true
+        has_api_key:
+          type: boolean
+          readOnly: true
+        has_telemetry_opt_out:
+          type: string
+          readOnly: true
+      required:
+      - has_api_key
+      - has_telemetry_opt_out
+      - id
+      - name
+    UserPlan:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expired_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        accept_marketing:
+          type: boolean
+        plan:
+          $ref: '#/components/schemas/Plan'
+      required:
+      - created_at
+      - plan
+    Plan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 80
+      required:
+      - id
+      - name
+    UserResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        external_username:
+          type: string
+        family_name:
+          type: string
+        given_name:
+          type: string
+        org_telemetry_opt_out:
+          type: boolean
+        organization:
+          $ref: '#/components/schemas/Organization'
+        rh_org_has_subscription:
+          type: boolean
+          readOnly: true
+        rh_user_has_seat:
+          type: boolean
+          readOnly: true
+        rh_user_is_org_admin:
+          type: boolean
+        username:
+          type: string
+          maxLength: 150
+        userplan_set:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserPlan'
+        uuid:
+          type: string
+          format: uuid
+      required:
+      - rh_org_has_subscription
+      - rh_user_has_seat
+      - username
+      - userplan_set
+      - uuid
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    User_2:
+      type: object
+      description: Disallows editing of system user and enforces superuser requirement.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_login_from:
+          type: string
+          readOnly: true
+          description: Read-only field indicating the last authenticator used for successful login. Value is null if user has never logged in. This field is automatically updated on successful authentication. Cannot be set via API.
+        password:
+          type: string
+          maxLength: 128
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_platform_auditor:
+          type: boolean
+          readOnly: true
+        authenticators:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+          writeOnly: true
+          description: 'DEPRECATED: This field is deprecated and will be removed in a future version. Please use ''associated_authenticators'' instead.'
+          deprecated: true
+        authenticator_uid:
+          type: string
+          writeOnly: true
+          description: 'DEPRECATED: This field is deprecated and will be removed in a future version. Please use ''associated_authenticators'' instead.'
+          deprecated: true
+        associated_authenticators:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              uid:
+                type: string
+              email:
+                type: string
+          writeOnly: true
+        managed:
+          type: boolean
+          readOnly: true
+          description: Indicates if this user is managed by the system. It cannot be modified once created.
+      required:
+      - username
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read basic user information
+            write: Request Ansible content suggestions
+            delete: Delete resources
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-ansible-lightspeed-openapi.json
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

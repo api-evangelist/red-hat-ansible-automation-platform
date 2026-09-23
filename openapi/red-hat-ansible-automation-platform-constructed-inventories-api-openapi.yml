@@ -1,0 +1,455 @@
+openapi: 3.2.0
+info:
+  title: AWX Constructed Inventories API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: constructed_inventories
+paths:
+  /api/v2/constructed_inventories/:
+    get:
+      operationId: constructed_inventories_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - constructed_inventories
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConstructedInventoryList'
+          description: ''
+      x-ai-description: A list of inventories.
+      summary: Constructed inventories list
+      x-summary-source: derived
+    post:
+      operationId: constructed_inventories_create
+      tags:
+      - constructed_inventories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConstructedInventoryRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstructedInventory'
+          description: ''
+      x-ai-description: Create a constructed inventory
+      summary: Constructed inventories create
+      x-summary-source: derived
+  /api/v2/constructed_inventories/{id}/:
+    get:
+      operationId: constructed_inventories_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - constructed_inventories
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstructedInventory'
+          description: ''
+      x-ai-description: Retrieve a constructed inventory
+      summary: Constructed inventories retrieve
+      x-summary-source: derived
+    put:
+      operationId: constructed_inventories_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - constructed_inventories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConstructedInventoryRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstructedInventory'
+          description: ''
+      x-ai-description: Update a constructed inventory
+      summary: Constructed inventories update
+      x-summary-source: derived
+    patch:
+      operationId: constructed_inventories_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - constructed_inventories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedConstructedInventoryRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstructedInventory'
+          description: ''
+      x-ai-description: Update a constructed inventory
+      summary: Constructed inventories partial update
+      x-summary-source: derived
+    delete:
+      operationId: constructed_inventories_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - constructed_inventories
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a constructed inventory
+      summary: Constructed inventories destroy
+      x-summary-source: derived
+components:
+  schemas:
+    ConstructedInventory:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: Organization containing this inventory.
+        kind:
+          enum:
+          - ''
+          - smart
+          - constructed
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 2ff9e8df76c2ad0e
+          readOnly: true
+          description: 'Kind of inventory being represented.
+
+
+            * `` - Hosts have a direct link to this inventory.
+
+            * `smart` - Hosts for inventory generated using the host_filter property.
+
+            * `constructed` - Parse list of source inventories with the constructed inventory plugin.'
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+        has_active_failures:
+          type: boolean
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Flag indicating whether any hosts in this inventory have failed.
+        total_hosts:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Total number of hosts in this inventory.
+        hosts_with_active_failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Number of hosts in this inventory with active failures.
+        total_groups:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Total number of groups in this inventory.
+        has_inventory_sources:
+          type: boolean
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Flag indicating whether this inventory has any external inventory sources.
+        total_inventory_sources:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: Total number of external inventory sources configured within this inventory.
+        inventory_sources_with_failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+          description: Number of external inventory sources in this inventory with failures.
+        pending_deletion:
+          type: boolean
+          readOnly: true
+          description: Flag indicating the inventory is being deleted.
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+        source_vars:
+          type: string
+          description: The source_vars for the related auto-created inventory source, special to constructed inventory.
+        update_cache_timeout:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          description: The cache timeout for the related auto-created inventory source, special to constructed inventory
+        limit:
+          type: string
+          description: The limit to restrict the returned hosts for the related auto-created inventory source, special to constructed inventory.
+        verbosity:
+          type:
+          - integer
+          - 'null'
+          maximum: 5
+          minimum: 0
+          description: The verbosity level for the related auto-created inventory source, special to constructed inventory
+      required:
+      - name
+      - organization
+    PaginatedConstructedInventoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConstructedInventory'
+    ConstructedInventoryRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: Organization containing this inventory.
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+        source_vars:
+          type: string
+          description: The source_vars for the related auto-created inventory source, special to constructed inventory.
+        update_cache_timeout:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          description: The cache timeout for the related auto-created inventory source, special to constructed inventory
+        limit:
+          type: string
+          description: The limit to restrict the returned hosts for the related auto-created inventory source, special to constructed inventory.
+        verbosity:
+          type:
+          - integer
+          - 'null'
+          maximum: 5
+          minimum: 0
+          description: The verbosity level for the related auto-created inventory source, special to constructed inventory
+      required:
+      - name
+      - organization
+    PatchedConstructedInventoryRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: Organization containing this inventory.
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+        source_vars:
+          type: string
+          description: The source_vars for the related auto-created inventory source, special to constructed inventory.
+        update_cache_timeout:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          description: The cache timeout for the related auto-created inventory source, special to constructed inventory
+        limit:
+          type: string
+          description: The limit to restrict the returned hosts for the related auto-created inventory source, special to constructed inventory.
+        verbosity:
+          type:
+          - integer
+          - 'null'
+          maximum: 5
+          minimum: 0
+          description: The verbosity level for the related auto-created inventory source, special to constructed inventory

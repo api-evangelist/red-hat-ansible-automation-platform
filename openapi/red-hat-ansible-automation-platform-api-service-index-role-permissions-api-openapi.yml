@@ -1,0 +1,123 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: Service-Index Role-Permissions API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: Service-Index Role-Permissions'
+paths:
+  /api/automation-hub/service-index/role-permissions/:
+    get:
+      operationId: api_automation_hub_service_index_role_permissions_list
+      description: List of permissions managed with the RBAC system
+      summary: List permissions
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: Service-Index Role-Permissions'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDABPermissionResponseList'
+          description: ''
+components:
+  schemas:
+    PaginatedDABPermissionResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DABPermissionResponse'
+    DABPermissionResponse:
+      type: object
+      properties:
+        api_slug:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          maxLength: 201
+        codename:
+          type: string
+          description: A codename for the permission, in the format {action}_{model_name}. Where action is typically the view set action (view/list/etc) from Django rest framework.
+          maxLength: 100
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        name:
+          type: string
+          description: The name of this permission.
+          maxLength: 255
+      required:
+      - codename
+      - name

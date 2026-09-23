@@ -1,0 +1,289 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V2 Teams API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V2 Teams'
+paths:
+  /api/automation-hub/_ui/v2/teams/:
+    get:
+      operationId: api_automation_hub__ui_v2_teams_list
+      summary: List teams
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: resource__ansible_id
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Teams'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTeamResponseList'
+          description: ''
+    post:
+      operationId: api_automation_hub__ui_v2_teams_create
+      summary: Create a team
+      tags:
+      - 'Api: _Ui V2 Teams'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Team'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Team'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+          description: ''
+  /api/automation-hub/_ui/v2/teams/{id}/:
+    get:
+      operationId: api_automation_hub__ui_v2_teams_read
+      summary: Inspect a team
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this team.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Teams'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+          description: ''
+    put:
+      operationId: api_automation_hub__ui_v2_teams_update
+      summary: Update a team
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Teams'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Team'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Team'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+          description: ''
+    patch:
+      operationId: api_automation_hub__ui_v2_teams_partial_update
+      summary: Update a team
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Teams'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTeam'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamResponse'
+          description: ''
+    delete:
+      operationId: api_automation_hub__ui_v2_teams_delete
+      summary: Delete a team
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this team.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Teams'
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    PatchedTeam:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of this resource.
+          maxLength: 512
+    Team:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of this resource.
+          maxLength: 512
+      required:
+      - name
+    PaginatedTeamResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamResponse'
+    TeamResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        group:
+          type: string
+          readOnly: true
+        organization:
+          type: string
+          readOnly: true
+        resource:
+          type: string
+          readOnly: true
+      required:
+      - name

@@ -1,0 +1,248 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Importers: Pulp Imports API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Importers: Pulp Imports'
+paths:
+  /api/automation-hub/pulp/api/v3/importers/core/pulp/{importer_pk}/imports/:
+    get:
+      operationId: importers_core_pulp_imports_list
+      description: ViewSet for PulpImports.
+      summary: List pulp imports
+      parameters:
+      - in: path
+        name: importer_pk
+        schema:
+          type: string
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Importers: Pulp Imports'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedImportResponseList'
+          description: ''
+    post:
+      operationId: importers_core_pulp_imports_create
+      description: Trigger an asynchronous task to import a Pulp export.
+      summary: Create a pulp import
+      parameters:
+      - in: path
+        name: importer_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Importers: Pulp Imports'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PulpImport'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PulpImport'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PulpImport'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskGroupOperationResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/importers/core/pulp/{importer_pk}/imports/{pulp_id}/:
+    get:
+      operationId: importers_core_pulp_imports_read
+      description: ViewSet for PulpImports.
+      summary: Inspect a pulp import
+      parameters:
+      - in: path
+        name: importer_pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this pulp import.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Importers: Pulp Imports'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImportResponse'
+          description: ''
+    delete:
+      operationId: importers_core_pulp_imports_delete
+      description: ViewSet for PulpImports.
+      summary: Delete a pulp import
+      parameters:
+      - in: path
+        name: importer_pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this pulp import.
+        required: true
+      tags:
+      - 'Importers: Pulp Imports'
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    ImportResponse:
+      type: object
+      description: Serializer for Imports.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        task:
+          type: string
+          format: uri
+          description: A URI of the Task that ran the Import.
+        params:
+          type: object
+          description: Any parameters that were used to create the import.
+      required:
+      - params
+      - task
+    PulpImport:
+      type: object
+      description: Serializer for call to import into Pulp.
+      properties:
+        path:
+          type: string
+          minLength: 1
+          description: Path to export that will be imported.
+        toc:
+          type: string
+          minLength: 1
+          description: Path to a table-of-contents file describing chunks to be validated, reassembled, and imported.
+        create_repositories:
+          type: boolean
+          default: false
+          description: If True, missing repositories will be automatically created during the import.
+    PaginatedImportResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImportResponse'
+    TaskGroupOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations that return a task group.
+      properties:
+        task_group:
+          type: string
+          format: uri
+          description: The href of the task group.
+      required:
+      - task_group

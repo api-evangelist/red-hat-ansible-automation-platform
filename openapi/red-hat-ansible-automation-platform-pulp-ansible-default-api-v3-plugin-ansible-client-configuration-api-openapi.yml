@@ -1,0 +1,54 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Default Api V3 Plugin Ansible…'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Default Api V3 Plugin Ansible Client-Configuration'
+paths:
+  /pulp_ansible/galaxy/default/api/v3/plugin/ansible/client-configuration/:
+    get:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_client_configuration_read
+      description: Return configurations for the ansible-galaxy client.
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Client-Configuration'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientConfigurationResponse'
+          description: ''
+      summary: Pulp ansible galaxy default api v3 plugin ansible client configuration read
+      x-summary-source: derived
+components:
+  schemas:
+    ClientConfigurationResponse:
+      type: object
+      description: Configuration settings for the ansible-galaxy client.
+      properties:
+        default_distribution_path:
+          type:
+          - string
+          - 'null'
+      required:
+      - default_distribution_path

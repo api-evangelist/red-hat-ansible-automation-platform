@@ -1,0 +1,631 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Contentguards: Content_Redirect API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Contentguards: Content_Redirect'
+paths:
+  /api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/:
+    get:
+      operationId: contentguards_core_content_redirect_list
+      description: Content guard to protect preauthenticated redirects to the content app.
+      summary: List content redirect content guards
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -description
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -pulp_type
+            - description
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - pulp_type
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `description` - Description
+
+          * `-description` - Description (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Contentguards: Content_Redirect'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedContentRedirectContentGuardResponseList'
+          description: ''
+    post:
+      operationId: contentguards_core_content_redirect_create
+      description: Content guard to protect preauthenticated redirects to the content app.
+      summary: Create a content redirect content guard
+      tags:
+      - 'Contentguards: Content_Redirect'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentRedirectContentGuard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContentRedirectContentGuard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContentRedirectContentGuard'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/{pulp_id}/:
+    get:
+      operationId: contentguards_core_content_redirect_read
+      description: Content guard to protect preauthenticated redirects to the content app.
+      summary: Inspect a content redirect content guard
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Contentguards: Content_Redirect'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
+          description: ''
+    put:
+      operationId: contentguards_core_content_redirect_update
+      description: Content guard to protect preauthenticated redirects to the content app.
+      summary: Update a content redirect content guard
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      tags:
+      - 'Contentguards: Content_Redirect'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContentRedirectContentGuard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContentRedirectContentGuard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContentRedirectContentGuard'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
+          description: ''
+    patch:
+      operationId: contentguards_core_content_redirect_partial_update
+      description: Content guard to protect preauthenticated redirects to the content app.
+      summary: Update a content redirect content guard
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      tags:
+      - 'Contentguards: Content_Redirect'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedContentRedirectContentGuard'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedContentRedirectContentGuard'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedContentRedirectContentGuard'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
+          description: ''
+    delete:
+      operationId: contentguards_core_content_redirect_delete
+      description: Content guard to protect preauthenticated redirects to the content app.
+      summary: Delete a content redirect content guard
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      tags:
+      - 'Contentguards: Content_Redirect'
+      responses:
+        '204':
+          description: No response body
+  /api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/{pulp_id}/add_role/:
+    post:
+      operationId: contentguards_core_content_redirect_add_role
+      description: Add a role for this object to users/groups.
+      summary: Add a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      tags:
+      - 'Contentguards: Content_Redirect'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/{pulp_id}/list_roles/:
+    get:
+      operationId: contentguards_core_content_redirect_list_roles
+      description: List roles assigned to this object.
+      summary: List roles
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Contentguards: Content_Redirect'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRolesResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/{pulp_id}/my_permissions/:
+    get:
+      operationId: contentguards_core_content_redirect_my_permissions
+      description: List permissions available to the current user on this object.
+      summary: List user permissions
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Contentguards: Content_Redirect'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPermissionsResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/contentguards/core/content_redirect/{pulp_id}/remove_role/:
+    post:
+      operationId: contentguards_core_content_redirect_remove_role
+      description: Remove a role for this object from users/groups.
+      summary: Remove a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this content redirect content guard.
+        required: true
+      tags:
+      - 'Contentguards: Content_Redirect'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+components:
+  schemas:
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    PaginatedContentRedirectContentGuardResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
+    PatchedContentRedirectContentGuard:
+      type: object
+      description: A serializer for ContentRedirectContentGuard.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    ContentRedirectContentGuard:
+      type: object
+      description: A serializer for ContentRedirectContentGuard.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+      required:
+      - name
+    ContentRedirectContentGuardResponse:
+      type: object
+      description: A serializer for ContentRedirectContentGuard.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: An optional description.
+      required:
+      - name

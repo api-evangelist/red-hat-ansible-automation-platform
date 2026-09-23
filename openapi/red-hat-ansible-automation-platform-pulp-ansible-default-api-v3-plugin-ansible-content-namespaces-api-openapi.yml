@@ -1,0 +1,621 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Default Api V3 Plugin Ansible…'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Namespaces'
+paths:
+  /pulp_ansible/galaxy/default/api/v3/plugin/ansible/content/{distro_base_path}/namespaces/:
+    get:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_content_namespaces_list
+      description: Provides the authentication and permission classes from settings.
+      parameters:
+      - in: query
+        name: company
+        schema:
+          type: string
+        description: Filter results where company matches value
+      - in: query
+        name: company__contains
+        schema:
+          type: string
+        description: Filter results where company contains value
+      - in: query
+        name: company__icontains
+        schema:
+          type: string
+        description: Filter results where company contains value
+      - in: query
+        name: company__iexact
+        schema:
+          type: string
+        description: Filter results where company matches value
+      - in: query
+        name: company__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where company is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: company__iregex
+        schema:
+          type: string
+        description: Filter results where company matches regex value
+      - in: query
+        name: company__istartswith
+        schema:
+          type: string
+        description: Filter results where company starts with value
+      - in: query
+        name: company__regex
+        schema:
+          type: string
+        description: Filter results where company matches regex value
+      - in: query
+        name: company__startswith
+        schema:
+          type: string
+        description: Filter results where company starts with value
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: metadata_sha256
+        schema:
+          type: string
+        description: Filter results where metadata_sha256 matches value
+      - in: query
+        name: metadata_sha256__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where metadata_sha256 is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -avatar_sha256
+            - -company
+            - -description
+            - -email
+            - -links
+            - -metadata_sha256
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -pulp_type
+            - -resources
+            - -timestamp_of_interest
+            - -upstream_id
+            - avatar_sha256
+            - company
+            - description
+            - email
+            - links
+            - metadata_sha256
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - pulp_type
+            - resources
+            - timestamp_of_interest
+            - upstream_id
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `upstream_id` - Upstream id
+
+          * `-upstream_id` - Upstream id (descending)
+
+          * `timestamp_of_interest` - Timestamp of interest
+
+          * `-timestamp_of_interest` - Timestamp of interest (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `company` - Company
+
+          * `-company` - Company (descending)
+
+          * `email` - Email
+
+          * `-email` - Email (descending)
+
+          * `description` - Description
+
+          * `-description` - Description (descending)
+
+          * `resources` - Resources
+
+          * `-resources` - Resources (descending)
+
+          * `links` - Links
+
+          * `-links` - Links (descending)
+
+          * `avatar_sha256` - Avatar sha256
+
+          * `-avatar_sha256` - Avatar sha256 (descending)
+
+          * `metadata_sha256` - Metadata sha256
+
+          * `-metadata_sha256` - Metadata sha256 (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Namespaces'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedansible.AnsibleNamespaceMetadataResponseList'
+          description: ''
+      summary: Pulp ansible galaxy default api v3 plugin ansible content namespaces list
+      x-summary-source: derived
+    post:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_content_namespaces_create
+      description: Provides the authentication and permission classes from settings.
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Namespaces'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadata'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadata'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+      summary: Pulp ansible galaxy default api v3 plugin ansible content namespaces create
+      x-summary-source: derived
+  /pulp_ansible/galaxy/default/api/v3/plugin/ansible/content/{distro_base_path}/namespaces/{name}/:
+    get:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_content_namespaces_read
+      description: Provides the authentication and permission classes from settings.
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Namespaces'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadataResponse'
+          description: ''
+      summary: Pulp ansible galaxy default api v3 plugin ansible content namespaces read
+      x-summary-source: derived
+    patch:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_content_namespaces_partial_update
+      description: Provides the authentication and permission classes from settings.
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Namespaces'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.AnsibleNamespaceMetadata'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.AnsibleNamespaceMetadata'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+      summary: Pulp ansible galaxy default api v3 plugin ansible content namespaces partial…
+      x-summary-source: derived
+    delete:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_content_namespaces_delete
+      description: Try to remove the Namespace if no Collections under Namespace are present.
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Content Namespaces'
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+      summary: Pulp ansible galaxy default api v3 plugin ansible content namespaces delete
+      x-summary-source: derived
+components:
+  schemas:
+    NamespaceLinkResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 32
+        url:
+          type: string
+          maxLength: 256
+      required:
+      - name
+      - url
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    NamespaceLink:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 32
+        url:
+          type: string
+          minLength: 1
+          maxLength: 256
+      required:
+      - name
+      - url
+    ansible.AnsibleNamespaceMetadata:
+      type: object
+      description: A serializer for Namespaces.
+      properties:
+        name:
+          type: string
+          minLength: 3
+          description: Required named, only accepts lowercase, numbers and underscores.
+          maxLength: 64
+          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
+        company:
+          type: string
+          description: Optional namespace company owner.
+          maxLength: 64
+        email:
+          type: string
+          description: Optional namespace contact email.
+          maxLength: 256
+        description:
+          type: string
+          description: Optional short description.
+          maxLength: 256
+        resources:
+          type: string
+          description: Optional resource page in markdown format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLink'
+          description: Labeled related links.
+        avatar:
+          type: string
+          format: binary
+          writeOnly: true
+          description: Optional avatar image for Namespace
+      required:
+      - name
+    Patchedansible.AnsibleNamespaceMetadata:
+      type: object
+      description: A serializer for Namespaces.
+      properties:
+        name:
+          type: string
+          minLength: 3
+          description: Required named, only accepts lowercase, numbers and underscores.
+          maxLength: 64
+          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
+        company:
+          type: string
+          description: Optional namespace company owner.
+          maxLength: 64
+        email:
+          type: string
+          description: Optional namespace contact email.
+          maxLength: 256
+        description:
+          type: string
+          description: Optional short description.
+          maxLength: 256
+        resources:
+          type: string
+          description: Optional resource page in markdown format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLink'
+          description: Labeled related links.
+        avatar:
+          type: string
+          format: binary
+          writeOnly: true
+          description: Optional avatar image for Namespace
+    Paginatedansible.AnsibleNamespaceMetadataResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadataResponse'
+    ansible.AnsibleNamespaceMetadataResponse:
+      type: object
+      description: A serializer for Namespaces.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          description: Required named, only accepts lowercase, numbers and underscores.
+          maxLength: 64
+          minLength: 3
+          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
+        company:
+          type: string
+          description: Optional namespace company owner.
+          maxLength: 64
+        email:
+          type: string
+          description: Optional namespace contact email.
+          maxLength: 256
+        description:
+          type: string
+          description: Optional short description.
+          maxLength: 256
+        resources:
+          type: string
+          description: Optional resource page in markdown format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLinkResponse'
+          description: Labeled related links.
+        avatar_sha256:
+          type: string
+          readOnly: true
+          description: SHA256 digest of avatar image if present.
+          maxLength: 64
+        avatar_url:
+          type: string
+          readOnly: true
+          description: Download link for avatar image if present.
+        metadata_sha256:
+          type: string
+          readOnly: true
+      required:
+      - name

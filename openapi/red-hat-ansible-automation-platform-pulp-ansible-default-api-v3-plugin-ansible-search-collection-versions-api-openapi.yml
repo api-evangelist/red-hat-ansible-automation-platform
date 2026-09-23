@@ -1,0 +1,564 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Default Api V3 Plugin Ansible…'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Default Api V3 Plugin Ansible Search Collection-Versions'
+paths:
+  /pulp_ansible/galaxy/default/api/v3/plugin/ansible/search/collection-versions/:
+    get:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_search_collection_versions_list
+      description: A viewset for cross-repo searches.
+      summary: List cross repository collection version indexs
+      parameters:
+      - in: query
+        name: dependency
+        schema:
+          type: string
+      - in: query
+        name: deprecated
+        schema:
+          type: boolean
+      - in: query
+        name: distribution
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter collectionversions that are in these distrubtion ids.
+        explode: true
+        style: form
+      - in: query
+        name: distribution_base_path
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter collectionversions that are in these base paths.
+        explode: true
+        style: form
+      - in: query
+        name: highest
+        schema:
+          type: boolean
+      - in: query
+        name: is_deprecated
+        schema:
+          type: boolean
+      - in: query
+        name: is_highest
+        schema:
+          type: boolean
+      - in: query
+        name: is_signed
+        schema:
+          type: boolean
+      - in: query
+        name: keywords
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: namespace
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: order_by
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -name
+            - -namespace
+            - -pulp_created
+            - -version
+            - name
+            - namespace
+            - pulp_created
+            - version
+        description: 'Ordering
+
+
+          * `pulp_created` - by CV created
+
+          * `-pulp_created` - by CV created (descending)
+
+          * `namespace` - by CV namespace
+
+          * `-namespace` - by CV namespace (descending)
+
+          * `name` - by CV name
+
+          * `-name` - by CV name (descending)
+
+          * `version` - by CV version
+
+          * `-version` - by CV version (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter collectionversions that are in these repository ids.
+        explode: true
+        style: form
+      - in: query
+        name: repository_label
+        schema:
+          type: string
+        description: Filter labels by search string
+      - in: query
+        name: repository_name
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter collectionversions that are in these repositories.
+        explode: true
+        style: form
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+      - in: query
+        name: signed
+        schema:
+          type: boolean
+      - in: query
+        name: tags
+        schema:
+          type: string
+        description: Filter by comma separate list of tags that must all be matched
+      - in: query
+        name: version
+        schema:
+          type: string
+      - in: query
+        name: version_range
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Search Collection-Versions'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCollectionVersionSearchListResponseList'
+          description: ''
+    post:
+      operationId: pulp_ansible_galaxy_default_api_v3_plugin_ansible_search_collection_versions_rebuild
+      description: A viewset for cross-repo searches.
+      tags:
+      - 'Pulp_Ansible: Default Api V3 Plugin Ansible Search Collection-Versions'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionVersionSearchList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CollectionVersionSearchList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CollectionVersionSearchList'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionVersionSearchListResponse'
+          description: ''
+      summary: Pulp ansible galaxy default api v3 plugin ansible search collection versions…
+      x-summary-source: derived
+components:
+  schemas:
+    NamespaceLinkResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 32
+        url:
+          type: string
+          maxLength: 256
+      required:
+      - name
+      - url
+    CollectionSummary:
+      type: object
+      description: Collection Version serializer without docs blob.
+      properties: {}
+    NamespaceLink:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 32
+        url:
+          type: string
+          minLength: 1
+          maxLength: 256
+      required:
+      - name
+      - url
+    CollectionSummaryResponse:
+      type: object
+      description: Collection Version serializer without docs blob.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        namespace:
+          type: string
+          readOnly: true
+          description: The namespace of the collection.
+          maxLength: 64
+        name:
+          type: string
+          readOnly: true
+          description: The name of the collection.
+          maxLength: 64
+        version:
+          type: string
+          readOnly: true
+          description: The version of the collection.
+          maxLength: 128
+        requires_ansible:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The version of Ansible required to use the collection. Multiple versions can be separated with a comma.
+          maxLength: 255
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        contents:
+          type: array
+          items: {}
+          readOnly: true
+          description: A JSON field with data about the contents.
+        dependencies:
+          type: object
+          readOnly: true
+          description: A dict declaring Collections that this collection requires to be installed for it to be usable.
+        description:
+          type: string
+          readOnly: true
+          description: A short summary description of the collection.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.TagResponse'
+          readOnly: true
+    CollectionVersionSearchList:
+      type: object
+      description: Cross-repo search results.
+      properties:
+        repository:
+          $ref: '#/components/schemas/Repository'
+        collection_version:
+          $ref: '#/components/schemas/CollectionSummary'
+        namespace_metadata:
+          allOf:
+          - $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadata'
+        is_highest:
+          type: boolean
+        is_deprecated:
+          type: boolean
+        is_signed:
+          type: boolean
+      required:
+      - collection_version
+      - is_deprecated
+      - is_highest
+      - is_signed
+      - namespace_metadata
+      - repository
+    ansible.AnsibleNamespaceMetadata:
+      type: object
+      description: A serializer for Namespaces.
+      properties:
+        name:
+          type: string
+          minLength: 3
+          description: Required named, only accepts lowercase, numbers and underscores.
+          maxLength: 64
+          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
+        company:
+          type: string
+          description: Optional namespace company owner.
+          maxLength: 64
+        email:
+          type: string
+          description: Optional namespace contact email.
+          maxLength: 256
+        description:
+          type: string
+          description: Optional short description.
+          maxLength: 256
+        resources:
+          type: string
+          description: Optional resource page in markdown format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLink'
+          description: Labeled related links.
+        avatar:
+          type: string
+          format: binary
+          writeOnly: true
+          description: Optional avatar image for Namespace
+      required:
+      - name
+    Repository:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        remote:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An optional remote to use by default when syncing.
+      required:
+      - name
+    PaginatedCollectionVersionSearchListResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionVersionSearchListResponse'
+    CollectionVersionSearchListResponse:
+      type: object
+      description: Cross-repo search results.
+      properties:
+        repository:
+          $ref: '#/components/schemas/RepositoryResponse'
+        collection_version:
+          $ref: '#/components/schemas/CollectionSummaryResponse'
+        repository_version:
+          type: string
+          readOnly: true
+        namespace_metadata:
+          allOf:
+          - $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadataResponse'
+        is_highest:
+          type: boolean
+        is_deprecated:
+          type: boolean
+        is_signed:
+          type: boolean
+      required:
+      - collection_version
+      - is_deprecated
+      - is_highest
+      - is_signed
+      - namespace_metadata
+      - repository
+    ansible.AnsibleNamespaceMetadataResponse:
+      type: object
+      description: A serializer for Namespaces.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          description: Required named, only accepts lowercase, numbers and underscores.
+          maxLength: 64
+          minLength: 3
+          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
+        company:
+          type: string
+          description: Optional namespace company owner.
+          maxLength: 64
+        email:
+          type: string
+          description: Optional namespace contact email.
+          maxLength: 256
+        description:
+          type: string
+          description: Optional short description.
+          maxLength: 256
+        resources:
+          type: string
+          description: Optional resource page in markdown format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLinkResponse'
+          description: Labeled related links.
+        avatar_sha256:
+          type: string
+          readOnly: true
+          description: SHA256 digest of avatar image if present.
+          maxLength: 64
+        avatar_url:
+          type: string
+          readOnly: true
+          description: Download link for avatar image if present.
+        metadata_sha256:
+          type: string
+          readOnly: true
+      required:
+      - name
+    ansible.TagResponse:
+      type: object
+      description: A serializer for nesting in the CollectionVersion model.
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the Tag.
+    RepositoryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        pulp_id:
+          type: string
+          format: uuid
+          readOnly: true
+        pulp_last_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        content_count:
+          type: integer
+          readOnly: true
+        gpgkey:
+          type: string
+      required:
+      - gpgkey
+      - name

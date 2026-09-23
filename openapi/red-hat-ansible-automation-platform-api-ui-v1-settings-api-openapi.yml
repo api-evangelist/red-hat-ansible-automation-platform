@@ -1,0 +1,39 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V1 Settings API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V1 Settings'
+paths:
+  /api/automation-hub/_ui/v1/settings/:
+    get:
+      operationId: api_automation_hub__ui_v1_settings_get
+      tags:
+      - 'Api: _Ui V1 Settings'
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub ui v1 settings get
+      x-summary-source: derived

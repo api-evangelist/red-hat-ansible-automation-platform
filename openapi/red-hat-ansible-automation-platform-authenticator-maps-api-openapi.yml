@@ -1,0 +1,1160 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Authenticator Maps API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: authenticator_maps
+paths:
+  /api/gateway/v1/authenticator_maps/:
+    get:
+      operationId: authenticator_maps_list
+      description: API endpoint that allows authenticator maps to be viewed or edited.
+      parameters:
+      - in: query
+        name: authenticator
+        schema:
+          type: string
+        description: Filter by authenticator (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: enabled
+        schema:
+          type: string
+        description: Filter by enabled (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: map_type
+        schema:
+          type: string
+        description: Filter by map_type (exact match)
+      - in: query
+        name: map_type__icontains
+        schema:
+          type: string
+        description: Filter by map_type (case-insensitive partial match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order__gt
+        schema:
+          type: string
+        description: Filter by order (gt)
+      - in: query
+        name: order__gte
+        schema:
+          type: string
+        description: Filter by order (gte)
+      - in: query
+        name: order__lt
+        schema:
+          type: string
+        description: Filter by order (lt)
+      - in: query
+        name: order__lte
+        schema:
+          type: string
+        description: Filter by order (lte)
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: organization
+        schema:
+          type: string
+        description: Filter by organization (exact match)
+      - in: query
+        name: organization__icontains
+        schema:
+          type: string
+        description: Filter by organization (case-insensitive partial match)
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: revoke
+        schema:
+          type: string
+        description: Filter by revoke (exact match)
+      - in: query
+        name: role
+        schema:
+          type: string
+        description: Filter by role (exact match)
+      - in: query
+        name: role__icontains
+        schema:
+          type: string
+        description: Filter by role (case-insensitive partial match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: team
+        schema:
+          type: string
+        description: Filter by team (exact match)
+      - in: query
+        name: team__icontains
+        schema:
+          type: string
+        description: Filter by team (case-insensitive partial match)
+      - in: query
+        name: triggers
+        schema:
+          type: string
+        description: Filter by triggers (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - authenticator_maps
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuthenticatorMapList'
+          description: ''
+      x-ai-description: List conditional rule for granting access, membership or roles based on user attributes or groups
+      summary: Authenticator maps list
+      x-summary-source: derived
+    post:
+      operationId: authenticator_maps_create
+      description: API endpoint that allows authenticator maps to be viewed or edited.
+      tags:
+      - authenticator_maps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorMap'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorMap'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorMap'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorMap'
+          description: ''
+      x-ai-description: Create a conditional rule for granting access, membership or roles based on user attributes or groups
+      summary: Authenticator maps create
+      x-summary-source: derived
+  /api/gateway/v1/authenticator_maps/{id}/:
+    get:
+      operationId: authenticator_maps_retrieve
+      description: API endpoint that allows authenticator maps to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator map.
+        required: true
+      tags:
+      - authenticator_maps
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorMap'
+          description: ''
+      x-ai-description: Retrieve a conditional rule for granting access, membership or roles based on user attributes or groups
+      summary: Authenticator maps retrieve
+      x-summary-source: derived
+    put:
+      operationId: authenticator_maps_update
+      description: API endpoint that allows authenticator maps to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator map.
+        required: true
+      tags:
+      - authenticator_maps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorMap'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorMap'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorMap'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorMap'
+          description: ''
+      x-ai-description: Update a conditional rule for granting access, membership or roles based on user attributes or groups
+      summary: Authenticator maps update
+      x-summary-source: derived
+    patch:
+      operationId: authenticator_maps_partial_update
+      description: API endpoint that allows authenticator maps to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator map.
+        required: true
+      tags:
+      - authenticator_maps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthenticatorMap'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthenticatorMap'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthenticatorMap'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorMap'
+          description: ''
+      x-ai-description: Update a conditional rule for granting access, membership or roles based on user attributes or groups
+      summary: Authenticator maps partial update
+      x-summary-source: derived
+    delete:
+      operationId: authenticator_maps_destroy
+      description: API endpoint that allows authenticator maps to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator map.
+        required: true
+      tags:
+      - authenticator_maps
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a conditional rule for granting access, membership or roles based on user attributes or groups
+      summary: Authenticator maps destroy
+      x-summary-source: derived
+  /api/gateway/v1/authenticator_maps/{id}/authenticators/:
+    get:
+      operationId: authenticator_maps_authenticators_list
+      description: 'Manage Authenticator objects in the ''authenticators'' relationship of this particular Authenticator Map.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/authenticators/ to show authenticators currently in the relationship
+
+
+        POST a list of instances to /:id/authenticators/associate/ to add those authenticators to the relationship
+
+
+        POST a list of instances to /:id/authenticators/disassociate/ to remove those authenticators from the relationshp'
+      parameters:
+      - in: query
+        name: auto_migrate_users_to
+        schema:
+          type: string
+        description: Filter by auto_migrate_users_to (exact match)
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Filter by category (exact match)
+      - in: query
+        name: category__icontains
+        schema:
+          type: string
+        description: Filter by category (case-insensitive partial match)
+      - in: query
+        name: configuration
+        schema:
+          type: string
+        description: Filter by configuration (exact match)
+      - in: query
+        name: create_objects
+        schema:
+          type: string
+        description: Filter by create_objects (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: enabled
+        schema:
+          type: string
+        description: Filter by enabled (exact match)
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order__gt
+        schema:
+          type: string
+        description: Filter by order (gt)
+      - in: query
+        name: order__gte
+        schema:
+          type: string
+        description: Filter by order (gte)
+      - in: query
+        name: order__lt
+        schema:
+          type: string
+        description: Filter by order (lt)
+      - in: query
+        name: order__lte
+        schema:
+          type: string
+        description: Filter by order (lte)
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: remove_users
+        schema:
+          type: string
+        description: Filter by remove_users (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: slug
+        schema:
+          type: string
+        description: Filter by slug (exact match)
+      - in: query
+        name: slug__icontains
+        schema:
+          type: string
+        description: Filter by slug (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by type (exact match)
+      - in: query
+        name: type__icontains
+        schema:
+          type: string
+        description: Filter by type (case-insensitive partial match)
+      tags:
+      - authenticator_maps
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuthenticatorList'
+          description: ''
+      x-ai-description: List authentication types for configuring user login methods (LDAP, SAML, OAuth)
+      summary: Authenticator maps authenticators list
+      x-summary-source: derived
+  /api/gateway/v1/authenticator_maps/{id}/authenticators/associate/:
+    post:
+      operationId: authenticator_maps_authenticators_associate_create
+      description: 'Manage Authenticator objects in the ''authenticators'' relationship of this particular Authenticator Map.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/authenticators/ to show authenticators currently in the relationship
+
+
+        POST a list of instances to /:id/authenticators/associate/ to add those authenticators to the relationship
+
+
+        POST a list of instances to /:id/authenticators/disassociate/ to remove those authenticators from the relationshp'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - authenticator_maps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorAssociate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorAssociate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorAssociate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorAssociate'
+          description: ''
+      x-ai-description: Associate authenticators with an authenticator map
+      summary: Authenticator maps authenticators associate create
+      x-summary-source: derived
+  /api/gateway/v1/authenticator_maps/{id}/authenticators/disassociate/:
+    post:
+      operationId: authenticator_maps_authenticators_disassociate_create
+      description: 'Manage Authenticator objects in the ''authenticators'' relationship of this particular Authenticator Map.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/authenticators/ to show authenticators currently in the relationship
+
+
+        POST a list of instances to /:id/authenticators/associate/ to add those authenticators to the relationship
+
+
+        POST a list of instances to /:id/authenticators/disassociate/ to remove those authenticators from the relationshp'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - authenticator_maps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorDisassociate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorDisassociate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorDisassociate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorDisassociate'
+          description: ''
+      x-ai-description: Disassociate authenticators from an authenticator map
+      summary: Authenticator maps authenticators disassociate create
+      x-summary-source: derived
+components:
+  schemas:
+    PatchedAuthenticatorMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        authenticator:
+          type: integer
+          description: The authenticator this mapping belongs to.
+        map_type:
+          enum:
+          - allow
+          - is_superuser
+          - role
+          - organization
+          - team
+          type: string
+          x-spec-enum-id: 4064e71cef1ae1e7
+          description: 'What will the map grant the user? System access (allow) a team or organization membership, the superuser flag or a role in the system.
+
+
+            * `allow` - allow
+
+            * `is_superuser` - is_superuser
+
+            * `role` - role
+
+            * `organization` - organization
+
+            * `team` - team'
+        role:
+          type:
+          - string
+          - 'null'
+          description: The role this map will grant the authenticating user to the targeted object. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        organization:
+          type:
+          - string
+          - 'null'
+          description: An organization name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        team:
+          type:
+          - string
+          - 'null'
+          description: A team name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax.
+          maxLength: 512
+        revoke:
+          type: boolean
+          description: Revoke the permission if a user does not meet this rule.
+        triggers:
+          description: Required. Trigger conditions dictionary that determines when this map applies. See /trigger_definition/ for structure details. Only one top-level key per request.
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The order in which this rule should be processed, smaller numbers are of higher precedence. Items with the same order will be executed in random order.
+    Authenticator:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        enabled:
+          type: boolean
+          description: Should this authenticator be enabled.
+        create_objects:
+          type: boolean
+          description: Allow authenticator to create objects (users, teams, organizations).
+        remove_users:
+          type: boolean
+          description: When a user authenticates from this source should they be removed from any other groups they were previously added to.
+        configuration:
+          description: The required configuration for this source.
+        type:
+          enum:
+          - ansible_base.authentication.authenticator_plugins.github_enterprise
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+          - ansible_base.authentication.authenticator_plugins.saml
+          - ansible_base.authentication.authenticator_plugins.tacacs
+          - ansible_base.authentication.authenticator_plugins.oidc
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+          - ansible_base.authentication.authenticator_plugins.radius
+          - ansible_base.authentication.authenticator_plugins.github
+          - ansible_base.authentication.authenticator_plugins.local
+          - ansible_base.authentication.authenticator_plugins.github_org
+          - ansible_base.authentication.authenticator_plugins.keycloak
+          - ansible_base.authentication.authenticator_plugins.google_oauth2
+          - ansible_base.authentication.authenticator_plugins.ldap
+          - ansible_base.authentication.authenticator_plugins.azuread
+          - ansible_base.authentication.authenticator_plugins.github_team
+          type: string
+          description: '* `ansible_base.authentication.authenticator_plugins.github_enterprise` - ansible_base.authentication.authenticator_plugins.github_enterprise
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_team` - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+
+            * `ansible_base.authentication.authenticator_plugins.saml` - ansible_base.authentication.authenticator_plugins.saml
+
+            * `ansible_base.authentication.authenticator_plugins.tacacs` - ansible_base.authentication.authenticator_plugins.tacacs
+
+            * `ansible_base.authentication.authenticator_plugins.oidc` - ansible_base.authentication.authenticator_plugins.oidc
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_org` - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+
+            * `ansible_base.authentication.authenticator_plugins.radius` - ansible_base.authentication.authenticator_plugins.radius
+
+            * `ansible_base.authentication.authenticator_plugins.github` - ansible_base.authentication.authenticator_plugins.github
+
+            * `ansible_base.authentication.authenticator_plugins.local` - ansible_base.authentication.authenticator_plugins.local
+
+            * `ansible_base.authentication.authenticator_plugins.github_org` - ansible_base.authentication.authenticator_plugins.github_org
+
+            * `ansible_base.authentication.authenticator_plugins.keycloak` - ansible_base.authentication.authenticator_plugins.keycloak
+
+            * `ansible_base.authentication.authenticator_plugins.google_oauth2` - ansible_base.authentication.authenticator_plugins.google_oauth2
+
+            * `ansible_base.authentication.authenticator_plugins.ldap` - ansible_base.authentication.authenticator_plugins.ldap
+
+            * `ansible_base.authentication.authenticator_plugins.azuread` - ansible_base.authentication.authenticator_plugins.azuread
+
+            * `ansible_base.authentication.authenticator_plugins.github_team` - ansible_base.authentication.authenticator_plugins.github_team'
+          x-spec-enum-id: ac765e9996806d56
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: The order in which an authenticator will be tried. This only pertains to username/password authenticators.
+        slug:
+          type: string
+          description: An immutable identifier for the authenticator; used to generate the sso uri for sso authenticator types
+          pattern: ^[-a-zA-Z0-9_]+$
+        auto_migrate_users_to:
+          type:
+          - integer
+          - 'null'
+          description: Automatically move users from this authenticator to the target authenticator when a matching user logs in via the target authenticator. For this to work, the field used for the user ID on both authenticators needs to have the same value. This should only be used when migrating users between two authentication mechanisms that share the same user database (such as when both IDPs share the same LDAP user directory).
+      required:
+      - configuration
+      - name
+      - type
+    AuthenticatorAssociate:
+      type: object
+      description: Serializer used for adding objects to a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of authenticators to add to this relationship.
+      required:
+      - instances
+    PaginatedAuthenticatorMapList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthenticatorMap'
+    AuthenticatorDisassociate:
+      type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of authenticators to remove from this relationship.
+      required:
+      - instances
+    PaginatedAuthenticatorList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Authenticator'
+    AuthenticatorMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        authenticator:
+          type: integer
+          description: The authenticator this mapping belongs to.
+        map_type:
+          enum:
+          - allow
+          - is_superuser
+          - role
+          - organization
+          - team
+          type: string
+          x-spec-enum-id: 4064e71cef1ae1e7
+          description: 'What will the map grant the user? System access (allow) a team or organization membership, the superuser flag or a role in the system.
+
+
+            * `allow` - allow
+
+            * `is_superuser` - is_superuser
+
+            * `role` - role
+
+            * `organization` - organization
+
+            * `team` - team'
+        role:
+          type:
+          - string
+          - 'null'
+          description: The role this map will grant the authenticating user to the targeted object. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        organization:
+          type:
+          - string
+          - 'null'
+          description: An organization name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        team:
+          type:
+          - string
+          - 'null'
+          description: A team name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax.
+          maxLength: 512
+        revoke:
+          type: boolean
+          description: Revoke the permission if a user does not meet this rule.
+        triggers:
+          description: Required. Trigger conditions dictionary that determines when this map applies. See /trigger_definition/ for structure details. Only one top-level key per request.
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The order in which this rule should be processed, smaller numbers are of higher precedence. Items with the same order will be executed in random order.
+      required:
+      - authenticator
+      - name
+      - triggers
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

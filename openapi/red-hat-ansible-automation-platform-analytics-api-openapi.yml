@@ -1,0 +1,2107 @@
+openapi: 3.2.0
+info:
+  title: AWX Analytics API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: Analytics
+paths:
+  /api/v2/analytics/:
+    get:
+      operationId: analytics_retrieve
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Returns available analytics API endpoints and their descriptions.
+      summary: Analytics retrieve
+      x-summary-source: derived
+  /api/v2/analytics/adoption_rate/:
+    get:
+      operationId: analytics_adoption_rate_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics adoption rate
+      summary: Analytics adoption rate retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_adoption_rate_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics adoption rate create
+      x-summary-source: derived
+  /api/v2/analytics/adoption_rate_options/:
+    get:
+      operationId: analytics_adoption_rate_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics adoption rate option
+      summary: Analytics adoption rate options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_adoption_rate_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics adoption rate options create
+      x-summary-source: derived
+  /api/v2/analytics/authorized/:
+    get:
+      operationId: analytics_authorized_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get analytics data from Red Hat Insights
+      summary: Analytics authorized retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_authorized_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics authorized create
+      x-summary-source: derived
+  /api/v2/analytics/event_explorer/:
+    get:
+      operationId: analytics_event_explorer_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics event explorer
+      summary: Analytics event explorer retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_event_explorer_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics event explorer create
+      x-summary-source: derived
+  /api/v2/analytics/event_explorer_options/:
+    get:
+      operationId: analytics_event_explorer_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics event explorer option
+      summary: Analytics event explorer options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_event_explorer_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics event explorer options create
+      x-summary-source: derived
+  /api/v2/analytics/host_explorer/:
+    get:
+      operationId: analytics_host_explorer_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics host explorer
+      summary: Analytics host explorer retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_host_explorer_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics host explorer create
+      x-summary-source: derived
+  /api/v2/analytics/host_explorer_options/:
+    get:
+      operationId: analytics_host_explorer_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics host explorer option
+      summary: Analytics host explorer options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_host_explorer_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics host explorer options create
+      x-summary-source: derived
+  /api/v2/analytics/job_explorer/:
+    get:
+      operationId: analytics_job_explorer_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics job explorer
+      summary: Analytics job explorer retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_job_explorer_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics job explorer create
+      x-summary-source: derived
+  /api/v2/analytics/job_explorer_options/:
+    get:
+      operationId: analytics_job_explorer_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics job explorer option
+      summary: Analytics job explorer options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_job_explorer_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics job explorer options create
+      x-summary-source: derived
+  /api/v2/analytics/probe_template_for_hosts/:
+    get:
+      operationId: analytics_probe_template_for_hosts_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics probe template for host
+      summary: Analytics probe template for hosts retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_probe_template_for_hosts_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics probe template for hosts create
+      x-summary-source: derived
+  /api/v2/analytics/probe_template_for_hosts_options/:
+    get:
+      operationId: analytics_probe_template_for_hosts_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics probe template for hosts option
+      summary: Analytics probe template for hosts options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_probe_template_for_hosts_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics probe template for hosts options create
+      x-summary-source: derived
+  /api/v2/analytics/probe_templates/:
+    get:
+      operationId: analytics_probe_templates_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics probe template
+      summary: Analytics probe templates retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_probe_templates_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics probe templates create
+      x-summary-source: derived
+  /api/v2/analytics/probe_templates_options/:
+    get:
+      operationId: analytics_probe_templates_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics probe templates option
+      summary: Analytics probe templates options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_probe_templates_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics probe templates options create
+      x-summary-source: derived
+  /api/v2/analytics/report/{slug}/:
+    get:
+      operationId: analytics_report_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+          pattern: ^[\w-]+$
+        required: true
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get specific analytics resource from Red Hat Insights
+      summary: Analytics report retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_report_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+          pattern: ^[\w-]+$
+        required: true
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query for specific analytics resource to Red Hat Insights
+      summary: Analytics report create
+      x-summary-source: derived
+  /api/v2/analytics/report_options/:
+    get:
+      operationId: analytics_report_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get analytics data from Red Hat Insights
+      summary: Analytics report options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_report_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics report options create
+      x-summary-source: derived
+  /api/v2/analytics/reports/:
+    get:
+      operationId: analytics_reports_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics report
+      summary: Analytics reports retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_reports_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics reports create
+      x-summary-source: derived
+  /api/v2/analytics/roi_templates/:
+    get:
+      operationId: analytics_roi_templates_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics roi template
+      summary: Analytics roi templates retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_roi_templates_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics roi templates create
+      x-summary-source: derived
+  /api/v2/analytics/roi_templates_options/:
+    get:
+      operationId: analytics_roi_templates_options_retrieve
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single analytics roi templates option
+      summary: Analytics roi templates options retrieve
+      x-summary-source: derived
+    post:
+      operationId: analytics_roi_templates_options_create
+      description: 'Example:
+
+        headers = {
+
+        ''Content-Type'': ''application/json'',
+
+        }
+
+
+        params = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_by'': ''name:asc'',
+
+        }
+
+
+        json_data = {
+
+        ''limit'': ''20'',
+
+        ''offset'': ''0'',
+
+        ''sort_options'': ''name'',
+
+        ''sort_order'': ''asc'',
+
+        ''tags'': [],
+
+        ''slug'': [],
+
+        ''name'': [],
+
+        ''description'': '''',
+
+        }
+
+
+        response = requests.post(f''{AUTOMATION_ANALYTICS_API_URL}/reports/'', params=params,
+
+        headers=headers, json=json_data)
+
+
+        return Response(response.json(), status=response.status_code)'
+      tags:
+      - Analytics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Post query to Red Hat Insights analytics
+      summary: Analytics roi templates options create
+      x-summary-source: derived

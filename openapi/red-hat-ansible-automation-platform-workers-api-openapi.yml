@@ -1,0 +1,418 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Workers API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Workers
+paths:
+  /api/automation-hub/pulp/api/v3/workers/:
+    get:
+      operationId: workers_list
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: List workers
+      parameters:
+      - in: query
+        name: last_heartbeat
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where last_heartbeat matches value
+      - in: query
+        name: last_heartbeat__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where last_heartbeat is greater than value
+      - in: query
+        name: last_heartbeat__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where last_heartbeat is greater than or equal to value
+      - in: query
+        name: last_heartbeat__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where last_heartbeat is less than value
+      - in: query
+        name: last_heartbeat__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where last_heartbeat is less than or equal to value
+      - in: query
+        name: last_heartbeat__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where last_heartbeat is between two comma separated values
+        explode: false
+        style: form
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: missing
+        schema:
+          type: boolean
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: online
+        schema:
+          type: boolean
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -last_heartbeat
+            - -name
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -versions
+            - last_heartbeat
+            - name
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - versions
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `last_heartbeat` - Last heartbeat
+
+          * `-last_heartbeat` - Last heartbeat (descending)
+
+          * `versions` - Versions
+
+          * `-versions` - Versions (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Workers
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkerResponseList'
+          description: ''
+  /api/automation-hub/pulp/api/v3/workers/{pulp_id}/:
+    get:
+      operationId: workers_read
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Inspect a worker
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this worker.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Workers
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkerResponse'
+          description: ''
+components:
+  schemas:
+    WorkerResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
+        current_task:
+          type: string
+          format: uri
+          readOnly: true
+          description: The task this worker is currently executing, or empty if the worker is not currently assigned to a task.
+    PaginatedWorkerResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkerResponse'

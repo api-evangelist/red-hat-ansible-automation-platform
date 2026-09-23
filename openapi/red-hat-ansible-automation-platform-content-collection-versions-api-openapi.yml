@@ -1,0 +1,601 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Content: Collection_Versions API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Content: Collection_Versions'
+paths:
+  /api/automation-hub/pulp/api/v3/content/ansible/collection_versions/:
+    get:
+      operationId: content_ansible_collection_versions_list
+      description: ViewSet for Ansible Collection.
+      summary: List collection versions
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: namespace
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -authors
+            - -contents
+            - -dependencies
+            - -description
+            - -docs_blob
+            - -documentation
+            - -files
+            - -homepage
+            - -is_highest
+            - -issues
+            - -license
+            - -manifest
+            - -name
+            - -namespace
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -pulp_type
+            - -repository
+            - -requires_ansible
+            - -search_vector
+            - -sha256
+            - -timestamp_of_interest
+            - -upstream_id
+            - -version
+            - -version_major
+            - -version_minor
+            - -version_patch
+            - -version_prerelease
+            - authors
+            - contents
+            - dependencies
+            - description
+            - docs_blob
+            - documentation
+            - files
+            - homepage
+            - is_highest
+            - issues
+            - license
+            - manifest
+            - name
+            - namespace
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - pulp_type
+            - repository
+            - requires_ansible
+            - search_vector
+            - sha256
+            - timestamp_of_interest
+            - upstream_id
+            - version
+            - version_major
+            - version_minor
+            - version_patch
+            - version_prerelease
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `upstream_id` - Upstream id
+
+          * `-upstream_id` - Upstream id (descending)
+
+          * `timestamp_of_interest` - Timestamp of interest
+
+          * `-timestamp_of_interest` - Timestamp of interest (descending)
+
+          * `authors` - Authors
+
+          * `-authors` - Authors (descending)
+
+          * `contents` - Contents
+
+          * `-contents` - Contents (descending)
+
+          * `dependencies` - Dependencies
+
+          * `-dependencies` - Dependencies (descending)
+
+          * `description` - Description
+
+          * `-description` - Description (descending)
+
+          * `docs_blob` - Docs blob
+
+          * `-docs_blob` - Docs blob (descending)
+
+          * `manifest` - Manifest
+
+          * `-manifest` - Manifest (descending)
+
+          * `files` - Files
+
+          * `-files` - Files (descending)
+
+          * `documentation` - Documentation
+
+          * `-documentation` - Documentation (descending)
+
+          * `homepage` - Homepage
+
+          * `-homepage` - Homepage (descending)
+
+          * `issues` - Issues
+
+          * `-issues` - Issues (descending)
+
+          * `license` - License
+
+          * `-license` - License (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `namespace` - Namespace
+
+          * `-namespace` - Namespace (descending)
+
+          * `repository` - Repository
+
+          * `-repository` - Repository (descending)
+
+          * `requires_ansible` - Requires ansible
+
+          * `-requires_ansible` - Requires ansible (descending)
+
+          * `sha256` - Sha256
+
+          * `-sha256` - Sha256 (descending)
+
+          * `version` - Version
+
+          * `-version` - Version (descending)
+
+          * `version_major` - Version major
+
+          * `-version_major` - Version major (descending)
+
+          * `version_minor` - Version minor
+
+          * `-version_minor` - Version minor (descending)
+
+          * `version_patch` - Version patch
+
+          * `-version_patch` - Version patch (descending)
+
+          * `version_prerelease` - Version prerelease
+
+          * `-version_prerelease` - Version prerelease (descending)
+
+          * `is_highest` - Is highest
+
+          * `-is_highest` - Is highest (descending)
+
+          * `search_vector` - Search vector
+
+          * `-search_vector` - Search vector (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: orphaned_for
+        schema:
+          type: number
+        description: Minutes Content has been orphaned for. -1 uses ORPHAN_PROTECTION_TIME.
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_added
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_removed
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: tags
+        schema:
+          type: string
+        description: Filter by comma separate list of tags that must all be matched
+      - in: query
+        name: version
+        schema:
+          type: string
+        description: Filter results where version matches value
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Collection_Versions'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedansible.CollectionVersionResponseList'
+          description: ''
+    post:
+      operationId: content_ansible_collection_versions_create
+      description: Trigger an asynchronous task to create content,optionally create new repository version.
+      summary: Create a collection version
+      tags:
+      - 'Content: Collection_Versions'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionVersion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionVersion'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/content/ansible/collection_versions/{pulp_id}/:
+    get:
+      operationId: content_ansible_collection_versions_read
+      description: ViewSet for Ansible Collection.
+      summary: Inspect a collection version
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection version.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Collection_Versions'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.CollectionVersionResponse'
+          description: ''
+components:
+  schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    ansible.CollectionVersion:
+      type: object
+      description: A serializer for CollectionVersion Content.
+      properties:
+        upload:
+          type: string
+          format: uri
+          writeOnly: true
+          description: An uncommitted upload that may be turned into the content unit.
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: An uploaded file that may be turned into the content unit.
+        expected_name:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The name of the collection.
+          maxLength: 64
+        expected_namespace:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The namespace of the collection.
+          maxLength: 64
+        expected_version:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The version of the collection.
+          maxLength: 128
+    Paginatedansible.CollectionVersionResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.CollectionVersionResponse'
+    ansible.CollectionVersionResponse:
+      type: object
+      description: A serializer for CollectionVersion Content.
+      properties:
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        sha256:
+          type: string
+          readOnly: true
+          description: The SHA-256 checksum if available.
+        md5:
+          type: string
+          readOnly: true
+          description: The MD5 checksum if available.
+        sha1:
+          type: string
+          readOnly: true
+          description: The SHA-1 checksum if available.
+        sha224:
+          type: string
+          readOnly: true
+          description: The SHA-224 checksum if available.
+        sha384:
+          type: string
+          readOnly: true
+          description: The SHA-384 checksum if available.
+        sha512:
+          type: string
+          readOnly: true
+          description: The SHA-512 checksum if available.
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: A collection identifier.
+        authors:
+          type: array
+          items:
+            type: string
+            maxLength: 64
+          readOnly: true
+          description: A list of the CollectionVersion content's authors.
+        contents:
+          type: array
+          items: {}
+          readOnly: true
+          description: A JSON field with data about the contents.
+        dependencies:
+          type: object
+          readOnly: true
+          description: A dict declaring Collections that this collection requires to be installed for it to be usable.
+        description:
+          type: string
+          readOnly: true
+          description: A short summary description of the collection.
+        docs_blob:
+          type: object
+          readOnly: true
+          description: A JSON field holding the various documentation blobs in the collection.
+        manifest:
+          type: object
+          readOnly: true
+          description: A JSON field holding MANIFEST.json data.
+        files:
+          type: object
+          readOnly: true
+          description: A JSON field holding FILES.json data.
+        documentation:
+          type: string
+          readOnly: true
+          description: The URL to any online docs.
+          maxLength: 2000
+        homepage:
+          type: string
+          readOnly: true
+          description: The URL to the homepage of the collection/project.
+          maxLength: 2000
+        issues:
+          type: string
+          readOnly: true
+          description: The URL to the collection issue tracker.
+          maxLength: 2000
+        license:
+          type: array
+          items:
+            type: string
+            maxLength: 32
+          readOnly: true
+          description: A list of licenses for content inside of a collection.
+        name:
+          type: string
+          readOnly: true
+          description: The name of the collection.
+          maxLength: 64
+        namespace:
+          type: string
+          readOnly: true
+          description: The namespace of the collection.
+          maxLength: 64
+        origin_repository:
+          type: string
+          readOnly: true
+          description: The URL of the originating SCM repository.
+          maxLength: 2000
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.TagResponse'
+          readOnly: true
+        version:
+          type: string
+          readOnly: true
+          description: The version of the collection.
+          maxLength: 128
+        requires_ansible:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The version of Ansible required to use the collection. Multiple versions can be separated with a comma.
+          maxLength: 255
+    ansible.TagResponse:
+      type: object
+      description: A serializer for nesting in the CollectionVersion model.
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the Tag.

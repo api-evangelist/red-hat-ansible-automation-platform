@@ -1,0 +1,284 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Groups: Users API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Groups > Users
+paths:
+  /api/automation-hub/_ui/v1/groups/{group_pk}/users/:
+    get:
+      operationId: _api_automation-hub__ui_v1_groups_{group_pk}_users_groups_users_list
+      description: List group users.
+      summary: List users
+      parameters:
+      - in: path
+        name: group_pk
+        schema:
+          type: string
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups > Users
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupUserResponseList'
+          description: ''
+    post:
+      operationId: _api_automation-hub__ui_v1_groups_{group_pk}_users_groups_users_create
+      description: Add a user to a group.
+      summary: Create an user
+      parameters:
+      - in: path
+        name: group_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - Groups > Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupUser'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupUserResponse'
+          description: ''
+  /api/automation-hub/_ui/v1/groups/{group_pk}/users/{id}/:
+    delete:
+      operationId: _api_automation-hub__ui_v1_groups_{group_pk}_users_{id}_groups_users_delete
+      description: Remove a user from a group.
+      summary: Delete an user
+      parameters:
+      - in: path
+        name: group_pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Groups > Users
+      responses:
+        '204':
+          description: No response body
+  /api/automation-hub/pulp/api/v3/groups/{group_pk}/users/:
+    get:
+      operationId: _api_automation-hub_pulp_api_v3_groups_{group_pk}_users_groups_users_list
+      description: List group users.
+      summary: List users
+      parameters:
+      - in: path
+        name: group_pk
+        schema:
+          type: string
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Groups > Users
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupUserResponseList'
+          description: ''
+    post:
+      operationId: _api_automation-hub_pulp_api_v3_groups_{group_pk}_users_groups_users_create
+      description: Add a user to a group.
+      summary: Create an user
+      parameters:
+      - in: path
+        name: group_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - Groups > Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupUser'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupUserResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/groups/{group_pk}/users/{id}/:
+    delete:
+      operationId: _api_automation-hub_pulp_api_v3_groups_{group_pk}_users_{id}_groups_users_delete
+      description: Remove a user from a group.
+      summary: Delete an user
+      parameters:
+      - in: path
+        name: group_pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - Groups > Users
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    GroupUserResponse:
+      type: object
+      description: Serializer for Users that belong to a Group.
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+      - username
+    PaginatedGroupUserResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupUserResponse'
+    GroupUser:
+      type: object
+      description: Serializer for Users that belong to a Group.
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          maxLength: 150
+      required:
+      - username

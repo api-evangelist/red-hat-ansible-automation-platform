@@ -1,0 +1,148 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: Service-Index Resource-Types API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: Service-Index Resource-Types'
+paths:
+  /api/automation-hub/service-index/resource-types/:
+    get:
+      operationId: api_automation_hub_service_index_resource_types_list
+      description: Index of the resource types that are configured in the system.
+      summary: List resource types
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: Service-Index Resource-Types'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceTypeResponseList'
+          description: ''
+  /api/automation-hub/service-index/resource-types/{name}/:
+    get:
+      operationId: api_automation_hub_service_index_resource_types_read
+      description: Index of the resource types that are configured in the system.
+      summary: Inspect a resource type
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^[^/]+$
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: Service-Index Resource-Types'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceTypeResponse'
+          description: ''
+components:
+  schemas:
+    ResourceTypeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: The name of this resource type.
+        externally_managed:
+          type: boolean
+          description: Is this resource type managed externally from this service.
+        shared_resource_type:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+      - externally_managed
+    PaginatedResourceTypeResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceTypeResponse'

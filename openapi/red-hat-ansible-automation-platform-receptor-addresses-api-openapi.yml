@@ -1,0 +1,188 @@
+openapi: 3.2.0
+info:
+  title: AWX Receptor Addresses API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: receptor_addresses
+paths:
+  /api/v2/receptor_addresses/:
+    get:
+      operationId: receptor_addresses_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - receptor_addresses
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReceptorAddressList'
+          description: ''
+      x-ai-description: List receptor addresses
+      summary: Receptor addresses list
+      x-summary-source: derived
+  /api/v2/receptor_addresses/{id}/:
+    get:
+      operationId: receptor_addresses_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - receptor_addresses
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceptorAddress'
+          description: ''
+      x-ai-description: Retrieve a receptor address
+      summary: Receptor addresses retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedReceptorAddressList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceptorAddress'
+    ReceptorAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        address:
+          type:
+          - string
+          - 'null'
+          description: Routable address for this instance.
+          maxLength: 255
+        port:
+          type: integer
+          maximum: 65535
+          minimum: 0
+          default: 27199
+          description: Port for the address.
+        protocol:
+          enum:
+          - tcp
+          - ws
+          - wss
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 66927b81fe0555f9
+          default: tcp
+          description: 'Protocol to use for the Receptor listener, ''tcp'', ''wss'', or ''ws''.
+
+
+            * `tcp` - TCP
+
+            * `ws` - WS
+
+            * `wss` - WSS'
+        websocket_path:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Websocket path.
+          maxLength: 255
+        is_internal:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If True, only routable within the Kubernetes cluster.
+        canonical:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If True, this address is the canonical address for the instance.
+        instance:
+          type: integer
+        peers_from_control_nodes:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If True, control plane cluster nodes should automatically peer to it.
+        full_address:
+          type: string
+          readOnly: true
+      required:
+      - address
+      - instance

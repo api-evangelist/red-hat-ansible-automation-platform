@@ -1,0 +1,1323 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Remotes: Collection API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Remotes: Collection'
+paths:
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/:
+    get:
+      operationId: remotes_ansible_collection_list
+      description: ViewSet for Collection Remotes.
+      summary: List collection remotes
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -auth_url
+            - -ca_cert
+            - -client_cert
+            - -client_key
+            - -connect_timeout
+            - -download_concurrency
+            - -headers
+            - -max_retries
+            - -name
+            - -password
+            - -pk
+            - -policy
+            - -proxy_password
+            - -proxy_url
+            - -proxy_username
+            - -pulp_created
+            - -pulp_id
+            - -pulp_labels
+            - -pulp_last_updated
+            - -pulp_type
+            - -rate_limit
+            - -requirements_file
+            - -signed_only
+            - -sock_connect_timeout
+            - -sock_read_timeout
+            - -sync_dependencies
+            - -tls_validation
+            - -token
+            - -total_timeout
+            - -url
+            - -username
+            - auth_url
+            - ca_cert
+            - client_cert
+            - client_key
+            - connect_timeout
+            - download_concurrency
+            - headers
+            - max_retries
+            - name
+            - password
+            - pk
+            - policy
+            - proxy_password
+            - proxy_url
+            - proxy_username
+            - pulp_created
+            - pulp_id
+            - pulp_labels
+            - pulp_last_updated
+            - pulp_type
+            - rate_limit
+            - requirements_file
+            - signed_only
+            - sock_connect_timeout
+            - sock_read_timeout
+            - sync_dependencies
+            - tls_validation
+            - token
+            - total_timeout
+            - url
+            - username
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `pulp_labels` - Pulp labels
+
+          * `-pulp_labels` - Pulp labels (descending)
+
+          * `url` - Url
+
+          * `-url` - Url (descending)
+
+          * `ca_cert` - Ca cert
+
+          * `-ca_cert` - Ca cert (descending)
+
+          * `client_cert` - Client cert
+
+          * `-client_cert` - Client cert (descending)
+
+          * `client_key` - Client key
+
+          * `-client_key` - Client key (descending)
+
+          * `tls_validation` - Tls validation
+
+          * `-tls_validation` - Tls validation (descending)
+
+          * `username` - Username
+
+          * `-username` - Username (descending)
+
+          * `password` - Password
+
+          * `-password` - Password (descending)
+
+          * `proxy_url` - Proxy url
+
+          * `-proxy_url` - Proxy url (descending)
+
+          * `proxy_username` - Proxy username
+
+          * `-proxy_username` - Proxy username (descending)
+
+          * `proxy_password` - Proxy password
+
+          * `-proxy_password` - Proxy password (descending)
+
+          * `download_concurrency` - Download concurrency
+
+          * `-download_concurrency` - Download concurrency (descending)
+
+          * `max_retries` - Max retries
+
+          * `-max_retries` - Max retries (descending)
+
+          * `policy` - Policy
+
+          * `-policy` - Policy (descending)
+
+          * `total_timeout` - Total timeout
+
+          * `-total_timeout` - Total timeout (descending)
+
+          * `connect_timeout` - Connect timeout
+
+          * `-connect_timeout` - Connect timeout (descending)
+
+          * `sock_connect_timeout` - Sock connect timeout
+
+          * `-sock_connect_timeout` - Sock connect timeout (descending)
+
+          * `sock_read_timeout` - Sock read timeout
+
+          * `-sock_read_timeout` - Sock read timeout (descending)
+
+          * `headers` - Headers
+
+          * `-headers` - Headers (descending)
+
+          * `rate_limit` - Rate limit
+
+          * `-rate_limit` - Rate limit (descending)
+
+          * `requirements_file` - Requirements file
+
+          * `-requirements_file` - Requirements file (descending)
+
+          * `auth_url` - Auth url
+
+          * `-auth_url` - Auth url (descending)
+
+          * `token` - Token
+
+          * `-token` - Token (descending)
+
+          * `sync_dependencies` - Sync dependencies
+
+          * `-sync_dependencies` - Sync dependencies (descending)
+
+          * `signed_only` - Signed only
+
+          * `-signed_only` - Signed only (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_label_select
+        schema:
+          type: string
+        description: Filter labels by search string
+      - in: query
+        name: pulp_last_updated
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated matches value
+      - in: query
+        name: pulp_last_updated__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is greater than value
+      - in: query
+        name: pulp_last_updated__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is greater than or equal to value
+      - in: query
+        name: pulp_last_updated__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is less than value
+      - in: query
+        name: pulp_last_updated__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is less than or equal to value
+      - in: query
+        name: pulp_last_updated__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where pulp_last_updated is between two comma separated values
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: url
+        schema:
+          type: string
+        description: Filter results where url matches value
+      - in: query
+        name: url__contains
+        schema:
+          type: string
+        description: Filter results where url contains value
+      - in: query
+        name: url__icontains
+        schema:
+          type: string
+        description: Filter results where url contains value
+      - in: query
+        name: url__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where url is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Remotes: Collection'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedansible.CollectionRemoteResponseList'
+          description: ''
+    post:
+      operationId: remotes_ansible_collection_create
+      description: ViewSet for Collection Remotes.
+      summary: Create a collection remote
+      tags:
+      - 'Remotes: Collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/{pulp_id}/:
+    get:
+      operationId: remotes_ansible_collection_read
+      description: ViewSet for Collection Remotes.
+      summary: Inspect a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Remotes: Collection'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+          description: ''
+    put:
+      operationId: remotes_ansible_collection_update
+      description: Trigger an asynchronous update task
+      summary: Update a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Remotes: Collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ansible.CollectionRemote'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+    patch:
+      operationId: remotes_ansible_collection_partial_update
+      description: Trigger an asynchronous partial update task
+      summary: Update a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Remotes: Collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.CollectionRemote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.CollectionRemote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Patchedansible.CollectionRemote'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+    delete:
+      operationId: remotes_ansible_collection_delete
+      description: Trigger an asynchronous delete task
+      summary: Delete a collection remote
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Remotes: Collection'
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/{pulp_id}/add_role/:
+    post:
+      operationId: remotes_ansible_collection_add_role
+      description: Add a role for this object to users/groups.
+      summary: Add a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Remotes: Collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/{pulp_id}/list_roles/:
+    get:
+      operationId: remotes_ansible_collection_list_roles
+      description: List roles assigned to this object.
+      summary: List roles
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Remotes: Collection'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRolesResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/{pulp_id}/my_permissions/:
+    get:
+      operationId: remotes_ansible_collection_my_permissions
+      description: List permissions available to the current user on this object.
+      summary: List user permissions
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Remotes: Collection'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPermissionsResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/{pulp_id}/remove_role/:
+    post:
+      operationId: remotes_ansible_collection_remove_role
+      description: Remove a role for this object from users/groups.
+      summary: Remove a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Remotes: Collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/{pulp_id}/set_label/:
+    post:
+      operationId: remotes_ansible_collection_set_label
+      description: Set a single pulp_label on the object to a specific value or null.
+      summary: Set a label
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Remotes: Collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetLabel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetLabel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SetLabel'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetLabelResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/remotes/ansible/collection/{pulp_id}/unset_label/:
+    post:
+      operationId: remotes_ansible_collection_unset_label
+      description: Unset a single pulp_label on the object.
+      summary: Unset a label
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this collection remote.
+        required: true
+      tags:
+      - 'Remotes: Collection'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UnsetLabel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UnsetLabel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UnsetLabel'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsetLabelResponse'
+          description: ''
+components:
+  schemas:
+    AnsibleRepositoryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        next_version:
+          type: integer
+          format: int64
+          maximum: 2147483647
+          minimum: 0
+        distributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsibleDistributionResponse'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        last_sync_task:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
+    AnsibleDistributionResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        base_path:
+          type: string
+        content_guard:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - base_path
+      - created_at
+      - name
+      - updated_at
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    SetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    ansible.CollectionRemote:
+      type: object
+      description: A serializer for Collection Remotes.
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: The URL of an external content source.
+        auth_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          maxLength: 2000
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The string version of Collection requirements yaml.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Remote user.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Remote password.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: User for proxy authentication.
+        proxy_password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Password for proxy authentication.
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
+      required:
+      - url
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    Paginatedansible.CollectionRemoteResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    Patchedansible.CollectionRemote:
+      type: object
+      description: A serializer for Collection Remotes.
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: The URL of an external content source.
+        auth_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          maxLength: 2000
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The string version of Collection requirements yaml.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Remote user.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Remote password.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: User for proxy authentication.
+        proxy_password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Password for proxy authentication.
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
+    ansible.CollectionRemoteResponse:
+      type: object
+      description: A serializer for Collection Remotes.
+      properties:
+        pk:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Pulp id
+        name:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          description: The URL of an external content source.
+        auth_url:
+          type:
+          - string
+          - 'null'
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          description: The string version of Collection requirements yaml.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          description: Remote user.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        last_sync_task:
+          type: string
+          readOnly: true
+        repositories:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsibleRepositoryResponse'
+          readOnly: true
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          description: User for proxy authentication.
+        write_only_fields:
+          type: array
+          items: {}
+          readOnly: true
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
+      required:
+      - url
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key

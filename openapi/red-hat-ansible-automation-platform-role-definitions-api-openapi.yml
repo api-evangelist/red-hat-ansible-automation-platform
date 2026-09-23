@@ -1,0 +1,2374 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Role Definitions API
+  version: '1.0'
+  description: 'Operations tagged role_definitions across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: role_definitions
+paths:
+  /api/v2/role_definitions/:
+    get:
+      operationId: role_definitions_list
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by description (exact match)
+      - in: query
+        name: description__icontains
+        schema:
+          type: string
+        description: Filter by description (case-insensitive partial match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: managed
+        schema:
+          type: string
+        description: Filter by managed (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: resource
+        schema:
+          type: string
+        description: Filter by resource (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_definitions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleDefinitionList'
+          description: ''
+      x-ai-description: List RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions list
+      x-summary-source: derived
+    post:
+      operationId: role_definitions_create
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinition'
+          description: ''
+      x-ai-description: Create a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions create
+      x-summary-source: derived
+  /api/v2/role_definitions/{id}/:
+    get:
+      operationId: role_definitions_retrieve
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinition'
+          description: ''
+      x-ai-description: Retrieve a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions retrieve
+      x-summary-source: derived
+    put:
+      operationId: role_definitions_update
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionDetailRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinitionDetail'
+          description: ''
+      x-ai-description: Update a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions update
+      x-summary-source: derived
+    patch:
+      operationId: role_definitions_partial_update
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRoleDefinitionRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinition'
+          description: ''
+      x-ai-description: Update a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions partial update
+      x-summary-source: derived
+    delete:
+      operationId: role_definitions_destroy
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions destroy
+      x-summary-source: derived
+  /api/v2/role_definitions/{id}/team_assignments/:
+    get:
+      operationId: role_definitions_team_assignments_list
+      description: 'Manage Role Team Assignment objects in the ''team_assignments'' relationship of this particular Role Definition.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/team_assignments/ to show role team assignments currently in the relationship'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_definitions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleTeamAssignmentList'
+          description: ''
+      x-ai-description: List all assignments for a role_definition
+      summary: Role definitions team assignments list
+      x-summary-source: derived
+  /api/v2/role_definitions/{id}/user_assignments/:
+    get:
+      operationId: role_definitions_user_assignments_list
+      description: 'Manage Role User Assignment objects in the ''user_assignments'' relationship of this particular Role Definition.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/user_assignments/ to show role user assignments currently in the relationship'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_definitions
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleUserAssignmentList'
+          description: ''
+      x-ai-description: List all assignments for a role_definition
+      summary: Role definitions user assignments list
+      x-summary-source: derived
+  /role_definitions/:
+    get:
+      operationId: role_definitions_list
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - role_definitions
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleDefinitionList_2'
+          description: ''
+      summary: Role definitions list
+      x-summary-source: derived
+    post:
+      operationId: role_definitions_create
+      description: Create a RoleDefinition.
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionCreate'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinition_2'
+          description: Return a created RoleDefinition.
+      summary: Role definitions create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /role_definitions/{id}/:
+    get:
+      operationId: role_definitions_retrieve
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinition_2'
+          description: ''
+      summary: Role definitions retrieve
+      x-summary-source: derived
+    put:
+      operationId: role_definitions_update
+      description: Update a RoleDefinition.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionCreate'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinition_2'
+          description: Return an updated RoleDefinition.
+      summary: Role definitions update
+      x-summary-source: derived
+    patch:
+      operationId: role_definitions_partial_update
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRoleDefinition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRoleDefinition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRoleDefinition'
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinition_2'
+          description: ''
+      summary: Role definitions partial update
+      x-summary-source: derived
+    delete:
+      operationId: role_definitions_destroy
+      description: 'Role Definitions (roles) contain a list of permissions and can be used to
+
+        assign those permissions to a user or team through the respective
+
+        assignment endpoints.
+
+
+        Custom roles can be created, modified, and deleted through this endpoint.
+
+        System-managed roles are shown here, which cannot be edited or deleted,
+
+        but can be assigned to users.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '204':
+          description: No response body
+      summary: Role definitions destroy
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /role_definitions/{id}/team_assignments/:
+    get:
+      operationId: role_definitions_team_assignments_list
+      description: 'Manage Role Team Assignment objects in the ''team_assignments'' relationship of this particular Role Definition.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/team_assignments/ to show role team assignments currently in the relationship'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this assignment.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - role_definitions
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleTeamAssignmentList_2'
+          description: ''
+      summary: Role definitions team assignments list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /role_definitions/{id}/user_assignments/:
+    get:
+      operationId: role_definitions_user_assignments_list
+      description: 'Manage Role User Assignment objects in the ''user_assignments'' relationship of this particular Role Definition.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/user_assignments/ to show role user assignments currently in the relationship'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this assignment.
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - role_definitions
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleUserAssignmentList_2'
+          description: ''
+      summary: Role definitions user assignments list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /api/gateway/v1/role_definitions/:
+    get:
+      operationId: role_definitions_list
+      description: Update the corresponding resource in each service.
+      parameters:
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by description (exact match)
+      - in: query
+        name: description__icontains
+        schema:
+          type: string
+        description: Filter by description (case-insensitive partial match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: managed
+        schema:
+          type: string
+        description: Filter by managed (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: resource
+        schema:
+          type: string
+        description: Filter by resource (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_definitions
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGatewayRoleDefinitionList'
+          description: ''
+      x-ai-description: List RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions list
+      x-summary-source: derived
+    post:
+      operationId: role_definitions_create
+      description: Update the corresponding resource in each service.
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GatewayRoleDefinition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GatewayRoleDefinition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GatewayRoleDefinition'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayRoleDefinition'
+          description: ''
+      x-ai-description: Create a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions create
+      x-summary-source: derived
+  /api/gateway/v1/role_definitions/{id}/:
+    get:
+      operationId: role_definitions_retrieve
+      description: Update the corresponding resource in each service.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayRoleDefinition'
+          description: ''
+      x-ai-description: Retrieve a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions retrieve
+      x-summary-source: derived
+    put:
+      operationId: role_definitions_update
+      description: Update the corresponding resource in each service.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoleDefinitionDetail'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleDefinitionDetail'
+          description: ''
+      x-ai-description: Update a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions update
+      x-summary-source: derived
+    patch:
+      operationId: role_definitions_partial_update
+      description: Update the corresponding resource in each service.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGatewayRoleDefinition'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGatewayRoleDefinition'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGatewayRoleDefinition'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayRoleDefinition'
+          description: ''
+      x-ai-description: Update a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions partial update
+      x-summary-source: derived
+    delete:
+      operationId: role_definitions_destroy
+      description: Update the corresponding resource in each service.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role definition.
+        required: true
+      tags:
+      - role_definitions
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a RBAC roles defining permissions that can be managed and assigned to users and teams
+      summary: Role definitions destroy
+      x-summary-source: derived
+  /api/gateway/v1/role_definitions/{id}/team_assignments/:
+    get:
+      operationId: role_definitions_team_assignments_list
+      description: 'Manage Role Team Assignment objects in the ''team_assignments'' relationship of this particular Role Definition.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/team_assignments/ to show role team assignments currently in the relationship'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_definitions
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGatewayRoleTeamAssignmentList'
+          description: ''
+      x-ai-description: List all assignments for a role_definition
+      summary: Role definitions team assignments list
+      x-summary-source: derived
+  /api/gateway/v1/role_definitions/{id}/user_assignments/:
+    get:
+      operationId: role_definitions_user_assignments_list
+      description: 'Manage Role User Assignment objects in the ''user_assignments'' relationship of this particular Role Definition.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/user_assignments/ to show role user assignments currently in the relationship'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_definitions
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleUserAssignmentList'
+          description: ''
+      x-ai-description: List all assignments for a role_definition
+      summary: Role definitions user assignments list
+      x-summary-source: derived
+components:
+  schemas:
+    RoleDefinitionRequest:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+      required:
+      - name
+      - permissions
+    PaginatedRoleDefinitionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleDefinition'
+    PatchedRoleDefinitionRequest:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+    RoleDefinition:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: String to use for references to this type from other models in the API.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+      required:
+      - name
+      - permissions
+    PaginatedRoleTeamAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleTeamAssignment'
+    PaginatedRoleUserAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignment'
+    RoleUserAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        user:
+          type:
+          - integer
+          - 'null'
+        user_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
+      required:
+      - role_definition
+    RoleDefinitionDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+      required:
+      - name
+      - permissions
+    RoleDefinitionDetailRequest:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+      required:
+      - name
+      - permissions
+    RoleTeamAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - role_definition
+    PaginatedRoleDefinitionList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleDefinition_2'
+    RoleDefinition_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: String to use for references to this type from other models in the API.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+      required:
+      - created
+      - created_by
+      - id
+      - managed
+      - modified
+      - modified_by
+      - name
+      - permissions
+      - related
+      - summary_fields
+      - url
+    PaginatedRoleTeamAssignmentList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleTeamAssignment_2'
+    RoleTeamAssignment_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - content_type
+      - created
+      - created_by
+      - id
+      - related
+      - role_definition
+      - summary_fields
+      - url
+    PatchedRoleDefinition:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: String to use for references to this type from other models in the API.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+    RoleDefinitionCreate:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+      required:
+      - name
+      - permissions
+    RoleUserAssignment_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        user:
+          type:
+          - integer
+          - 'null'
+        user_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
+      required:
+      - content_type
+      - created
+      - created_by
+      - id
+      - related
+      - role_definition
+      - summary_fields
+      - url
+    PaginatedRoleUserAssignmentList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignment_2'
+    PatchedGatewayRoleDefinition:
+      type: object
+      description: 'Custom serializer with Gateway-specific validation
+
+
+        Generated by Claude Sonnet 4'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: String to use for references to this type from other models in the API.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+    GatewayRoleTeamAssignment:
+      type: object
+      description: 'Custom serializer with Galaxy-specific validation for team role assignments
+
+
+        Teams can only be assigned roles where all permissions are in the ''galaxy'' service.
+
+        Gateway overrides actor queryset so team visibility is enforced here
+
+        rather than in DAB, since users/teams are owned by the resource provider.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - role_definition
+    GatewayRoleDefinition:
+      type: object
+      description: 'Custom serializer with Gateway-specific validation
+
+
+        Generated by Claude Sonnet 4'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: String to use for references to this type from other models in the API.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+      required:
+      - name
+      - permissions
+    PaginatedGatewayRoleTeamAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayRoleTeamAssignment'
+    PaginatedGatewayRoleDefinitionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayRoleDefinition'
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

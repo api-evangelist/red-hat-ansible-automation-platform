@@ -1,0 +1,72 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Repair API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Repair
+paths:
+  /api/automation-hub/pulp/api/v3/repair/:
+    post:
+      operationId: repair_post
+      description: Trigger an asynchronous task that checks for missing or corrupted artifacts, and attempts to redownload them.
+      summary: Repair Artifact Storage
+      tags:
+      - Repair
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Repair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Repair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Repair'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+components:
+  schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    Repair:
+      type: object
+      properties:
+        verify_checksums:
+          type: boolean
+          default: true
+          description: Will verify that the checksum of all stored files matches what saved in the database. Otherwise only the existence of the files will be checked. Enabled by default

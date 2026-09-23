@@ -1,0 +1,146 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform API
+  version: '1.0'
+  description: 'Operations tagged api across 2 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+tags:
+- name: api
+paths:
+  /api/:
+    get:
+      operationId: api_retrieve
+      description: List supported API versions
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: List supported API versions
+      summary: Api retrieve
+      x-summary-source: derived
+  /api/debug/:
+    get:
+      operationId: api_debug_retrieve
+      description: List of available debug urls
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: List available debug endpoints
+      summary: Api debug retrieve
+      x-summary-source: derived
+  /api/debug/dependency_manager/:
+    get:
+      operationId: api_debug_dependency_manager_retrieve
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Trigger dependency manager scheduling
+      summary: Api debug dependency manager retrieve
+      x-summary-source: derived
+  /api/debug/task_manager/:
+    get:
+      operationId: api_debug_task_manager_retrieve
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Trigger task manager scheduling
+      summary: Api debug task manager retrieve
+      x-summary-source: derived
+  /api/debug/workflow_manager/:
+    get:
+      operationId: api_debug_workflow_manager_retrieve
+      tags:
+      - api
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Trigger workflow manager scheduling
+      summary: Api debug workflow manager retrieve
+      x-summary-source: derived
+  /api/gateway/:
+    get:
+      operationId: api_gateway_retrieve
+      tags:
+      - api
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api_gateway_root_view'
+          description: ''
+      x-ai-description: Retrieve single api gateway
+      summary: Api gateway retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    api_root_view:
+      type: object
+      properties:
+        description:
+          type: string
+        apis:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+      - apis
+      - description
+    api_gateway_root_view:
+      type: object
+      properties:
+        current_version:
+          type: string
+        available_versions:
+          type: object
+          additionalProperties:
+            type: string
+      required:
+      - available_versions
+      - current_version
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

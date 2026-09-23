@@ -1,0 +1,82 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Repositories: Reclaim_Space API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Repositories: Reclaim_Space'
+paths:
+  /api/automation-hub/pulp/api/v3/repositories/reclaim_space/:
+    post:
+      operationId: repositories_reclaim_space_reclaim
+      description: Trigger an asynchronous space reclaim operation.
+      tags:
+      - 'Repositories: Reclaim_Space'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReclaimSpace'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReclaimSpace'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReclaimSpace'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+      summary: Repositories reclaim space reclaim
+      x-summary-source: derived
+components:
+  schemas:
+    ReclaimSpace:
+      type: object
+      description: Serializer for reclaim disk space operation.
+      properties:
+        repo_hrefs:
+          type: array
+          items: {}
+          description: Will reclaim space for the specified list of repos. Use ['*'] to specify all repos.
+        repo_versions_keeplist:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: Will exclude repo versions from space reclaim.
+      required:
+      - repo_hrefs
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

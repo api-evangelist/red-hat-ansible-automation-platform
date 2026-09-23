@@ -1,0 +1,1068 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Applications API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Applications
+paths:
+  /api/gateway/v1/applications/:
+    get:
+      operationId: applications_list
+      parameters:
+      - in: query
+        name: algorithm
+        schema:
+          type: string
+        description: Filter by algorithm (exact match)
+      - in: query
+        name: algorithm__icontains
+        schema:
+          type: string
+        description: Filter by algorithm (case-insensitive partial match)
+      - in: query
+        name: app_url
+        schema:
+          type: string
+        description: Filter by app_url (exact match)
+      - in: query
+        name: app_url__icontains
+        schema:
+          type: string
+        description: Filter by app_url (case-insensitive partial match)
+      - in: query
+        name: authorization_grant_type
+        schema:
+          type: string
+        description: Filter by authorization_grant_type (exact match)
+      - in: query
+        name: authorization_grant_type__icontains
+        schema:
+          type: string
+        description: Filter by authorization_grant_type (case-insensitive partial match)
+      - in: query
+        name: client_id
+        schema:
+          type: string
+        description: Filter by client_id (exact match)
+      - in: query
+        name: client_id__icontains
+        schema:
+          type: string
+        description: Filter by client_id (case-insensitive partial match)
+      - in: query
+        name: client_secret
+        schema:
+          type: string
+        description: Filter by client_secret (exact match)
+      - in: query
+        name: client_secret__icontains
+        schema:
+          type: string
+        description: Filter by client_secret (case-insensitive partial match)
+      - in: query
+        name: client_type
+        schema:
+          type: string
+        description: Filter by client_type (exact match)
+      - in: query
+        name: client_type__icontains
+        schema:
+          type: string
+        description: Filter by client_type (case-insensitive partial match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by description (exact match)
+      - in: query
+        name: description__icontains
+        schema:
+          type: string
+        description: Filter by description (case-insensitive partial match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: organization
+        schema:
+          type: string
+        description: Filter by organization (exact match)
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: post_logout_redirect_uris
+        schema:
+          type: string
+        description: Filter by post_logout_redirect_uris (exact match)
+      - in: query
+        name: post_logout_redirect_uris__icontains
+        schema:
+          type: string
+        description: Filter by post_logout_redirect_uris (case-insensitive partial match)
+      - in: query
+        name: redirect_uris
+        schema:
+          type: string
+        description: Filter by redirect_uris (exact match)
+      - in: query
+        name: redirect_uris__icontains
+        schema:
+          type: string
+        description: Filter by redirect_uris (case-insensitive partial match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: skip_authorization
+        schema:
+          type: string
+        description: Filter by skip_authorization (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: user
+        schema:
+          type: string
+        description: Filter by user (exact match)
+      tags:
+      - Applications
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOAuth2ApplicationList'
+          description: ''
+      x-ai-description: List all applications
+      summary: Applications list
+      x-summary-source: derived
+    post:
+      operationId: applications_create
+      tags:
+      - Applications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuth2Application'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OAuth2Application'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OAuth2Application'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Application'
+          description: ''
+      x-ai-description: Create new application
+      summary: Applications create
+      x-summary-source: derived
+  /api/gateway/v1/applications/{id}/:
+    get:
+      operationId: applications_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this application.
+        required: true
+      tags:
+      - Applications
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Application'
+          description: ''
+      x-ai-description: Retrieve single application
+      summary: Applications retrieve
+      x-summary-source: derived
+    put:
+      operationId: applications_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this application.
+        required: true
+      tags:
+      - Applications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuth2Application'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OAuth2Application'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OAuth2Application'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Application'
+          description: ''
+      x-ai-description: Update existing application
+      summary: Applications update
+      x-summary-source: derived
+    patch:
+      operationId: applications_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this application.
+        required: true
+      tags:
+      - Applications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOAuth2Application'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOAuth2Application'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOAuth2Application'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuth2Application'
+          description: ''
+      x-ai-description: Partially update existing application
+      summary: Applications partial update
+      x-summary-source: derived
+    delete:
+      operationId: applications_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this application.
+        required: true
+      tags:
+      - Applications
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing application
+      summary: Applications destroy
+      x-summary-source: derived
+  /api/gateway/v1/applications/{id}/tokens/:
+    get:
+      operationId: applications_tokens_list
+      description: 'Manage Access Token objects in the ''access_tokens'' relationship of this particular Application.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/access_tokens/ to show access tokens currently in the relationship'
+      parameters:
+      - in: query
+        name: application
+        schema:
+          type: string
+        description: Filter by application (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: description
+        schema:
+          type: string
+        description: Filter by description (exact match)
+      - in: query
+        name: description__icontains
+        schema:
+          type: string
+        description: Filter by description (case-insensitive partial match)
+      - in: query
+        name: expires
+        schema:
+          type: string
+        description: Filter by expires (exact match)
+      - in: query
+        name: expires__gt
+        schema:
+          type: string
+        description: Filter by expires (gt)
+      - in: query
+        name: expires__gte
+        schema:
+          type: string
+        description: Filter by expires (gte)
+      - in: query
+        name: expires__lt
+        schema:
+          type: string
+        description: Filter by expires (lt)
+      - in: query
+        name: expires__lte
+        schema:
+          type: string
+        description: Filter by expires (lte)
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: id_token
+        schema:
+          type: string
+        description: Filter by id_token (exact match)
+      - in: query
+        name: last_used
+        schema:
+          type: string
+        description: Filter by last_used (exact match)
+      - in: query
+        name: last_used__gt
+        schema:
+          type: string
+        description: Filter by last_used (gt)
+      - in: query
+        name: last_used__gte
+        schema:
+          type: string
+        description: Filter by last_used (gte)
+      - in: query
+        name: last_used__lt
+        schema:
+          type: string
+        description: Filter by last_used (lt)
+      - in: query
+        name: last_used__lte
+        schema:
+          type: string
+        description: Filter by last_used (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: refresh_token
+        schema:
+          type: string
+        description: Filter by refresh_token (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - in: query
+        name: scope
+        schema:
+          type: string
+        description: Filter by scope (exact match)
+      - in: query
+        name: scope__icontains
+        schema:
+          type: string
+        description: Filter by scope (case-insensitive partial match)
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: source_refresh_token
+        schema:
+          type: string
+        description: Filter by source_refresh_token (exact match)
+      - in: query
+        name: token
+        schema:
+          type: string
+        description: Filter by token (exact match)
+      - in: query
+        name: token__icontains
+        schema:
+          type: string
+        description: Filter by token (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: user
+        schema:
+          type: string
+        description: Filter by user (exact match)
+      tags:
+      - Applications
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOAuth2TokenList'
+          description: ''
+      x-ai-description: List all tokens for an application
+      summary: Applications tokens list
+      x-summary-source: derived
+components:
+  schemas:
+    OAuth2Token:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        expires:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+          readOnly: true
+          description: The user representing the token owner.
+        application:
+          type:
+          - integer
+          - 'null'
+          description: The related application. If None, this is a user token instead of an application token.
+        description:
+          type: string
+          description: A description for this token.
+        last_used:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: A timestamp of when this token was last used.
+        scope:
+          type: string
+          description: Allowed scopes, further restricts user permissions. Must be a simple space-separated string with allowed scopes ['read', 'write', 'openid', 'roles'].
+          maxLength: 128
+        token:
+          type: string
+          readOnly: true
+          description: The generated token value.
+        refresh_token:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+    OAuth2Application:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        client_id:
+          type: string
+          readOnly: true
+        redirect_uris:
+          type: string
+          description: Allowed URIs list, space separated
+        post_logout_redirect_uris:
+          type: string
+          description: Allowed Post Logout URIs list, space separated
+        algorithm:
+          enum:
+          - ''
+          - RS256
+          - HS256
+          type: string
+          description: '* `` - No OIDC support
+
+            * `RS256` - RSA with SHA-2 256
+
+            * `HS256` - HMAC with SHA-2 256'
+          x-spec-enum-id: efb8c99632a46c3d
+        user:
+          type:
+          - integer
+          - 'null'
+          description: The user who created the application.
+        description:
+          type: string
+          description: A description of this application.
+        organization:
+          type: integer
+          description: Organization containing this application.
+        app_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          title: Application URL
+          description: The URL of this application.
+          maxLength: 200
+        client_secret:
+          type: string
+          readOnly: true
+          description: Hashed on Save. Copy it now if this is a new secret.
+        client_type:
+          enum:
+          - confidential
+          - public
+          type: string
+          x-spec-enum-id: 6de8a18fd0ba1b55
+          description: 'Set to Public or Confidential depending on how secure the client device is.
+
+
+            * `confidential` - Confidential
+
+            * `public` - Public'
+        skip_authorization:
+          type: boolean
+          description: Set True to skip authorization step for completely trusted applications.
+        authorization_grant_type:
+          enum:
+          - authorization-code
+          - password
+          type: string
+          x-spec-enum-id: 97829bf36e0a77bf
+          description: 'The Grant type the user must use for acquire tokens for this application.
+
+
+            * `authorization-code` - Authorization code
+
+            * `password` - Resource owner password-based'
+      required:
+      - authorization_grant_type
+      - client_type
+      - name
+      - organization
+    PatchedOAuth2Application:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        client_id:
+          type: string
+          readOnly: true
+        redirect_uris:
+          type: string
+          description: Allowed URIs list, space separated
+        post_logout_redirect_uris:
+          type: string
+          description: Allowed Post Logout URIs list, space separated
+        algorithm:
+          enum:
+          - ''
+          - RS256
+          - HS256
+          type: string
+          description: '* `` - No OIDC support
+
+            * `RS256` - RSA with SHA-2 256
+
+            * `HS256` - HMAC with SHA-2 256'
+          x-spec-enum-id: efb8c99632a46c3d
+        user:
+          type:
+          - integer
+          - 'null'
+          description: The user who created the application.
+        description:
+          type: string
+          description: A description of this application.
+        organization:
+          type: integer
+          description: Organization containing this application.
+        app_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          title: Application URL
+          description: The URL of this application.
+          maxLength: 200
+        client_secret:
+          type: string
+          readOnly: true
+          description: Hashed on Save. Copy it now if this is a new secret.
+        client_type:
+          enum:
+          - confidential
+          - public
+          type: string
+          x-spec-enum-id: 6de8a18fd0ba1b55
+          description: 'Set to Public or Confidential depending on how secure the client device is.
+
+
+            * `confidential` - Confidential
+
+            * `public` - Public'
+        skip_authorization:
+          type: boolean
+          description: Set True to skip authorization step for completely trusted applications.
+        authorization_grant_type:
+          enum:
+          - authorization-code
+          - password
+          type: string
+          x-spec-enum-id: 97829bf36e0a77bf
+          description: 'The Grant type the user must use for acquire tokens for this application.
+
+
+            * `authorization-code` - Authorization code
+
+            * `password` - Resource owner password-based'
+    PaginatedOAuth2TokenList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuth2Token'
+    PaginatedOAuth2ApplicationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuth2Application'
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

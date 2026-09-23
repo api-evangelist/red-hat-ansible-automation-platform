@@ -1,0 +1,509 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Service Nodes API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: service_nodes
+paths:
+  /api/gateway/v1/service_nodes/:
+    get:
+      operationId: service_nodes_list
+      description: API endpoint that allows service nodes to be viewed or edited.
+      parameters:
+      - in: query
+        name: address
+        schema:
+          type: string
+        description: Filter by address (exact match)
+      - in: query
+        name: address__icontains
+        schema:
+          type: string
+        description: Filter by address (case-insensitive partial match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service_cluster
+        schema:
+          type: string
+        description: Filter by service_cluster (exact match)
+      - in: query
+        name: tags
+        schema:
+          type: string
+        description: Filter by tags (exact match)
+      - in: query
+        name: tags__icontains
+        schema:
+          type: string
+        description: Filter by tags (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - service_nodes
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceNodeList'
+          description: ''
+      x-ai-description: List all service nodes
+      summary: Service nodes list
+      x-summary-source: derived
+    post:
+      operationId: service_nodes_create
+      description: API endpoint that allows service nodes to be viewed or edited.
+      tags:
+      - service_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceNode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceNode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceNode'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceNode'
+          description: ''
+      x-ai-description: Create new service node
+      summary: Service nodes create
+      x-summary-source: derived
+  /api/gateway/v1/service_nodes/{id}/:
+    get:
+      operationId: service_nodes_retrieve
+      description: API endpoint that allows service nodes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service node.
+        required: true
+      tags:
+      - service_nodes
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceNode'
+          description: ''
+      x-ai-description: Retrieve single service node
+      summary: Service nodes retrieve
+      x-summary-source: derived
+    put:
+      operationId: service_nodes_update
+      description: API endpoint that allows service nodes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service node.
+        required: true
+      tags:
+      - service_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceNode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceNode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceNode'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceNode'
+          description: ''
+      x-ai-description: Update existing service node
+      summary: Service nodes update
+      x-summary-source: derived
+    patch:
+      operationId: service_nodes_partial_update
+      description: API endpoint that allows service nodes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service node.
+        required: true
+      tags:
+      - service_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceNode'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceNode'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceNode'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceNode'
+          description: ''
+      x-ai-description: Partially update existing service node
+      summary: Service nodes partial update
+      x-summary-source: derived
+    delete:
+      operationId: service_nodes_destroy
+      description: API endpoint that allows service nodes to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service node.
+        required: true
+      tags:
+      - service_nodes
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing service node
+      summary: Service nodes destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedServiceNodeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceNode'
+    PatchedServiceNode:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        address:
+          type: string
+          description: The network address to route traffic for this service to.
+          maxLength: 255
+        service_cluster:
+          type: integer
+          description: The AAP Service cluster that this node belongs to.
+        tags:
+          type: string
+          description: A comma-separated list of roles to assign to a node; to be selective about which routes point to it.
+          maxLength: 255
+    ServiceNode:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        address:
+          type: string
+          description: The network address to route traffic for this service to.
+          maxLength: 255
+        service_cluster:
+          type: integer
+          description: The AAP Service cluster that this node belongs to.
+        tags:
+          type: string
+          description: A comma-separated list of roles to assign to a node; to be selective about which routes point to it.
+          maxLength: 255
+      required:
+      - address
+      - name
+      - service_cluster
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

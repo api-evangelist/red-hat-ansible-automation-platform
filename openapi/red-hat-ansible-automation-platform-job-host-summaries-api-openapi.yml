@@ -1,0 +1,113 @@
+openapi: 3.2.0
+info:
+  title: AWX Job Host Summaries API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: job_host_summaries
+paths:
+  /api/v2/job_host_summaries/{id}/:
+    get:
+      operationId: job_host_summaries_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - job_host_summaries
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobHostSummary'
+          description: ''
+      x-ai-description: Retrieve a job host summary detail
+      summary: Job host summaries retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    JobHostSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type: integer
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        constructed_host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
+        host_name:
+          type: string
+          readOnly: true
+          default: ''
+        changed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        dark:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+        ok:
+          type: integer
+          minimum: 0
+          readOnly: true
+        processed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        skipped:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        ignored:
+          type: integer
+          minimum: 0
+          readOnly: true
+        rescued:
+          type: integer
+          minimum: 0
+          readOnly: true

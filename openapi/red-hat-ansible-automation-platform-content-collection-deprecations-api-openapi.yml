@@ -1,0 +1,273 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Content: Collection_Deprecations API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Content: Collection_Deprecations'
+paths:
+  /api/automation-hub/pulp/api/v3/content/ansible/collection_deprecations/:
+    get:
+      operationId: content_ansible_collection_deprecations_list
+      description: ViewSet for AnsibleCollectionDeprecated.
+      summary: List ansible collection deprecateds
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -pk
+            - pk
+        description: 'Ordering
+
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: orphaned_for
+        schema:
+          type: number
+        description: Minutes Content has been orphaned for. -1 uses ORPHAN_PROTECTION_TIME.
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_added
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_removed
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Collection_Deprecations'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedansible.AnsibleCollectionDeprecatedResponseList'
+          description: ''
+    post:
+      operationId: content_ansible_collection_deprecations_create
+      description: Trigger an asynchronous task to create content,optionally create new repository version.
+      summary: Create an ansible collection deprecated
+      tags:
+      - 'Content: Collection_Deprecations'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ansible.AnsibleCollectionDeprecated'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ansible.AnsibleCollectionDeprecated'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ansible.AnsibleCollectionDeprecated'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/content/ansible/collection_deprecations/{pulp_id}/:
+    get:
+      operationId: content_ansible_collection_deprecations_read
+      description: ViewSet for AnsibleCollectionDeprecated.
+      summary: Inspect an ansible collection deprecated
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this ansible collection deprecated.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Content: Collection_Deprecations'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ansible.AnsibleCollectionDeprecatedResponse'
+          description: ''
+components:
+  schemas:
+    ansible.AnsibleCollectionDeprecatedResponse:
+      type: object
+      description: A serializer for Ansible Collection Deprecations.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: The name of the Collection.
+        namespace:
+          type: string
+          description: The namespace of the Collection.
+      required:
+      - name
+      - namespace
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    ansible.AnsibleCollectionDeprecated:
+      type: object
+      description: A serializer for Ansible Collection Deprecations.
+      properties:
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        name:
+          type: string
+          minLength: 1
+          description: The name of the Collection.
+        namespace:
+          type: string
+          minLength: 1
+          description: The namespace of the Collection.
+      required:
+      - name
+      - namespace
+    Paginatedansible.AnsibleCollectionDeprecatedResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.AnsibleCollectionDeprecatedResponse'

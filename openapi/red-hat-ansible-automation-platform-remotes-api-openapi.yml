@@ -1,0 +1,608 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Remotes API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Remotes
+paths:
+  /api/automation-hub/pulp/api/v3/remotes/:
+    get:
+      operationId: remotes_list
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: List remotes
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter results where name contains value
+      - in: query
+        name: name__iexact
+        schema:
+          type: string
+        description: Filter results where name matches value
+      - in: query
+        name: name__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Filter results where name is in a comma-separated list of values
+        explode: false
+        style: form
+      - in: query
+        name: name__iregex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__istartswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - in: query
+        name: name__regex
+        schema:
+          type: string
+        description: Filter results where name matches regex value
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+        description: Filter results where name starts with value
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -ca_cert
+            - -client_cert
+            - -client_key
+            - -connect_timeout
+            - -download_concurrency
+            - -headers
+            - -max_retries
+            - -name
+            - -password
+            - -pk
+            - -policy
+            - -proxy_password
+            - -proxy_url
+            - -proxy_username
+            - -pulp_created
+            - -pulp_id
+            - -pulp_labels
+            - -pulp_last_updated
+            - -pulp_type
+            - -rate_limit
+            - -sock_connect_timeout
+            - -sock_read_timeout
+            - -tls_validation
+            - -total_timeout
+            - -url
+            - -username
+            - ca_cert
+            - client_cert
+            - client_key
+            - connect_timeout
+            - download_concurrency
+            - headers
+            - max_retries
+            - name
+            - password
+            - pk
+            - policy
+            - proxy_password
+            - proxy_url
+            - proxy_username
+            - pulp_created
+            - pulp_id
+            - pulp_labels
+            - pulp_last_updated
+            - pulp_type
+            - rate_limit
+            - sock_connect_timeout
+            - sock_read_timeout
+            - tls_validation
+            - total_timeout
+            - url
+            - username
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `pulp_labels` - Pulp labels
+
+          * `-pulp_labels` - Pulp labels (descending)
+
+          * `url` - Url
+
+          * `-url` - Url (descending)
+
+          * `ca_cert` - Ca cert
+
+          * `-ca_cert` - Ca cert (descending)
+
+          * `client_cert` - Client cert
+
+          * `-client_cert` - Client cert (descending)
+
+          * `client_key` - Client key
+
+          * `-client_key` - Client key (descending)
+
+          * `tls_validation` - Tls validation
+
+          * `-tls_validation` - Tls validation (descending)
+
+          * `username` - Username
+
+          * `-username` - Username (descending)
+
+          * `password` - Password
+
+          * `-password` - Password (descending)
+
+          * `proxy_url` - Proxy url
+
+          * `-proxy_url` - Proxy url (descending)
+
+          * `proxy_username` - Proxy username
+
+          * `-proxy_username` - Proxy username (descending)
+
+          * `proxy_password` - Proxy password
+
+          * `-proxy_password` - Proxy password (descending)
+
+          * `download_concurrency` - Download concurrency
+
+          * `-download_concurrency` - Download concurrency (descending)
+
+          * `max_retries` - Max retries
+
+          * `-max_retries` - Max retries (descending)
+
+          * `policy` - Policy
+
+          * `-policy` - Policy (descending)
+
+          * `total_timeout` - Total timeout
+
+          * `-total_timeout` - Total timeout (descending)
+
+          * `connect_timeout` - Connect timeout
+
+          * `-connect_timeout` - Connect timeout (descending)
+
+          * `sock_connect_timeout` - Sock connect timeout
+
+          * `-sock_connect_timeout` - Sock connect timeout (descending)
+
+          * `sock_read_timeout` - Sock read timeout
+
+          * `-sock_read_timeout` - Sock read timeout (descending)
+
+          * `headers` - Headers
+
+          * `-headers` - Headers (descending)
+
+          * `rate_limit` - Rate limit
+
+          * `-rate_limit` - Rate limit (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_label_select
+        schema:
+          type: string
+        description: Filter labels by search string
+      - in: query
+        name: pulp_last_updated
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated matches value
+      - in: query
+        name: pulp_last_updated__gt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is greater than value
+      - in: query
+        name: pulp_last_updated__gte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is greater than or equal to value
+      - in: query
+        name: pulp_last_updated__lt
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is less than value
+      - in: query
+        name: pulp_last_updated__lte
+        schema:
+          type: string
+          format: date-time
+        description: Filter results where pulp_last_updated is less than or equal to value
+      - in: query
+        name: pulp_last_updated__range
+        schema:
+          type: array
+          items:
+            type: string
+            format: date-time
+        description: Filter results where pulp_last_updated is between two comma separated values
+        explode: false
+        style: form
+      - in: query
+        name: pulp_type
+        schema:
+          type: string
+          enum:
+          - ansible.collection
+          - ansible.git
+          - ansible.role
+          - container.container
+          - container.remote
+          - file.file
+          - galaxy.remote
+        description: 'Pulp type
+
+
+          * `galaxy.remote` - galaxy.remote
+
+          * `ansible.role` - ansible.role
+
+          * `ansible.collection` - ansible.collection
+
+          * `ansible.git` - ansible.git
+
+          * `container.container` - container.container
+
+          * `container.remote` - container.remote
+
+          * `file.file` - file.file'
+      - in: query
+        name: pulp_type__in
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - ansible.collection
+            - ansible.git
+            - ansible.role
+            - container.container
+            - container.remote
+            - file.file
+            - galaxy.remote
+        description: 'Multiple values may be separated by commas.
+
+
+          * `galaxy.remote` - galaxy.remote
+
+          * `ansible.role` - ansible.role
+
+          * `ansible.collection` - ansible.collection
+
+          * `ansible.git` - ansible.git
+
+          * `container.container` - container.container
+
+          * `container.remote` - container.remote
+
+          * `file.file` - file.file'
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Remotes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRemoteResponseList'
+          description: ''
+components:
+  schemas:
+    PaginatedRemoteResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteResponse'
+    RemoteResponse:
+      type: object
+      description: 'Every remote defined by a plugin should have a Remote serializer that inherits from this
+
+        class. Please import from `pulpcore.plugin.serializers` rather than from this module directly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent update of the remote.
+        name:
+          type: string
+          description: A unique name for this remote.
+        url:
+          type: string
+          description: The URL of an external content source.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded client certificate used for authentication.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          description: 'The proxy URL. Format: scheme://host:port'
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        max_retries:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Maximum number of retry attempts after a download failure. If not set then the default value (3) will be used.
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        total_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.total (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        connect_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        sock_connect_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.sock_connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        sock_read_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.sock_read (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        headers:
+          type: array
+          items:
+            type: object
+          description: Headers for aiohttp.Clientsession
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        hidden_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              is_set:
+                type: boolean
+            required:
+            - is_set
+            - name
+          readOnly: true
+          description: List of hidden (write only) fields
+      required:
+      - name
+      - url
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'

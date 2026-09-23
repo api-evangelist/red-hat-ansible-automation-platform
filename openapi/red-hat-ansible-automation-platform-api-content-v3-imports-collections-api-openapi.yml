@@ -1,0 +1,105 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: Content V3 Imports Collections API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: Content V3 Imports Collections'
+paths:
+  /api/automation-hub/content/{path}/v3/imports/collections/{task}/:
+    get:
+      operationId: api_automation_hub_content_v3_imports_collections_read
+      description: Legacy v3 endpoint.
+      summary: Inspect a collection import
+      parameters:
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: task
+        schema:
+          type: string
+          format: uuid
+        description: A unique value identifying this collection import.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: Content V3 Imports Collections'
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionImportDetailResponse'
+          description: ''
+        '302':
+          description: No response body
+components:
+  schemas:
+    CollectionImportDetailResponse:
+      type: object
+      description: A serializer for a CollectionImport detail view.
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        error:
+          type: object
+        messages:
+          type: object
+      required:
+      - created_at
+      - id
+      - messages
+      - started_at
+      - state
+      - updated_at

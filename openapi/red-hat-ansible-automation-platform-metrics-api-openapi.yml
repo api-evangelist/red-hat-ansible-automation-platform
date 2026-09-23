@@ -1,0 +1,32 @@
+openapi: 3.2.0
+info:
+  title: AWX Metrics API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: Metrics
+paths:
+  /api/v2/metrics/:
+    get:
+      operationId: metrics_retrieve
+      description: Show Metrics Details
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - txt
+      tags:
+      - Metrics
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get Prometheus metrics data
+      summary: Metrics retrieve
+      x-summary-source: derived

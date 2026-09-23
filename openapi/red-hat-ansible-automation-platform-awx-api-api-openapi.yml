@@ -1,0 +1,26 @@
+openapi: 3.2.0
+info:
+  title: AWX API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: AWX API
+paths:
+  /api/v2/:
+    get:
+      operationId: root_retrieve
+      description: List top level resources
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: List top-level API resources
+      tags:
+      - AWX API
+      summary: Root retrieve
+      x-summary-source: derived

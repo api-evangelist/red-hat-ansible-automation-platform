@@ -1,0 +1,1927 @@
+openapi: 3.2.0
+info:
+  title: AWX Workflow Job Template Nodes API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: workflow_job_template_nodes
+paths:
+  /api/v2/workflow_job_template_nodes/:
+    get:
+      operationId: workflow_job_template_nodes_list
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkflowJobTemplateNodeList'
+          description: ''
+      x-ai-description: List workflow job template nodes
+      summary: Workflow job template nodes list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_create
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateNodeRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNode'
+          description: ''
+      x-ai-description: Create a workflow job template node
+      summary: Workflow job template nodes create
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/:
+    get:
+      operationId: workflow_job_template_nodes_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNodeDetail'
+          description: ''
+      x-ai-description: Retrieve a workflow job template node
+      summary: Workflow job template nodes retrieve
+      x-summary-source: derived
+    put:
+      operationId: workflow_job_template_nodes_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateNodeDetailRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNodeDetail'
+          description: ''
+      x-ai-description: Update a workflow job template node
+      summary: Workflow job template nodes update
+      x-summary-source: derived
+    patch:
+      operationId: workflow_job_template_nodes_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkflowJobTemplateNodeDetailRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNodeDetail'
+          description: ''
+      x-ai-description: Update a workflow job template node
+      summary: Workflow job template nodes partial update
+      x-summary-source: derived
+    delete:
+      operationId: workflow_job_template_nodes_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a workflow job template node
+      summary: Workflow job template nodes destroy
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/always_nodes/:
+    get:
+      operationId: workflow_job_template_nodes_always_nodes_list
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkflowJobTemplateNodeList'
+          description: ''
+      x-ai-description: List all nodes for a workflow_job_template_node
+      summary: Workflow job template nodes always nodes list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_always_nodes_create
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateNodeRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNode'
+          description: ''
+      x-ai-description: Create new node for a workflow_job_template_node
+      summary: Workflow job template nodes always nodes create
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/create_approval_template/:
+    get:
+      operationId: workflow_job_template_nodes_create_approval_template_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNodeCreateApproval'
+          description: ''
+      x-ai-description: Retrieve single template for a workflow_job_template_node
+      summary: Workflow job template nodes create approval template retrieve
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_create_approval_template_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateNodeCreateApprovalRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNodeCreateApproval'
+          description: ''
+      x-ai-description: Create an approval node for a workflow job template node
+      summary: Workflow job template nodes create approval template create
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/credentials/:
+    get:
+      operationId: workflow_job_template_nodes_credentials_list
+      description: Derived version of SubListCreateAttachDetachAPIView that prohibits creation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCredentialList'
+          description: ''
+      x-ai-description: List credentials of a workflow job template node
+      summary: Workflow job template nodes credentials list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_credentials_create
+      description: Derived version of SubListCreateAttachDetachAPIView that prohibits creation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+          description: ''
+      x-ai-description: Create a credential of a workflow job template node
+      summary: Workflow job template nodes credentials create
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/failure_nodes/:
+    get:
+      operationId: workflow_job_template_nodes_failure_nodes_list
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkflowJobTemplateNodeList'
+          description: ''
+      x-ai-description: List all nodes for a workflow_job_template_node
+      summary: Workflow job template nodes failure nodes list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_failure_nodes_create
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateNodeRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNode'
+          description: ''
+      x-ai-description: Create new node for a workflow_job_template_node
+      summary: Workflow job template nodes failure nodes create
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/instance_groups/:
+    get:
+      operationId: workflow_job_template_nodes_instance_groups_list
+      description: Derived version of SubListCreateAttachDetachAPIView that prohibits creation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInstanceGroupList'
+          description: ''
+      x-ai-description: List instance groups of a workflow job template node
+      summary: Workflow job template nodes instance groups list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_instance_groups_create
+      description: Derived version of SubListCreateAttachDetachAPIView that prohibits creation
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstanceGroupRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstanceGroup'
+          description: ''
+      x-ai-description: Create an instance group of a workflow job template node
+      summary: Workflow job template nodes instance groups create
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/labels/:
+    get:
+      operationId: workflow_job_template_nodes_labels_list
+      description: 'For related labels lists like /api/v2/inventories/N/labels/
+
+
+        We want want the last instance to be deleted from the database
+
+        when the last disassociate happens.
+
+
+        Subclasses need to define parent_model'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLabelList'
+          description: ''
+      x-ai-description: List labels of a workflow job template node
+      summary: Workflow job template nodes labels list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_labels_create
+      description: 'For related labels lists like /api/v2/inventories/N/labels/
+
+
+        We want want the last instance to be deleted from the database
+
+        when the last disassociate happens.
+
+
+        Subclasses need to define parent_model'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabelRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Label'
+          description: ''
+      x-ai-description: Create or attach a label to a resource
+      summary: Workflow job template nodes labels create
+      x-summary-source: derived
+  /api/v2/workflow_job_template_nodes/{id}/success_nodes/:
+    get:
+      operationId: workflow_job_template_nodes_success_nodes_list
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - workflow_job_template_nodes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkflowJobTemplateNodeList'
+          description: ''
+      x-ai-description: List all nodes for a workflow_job_template_node
+      summary: Workflow job template nodes success nodes list
+      x-summary-source: derived
+    post:
+      operationId: workflow_job_template_nodes_success_nodes_create
+      description: 'Useful when you have a self-referring ManyToManyRelationship.
+
+        * Tower uses a shallow (2-deep only) url pattern. For example:
+
+
+        When an object hangs off of a parent object you would have the url of the
+
+        form /api/v2/parent_model/34/child_model. If you then wanted a child of the
+
+        child model you would NOT do /api/v2/parent_model/34/child_model/87/child_child_model
+
+        Instead, you would access the child_child_model via /api/v2/child_child_model/87/
+
+        and you would create child_child_model''s off of /api/v2/child_model/87/child_child_model_set
+
+        Now, when creating child_child_model related to child_model you still want to
+
+        link child_child_model to parent_model. That''s what this class is for'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      tags:
+      - workflow_job_template_nodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowJobTemplateNodeRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowJobTemplateNode'
+          description: ''
+      x-ai-description: Create new node for a workflow_job_template_node
+      summary: Workflow job template nodes success nodes create
+      x-summary-source: derived
+components:
+  schemas:
+    WorkflowJobTemplateNode:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        workflow_job_template:
+          type: integer
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+        success_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        failure_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        always_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An identifier for this node that is unique within its workflow. It is copied to workflow job nodes corresponding to this node.
+          maxLength: 512
+      required:
+      - workflow_job_template
+    WorkflowJobTemplateNodeDetail:
+      type: object
+      description: 'Influence the api browser sample data to not include workflow_job_template
+
+        when editing a WorkflowNode.
+
+
+        Note: I was not able to accomplish this through the use of extra_kwargs.
+
+        Maybe something to do with workflow_job_template being a relational field?'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        workflow_job_template:
+          type: integer
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+        success_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        failure_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        always_nodes:
+          type: array
+          items:
+            type: integer
+          readOnly: true
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        identifier:
+          type:
+          - string
+          - 'null'
+          description: An identifier for this node that is unique within its workflow. It is copied to workflow job nodes corresponding to this node.
+          maxLength: 512
+      required:
+      - workflow_job_template
+    PaginatedCredentialList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Credential'
+    PaginatedInstanceGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceGroup'
+    PatchedWorkflowJobTemplateNodeDetailRequest:
+      type: object
+      description: 'Influence the api browser sample data to not include workflow_job_template
+
+        when editing a WorkflowNode.
+
+
+        Note: I was not able to accomplish this through the use of extra_kwargs.
+
+        Maybe something to do with workflow_job_template being a relational field?'
+      properties:
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        workflow_job_template:
+          type: integer
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        identifier:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An identifier for this node that is unique within its workflow. It is copied to workflow job nodes corresponding to this node.
+          maxLength: 512
+    PaginatedWorkflowJobTemplateNodeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowJobTemplateNode'
+    WorkflowJobTemplateNodeRequest:
+      type: object
+      properties:
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        workflow_job_template:
+          type: integer
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        identifier:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An identifier for this node that is unique within its workflow. It is copied to workflow job nodes corresponding to this node.
+          maxLength: 512
+      required:
+      - workflow_job_template
+    Credential:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
+          type: string
+          readOnly: true
+        cloud:
+          type: string
+          readOnly: true
+        kubernetes:
+          type: string
+          readOnly: true
+      required:
+      - credential_type
+      - name
+    WorkflowJobTemplateNodeCreateApprovalRequest:
+      type: object
+      properties:
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) before the approval node expires and fails.
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+      required:
+      - name
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    PaginatedLabelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+    InstanceGroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 250
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
+      required:
+      - name
+    WorkflowJobTemplateNodeDetailRequest:
+      type: object
+      description: 'Influence the api browser sample data to not include workflow_job_template
+
+        when editing a WorkflowNode.
+
+
+        Note: I was not able to accomplish this through the use of extra_kwargs.
+
+        Maybe something to do with workflow_job_template being a relational field?'
+      properties:
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        workflow_job_template:
+          type: integer
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+        all_parents_must_converge:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled then the node will only run if all of the parent nodes have met the criteria to reach this node
+        identifier:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An identifier for this node that is unique within its workflow. It is copied to workflow job nodes corresponding to this node.
+          maxLength: 512
+      required:
+      - workflow_job_template
+    CredentialRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+      required:
+      - credential_type
+      - name
+    WorkflowJobTemplateNodeCreateApproval:
+      type: object
+      properties:
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) before the approval node expires and fails.
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+      required:
+      - name
+    LabelRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    InstanceGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 250
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        capacity:
+          type: string
+          readOnly: true
+        consumed_capacity:
+          type: string
+          readOnly: true
+        percent_capacity_remaining:
+          type: string
+          readOnly: true
+        jobs_running:
+          type: string
+          readOnly: true
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        jobs_total:
+          type: integer
+          readOnly: true
+          description: Count of all jobs that target this instance group
+        instances:
+          type: string
+          readOnly: true
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
+        summary_fields:
+          type: string
+          readOnly: true
+      required:
+      - name

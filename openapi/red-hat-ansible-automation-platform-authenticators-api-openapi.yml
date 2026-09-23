@@ -1,0 +1,1597 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Authenticators API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Authenticators
+paths:
+  /api/gateway/v1/authenticators/:
+    get:
+      operationId: authenticators_list
+      description: API endpoint that allows authenticators to be viewed or edited.
+      parameters:
+      - in: query
+        name: auto_migrate_users_to
+        schema:
+          type: string
+        description: Filter by auto_migrate_users_to (exact match)
+      - in: query
+        name: category
+        schema:
+          type: string
+        description: Filter by category (exact match)
+      - in: query
+        name: category__icontains
+        schema:
+          type: string
+        description: Filter by category (case-insensitive partial match)
+      - in: query
+        name: configuration
+        schema:
+          type: string
+        description: Filter by configuration (exact match)
+      - in: query
+        name: create_objects
+        schema:
+          type: string
+        description: Filter by create_objects (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: enabled
+        schema:
+          type: string
+        description: Filter by enabled (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order__gt
+        schema:
+          type: string
+        description: Filter by order (gt)
+      - in: query
+        name: order__gte
+        schema:
+          type: string
+        description: Filter by order (gte)
+      - in: query
+        name: order__lt
+        schema:
+          type: string
+        description: Filter by order (lt)
+      - in: query
+        name: order__lte
+        schema:
+          type: string
+        description: Filter by order (lte)
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: remove_users
+        schema:
+          type: string
+        description: Filter by remove_users (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: slug
+        schema:
+          type: string
+        description: Filter by slug (exact match)
+      - in: query
+        name: slug__icontains
+        schema:
+          type: string
+        description: Filter by slug (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by type (exact match)
+      - in: query
+        name: type__icontains
+        schema:
+          type: string
+        description: Filter by type (case-insensitive partial match)
+      tags:
+      - Authenticators
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuthenticatorList'
+          description: ''
+      x-ai-description: List authentication types for configuring user login methods (LDAP, SAML, OAuth)
+      summary: Authenticators list
+      x-summary-source: derived
+    post:
+      operationId: authenticators_create
+      description: API endpoint that allows authenticators to be viewed or edited.
+      tags:
+      - Authenticators
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authenticator'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Authenticator'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Authenticator'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authenticator'
+          description: ''
+      x-ai-description: Create a authentication type for configuring user login methods (LDAP, SAML, OAuth)
+      summary: Authenticators create
+      x-summary-source: derived
+  /api/gateway/v1/authenticators/{id}/:
+    get:
+      operationId: authenticators_retrieve
+      description: API endpoint that allows authenticators to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator.
+        required: true
+      tags:
+      - Authenticators
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Authenticator'
+          description: ''
+      x-ai-description: Retrieve a authentication type for configuring user login methods (LDAP, SAML, OAuth)
+      summary: Authenticators retrieve
+      x-summary-source: derived
+    put:
+      operationId: authenticators_update
+      description: API endpoint that allows authenticators to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator.
+        required: true
+      tags:
+      - Authenticators
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthenticatorUpdate'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorUpdate'
+          description: ''
+      x-ai-description: Update a authentication type for configuring user login methods (LDAP, SAML, OAuth)
+      summary: Authenticators update
+      x-summary-source: derived
+    patch:
+      operationId: authenticators_partial_update
+      description: API endpoint that allows authenticators to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator.
+        required: true
+      tags:
+      - Authenticators
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthenticatorUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthenticatorUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAuthenticatorUpdate'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatorUpdate'
+          description: ''
+      x-ai-description: Update a authentication type for configuring user login methods (LDAP, SAML, OAuth)
+      summary: Authenticators partial update
+      x-summary-source: derived
+    delete:
+      operationId: authenticators_destroy
+      description: API endpoint that allows authenticators to be viewed or edited.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this authenticator.
+        required: true
+      tags:
+      - Authenticators
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a authentication type for configuring user login methods (LDAP, SAML, OAuth)
+      summary: Authenticators destroy
+      x-summary-source: derived
+  /api/gateway/v1/authenticators/{id}/authenticator_maps/:
+    get:
+      operationId: authenticators_authenticator_maps_list
+      description: 'Manage Authenticator Map objects in the ''authenticator_maps'' relationship of this particular Authenticator.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/authenticator_maps/ to show authenticator maps currently in the relationship'
+      parameters:
+      - in: query
+        name: authenticator
+        schema:
+          type: string
+        description: Filter by authenticator (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: enabled
+        schema:
+          type: string
+        description: Filter by enabled (exact match)
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: map_type
+        schema:
+          type: string
+        description: Filter by map_type (exact match)
+      - in: query
+        name: map_type__icontains
+        schema:
+          type: string
+        description: Filter by map_type (case-insensitive partial match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order__gt
+        schema:
+          type: string
+        description: Filter by order (gt)
+      - in: query
+        name: order__gte
+        schema:
+          type: string
+        description: Filter by order (gte)
+      - in: query
+        name: order__lt
+        schema:
+          type: string
+        description: Filter by order (lt)
+      - in: query
+        name: order__lte
+        schema:
+          type: string
+        description: Filter by order (lte)
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: organization
+        schema:
+          type: string
+        description: Filter by organization (exact match)
+      - in: query
+        name: organization__icontains
+        schema:
+          type: string
+        description: Filter by organization (case-insensitive partial match)
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: revoke
+        schema:
+          type: string
+        description: Filter by revoke (exact match)
+      - in: query
+        name: role
+        schema:
+          type: string
+        description: Filter by role (exact match)
+      - in: query
+        name: role__icontains
+        schema:
+          type: string
+        description: Filter by role (case-insensitive partial match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: team
+        schema:
+          type: string
+        description: Filter by team (exact match)
+      - in: query
+        name: team__icontains
+        schema:
+          type: string
+        description: Filter by team (case-insensitive partial match)
+      - in: query
+        name: triggers
+        schema:
+          type: string
+        description: Filter by triggers (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Authenticators
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuthenticatorMapList'
+          description: ''
+      x-ai-description: List conditional rule for granting access, membership or roles based on user attributes or groups
+      summary: Authenticators authenticator maps list
+      x-summary-source: derived
+  /api/gateway/v1/authenticators/{id}/users/:
+    get:
+      operationId: authenticators_users_list
+      description: API endpoint that allows users to be viewed or edited.
+      parameters:
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: date_joined
+        schema:
+          type: string
+        description: Filter by date_joined (exact match)
+      - in: query
+        name: date_joined__gt
+        schema:
+          type: string
+        description: Filter by date_joined (gt)
+      - in: query
+        name: date_joined__gte
+        schema:
+          type: string
+        description: Filter by date_joined (gte)
+      - in: query
+        name: date_joined__lt
+        schema:
+          type: string
+        description: Filter by date_joined (lt)
+      - in: query
+        name: date_joined__lte
+        schema:
+          type: string
+        description: Filter by date_joined (lte)
+      - in: query
+        name: email
+        schema:
+          type: string
+        description: Filter by email (exact match)
+      - in: query
+        name: email__icontains
+        schema:
+          type: string
+        description: Filter by email (case-insensitive partial match)
+      - in: query
+        name: first_name
+        schema:
+          type: string
+        description: Filter by first_name (exact match)
+      - in: query
+        name: first_name__icontains
+        schema:
+          type: string
+        description: Filter by first_name (case-insensitive partial match)
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: is_active
+        schema:
+          type: string
+        description: Filter by is_active (exact match)
+      - in: query
+        name: is_staff
+        schema:
+          type: string
+        description: Filter by is_staff (exact match)
+      - in: query
+        name: is_superuser
+        schema:
+          type: string
+        description: Filter by is_superuser (exact match)
+      - in: query
+        name: last_login
+        schema:
+          type: string
+        description: Filter by last_login (exact match)
+      - in: query
+        name: last_login__gt
+        schema:
+          type: string
+        description: Filter by last_login (gt)
+      - in: query
+        name: last_login__gte
+        schema:
+          type: string
+        description: Filter by last_login (gte)
+      - in: query
+        name: last_login__lt
+        schema:
+          type: string
+        description: Filter by last_login (lt)
+      - in: query
+        name: last_login__lte
+        schema:
+          type: string
+        description: Filter by last_login (lte)
+      - in: query
+        name: last_login_from
+        schema:
+          type: string
+        description: Filter by last_login_from (exact match)
+      - in: query
+        name: last_name
+        schema:
+          type: string
+        description: Filter by last_name (exact match)
+      - in: query
+        name: last_name__icontains
+        schema:
+          type: string
+        description: Filter by last_name (case-insensitive partial match)
+      - in: query
+        name: managed
+        schema:
+          type: string
+        description: Filter by managed (exact match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: password
+        schema:
+          type: string
+        description: Filter by password (exact match)
+      - in: query
+        name: password__icontains
+        schema:
+          type: string
+        description: Filter by password (case-insensitive partial match)
+      - in: query
+        name: resource
+        schema:
+          type: string
+        description: Filter by resource (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: username
+        schema:
+          type: string
+        description: Filter by username (exact match)
+      - in: query
+        name: username__icontains
+        schema:
+          type: string
+        description: Filter by username (case-insensitive partial match)
+      tags:
+      - Authenticators
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+      x-ai-description: List authenticated platform users with permissions assigned directly or via team membership
+      summary: Authenticators users list
+      x-summary-source: derived
+components:
+  schemas:
+    User:
+      type: object
+      description: Disallows editing of system user and enforces superuser requirement.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_login_from:
+          type: string
+          readOnly: true
+          description: Read-only field indicating the last authenticator used for successful login. Value is null if user has never logged in. This field is automatically updated on successful authentication. Cannot be set via API.
+        password:
+          type: string
+          maxLength: 128
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_platform_auditor:
+          type: boolean
+          readOnly: true
+        authenticators:
+          type:
+          - array
+          - 'null'
+          items:
+            type: integer
+          writeOnly: true
+          description: 'DEPRECATED: This field is deprecated and will be removed in a future version. Please use ''associated_authenticators'' instead.'
+          deprecated: true
+        authenticator_uid:
+          type: string
+          writeOnly: true
+          description: 'DEPRECATED: This field is deprecated and will be removed in a future version. Please use ''associated_authenticators'' instead.'
+          deprecated: true
+        associated_authenticators:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              uid:
+                type: string
+              email:
+                type: string
+          writeOnly: true
+        managed:
+          type: boolean
+          readOnly: true
+          description: Indicates if this user is managed by the system. It cannot be modified once created.
+      required:
+      - username
+    AuthenticatorUpdate:
+      type: object
+      description: Specialized serializer for update operations that makes type field read-only.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        enabled:
+          type: boolean
+          description: Should this authenticator be enabled.
+        create_objects:
+          type: boolean
+          description: Allow authenticator to create objects (users, teams, organizations).
+        remove_users:
+          type: boolean
+          description: When a user authenticates from this source should they be removed from any other groups they were previously added to.
+        configuration:
+          description: The required configuration for this source.
+        type:
+          enum:
+          - ansible_base.authentication.authenticator_plugins.github_enterprise
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+          - ansible_base.authentication.authenticator_plugins.saml
+          - ansible_base.authentication.authenticator_plugins.tacacs
+          - ansible_base.authentication.authenticator_plugins.oidc
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+          - ansible_base.authentication.authenticator_plugins.radius
+          - ansible_base.authentication.authenticator_plugins.github
+          - ansible_base.authentication.authenticator_plugins.local
+          - ansible_base.authentication.authenticator_plugins.github_org
+          - ansible_base.authentication.authenticator_plugins.keycloak
+          - ansible_base.authentication.authenticator_plugins.google_oauth2
+          - ansible_base.authentication.authenticator_plugins.ldap
+          - ansible_base.authentication.authenticator_plugins.azuread
+          - ansible_base.authentication.authenticator_plugins.github_team
+          type: string
+          x-spec-enum-id: ac765e9996806d56
+          readOnly: true
+          description: 'The type of authentication service this is.
+
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise` - ansible_base.authentication.authenticator_plugins.github_enterprise
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_team` - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+
+            * `ansible_base.authentication.authenticator_plugins.saml` - ansible_base.authentication.authenticator_plugins.saml
+
+            * `ansible_base.authentication.authenticator_plugins.tacacs` - ansible_base.authentication.authenticator_plugins.tacacs
+
+            * `ansible_base.authentication.authenticator_plugins.oidc` - ansible_base.authentication.authenticator_plugins.oidc
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_org` - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+
+            * `ansible_base.authentication.authenticator_plugins.radius` - ansible_base.authentication.authenticator_plugins.radius
+
+            * `ansible_base.authentication.authenticator_plugins.github` - ansible_base.authentication.authenticator_plugins.github
+
+            * `ansible_base.authentication.authenticator_plugins.local` - ansible_base.authentication.authenticator_plugins.local
+
+            * `ansible_base.authentication.authenticator_plugins.github_org` - ansible_base.authentication.authenticator_plugins.github_org
+
+            * `ansible_base.authentication.authenticator_plugins.keycloak` - ansible_base.authentication.authenticator_plugins.keycloak
+
+            * `ansible_base.authentication.authenticator_plugins.google_oauth2` - ansible_base.authentication.authenticator_plugins.google_oauth2
+
+            * `ansible_base.authentication.authenticator_plugins.ldap` - ansible_base.authentication.authenticator_plugins.ldap
+
+            * `ansible_base.authentication.authenticator_plugins.azuread` - ansible_base.authentication.authenticator_plugins.azuread
+
+            * `ansible_base.authentication.authenticator_plugins.github_team` - ansible_base.authentication.authenticator_plugins.github_team'
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: The order in which an authenticator will be tried. This only pertains to username/password authenticators.
+        slug:
+          type: string
+          description: An immutable identifier for the authenticator; used to generate the sso uri for sso authenticator types
+          pattern: ^[-a-zA-Z0-9_]+$
+        auto_migrate_users_to:
+          type:
+          - integer
+          - 'null'
+          description: Automatically move users from this authenticator to the target authenticator when a matching user logs in via the target authenticator. For this to work, the field used for the user ID on both authenticators needs to have the same value. This should only be used when migrating users between two authentication mechanisms that share the same user database (such as when both IDPs share the same LDAP user directory).
+      required:
+      - configuration
+      - name
+    Authenticator:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        enabled:
+          type: boolean
+          description: Should this authenticator be enabled.
+        create_objects:
+          type: boolean
+          description: Allow authenticator to create objects (users, teams, organizations).
+        remove_users:
+          type: boolean
+          description: When a user authenticates from this source should they be removed from any other groups they were previously added to.
+        configuration:
+          description: The required configuration for this source.
+        type:
+          enum:
+          - ansible_base.authentication.authenticator_plugins.github_enterprise
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+          - ansible_base.authentication.authenticator_plugins.saml
+          - ansible_base.authentication.authenticator_plugins.tacacs
+          - ansible_base.authentication.authenticator_plugins.oidc
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+          - ansible_base.authentication.authenticator_plugins.radius
+          - ansible_base.authentication.authenticator_plugins.github
+          - ansible_base.authentication.authenticator_plugins.local
+          - ansible_base.authentication.authenticator_plugins.github_org
+          - ansible_base.authentication.authenticator_plugins.keycloak
+          - ansible_base.authentication.authenticator_plugins.google_oauth2
+          - ansible_base.authentication.authenticator_plugins.ldap
+          - ansible_base.authentication.authenticator_plugins.azuread
+          - ansible_base.authentication.authenticator_plugins.github_team
+          type: string
+          description: '* `ansible_base.authentication.authenticator_plugins.github_enterprise` - ansible_base.authentication.authenticator_plugins.github_enterprise
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_team` - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+
+            * `ansible_base.authentication.authenticator_plugins.saml` - ansible_base.authentication.authenticator_plugins.saml
+
+            * `ansible_base.authentication.authenticator_plugins.tacacs` - ansible_base.authentication.authenticator_plugins.tacacs
+
+            * `ansible_base.authentication.authenticator_plugins.oidc` - ansible_base.authentication.authenticator_plugins.oidc
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_org` - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+
+            * `ansible_base.authentication.authenticator_plugins.radius` - ansible_base.authentication.authenticator_plugins.radius
+
+            * `ansible_base.authentication.authenticator_plugins.github` - ansible_base.authentication.authenticator_plugins.github
+
+            * `ansible_base.authentication.authenticator_plugins.local` - ansible_base.authentication.authenticator_plugins.local
+
+            * `ansible_base.authentication.authenticator_plugins.github_org` - ansible_base.authentication.authenticator_plugins.github_org
+
+            * `ansible_base.authentication.authenticator_plugins.keycloak` - ansible_base.authentication.authenticator_plugins.keycloak
+
+            * `ansible_base.authentication.authenticator_plugins.google_oauth2` - ansible_base.authentication.authenticator_plugins.google_oauth2
+
+            * `ansible_base.authentication.authenticator_plugins.ldap` - ansible_base.authentication.authenticator_plugins.ldap
+
+            * `ansible_base.authentication.authenticator_plugins.azuread` - ansible_base.authentication.authenticator_plugins.azuread
+
+            * `ansible_base.authentication.authenticator_plugins.github_team` - ansible_base.authentication.authenticator_plugins.github_team'
+          x-spec-enum-id: ac765e9996806d56
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: The order in which an authenticator will be tried. This only pertains to username/password authenticators.
+        slug:
+          type: string
+          description: An immutable identifier for the authenticator; used to generate the sso uri for sso authenticator types
+          pattern: ^[-a-zA-Z0-9_]+$
+        auto_migrate_users_to:
+          type:
+          - integer
+          - 'null'
+          description: Automatically move users from this authenticator to the target authenticator when a matching user logs in via the target authenticator. For this to work, the field used for the user ID on both authenticators needs to have the same value. This should only be used when migrating users between two authentication mechanisms that share the same user database (such as when both IDPs share the same LDAP user directory).
+      required:
+      - configuration
+      - name
+      - type
+    PaginatedAuthenticatorMapList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthenticatorMap'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedAuthenticatorUpdate:
+      type: object
+      description: Specialized serializer for update operations that makes type field read-only.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        enabled:
+          type: boolean
+          description: Should this authenticator be enabled.
+        create_objects:
+          type: boolean
+          description: Allow authenticator to create objects (users, teams, organizations).
+        remove_users:
+          type: boolean
+          description: When a user authenticates from this source should they be removed from any other groups they were previously added to.
+        configuration:
+          description: The required configuration for this source.
+        type:
+          enum:
+          - ansible_base.authentication.authenticator_plugins.github_enterprise
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+          - ansible_base.authentication.authenticator_plugins.saml
+          - ansible_base.authentication.authenticator_plugins.tacacs
+          - ansible_base.authentication.authenticator_plugins.oidc
+          - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+          - ansible_base.authentication.authenticator_plugins.radius
+          - ansible_base.authentication.authenticator_plugins.github
+          - ansible_base.authentication.authenticator_plugins.local
+          - ansible_base.authentication.authenticator_plugins.github_org
+          - ansible_base.authentication.authenticator_plugins.keycloak
+          - ansible_base.authentication.authenticator_plugins.google_oauth2
+          - ansible_base.authentication.authenticator_plugins.ldap
+          - ansible_base.authentication.authenticator_plugins.azuread
+          - ansible_base.authentication.authenticator_plugins.github_team
+          type: string
+          x-spec-enum-id: ac765e9996806d56
+          readOnly: true
+          description: 'The type of authentication service this is.
+
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise` - ansible_base.authentication.authenticator_plugins.github_enterprise
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_team` - ansible_base.authentication.authenticator_plugins.github_enterprise_team
+
+            * `ansible_base.authentication.authenticator_plugins.saml` - ansible_base.authentication.authenticator_plugins.saml
+
+            * `ansible_base.authentication.authenticator_plugins.tacacs` - ansible_base.authentication.authenticator_plugins.tacacs
+
+            * `ansible_base.authentication.authenticator_plugins.oidc` - ansible_base.authentication.authenticator_plugins.oidc
+
+            * `ansible_base.authentication.authenticator_plugins.github_enterprise_org` - ansible_base.authentication.authenticator_plugins.github_enterprise_org
+
+            * `ansible_base.authentication.authenticator_plugins.radius` - ansible_base.authentication.authenticator_plugins.radius
+
+            * `ansible_base.authentication.authenticator_plugins.github` - ansible_base.authentication.authenticator_plugins.github
+
+            * `ansible_base.authentication.authenticator_plugins.local` - ansible_base.authentication.authenticator_plugins.local
+
+            * `ansible_base.authentication.authenticator_plugins.github_org` - ansible_base.authentication.authenticator_plugins.github_org
+
+            * `ansible_base.authentication.authenticator_plugins.keycloak` - ansible_base.authentication.authenticator_plugins.keycloak
+
+            * `ansible_base.authentication.authenticator_plugins.google_oauth2` - ansible_base.authentication.authenticator_plugins.google_oauth2
+
+            * `ansible_base.authentication.authenticator_plugins.ldap` - ansible_base.authentication.authenticator_plugins.ldap
+
+            * `ansible_base.authentication.authenticator_plugins.azuread` - ansible_base.authentication.authenticator_plugins.azuread
+
+            * `ansible_base.authentication.authenticator_plugins.github_team` - ansible_base.authentication.authenticator_plugins.github_team'
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: The order in which an authenticator will be tried. This only pertains to username/password authenticators.
+        slug:
+          type: string
+          description: An immutable identifier for the authenticator; used to generate the sso uri for sso authenticator types
+          pattern: ^[-a-zA-Z0-9_]+$
+        auto_migrate_users_to:
+          type:
+          - integer
+          - 'null'
+          description: Automatically move users from this authenticator to the target authenticator when a matching user logs in via the target authenticator. For this to work, the field used for the user ID on both authenticators needs to have the same value. This should only be used when migrating users between two authentication mechanisms that share the same user database (such as when both IDPs share the same LDAP user directory).
+    PaginatedAuthenticatorList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Authenticator'
+    AuthenticatorMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        authenticator:
+          type: integer
+          description: The authenticator this mapping belongs to.
+        map_type:
+          enum:
+          - allow
+          - is_superuser
+          - role
+          - organization
+          - team
+          type: string
+          x-spec-enum-id: 4064e71cef1ae1e7
+          description: 'What will the map grant the user? System access (allow) a team or organization membership, the superuser flag or a role in the system.
+
+
+            * `allow` - allow
+
+            * `is_superuser` - is_superuser
+
+            * `role` - role
+
+            * `organization` - organization
+
+            * `team` - team'
+        role:
+          type:
+          - string
+          - 'null'
+          description: The role this map will grant the authenticating user to the targeted object. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        organization:
+          type:
+          - string
+          - 'null'
+          description: An organization name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        team:
+          type:
+          - string
+          - 'null'
+          description: A team name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax.
+          maxLength: 512
+        revoke:
+          type: boolean
+          description: Revoke the permission if a user does not meet this rule.
+        triggers:
+          description: Required. Trigger conditions dictionary that determines when this map applies. See /trigger_definition/ for structure details. Only one top-level key per request.
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The order in which this rule should be processed, smaller numbers are of higher precedence. Items with the same order will be executed in random order.
+      required:
+      - authenticator
+      - name
+      - triggers
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

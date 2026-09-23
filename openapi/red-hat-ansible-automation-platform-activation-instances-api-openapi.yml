@@ -1,0 +1,298 @@
+openapi: 3.2.0
+info:
+  title: Event Driven Ansible Activation Instances API
+  version: 0.2.0
+servers:
+- url: /api/eda/v1
+tags:
+- name: activation-instances
+paths:
+  /activation-instances/:
+    get:
+      operationId: activation_instances_list
+      description: List Activation Instances
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by activation instance name.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: string
+        description: Filter by activation instance status.
+      tags:
+      - activation-instances
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivationInstanceList'
+          description: ''
+      x-ai-description: List activation instances. Returns status, queue, and start/end times. Supports filtering and pagination.
+      summary: Activation instances list
+      x-summary-source: derived
+  /activation-instances/{id}/logs/:
+    get:
+      operationId: activation_instances_logs_list
+      description: List Activation instance logs
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Activation Instance.
+        required: true
+      - in: query
+        name: log
+        schema:
+          type: string
+        description: Filter by activation instance log.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - activation-instances
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedActivationInstanceLogList'
+          description: ''
+      x-ai-description: List logs for an activation instance by ID. Returns log records with timestamps and levels. Supports filtering and pagination.
+      summary: Activation instances logs list
+      x-summary-source: derived
+  /activation-instances/{id}/:
+    get:
+      operationId: activation_instances_retrieve
+      description: Get the Activation Instance by its id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rulebook process.
+        required: true
+      tags:
+      - activation-instances
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivationInstance'
+          description: ''
+      summary: Activation instances retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    StatusEnum:
+      enum:
+      - starting
+      - running
+      - pending
+      - failed
+      - stopping
+      - stopped
+      - deleting
+      - completed
+      - unresponsive
+      - error
+      - workers offline
+      type: string
+      description: '* `starting` - starting
+
+        * `running` - running
+
+        * `pending` - pending
+
+        * `failed` - failed
+
+        * `stopping` - stopping
+
+        * `stopped` - stopped
+
+        * `deleting` - deleting
+
+        * `completed` - completed
+
+        * `unresponsive` - unresponsive
+
+        * `error` - error
+
+        * `workers offline` - workers offline'
+    PaginatedActivationInstanceLogList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivationInstanceLog'
+    ActivationInstance:
+      type: object
+      description: Serializer for the Activation Instance model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        git_hash:
+          type: string
+        status_message:
+          type:
+          - string
+          - 'null'
+        activation_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        organization_id:
+          type: integer
+          readOnly: true
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ended_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        queue_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+      required:
+      - activation_id
+      - ended_at
+      - id
+      - organization_id
+      - queue_name
+      - started_at
+    PaginatedActivationInstanceList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivationInstance'
+    ActivationInstanceLog:
+      type: object
+      description: Serializer for the Activation Instance Log model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        log:
+          type: string
+        log_timestamp:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        log_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        activation_instance:
+          type: integer
+      required:
+      - activation_instance
+      - id
+      - log
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

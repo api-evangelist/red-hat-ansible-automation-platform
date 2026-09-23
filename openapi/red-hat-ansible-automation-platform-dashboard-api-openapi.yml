@@ -1,0 +1,35 @@
+openapi: 3.2.0
+info:
+  title: AWX Dashboard API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: Dashboard
+paths:
+  /api/v2/dashboard/:
+    get:
+      operationId: dashboard_retrieve
+      description: Show Dashboard Details
+      tags:
+      - Dashboard
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get aggregate statistics for Tower
+      summary: Dashboard retrieve
+      x-summary-source: derived
+  /api/v2/dashboard/graphs/jobs/:
+    get:
+      operationId: dashboard_graphs_jobs_retrieve
+      tags:
+      - Dashboard
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get dasboard data for jobs
+      summary: Dashboard graphs jobs retrieve
+      x-summary-source: derived

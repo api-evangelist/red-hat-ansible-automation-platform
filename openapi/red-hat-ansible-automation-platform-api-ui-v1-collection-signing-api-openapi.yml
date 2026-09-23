@@ -1,0 +1,131 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V1 Collection_Signing API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V1 Collection_Signing'
+paths:
+  /api/automation-hub/_ui/v1/collection_signing/:
+    post:
+      operationId: _api_automation-hub__ui_v1_collection_signing_api_automation_hub__ui_v1_collection_signing_sign
+      tags:
+      - 'Api: _Ui V1 Collection_Signing'
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub ui v1 collection signing api automation hub ui v1 collection…
+      x-summary-source: derived
+  /api/automation-hub/_ui/v1/collection_signing/{path}/:
+    post:
+      operationId: _api_automation-hub__ui_v1_collection_signing_{path}_api_automation_hub__ui_v1_collection_signing_sign
+      parameters:
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V1 Collection_Signing'
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub ui v1 collection signing {path} api automation hub ui v1…
+      x-summary-source: derived
+  /api/automation-hub/_ui/v1/collection_signing/{path}/{namespace}/:
+    post:
+      operationId: _api_automation-hub__ui_v1_collection_signing_{path}_{namespace}_api_automation_hub__ui_v1_collection_signing_sign
+      parameters:
+      - in: path
+        name: namespace
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V1 Collection_Signing'
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub ui v1 collection signing {path} {namespace} api automation…
+      x-summary-source: derived
+  /api/automation-hub/_ui/v1/collection_signing/{path}/{namespace}/{collection}/:
+    post:
+      operationId: _api_automation-hub__ui_v1_collection_signing_{path}_{namespace}_{collection}_api_automation_hub__ui_v1_collection_signing_sign
+      parameters:
+      - in: path
+        name: collection
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: namespace
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V1 Collection_Signing'
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub ui v1 collection signing {path} {namespace} {collection} api…
+      x-summary-source: derived
+  /api/automation-hub/_ui/v1/collection_signing/{path}/{namespace}/{collection}/{version}/:
+    post:
+      operationId: _api_automation-hub__ui_v1_collection_signing_{path}_{namespace}_{collection}_{version}_api_automation_hub__ui_v1_collection_signing_sign
+      parameters:
+      - in: path
+        name: collection
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: namespace
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: version
+        schema:
+          type: string
+        required: true
+      tags:
+      - 'Api: _Ui V1 Collection_Signing'
+      responses:
+        '200':
+          description: No response body
+      summary: Api automation hub ui v1 collection signing {path} {namespace} {collection}…
+      x-summary-source: derived

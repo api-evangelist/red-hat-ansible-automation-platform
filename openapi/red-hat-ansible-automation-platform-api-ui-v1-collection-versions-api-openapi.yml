@@ -1,0 +1,240 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V1 Collection-Versions API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V1 Collection-Versions'
+paths:
+  /api/automation-hub/_ui/v1/collection-versions/:
+    get:
+      operationId: api_automation_hub__ui_v1_collection_versions_list
+      summary: List collection versions
+      parameters:
+      - in: query
+        name: dependency
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: name__contains
+        schema:
+          type: string
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+      - in: query
+        name: name__startswith
+        schema:
+          type: string
+      - in: query
+        name: namespace
+        schema:
+          type: string
+      - in: query
+        name: namespace__contains
+        schema:
+          type: string
+      - in: query
+        name: namespace__icontains
+        schema:
+          type: string
+      - in: query
+        name: namespace__startswith
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: repository
+        schema:
+          type: string
+      - in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -collection
+            - -namespace
+            - -pulp_created
+            - -version
+            - collection
+            - namespace
+            - pulp_created
+            - version
+        description: 'Ordering
+
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `namespace` - Namespace
+
+          * `-namespace` - Namespace (descending)
+
+          * `collection` - Collection
+
+          * `-collection` - Collection (descending)
+
+          * `version` - Version
+
+          * `-version` - Version (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: version
+        schema:
+          type: string
+      - in: query
+        name: version__contains
+        schema:
+          type: string
+      - in: query
+        name: version__icontains
+        schema:
+          type: string
+      - in: query
+        name: version__startswith
+        schema:
+          type: string
+      - in: query
+        name: version_range
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 Collection-Versions'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedgalaxy.LoginResponseList'
+          description: ''
+  /api/automation-hub/_ui/v1/collection-versions/{version}/:
+    get:
+      operationId: api_automation_hub__ui_v1_collection_versions_read
+      summary: Retrieve collection version
+      parameters:
+      - in: path
+        name: version
+        schema:
+          type: string
+          pattern: ^[0-9a-z_]+/[0-9a-z_]+/[0-9A-Za-z.+-]+$
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 Collection-Versions'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.LoginResponse'
+          description: ''
+components:
+  schemas:
+    Paginatedgalaxy.LoginResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/galaxy.LoginResponse'
+    galaxy.LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username

@@ -1,0 +1,123 @@
+openapi: 3.2.0
+info:
+  title: Event Driven Ansible Auth API
+  version: 0.2.0
+servers:
+- url: /api/eda/v1
+tags:
+- name: Auth
+paths:
+  /auth/session/login/:
+    get:
+      operationId: auth_session_preflight
+      description: Use this method to set a CSRF cookie.
+      tags:
+      - Auth
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '204':
+          description: OK
+      summary: Auth session preflight
+      x-summary-source: derived
+    post:
+      operationId: auth_session_login
+      description: Session cookie login
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '403':
+          description: Invalid credentials or user is disabled.
+        '204':
+          description: Login successful.
+      summary: Auth session login
+      x-summary-source: derived
+  /auth/session/logout/:
+    post:
+      operationId: auth_session_logout
+      description: Session logout.
+      tags:
+      - Auth
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Logout successful.
+      summary: Auth session logout
+      x-summary-source: derived
+  /auth/token/refresh/:
+    post:
+      operationId: token_refresh
+      description: Refresh websocket access token
+      tags:
+      - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RefreshToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RefreshToken'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWTToken'
+          description: ''
+      summary: Token refresh
+      x-summary-source: derived
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username
+    RefreshToken:
+      type: object
+      properties:
+        refresh:
+          type: string
+      required:
+      - refresh
+    JWTToken:
+      type: object
+      properties:
+        access:
+          type: string
+      required:
+      - access
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

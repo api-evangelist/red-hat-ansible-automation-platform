@@ -1,0 +1,23 @@
+openapi: 3.2.0
+info:
+  title: AWX Mesh Visualizer API
+  version: v2
+  description: AWX API Documentation
+  contact:
+    email: ansible-community@redhat.com
+  license:
+    name: Apache License
+tags:
+- name: mesh_visualizer
+paths:
+  /api/v2/mesh_visualizer/:
+    get:
+      operationId: mesh_visualizer_retrieve
+      tags:
+      - mesh_visualizer
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Get mesh network topology visualization data
+      summary: Mesh visualizer retrieve
+      x-summary-source: derived

@@ -1,0 +1,116 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: Service-Index Role-User-Assignments…'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: Service-Index Role-User-Assignments Assign'
+paths:
+  /api/automation-hub/service-index/role-user-assignments/assign/:
+    post:
+      operationId: api_automation_hub_service_index_role_user_assignments_assign_assign
+      description: List of user assignments for cross-service communication
+      tags:
+      - 'Api: Service-Index Role-User-Assignments Assign'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleUserAssignmentResponse'
+          description: ''
+      summary: Api automation hub service index role user assignments assign assign
+      x-summary-source: derived
+components:
+  schemas:
+    ServiceRoleUserAssignmentResponse:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - user_ansible_id
+    ServiceRoleUserAssignment:
+      type: object
+      properties:
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        role_definition:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - user_ansible_id

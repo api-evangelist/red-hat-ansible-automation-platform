@@ -1,0 +1,457 @@
+openapi: 3.2.0
+info:
+  title: Event Driven Ansible Decision Environments API
+  version: 0.2.0
+servers:
+- url: /api/eda/v1
+tags:
+- name: decision-environments
+paths:
+  /decision-environments/:
+    get:
+      operationId: decision_environments_list
+      description: List decision environments
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by decision environment name.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - decision-environments
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDecisionEnvironmentList'
+          description: Return a list of decision environment.
+      x-ai-description: List decision environments. Returns decision environment records. Supports filtering and pagination.
+      summary: Decision environments list
+      x-summary-source: derived
+    post:
+      operationId: decision_environments_create
+      description: Create a new decision environment.
+      tags:
+      - decision-environments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionEnvironmentCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DecisionEnvironmentCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DecisionEnvironmentCreate'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionEnvironment'
+          description: Return the new decision environment.
+      x-ai-description: Create a decision environment. Returns the created decision environment.
+      summary: Decision environments create
+      x-summary-source: derived
+  /decision-environments/{id}/:
+    get:
+      operationId: decision_environments_retrieve
+      description: Get a decision environment by id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this decision environment.
+        required: true
+      tags:
+      - decision-environments
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionEnvironmentRead'
+          description: Return a decision environment by id.
+      summary: Decision environments retrieve
+      x-summary-source: derived
+    patch:
+      operationId: decision_environments_partial_update
+      description: Partially update a decision environment
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this decision environment.
+        required: true
+      tags:
+      - decision-environments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDecisionEnvironmentCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDecisionEnvironmentCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDecisionEnvironmentCreate'
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionEnvironment'
+          description: Update successful. Return an updated decision environment.
+      x-ai-description: Update a decision environment by ID. Returns the updated decision environment.
+      summary: Decision environments partial update
+      x-summary-source: derived
+    delete:
+      operationId: decision_environments_destroy
+      description: Delete a decision environment by id
+      parameters:
+      - in: query
+        name: force
+        schema:
+          type: boolean
+        description: Force deletion if there are dependent objects
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this decision environment.
+        required: true
+      tags:
+      - decision-environments
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '204':
+          description: Delete successful.
+        '409':
+          description: Decision Environment in use by Activations.
+      summary: Decision environments destroy
+      x-summary-source: derived
+components:
+  schemas:
+    PullPolicyEnum:
+      enum:
+      - always
+      - missing
+      - never
+      type: string
+      description: '* `always` - Always pull container before running.
+
+        * `missing` - Only pull the image if not present before running.
+
+        * `never` - Never pull container before running.'
+    DecisionEnvironment:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        image_url:
+          type: string
+        organization_id:
+          type: integer
+          readOnly: true
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        pull_policy:
+          allOf:
+          - $ref: '#/components/schemas/PullPolicyEnum'
+          description: 'Pull policy for the image before running
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
+        created_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        modified_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - eda_credential_id
+      - id
+      - image_url
+      - modified_at
+      - modified_by
+      - name
+      - organization_id
+    PaginatedDecisionEnvironmentList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DecisionEnvironment'
+    EdaCredentialRef:
+      type: object
+      description: Serializer for EdaCredential reference.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        inputs:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        managed:
+          type: boolean
+        credential_type_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        organization_id:
+          type: integer
+          readOnly: true
+      required:
+      - credential_type_id
+      - id
+      - inputs
+      - name
+      - organization_id
+    PatchedDecisionEnvironmentCreate:
+      type: object
+      description: Serializer for creating the DecisionEnvironment.
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        image_url:
+          type: string
+        organization_id:
+          type: integer
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+        pull_policy:
+          allOf:
+          - $ref: '#/components/schemas/PullPolicyEnum'
+          description: 'Pull policy for the image before running
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
+    DecisionEnvironmentRead:
+      type: object
+      description: Serializer for reading the DecisionEnvironment with embedded objects.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        image_url:
+          type: string
+        organization:
+          $ref: '#/components/schemas/OrganizationRef'
+        eda_credential:
+          allOf:
+          - $ref: '#/components/schemas/EdaCredentialRef'
+        pull_policy:
+          allOf:
+          - $ref: '#/components/schemas/PullPolicyEnum'
+          description: 'Pull policy for the image before running
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+        created_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        modified_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+      required:
+      - created_at
+      - created_by
+      - id
+      - image_url
+      - modified_at
+      - modified_by
+      - name
+      - organization
+    DecisionEnvironmentCreate:
+      type: object
+      description: Serializer for creating the DecisionEnvironment.
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        image_url:
+          type: string
+        organization_id:
+          type: integer
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+        pull_policy:
+          allOf:
+          - $ref: '#/components/schemas/PullPolicyEnum'
+          description: 'Pull policy for the image before running
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
+      required:
+      - image_url
+      - name
+      - organization_id
+    OrganizationRef:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The organization description.
+      required:
+      - id
+      - name
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

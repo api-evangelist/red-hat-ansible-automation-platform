@@ -1,0 +1,56 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: V3 API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: V3'
+paths:
+  /api/automation-hub/v3/:
+    get:
+      operationId: api_automation_hub_v3_read
+      description: Legacy v3 endpoint.
+      tags:
+      - 'Api: V3'
+      deprecated: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RepoMetadataResponse'
+          description: ''
+        '302':
+          description: No response body
+      summary: Api automation hub v3 read
+      x-summary-source: derived
+components:
+  schemas:
+    RepoMetadataResponse:
+      type: object
+      description: A serializer to display RepositoryVersion metadata.
+      properties:
+        published:
+          type: string
+          format: date-time
+      required:
+      - published

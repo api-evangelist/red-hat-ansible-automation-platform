@@ -1,0 +1,1190 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Service Types API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Service Types
+paths:
+  /api/gateway/v1/service_types/:
+    get:
+      operationId: service_types_list
+      description: API endpoint that allows service types to be viewed or edited
+      parameters:
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: login_path
+        schema:
+          type: string
+        description: Filter by login_path (exact match)
+      - in: query
+        name: login_path__icontains
+        schema:
+          type: string
+        description: Filter by login_path (case-insensitive partial match)
+      - in: query
+        name: logout_path
+        schema:
+          type: string
+        description: Filter by logout_path (exact match)
+      - in: query
+        name: logout_path__icontains
+        schema:
+          type: string
+        description: Filter by logout_path (case-insensitive partial match)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: ping_url
+        schema:
+          type: string
+        description: Filter by ping_url (exact match)
+      - in: query
+        name: ping_url__icontains
+        schema:
+          type: string
+        description: Filter by ping_url (case-insensitive partial match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service_index_path
+        schema:
+          type: string
+        description: Filter by service_index_path (exact match)
+      - in: query
+        name: service_index_path__icontains
+        schema:
+          type: string
+        description: Filter by service_index_path (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Types
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceTypeList'
+          description: ''
+      x-ai-description: List all service types
+      summary: Service types list
+      x-summary-source: derived
+    post:
+      operationId: service_types_create
+      description: API endpoint that allows service types to be viewed or edited
+      tags:
+      - Service Types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceType'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceType'
+          description: ''
+      x-ai-description: Create new service type
+      summary: Service types create
+      x-summary-source: derived
+  /api/gateway/v1/service_types/{id}/:
+    get:
+      operationId: service_types_retrieve
+      description: API endpoint that allows service types to be viewed or edited
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service type.
+        required: true
+      tags:
+      - Service Types
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceType'
+          description: ''
+      x-ai-description: Retrieve single service type
+      summary: Service types retrieve
+      x-summary-source: derived
+    put:
+      operationId: service_types_update
+      description: API endpoint that allows service types to be viewed or edited
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service type.
+        required: true
+      tags:
+      - Service Types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceType'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceType'
+          description: ''
+      x-ai-description: Update existing service type
+      summary: Service types update
+      x-summary-source: derived
+    patch:
+      operationId: service_types_partial_update
+      description: API endpoint that allows service types to be viewed or edited
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service type.
+        required: true
+      tags:
+      - Service Types
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceType'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedServiceType'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceType'
+          description: ''
+      x-ai-description: Partially update existing service type
+      summary: Service types partial update
+      x-summary-source: derived
+    delete:
+      operationId: service_types_destroy
+      description: API endpoint that allows service types to be viewed or edited
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this service type.
+        required: true
+      tags:
+      - Service Types
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing service type
+      summary: Service types destroy
+      x-summary-source: derived
+  /api/gateway/v1/service_types/{id}/clusters/:
+    get:
+      operationId: service_types_clusters_list
+      description: 'Manage Service Cluster objects in the ''clusters'' relationship of this particular Service Type.
+
+
+        Starting from the detail URL:
+
+
+        GET /:id/clusters/ to show service clusters currently in the relationship'
+      parameters:
+      - in: query
+        name: auth_type
+        schema:
+          type: string
+        description: Filter by auth_type (exact match)
+      - in: query
+        name: auth_type__icontains
+        schema:
+          type: string
+        description: Filter by auth_type (case-insensitive partial match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: dns_discovery_type
+        schema:
+          type: string
+        description: Filter by dns_discovery_type (exact match)
+      - in: query
+        name: dns_discovery_type__icontains
+        schema:
+          type: string
+        description: Filter by dns_discovery_type (case-insensitive partial match)
+      - in: query
+        name: dns_lookup_family
+        schema:
+          type: string
+        description: Filter by dns_lookup_family (exact match)
+      - in: query
+        name: dns_lookup_family__icontains
+        schema:
+          type: string
+        description: Filter by dns_lookup_family (case-insensitive partial match)
+      - in: query
+        name: health_check_healthy_threshold
+        schema:
+          type: string
+        description: Filter by health_check_healthy_threshold (exact match)
+      - in: query
+        name: health_check_healthy_threshold__gt
+        schema:
+          type: string
+        description: Filter by health_check_healthy_threshold (gt)
+      - in: query
+        name: health_check_healthy_threshold__gte
+        schema:
+          type: string
+        description: Filter by health_check_healthy_threshold (gte)
+      - in: query
+        name: health_check_healthy_threshold__lt
+        schema:
+          type: string
+        description: Filter by health_check_healthy_threshold (lt)
+      - in: query
+        name: health_check_healthy_threshold__lte
+        schema:
+          type: string
+        description: Filter by health_check_healthy_threshold (lte)
+      - in: query
+        name: health_check_interval_seconds
+        schema:
+          type: string
+        description: Filter by health_check_interval_seconds (exact match)
+      - in: query
+        name: health_check_interval_seconds__gt
+        schema:
+          type: string
+        description: Filter by health_check_interval_seconds (gt)
+      - in: query
+        name: health_check_interval_seconds__gte
+        schema:
+          type: string
+        description: Filter by health_check_interval_seconds (gte)
+      - in: query
+        name: health_check_interval_seconds__lt
+        schema:
+          type: string
+        description: Filter by health_check_interval_seconds (lt)
+      - in: query
+        name: health_check_interval_seconds__lte
+        schema:
+          type: string
+        description: Filter by health_check_interval_seconds (lte)
+      - in: query
+        name: health_check_timeout_seconds
+        schema:
+          type: string
+        description: Filter by health_check_timeout_seconds (exact match)
+      - in: query
+        name: health_check_timeout_seconds__gt
+        schema:
+          type: string
+        description: Filter by health_check_timeout_seconds (gt)
+      - in: query
+        name: health_check_timeout_seconds__gte
+        schema:
+          type: string
+        description: Filter by health_check_timeout_seconds (gte)
+      - in: query
+        name: health_check_timeout_seconds__lt
+        schema:
+          type: string
+        description: Filter by health_check_timeout_seconds (lt)
+      - in: query
+        name: health_check_timeout_seconds__lte
+        schema:
+          type: string
+        description: Filter by health_check_timeout_seconds (lte)
+      - in: query
+        name: health_check_unhealthy_threshold
+        schema:
+          type: string
+        description: Filter by health_check_unhealthy_threshold (exact match)
+      - in: query
+        name: health_check_unhealthy_threshold__gt
+        schema:
+          type: string
+        description: Filter by health_check_unhealthy_threshold (gt)
+      - in: query
+        name: health_check_unhealthy_threshold__gte
+        schema:
+          type: string
+        description: Filter by health_check_unhealthy_threshold (gte)
+      - in: query
+        name: health_check_unhealthy_threshold__lt
+        schema:
+          type: string
+        description: Filter by health_check_unhealthy_threshold (lt)
+      - in: query
+        name: health_check_unhealthy_threshold__lte
+        schema:
+          type: string
+        description: Filter by health_check_unhealthy_threshold (lte)
+      - in: query
+        name: health_checks_enabled
+        schema:
+          type: string
+        description: Filter by health_checks_enabled (exact match)
+      - in: query
+        name: healthy_panic_threshold
+        schema:
+          type: string
+        description: Filter by healthy_panic_threshold (exact match)
+      - in: query
+        name: healthy_panic_threshold__gt
+        schema:
+          type: string
+        description: Filter by healthy_panic_threshold (gt)
+      - in: query
+        name: healthy_panic_threshold__gte
+        schema:
+          type: string
+        description: Filter by healthy_panic_threshold (gte)
+      - in: query
+        name: healthy_panic_threshold__lt
+        schema:
+          type: string
+        description: Filter by healthy_panic_threshold (lt)
+      - in: query
+        name: healthy_panic_threshold__lte
+        schema:
+          type: string
+        description: Filter by healthy_panic_threshold (lte)
+      - in: path
+        name: id
+        schema:
+          type: string
+          pattern: ^[0-9]+$
+        required: true
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: modified
+        schema:
+          type: string
+        description: Filter by modified (exact match)
+      - in: query
+        name: modified__gt
+        schema:
+          type: string
+        description: Filter by modified (gt)
+      - in: query
+        name: modified__gte
+        schema:
+          type: string
+        description: Filter by modified (gte)
+      - in: query
+        name: modified__lt
+        schema:
+          type: string
+        description: Filter by modified (lt)
+      - in: query
+        name: modified__lte
+        schema:
+          type: string
+        description: Filter by modified (lte)
+      - in: query
+        name: modified_by
+        schema:
+          type: string
+        description: Filter by modified_by (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: outlier_detection_base_ejection_time_seconds
+        schema:
+          type: string
+        description: Filter by outlier_detection_base_ejection_time_seconds (exact match)
+      - in: query
+        name: outlier_detection_base_ejection_time_seconds__gt
+        schema:
+          type: string
+        description: Filter by outlier_detection_base_ejection_time_seconds (gt)
+      - in: query
+        name: outlier_detection_base_ejection_time_seconds__gte
+        schema:
+          type: string
+        description: Filter by outlier_detection_base_ejection_time_seconds (gte)
+      - in: query
+        name: outlier_detection_base_ejection_time_seconds__lt
+        schema:
+          type: string
+        description: Filter by outlier_detection_base_ejection_time_seconds (lt)
+      - in: query
+        name: outlier_detection_base_ejection_time_seconds__lte
+        schema:
+          type: string
+        description: Filter by outlier_detection_base_ejection_time_seconds (lte)
+      - in: query
+        name: outlier_detection_consecutive_5xx
+        schema:
+          type: string
+        description: Filter by outlier_detection_consecutive_5xx (exact match)
+      - in: query
+        name: outlier_detection_consecutive_5xx__gt
+        schema:
+          type: string
+        description: Filter by outlier_detection_consecutive_5xx (gt)
+      - in: query
+        name: outlier_detection_consecutive_5xx__gte
+        schema:
+          type: string
+        description: Filter by outlier_detection_consecutive_5xx (gte)
+      - in: query
+        name: outlier_detection_consecutive_5xx__lt
+        schema:
+          type: string
+        description: Filter by outlier_detection_consecutive_5xx (lt)
+      - in: query
+        name: outlier_detection_consecutive_5xx__lte
+        schema:
+          type: string
+        description: Filter by outlier_detection_consecutive_5xx (lte)
+      - in: query
+        name: outlier_detection_enabled
+        schema:
+          type: string
+        description: Filter by outlier_detection_enabled (exact match)
+      - in: query
+        name: outlier_detection_interval_seconds
+        schema:
+          type: string
+        description: Filter by outlier_detection_interval_seconds (exact match)
+      - in: query
+        name: outlier_detection_interval_seconds__gt
+        schema:
+          type: string
+        description: Filter by outlier_detection_interval_seconds (gt)
+      - in: query
+        name: outlier_detection_interval_seconds__gte
+        schema:
+          type: string
+        description: Filter by outlier_detection_interval_seconds (gte)
+      - in: query
+        name: outlier_detection_interval_seconds__lt
+        schema:
+          type: string
+        description: Filter by outlier_detection_interval_seconds (lt)
+      - in: query
+        name: outlier_detection_interval_seconds__lte
+        schema:
+          type: string
+        description: Filter by outlier_detection_interval_seconds (lte)
+      - in: query
+        name: outlier_detection_max_ejection_percent
+        schema:
+          type: string
+        description: Filter by outlier_detection_max_ejection_percent (exact match)
+      - in: query
+        name: outlier_detection_max_ejection_percent__gt
+        schema:
+          type: string
+        description: Filter by outlier_detection_max_ejection_percent (gt)
+      - in: query
+        name: outlier_detection_max_ejection_percent__gte
+        schema:
+          type: string
+        description: Filter by outlier_detection_max_ejection_percent (gte)
+      - in: query
+        name: outlier_detection_max_ejection_percent__lt
+        schema:
+          type: string
+        description: Filter by outlier_detection_max_ejection_percent (lt)
+      - in: query
+        name: outlier_detection_max_ejection_percent__lte
+        schema:
+          type: string
+        description: Filter by outlier_detection_max_ejection_percent (lte)
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service_id
+        schema:
+          type: string
+        description: Filter by service_id (exact match)
+      - in: query
+        name: service_type
+        schema:
+          type: string
+        description: Filter by service_type (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: upstream_hostname
+        schema:
+          type: string
+        description: Filter by upstream_hostname (exact match)
+      - in: query
+        name: upstream_hostname__icontains
+        schema:
+          type: string
+        description: Filter by upstream_hostname (case-insensitive partial match)
+      tags:
+      - Service Types
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceClusterList'
+          description: ''
+      x-ai-description: List all clusters for a service_type
+      summary: Service types clusters list
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedServiceClusterList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceCluster'
+    ServiceType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        login_path:
+          type:
+          - string
+          - 'null'
+          description: API path to login for service, ex. /v1/auth/session/login/
+          maxLength: 255
+        logout_path:
+          type:
+          - string
+          - 'null'
+          description: API path to logout for service, ex. /logout/
+          maxLength: 255
+        ping_url:
+          type:
+          - string
+          - 'null'
+          description: URL to the ping/status page of the service, ex. /pulp/api/v3/status/
+          maxLength: 255
+        service_index_path:
+          type:
+          - string
+          - 'null'
+          description: API path to resource service index endpoint, ex. /v2/service-index/
+          maxLength: 255
+      required:
+      - name
+    ServiceCluster:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        service_type:
+          type: integer
+          description: The AAP service type of this service cluster.
+        service_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+          description: The unique service ID provided by the service.
+        auth_type:
+          enum:
+          - JWT
+          - BASIC
+          - TOKEN
+          type: string
+          x-spec-enum-id: e24087e68e36b686
+          description: 'The authorization type for this service.
+
+
+            * `JWT` - JWT
+
+            * `BASIC` - Basic auth
+
+            * `TOKEN` - Bearer token'
+        upstream_hostname:
+          type: string
+          description: Set this value to enable server name identification on associated routes.
+          maxLength: 255
+        dns_discovery_type:
+          enum:
+          - LOGICAL_DNS
+          - STRICT_DNS
+          type: string
+          x-spec-enum-id: 47856b6b6c25790f
+          description: 'The DNS service discovery type for this service.
+
+
+            * `LOGICAL_DNS` - Logical DNS
+
+            * `STRICT_DNS` - Strict DNS'
+        dns_lookup_family:
+          enum:
+          - V4_ONLY
+          - V6_ONLY
+          - AUTO
+          - ALL
+          - V4_PREFERRED
+          type: string
+          x-spec-enum-id: 65c5f314f2d8baed
+          description: 'DNS lookup type for this service.
+
+
+            * `V4_ONLY` - IPv4 only
+
+            * `V6_ONLY` - IPv6 only
+
+            * `AUTO` - Auto (IPv6 preferred)
+
+            * `ALL` - All IPv4 and IPv6 addresses
+
+            * `V4_PREFERRED` - IPv4 preferred'
+        outlier_detection_enabled:
+          type: boolean
+          description: If true, outlier detection will be used to determine if a node is unhealthy and should be ejected from the cluster.
+        outlier_detection_consecutive_5xx:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The number of consecutive 5xx responses to consider a node unhealthy.
+        outlier_detection_interval_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The time interval between ejection analysis sweeps.
+        outlier_detection_base_ejection_time_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The base time a node will be ejected for.
+        outlier_detection_max_ejection_percent:
+          type: integer
+          maximum: 100
+          minimum: 0
+          description: The maximum percent of nodes that can be ejected from the cluster.
+        health_checks_enabled:
+          type: boolean
+          description: If true, health checks will be used to determine if a node is healthy.
+        health_check_timeout_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The time to wait for a health check to complete.
+        health_check_interval_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The time between health check requests.
+        health_check_unhealthy_threshold:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The number of consecutive failed health checks before a node is considered unhealthy.
+        health_check_healthy_threshold:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The number of consecutive successful health checks before a node is considered healthy.
+        healthy_panic_threshold:
+          type: integer
+          maximum: 100
+          minimum: 0
+          description: The percentage of failed hosts when the proxy will panic and start routing traffic to all nodes. Set to 0 to disable this.
+        effective_health_check_timeout_seconds:
+          type: string
+          readOnly: true
+          description: The effective health check timeout Envoy will use, computed as the maximum of the cluster's health_check_timeout_seconds, the highest route request_timeout_seconds, and the global request_timeout preference.
+      required:
+      - name
+      - service_type
+    PatchedServiceType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        login_path:
+          type:
+          - string
+          - 'null'
+          description: API path to login for service, ex. /v1/auth/session/login/
+          maxLength: 255
+        logout_path:
+          type:
+          - string
+          - 'null'
+          description: API path to logout for service, ex. /logout/
+          maxLength: 255
+        ping_url:
+          type:
+          - string
+          - 'null'
+          description: URL to the ping/status page of the service, ex. /pulp/api/v3/status/
+          maxLength: 255
+        service_index_path:
+          type:
+          - string
+          - 'null'
+          description: API path to resource service index endpoint, ex. /v2/service-index/
+          maxLength: 255
+    PaginatedServiceTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceType'
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

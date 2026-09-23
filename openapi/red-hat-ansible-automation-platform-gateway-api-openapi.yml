@@ -1,0 +1,53 @@
+openapi: 3.2.0
+info:
+  title: AAP Gateway API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: Gateway
+paths:
+  /api/gateway/v1/:
+    get:
+      operationId: root_retrieve
+      description: This responds to GET requests made to it with a sorted list of available API endpoints
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+      x-ai-description: Retrieve single root
+      tags:
+      - Gateway
+      summary: Root retrieve
+      x-summary-source: derived
+components:
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

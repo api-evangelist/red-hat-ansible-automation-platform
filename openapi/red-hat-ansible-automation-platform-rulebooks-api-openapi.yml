@@ -1,0 +1,274 @@
+openapi: 3.2.0
+info:
+  title: Event Driven Ansible Rulebooks API
+  version: 0.2.0
+servers:
+- url: /api/eda/v1
+tags:
+- name: rulebooks
+paths:
+  /rulebooks/:
+    get:
+      operationId: rulebooks_list
+      description: List rulebooks
+      parameters:
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by rulebook name.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: project_id
+        schema:
+          type: number
+        description: Filter by rulebook's project id.
+      tags:
+      - rulebooks
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRulebookList'
+          description: Return a list of rulebooks.
+      x-ai-description: List rulebooks. Returns rulebook records. Supports filtering and pagination.
+      summary: Rulebooks list
+      x-summary-source: derived
+  /rulebooks/{id}/sources/:
+    get:
+      operationId: rulebooks_sources_list
+      description: List rulebook sources
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rulebook.
+        required: true
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by rulebook name.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: project_id
+        schema:
+          type: number
+        description: Filter by rulebook's project id.
+      tags:
+      - rulebooks
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSourceList'
+          description: ''
+        '400':
+          description: Rulebook not parseable.
+      x-ai-description: List sources defined in a rulebook by ID. Returns source information including name and rulebook hash.
+      summary: Rulebooks sources list
+      x-summary-source: derived
+  /rulebooks/{id}/:
+    get:
+      operationId: rulebooks_retrieve
+      description: Get the rulebook by its id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rulebook.
+        required: true
+      tags:
+      - rulebooks
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rulebook'
+          description: Return the rulebook by its id.
+      summary: Rulebooks retrieve
+      x-summary-source: derived
+  /rulebooks/{id}/json/:
+    get:
+      operationId: rulebooks_json_retrieve
+      description: Get the JSON format of a rulebook by its id
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this rulebook.
+        required: true
+      tags:
+      - rulebooks
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rulebook'
+          description: ''
+      summary: Rulebooks json retrieve
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedSourceList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+    Rulebook:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        rulesets:
+          type: string
+        project_id:
+          type:
+          - integer
+          - 'null'
+          description: ID of the project
+        organization_id:
+          type: integer
+          description: ID of the organization
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - modified_at
+      - name
+      - organization_id
+    Source:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the source
+        source_info:
+          type: string
+          description: The information about the source
+        rulebook_hash:
+          type: string
+          description: Hash of the rulebook
+      required:
+      - name
+      - rulebook_hash
+      - source_info
+    PaginatedRulebookList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rulebook'
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

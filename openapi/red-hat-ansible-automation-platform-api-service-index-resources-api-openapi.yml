@@ -1,0 +1,344 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: Service-Index Resources API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: Service-Index Resources'
+paths:
+  /api/automation-hub/service-index/resources/:
+    get:
+      operationId: api_automation_hub_service_index_resources_list
+      description: Index of all the resources in the system.
+      summary: List resources
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: Service-Index Resources'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceListResponseList'
+          description: ''
+    post:
+      operationId: api_automation_hub_service_index_resources_create
+      description: Index of all the resources in the system.
+      summary: Create a resource
+      tags:
+      - 'Api: Service-Index Resources'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Resource'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+          description: ''
+  /api/automation-hub/service-index/resources/{ansible_id}/:
+    get:
+      operationId: api_automation_hub_service_index_resources_read
+      description: Index of all the resources in the system.
+      summary: Inspect a resource
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: Service-Index Resources'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+          description: ''
+    put:
+      operationId: api_automation_hub_service_index_resources_update
+      description: Index of all the resources in the system.
+      summary: Update a resource
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - 'Api: Service-Index Resources'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Resource'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+          description: ''
+    patch:
+      operationId: api_automation_hub_service_index_resources_partial_update
+      description: Index of all the resources in the system.
+      summary: Update a resource
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - 'Api: Service-Index Resources'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+          description: ''
+    delete:
+      operationId: api_automation_hub_service_index_resources_delete
+      description: Index of all the resources in the system.
+      summary: Delete a resource
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - 'Api: Service-Index Resources'
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    ResourceResponse:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data:
+          type: object
+        url:
+          type: string
+          readOnly: true
+        additional_data:
+          type: string
+          readOnly: true
+      required:
+      - resource_data
+    Resource:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data:
+          type: object
+      required:
+      - resource_data
+    PaginatedResourceListResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceListResponse'
+    ResourceListResponse:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+    PatchedResource:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data:
+          type: object

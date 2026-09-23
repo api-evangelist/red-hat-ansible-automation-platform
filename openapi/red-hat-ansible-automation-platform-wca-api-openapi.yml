@@ -1,0 +1,270 @@
+openapi: 3.2.0
+info:
+  title: Ansible AI Connect. Wca API
+  version: 1.0.0 (v1)
+  description: Equip the automation developer at Lightspeed.
+servers:
+- url: https://lightspeed-instance/api/v1
+  description: Direct access to a Lightspeed instance
+- url: https://aap/api/lightspeed/v1
+  description: Access through an Ansible Automation Platfrom gateway
+tags:
+- name: wca
+  description: watsonx Code Assistant
+paths:
+  /wca/apikey/:
+    get:
+      operationId: wca_api_key_get
+      summary: Get WCA key for an Organisation
+      tags:
+      - wca
+      security:
+      - oauth2:
+        - read
+        - write
+        - delete
+      - cookieAuth: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request was throttled
+        '500':
+          description: Internal service error
+        '501':
+          description: Not implemented
+      x-ai-description: Get wca api key
+    post:
+      operationId: wca_api_key_set
+      summary: Set the WCA key for an Organisation
+      tags:
+      - wca
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WcaKeyRequest'
+            examples:
+              ValidExample:
+                value:
+                  key: '1234567890'
+                summary: Request Sample
+                description: A valid WCA Key request.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WcaKeyRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WcaKeyRequest'
+        required: true
+      security:
+      - oauth2:
+        - read
+        - write
+        - delete
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Empty response
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request was throttled
+        '500':
+          description: Internal service error
+        '501':
+          description: Not implemented
+      x-ai-description: Set wca api key
+    delete:
+      operationId: wca_api_key_delete
+      summary: DELETE WCA key for an Organization
+      tags:
+      - wca
+      security:
+      - oauth2:
+        - read
+        - write
+        - delete
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Empty response
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request was throttled
+        '500':
+          description: Internal service error
+        '501':
+          description: Not implemented
+      x-ai-description: Delete existing wca api key
+  /wca/apikey/test/:
+    get:
+      operationId: wca_api_key_validator_get
+      summary: Validate WCA key for an Organisation
+      tags:
+      - wca
+      security:
+      - oauth2:
+        - read
+      - cookieAuth: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request was throttled
+        '500':
+          description: Internal service error
+        '501':
+          description: Not implemented
+      x-ai-description: Get wca api key validator
+  /wca/modelid/:
+    get:
+      operationId: wca_model_id_get
+      summary: Get WCA Model Id for an Organisation
+      tags:
+      - wca
+      security:
+      - oauth2:
+        - read
+        - write
+      - cookieAuth: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request was throttled
+        '500':
+          description: Internal service error
+        '501':
+          description: Not implemented
+      x-ai-description: Get wca model id
+    post:
+      operationId: wca_model_id_set
+      summary: Set the Model Id to be used for an Organisation
+      tags:
+      - wca
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WcaModelIdRequest'
+            examples:
+              ValidExample:
+                value:
+                  model_id: '1234567890'
+                summary: Request Sample
+                description: A valid WCA Model Id request.
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WcaModelIdRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WcaModelIdRequest'
+        required: true
+      security:
+      - oauth2:
+        - read
+        - write
+      - cookieAuth: []
+      responses:
+        '204':
+          description: Empty response
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request was throttled
+        '500':
+          description: Internal service error
+        '501':
+          description: Not implemented
+      x-ai-description: Set wca model id
+  /wca/modelid/test/:
+    get:
+      operationId: wca_model_id_validator_get
+      summary: Validate WCA Model Id for an Organisation
+      tags:
+      - wca
+      security:
+      - oauth2:
+        - read
+      - cookieAuth: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request was throttled
+        '500':
+          description: Internal service error
+        '501':
+          description: Not implemented
+      x-ai-description: Get wca model id validator
+components:
+  schemas:
+    WcaModelIdRequest:
+      type: object
+      properties:
+        model_id:
+          type: string
+          description: WCA Model Id.
+      required:
+      - model_id
+    WcaKeyRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          description: WCA API Key.
+      required:
+      - key
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read basic user information
+            write: Request Ansible content suggestions
+            delete: Delete resources

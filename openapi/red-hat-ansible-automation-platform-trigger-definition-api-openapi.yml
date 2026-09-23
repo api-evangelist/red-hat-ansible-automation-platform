@@ -1,0 +1,46 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway Trigger Definition API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: trigger_definition
+paths:
+  /api/gateway/v1/trigger_definition/:
+    get:
+      operationId: trigger_definition_retrieve
+      tags:
+      - trigger_definition
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single trigger definition
+      summary: Trigger definition retrieve
+      x-summary-source: derived
+components:
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

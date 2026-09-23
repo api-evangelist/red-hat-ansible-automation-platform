@@ -1,0 +1,678 @@
+openapi: 3.2.0
+info:
+  title: Automation Hub Upstream Pulps API
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: Upstream-Pulps
+paths:
+  /api/automation-hub/pulp/api/v3/upstream-pulps/:
+    get:
+      operationId: upstream_pulps_list
+      description: API for configuring an upstream Pulp to replicate. This API is provided as a tech preview.
+      summary: List upstream pulps
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Upstream-Pulps
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUpstreamPulpResponseList'
+          description: ''
+    post:
+      operationId: upstream_pulps_create
+      description: API for configuring an upstream Pulp to replicate. This API is provided as a tech preview.
+      summary: Create an upstream pulp
+      tags:
+      - Upstream-Pulps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpstreamPulp'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpstreamPulp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpstreamPulp'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpstreamPulpResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/upstream-pulps/{pulp_id}/:
+    get:
+      operationId: upstream_pulps_read
+      description: API for configuring an upstream Pulp to replicate. This API is provided as a tech preview.
+      summary: Inspect an upstream pulp
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Upstream-Pulps
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpstreamPulpResponse'
+          description: ''
+    put:
+      operationId: upstream_pulps_update
+      description: API for configuring an upstream Pulp to replicate. This API is provided as a tech preview.
+      summary: Update an upstream pulp
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      tags:
+      - Upstream-Pulps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpstreamPulp'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpstreamPulp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpstreamPulp'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpstreamPulpResponse'
+          description: ''
+    patch:
+      operationId: upstream_pulps_partial_update
+      description: API for configuring an upstream Pulp to replicate. This API is provided as a tech preview.
+      summary: Update an upstream pulp
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      tags:
+      - Upstream-Pulps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUpstreamPulp'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUpstreamPulp'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUpstreamPulp'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpstreamPulpResponse'
+          description: ''
+    delete:
+      operationId: upstream_pulps_delete
+      description: API for configuring an upstream Pulp to replicate. This API is provided as a tech preview.
+      summary: Delete an upstream pulp
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      tags:
+      - Upstream-Pulps
+      responses:
+        '204':
+          description: No response body
+  /api/automation-hub/pulp/api/v3/upstream-pulps/{pulp_id}/add_role/:
+    post:
+      operationId: upstream_pulps_add_role
+      description: Add a role for this object to users/groups.
+      summary: Add a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      tags:
+      - Upstream-Pulps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/upstream-pulps/{pulp_id}/list_roles/:
+    get:
+      operationId: upstream_pulps_list_roles
+      description: List roles assigned to this object.
+      summary: List roles
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Upstream-Pulps
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectRolesResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/upstream-pulps/{pulp_id}/my_permissions/:
+    get:
+      operationId: upstream_pulps_my_permissions
+      description: List permissions available to the current user on this object.
+      summary: List user permissions
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - Upstream-Pulps
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MyPermissionsResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/upstream-pulps/{pulp_id}/remove_role/:
+    post:
+      operationId: upstream_pulps_remove_role
+      description: Remove a role for this object from users/groups.
+      summary: Remove a role
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      tags:
+      - Upstream-Pulps
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NestedRole'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NestedRoleResponse'
+          description: ''
+  /api/automation-hub/pulp/api/v3/upstream-pulps/{pulp_id}/replicate/:
+    post:
+      operationId: upstream_pulps_replicate
+      description: Trigger an asynchronous repository replication task group. This API is provided as a tech preview.
+      summary: Replicate
+      parameters:
+      - in: path
+        name: pulp_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this upstream pulp.
+        required: true
+      tags:
+      - Upstream-Pulps
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskGroupOperationResponse'
+          description: ''
+components:
+  schemas:
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    TaskGroupOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations that return a task group.
+      properties:
+        task_group:
+          type: string
+          format: uri
+          description: The href of the task group.
+      required:
+      - task_group
+    UpstreamPulp:
+      type: object
+      description: Serializer for a Server.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this Pulp server.
+        base_url:
+          type: string
+          minLength: 1
+          description: The transport, hostname, and an optional port of the Pulp server. e.g. https://example.com
+        api_root:
+          type: string
+          minLength: 1
+          description: The API root. Defaults to '/pulp/'.
+        domain:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The domain of the Pulp server if enabled.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded client certificate used for authentication.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        username:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The username to be used for authentication when syncing.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The password to be used for authentication when syncing. Extra leading and trailing whitespace characters are not trimmed.
+        pulp_label_select:
+          type:
+          - string
+          - 'null'
+          description: One or more comma separated labels that will be used to filter distributions on the upstream Pulp. E.g. "foo=bar,key=val" or "foo,key"
+      required:
+      - api_root
+      - base_url
+      - name
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    PaginatedUpstreamPulpResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpstreamPulpResponse'
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    PatchedUpstreamPulp:
+      type: object
+      description: Serializer for a Server.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this Pulp server.
+        base_url:
+          type: string
+          minLength: 1
+          description: The transport, hostname, and an optional port of the Pulp server. e.g. https://example.com
+        api_root:
+          type: string
+          minLength: 1
+          description: The API root. Defaults to '/pulp/'.
+        domain:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The domain of the Pulp server if enabled.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded client certificate used for authentication.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        username:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The username to be used for authentication when syncing.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The password to be used for authentication when syncing. Extra leading and trailing whitespace characters are not trimmed.
+        pulp_label_select:
+          type:
+          - string
+          - 'null'
+          description: One or more comma separated labels that will be used to filter distributions on the upstream Pulp. E.g. "foo=bar,key=val" or "foo,key"
+    UpstreamPulpResponse:
+      type: object
+      description: Serializer for a Server.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent update of the remote.
+        name:
+          type: string
+          description: A unique name for this Pulp server.
+        base_url:
+          type: string
+          description: The transport, hostname, and an optional port of the Pulp server. e.g. https://example.com
+        api_root:
+          type: string
+          description: The API root. Defaults to '/pulp/'.
+        domain:
+          type:
+          - string
+          - 'null'
+          description: The domain of the Pulp server if enabled.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded client certificate used for authentication.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        hidden_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              is_set:
+                type: boolean
+            required:
+            - is_set
+            - name
+          readOnly: true
+          description: List of hidden (write only) fields
+        pulp_label_select:
+          type:
+          - string
+          - 'null'
+          description: One or more comma separated labels that will be used to filter distributions on the upstream Pulp. E.g. "foo=bar,key=val" or "foo,key"
+      required:
+      - api_root
+      - base_url
+      - name

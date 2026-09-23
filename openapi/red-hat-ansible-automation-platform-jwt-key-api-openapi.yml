@@ -1,0 +1,50 @@
+openapi: 3.2.0
+info:
+  title: AAP gateway JWT Key API
+  version: v1
+  description: AAP gateway API
+tags:
+- name: JWT Key
+paths:
+  /api/gateway/v1/jwt_key/:
+    get:
+      operationId: jwt_key_retrieve
+      tags:
+      - JWT Key
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: ''
+      x-ai-description: Retrieve single jwt key
+      summary: Jwt key retrieve
+      x-summary-source: derived
+components:
+  securitySchemes:
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid

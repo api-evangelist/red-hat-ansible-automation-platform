@@ -1,0 +1,3696 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Service Index API
+  version: '1.0'
+  description: 'Operations tagged service-index across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: Service Index
+paths:
+  /api/v2/service-index/:
+    get:
+      operationId: service_index_retrieve
+      description: Link other resource registry endpoints
+      tags:
+      - Service Index
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single service index
+      summary: Service index retrieve
+      x-summary-source: derived
+  /api/v2/service-index/metadata/:
+    get:
+      operationId: service_index_metadata_retrieve
+      tags:
+      - Service Index
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single service index metadatum
+      summary: Service index metadata retrieve
+      x-summary-source: derived
+  /api/v2/service-index/object-delete/:
+    post:
+      operationId: service_index_object_delete_create
+      description: 'Delete all role assignments (user and team) for a specific resource.
+
+
+        Expected request data:
+
+        {
+
+        "resource_type": "main.inventory",
+
+        "resource_pk": "4"
+
+        }'
+      tags:
+      - Service Index
+      responses:
+        '201':
+          description: No response body
+      x-ai-description: Remove all role assignments for a resource indexed from connected AAP services
+      summary: Service index object delete create
+      x-summary-source: derived
+  /api/v2/service-index/resource-types/:
+    get:
+      operationId: service_index_resource_types_list
+      description: Index of the resource types that are configured in the system.
+      parameters:
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: externally_managed
+        schema:
+          type: string
+        description: Filter by externally_managed (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceTypeList'
+          description: ''
+      x-ai-description: List all service index resource types
+      summary: Service index resource types list
+      x-summary-source: derived
+  /api/v2/service-index/resource-types/{name}/:
+    get:
+      operationId: service_index_resource_types_retrieve
+      description: Index of the resource types that are configured in the system.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^[^/]+$
+        required: true
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType'
+          description: ''
+      x-ai-description: Retrieve single service index resource type
+      summary: Service index resource types retrieve
+      x-summary-source: derived
+  /api/v2/service-index/resource-types/{name}/manifest/:
+    get:
+      operationId: service_index_resource_types_manifest_retrieve
+      description: Returns the as a stream the csv of resource_id,hash for a given resource type.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^[^/]+$
+        required: true
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType'
+          description: ''
+      x-ai-description: Retrieve single manifest for a resource-type
+      summary: Service index resource types manifest retrieve
+      x-summary-source: derived
+  /api/v2/service-index/resources/:
+    get:
+      operationId: service_index_resources_list
+      description: 'List all resources. Accepts an optional ''extra_fields'' query parameter (comma-separated) to include additional fields in the response. Supported values: resource_data.'
+      parameters:
+      - in: query
+        name: ansible_id
+        schema:
+          type: string
+        description: Filter by ansible_id (exact match)
+      - in: query
+        name: content_object
+        schema:
+          type: string
+        description: Filter by content_object (exact match)
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: is_partially_migrated
+        schema:
+          type: string
+        description: Filter by is_partially_migrated (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: object_id
+        schema:
+          type: string
+        description: Filter by object_id (exact match)
+      - in: query
+        name: object_id__icontains
+        schema:
+          type: string
+        description: Filter by object_id (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - in: query
+        name: service_id
+        schema:
+          type: string
+        description: Filter by service_id (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceListList'
+          description: ''
+      x-ai-description: List all service index resources
+      summary: Service index resources list
+      x-summary-source: derived
+    post:
+      operationId: service_index_resources_create
+      description: Index of all the resources in the system.
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Create new service index resource
+      summary: Service index resources create
+      x-summary-source: derived
+  /api/v2/service-index/resources/{ansible_id}/:
+    get:
+      operationId: service_index_resources_retrieve
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Retrieve single service index resource
+      summary: Service index resources retrieve
+      x-summary-source: derived
+    put:
+      operationId: service_index_resources_update
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Update existing service index resource
+      summary: Service index resources update
+      x-summary-source: derived
+    patch:
+      operationId: service_index_resources_partial_update
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedResourceRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Partially update existing service index resource
+      summary: Service index resources partial update
+      x-summary-source: derived
+    delete:
+      operationId: service_index_resources_destroy
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing service index resource
+      summary: Service index resources destroy
+      x-summary-source: derived
+  /api/v2/service-index/resources/bulk-update/:
+    post:
+      operationId: service_index_resources_bulk_update_create
+      description: 'Bulk-update resource metadata (new_service_id, new_ansible_id, is_partially_migrated, resource_data).
+
+
+        Accepts a JSON object with an ``items`` key containing a list of update objects.
+
+        Each object must contain at minimum an ``ansible_id`` identifying the resource
+
+        to update plus one or more fields to change.
+
+        Each item is applied in its own savepoint so that a failure in one item
+
+        does not roll back others.
+
+
+        Returns a summary with the count of updated resources and any per-item errors.
+
+
+        Performance note:
+
+        This endpoint uses a loop-of-singles pattern (one savepoint + update_resource()
+
+        per item) rather than Django''s QuerySet.bulk_update(). This is an intentional
+
+        trade-off: ResourceTypeProcessor.save() is a per-service plugin point with
+
+        custom logic (e.g. M2M permission handling in RoleDefinitionProcessor) that
+
+        cannot be expressed as a single bulk SQL statement. The primary performance
+
+        gain of this endpoint comes from eliminating N HTTP round-trips — the DB query
+
+        overhead of per-item saves is negligible on a local connection for typical
+
+        batch sizes (100-1000 items). True DB-level batching can be explored as a
+
+        future optimization for metadata-only fields.'
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      summary: Service index resources bulk update create
+      x-summary-source: derived
+  /api/v2/service-index/role-permissions/:
+    get:
+      operationId: service_index_role_permissions_list
+      description: List of permissions managed with the RBAC system
+      parameters:
+      - in: query
+        name: api_slug
+        schema:
+          type: string
+        description: Filter by api_slug (exact match)
+      - in: query
+        name: api_slug__icontains
+        schema:
+          type: string
+        description: Filter by api_slug (case-insensitive partial match)
+      - in: query
+        name: codename
+        schema:
+          type: string
+        description: Filter by codename (exact match)
+      - in: query
+        name: codename__icontains
+        schema:
+          type: string
+        description: Filter by codename (case-insensitive partial match)
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDABPermissionList'
+          description: ''
+      x-ai-description: List all service index role permissions
+      summary: Service index role permissions list
+      x-summary-source: derived
+  /api/v2/service-index/role-team-assignments/:
+    get:
+      operationId: service_index_role_team_assignments_list
+      description: List of team role assignments for cross-service communication
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceRoleTeamAssignmentList'
+          description: ''
+      x-ai-description: List all service index role team assignments
+      summary: Service index role team assignments list
+      x-summary-source: derived
+  /api/v2/service-index/role-team-assignments/assign/:
+    post:
+      operationId: service_index_role_team_assignments_assign_create
+      description: List of team role assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleTeamAssignment'
+          description: ''
+      x-ai-description: Create new service index role team assignments assign
+      summary: Service index role team assignments assign create
+      x-summary-source: derived
+  /api/v2/service-index/role-team-assignments/unassign/:
+    post:
+      operationId: service_index_role_team_assignments_unassign_create
+      description: List of team role assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleTeamAssignment'
+          description: ''
+      x-ai-description: Create new service index role team assignments unassign
+      summary: Service index role team assignments unassign create
+      x-summary-source: derived
+  /api/v2/service-index/role-types/:
+    get:
+      operationId: service_index_role_types_list
+      description: List of types registered with the RBAC system, or loaded in from external system
+      parameters:
+      - in: query
+        name: api_slug
+        schema:
+          type: string
+        description: Filter by api_slug (exact match)
+      - in: query
+        name: api_slug__icontains
+        schema:
+          type: string
+        description: Filter by api_slug (case-insensitive partial match)
+      - in: query
+        name: app_label
+        schema:
+          type: string
+        description: Filter by app_label (exact match)
+      - in: query
+        name: app_label__icontains
+        schema:
+          type: string
+        description: Filter by app_label (case-insensitive partial match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: model
+        schema:
+          type: string
+        description: Filter by model (exact match)
+      - in: query
+        name: model__icontains
+        schema:
+          type: string
+        description: Filter by model (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: parent_content_type
+        schema:
+          type: string
+        description: Filter by parent_content_type (exact match)
+      - in: query
+        name: pk_field_type
+        schema:
+          type: string
+        description: Filter by pk_field_type (exact match)
+      - in: query
+        name: pk_field_type__icontains
+        schema:
+          type: string
+        description: Filter by pk_field_type (case-insensitive partial match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service
+        schema:
+          type: string
+        description: Filter by service (exact match)
+      - in: query
+        name: service__icontains
+        schema:
+          type: string
+        description: Filter by service (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDABContentTypeList'
+          description: ''
+      x-ai-description: List all service index role types
+      summary: Service index role types list
+      x-summary-source: derived
+  /api/v2/service-index/role-user-assignments/:
+    get:
+      operationId: service_index_role_user_assignments_list
+      description: List of user assignments for cross-service communication
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceRoleUserAssignmentList'
+          description: ''
+      x-ai-description: List all service index role user assignments
+      summary: Service index role user assignments list
+      x-summary-source: derived
+  /api/v2/service-index/role-user-assignments/assign/:
+    post:
+      operationId: service_index_role_user_assignments_assign_create
+      description: List of user assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleUserAssignment'
+          description: ''
+      x-ai-description: Create new service index role user assignments assign
+      summary: Service index role user assignments assign create
+      x-summary-source: derived
+  /api/v2/service-index/role-user-assignments/unassign/:
+    post:
+      operationId: service_index_role_user_assignments_unassign_create
+      description: List of user assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignmentRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleUserAssignment'
+          description: ''
+      x-ai-description: Create new service index role user assignments unassign
+      summary: Service index role user assignments unassign create
+      x-summary-source: derived
+  /service-index/:
+    get:
+      operationId: service_index_retrieve
+      description: Link other resource registry endpoints
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          description: No response body
+      summary: Service index retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/metadata/:
+    get:
+      operationId: service_index_metadata_retrieve
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          description: No response body
+      summary: Service index metadata retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/object-delete/:
+    post:
+      operationId: service_index_object_delete_create
+      description: 'Delete all role assignments (user and team) for a specific resource.
+
+
+        Expected request data:
+
+        {
+
+        "resource_type": "main.inventory",
+
+        "resource_pk": "4"
+
+        }'
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '201':
+          description: No response body
+      x-ai-description: Remove all role assignments for a resource indexed from connected AAP services
+      summary: Service index object delete create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/resource-types/:
+    get:
+      operationId: service_index_resource_types_list
+      description: Index of the resource types that are configured in the system.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceTypeList'
+          description: ''
+      summary: Service index resource types list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/resource-types/{name}/:
+    get:
+      operationId: service_index_resource_types_retrieve
+      description: Index of the resource types that are configured in the system.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^[^/]+$
+        required: true
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType_2'
+          description: ''
+      summary: Service index resource types retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/resource-types/{name}/manifest/:
+    get:
+      operationId: service_index_resource_types_manifest_retrieve
+      description: Returns the as a stream the csv of resource_id,hash for a given resource type.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^[^/]+$
+        required: true
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType_2'
+          description: ''
+      summary: Service index resource types manifest retrieve
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/resources/:
+    get:
+      operationId: service_index_resources_list
+      description: 'List all resources. Accepts an optional ''extra_fields'' query parameter (comma-separated) to include additional fields in the response. Supported values: resource_data.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceListList'
+          description: ''
+      summary: Service index resources list
+      x-summary-source: derived
+    post:
+      operationId: service_index_resources_create
+      description: Index of all the resources in the system.
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Resource_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Resource_2'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource_2'
+          description: ''
+      summary: Service index resources create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/resources/{ansible_id}/:
+    get:
+      operationId: service_index_resources_retrieve
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource_2'
+          description: ''
+      summary: Service index resources retrieve
+      x-summary-source: derived
+    put:
+      operationId: service_index_resources_update
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Resource_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Resource_2'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource_2'
+          description: ''
+      summary: Service index resources update
+      x-summary-source: derived
+    patch:
+      operationId: service_index_resources_partial_update
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource_2'
+          description: ''
+      summary: Service index resources partial update
+      x-summary-source: derived
+    delete:
+      operationId: service_index_resources_destroy
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '204':
+          description: No response body
+      summary: Service index resources destroy
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-permissions/:
+    get:
+      operationId: service_index_role_permissions_list
+      description: List of permissions managed with the RBAC system
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDABPermissionList_2'
+          description: ''
+      summary: Service index role permissions list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-team-assignments/:
+    get:
+      operationId: service_index_role_team_assignments_list
+      description: List of team role assignments for cross-service communication
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceRoleTeamAssignmentList_2'
+          description: ''
+      summary: Service index role team assignments list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-team-assignments/assign/:
+    post:
+      operationId: service_index_role_team_assignments_assign_create
+      description: List of team role assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+          description: ''
+      summary: Service index role team assignments assign create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-team-assignments/unassign/:
+    post:
+      operationId: service_index_role_team_assignments_unassign_create
+      description: List of team role assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+          description: ''
+      summary: Service index role team assignments unassign create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-types/:
+    get:
+      operationId: service_index_role_types_list
+      description: List of types registered with the RBAC system, or loaded in from external system
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDABContentTypeList_2'
+          description: ''
+      summary: Service index role types list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-user-assignments/:
+    get:
+      operationId: service_index_role_user_assignments_list
+      description: List of user assignments for cross-service communication
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Service Index
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceRoleUserAssignmentList_2'
+          description: ''
+      summary: Service index role user assignments list
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-user-assignments/assign/:
+    post:
+      operationId: service_index_role_user_assignments_assign_create
+      description: List of user assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+          description: ''
+      summary: Service index role user assignments assign create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /service-index/role-user-assignments/unassign/:
+    post:
+      operationId: service_index_role_user_assignments_unassign_create
+      description: List of user assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+          description: ''
+      summary: Service index role user assignments unassign create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /api/gateway/v1/service-index/:
+    get:
+      operationId: service_index_retrieve
+      description: Link other resource registry endpoints
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single service index
+      summary: Service index retrieve
+      x-summary-source: derived
+  /api/gateway/v1/service-index/metadata/:
+    get:
+      operationId: service_index_metadata_retrieve
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: Retrieve single service index metadatum
+      summary: Service index metadata retrieve
+      x-summary-source: derived
+  /api/gateway/v1/service-index/object-delete/:
+    post:
+      operationId: service_index_object_delete_create
+      description: 'Delete all role assignments (user and team) for a specific resource.
+
+
+        Expected request data:
+
+        {
+
+        "resource_type": "main.inventory",
+
+        "resource_pk": "4"
+
+        }'
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          description: No response body
+      x-ai-description: Remove all role assignments for a resource indexed from connected AAP services
+      summary: Service index object delete create
+      x-summary-source: derived
+  /api/gateway/v1/service-index/resource-types/:
+    get:
+      operationId: service_index_resource_types_list
+      description: Index of the resource types that are configured in the system.
+      parameters:
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: externally_managed
+        schema:
+          type: string
+        description: Filter by externally_managed (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceTypeList'
+          description: ''
+      x-ai-description: List all service index resource types
+      summary: Service index resource types list
+      x-summary-source: derived
+  /api/gateway/v1/service-index/resource-types/{name}/:
+    get:
+      operationId: service_index_resource_types_retrieve
+      description: Index of the resource types that are configured in the system.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^[^/]+$
+        required: true
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType'
+          description: ''
+      x-ai-description: Retrieve single service index resource type
+      summary: Service index resource types retrieve
+      x-summary-source: derived
+  /api/gateway/v1/service-index/resource-types/{name}/manifest/:
+    get:
+      operationId: service_index_resource_types_manifest_retrieve
+      description: Returns the as a stream the csv of resource_id,hash for a given resource type.
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+          pattern: ^[^/]+$
+        required: true
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceType'
+          description: ''
+      x-ai-description: Retrieve single manifest for a resource-type
+      summary: Service index resource types manifest retrieve
+      x-summary-source: derived
+  /api/gateway/v1/service-index/resources/:
+    get:
+      operationId: service_index_resources_list
+      description: Index of all the resources in the system.
+      parameters:
+      - in: query
+        name: ansible_id
+        schema:
+          type: string
+        description: Filter by ansible_id (exact match)
+      - in: query
+        name: content_object
+        schema:
+          type: string
+        description: Filter by content_object (exact match)
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: is_partially_migrated
+        schema:
+          type: string
+        description: Filter by is_partially_migrated (exact match)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: object_id
+        schema:
+          type: string
+        description: Filter by object_id (exact match)
+      - in: query
+        name: object_id__icontains
+        schema:
+          type: string
+        description: Filter by object_id (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - in: query
+        name: service_id
+        schema:
+          type: string
+        description: Filter by service_id (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedResourceListList'
+          description: ''
+      x-ai-description: List all service index resources
+      summary: Service index resources list
+      x-summary-source: derived
+    post:
+      operationId: service_index_resources_create
+      description: Index of all the resources in the system.
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Resource'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Create new service index resource
+      summary: Service index resources create
+      x-summary-source: derived
+  /api/gateway/v1/service-index/resources/{ansible_id}/:
+    get:
+      operationId: service_index_resources_retrieve
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Retrieve single service index resource
+      summary: Service index resources retrieve
+      x-summary-source: derived
+    put:
+      operationId: service_index_resources_update
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Resource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Resource'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Update existing service index resource
+      summary: Service index resources update
+      x-summary-source: derived
+    patch:
+      operationId: service_index_resources_partial_update
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedResource'
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+          description: ''
+      x-ai-description: Partially update existing service index resource
+      summary: Service index resources partial update
+      x-summary-source: derived
+    delete:
+      operationId: service_index_resources_destroy
+      description: Index of all the resources in the system.
+      parameters:
+      - in: path
+        name: ansible_id
+        schema:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        required: true
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete existing service index resource
+      summary: Service index resources destroy
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-permissions/:
+    get:
+      operationId: service_index_role_permissions_list
+      description: List of permissions managed with the RBAC system
+      parameters:
+      - in: query
+        name: api_slug
+        schema:
+          type: string
+        description: Filter by api_slug (exact match)
+      - in: query
+        name: api_slug__icontains
+        schema:
+          type: string
+        description: Filter by api_slug (case-insensitive partial match)
+      - in: query
+        name: codename
+        schema:
+          type: string
+        description: Filter by codename (exact match)
+      - in: query
+        name: codename__icontains
+        schema:
+          type: string
+        description: Filter by codename (case-insensitive partial match)
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: name
+        schema:
+          type: string
+        description: Filter by name (exact match)
+      - in: query
+        name: name__icontains
+        schema:
+          type: string
+        description: Filter by name (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDABPermissionList'
+          description: ''
+      x-ai-description: List all service index role permissions
+      summary: Service index role permissions list
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-team-assignments/:
+    get:
+      operationId: service_index_role_team_assignments_list
+      description: List of team role assignments for cross-service communication
+      parameters:
+      - in: query
+        name: content_object
+        schema:
+          type: string
+        description: Filter by content_object (exact match)
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: object_id
+        schema:
+          type: string
+        description: Filter by object_id (exact match)
+      - in: query
+        name: object_id__icontains
+        schema:
+          type: string
+        description: Filter by object_id (case-insensitive partial match)
+      - in: query
+        name: object_role
+        schema:
+          type: string
+        description: Filter by object_role (exact match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_definition
+        schema:
+          type: string
+        description: Filter by role_definition (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: team
+        schema:
+          type: string
+        description: Filter by team (exact match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceRoleTeamAssignmentList'
+          description: ''
+      x-ai-description: List all service index role team assignments
+      summary: Service index role team assignments list
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-team-assignments/assign/:
+    post:
+      operationId: service_index_role_team_assignments_assign_create
+      description: List of team role assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+          description: ''
+      x-ai-description: Create new service index role team assignments assign
+      summary: Service index role team assignments assign create
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-team-assignments/unassign/:
+    post:
+      operationId: service_index_role_team_assignments_unassign_create
+      description: List of team role assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleTeamAssignment_3'
+          description: ''
+      x-ai-description: Create new service index role team assignments unassign
+      summary: Service index role team assignments unassign create
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-types/:
+    get:
+      operationId: service_index_role_types_list
+      description: List of types registered with the RBAC system, or loaded in from external system
+      parameters:
+      - in: query
+        name: api_slug
+        schema:
+          type: string
+        description: Filter by api_slug (exact match)
+      - in: query
+        name: api_slug__icontains
+        schema:
+          type: string
+        description: Filter by api_slug (case-insensitive partial match)
+      - in: query
+        name: app_label
+        schema:
+          type: string
+        description: Filter by app_label (exact match)
+      - in: query
+        name: app_label__icontains
+        schema:
+          type: string
+        description: Filter by app_label (case-insensitive partial match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: model
+        schema:
+          type: string
+        description: Filter by model (exact match)
+      - in: query
+        name: model__icontains
+        schema:
+          type: string
+        description: Filter by model (case-insensitive partial match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: parent_content_type
+        schema:
+          type: string
+        description: Filter by parent_content_type (exact match)
+      - in: query
+        name: pk_field_type
+        schema:
+          type: string
+        description: Filter by pk_field_type (exact match)
+      - in: query
+        name: pk_field_type__icontains
+        schema:
+          type: string
+        description: Filter by pk_field_type (case-insensitive partial match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: service
+        schema:
+          type: string
+        description: Filter by service (exact match)
+      - in: query
+        name: service__icontains
+        schema:
+          type: string
+        description: Filter by service (case-insensitive partial match)
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedDABContentTypeList'
+          description: ''
+      x-ai-description: List all service index role types
+      summary: Service index role types list
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-user-assignments/:
+    get:
+      operationId: service_index_role_user_assignments_list
+      description: List of user assignments for cross-service communication
+      parameters:
+      - in: query
+        name: content_object
+        schema:
+          type: string
+        description: Filter by content_object (exact match)
+      - in: query
+        name: content_type
+        schema:
+          type: string
+        description: Filter by content_type (exact match)
+      - in: query
+        name: created
+        schema:
+          type: string
+        description: Filter by created (exact match)
+      - in: query
+        name: created__gt
+        schema:
+          type: string
+        description: Filter by created (gt)
+      - in: query
+        name: created__gte
+        schema:
+          type: string
+        description: Filter by created (gte)
+      - in: query
+        name: created__lt
+        schema:
+          type: string
+        description: Filter by created (lt)
+      - in: query
+        name: created__lte
+        schema:
+          type: string
+        description: Filter by created (lte)
+      - in: query
+        name: created_by
+        schema:
+          type: string
+        description: Filter by created_by (exact match)
+      - in: query
+        name: id
+        schema:
+          type: string
+        description: Filter by id (exact match)
+      - in: query
+        name: id__gt
+        schema:
+          type: string
+        description: Filter by id (gt)
+      - in: query
+        name: id__gte
+        schema:
+          type: string
+        description: Filter by id (gte)
+      - in: query
+        name: id__lt
+        schema:
+          type: string
+        description: Filter by id (lt)
+      - in: query
+        name: id__lte
+        schema:
+          type: string
+        description: Filter by id (lte)
+      - in: query
+        name: object_id
+        schema:
+          type: string
+        description: Filter by object_id (exact match)
+      - in: query
+        name: object_id__icontains
+        schema:
+          type: string
+        description: Filter by object_id (case-insensitive partial match)
+      - in: query
+        name: object_role
+        schema:
+          type: string
+        description: Filter by object_role (exact match)
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_definition
+        schema:
+          type: string
+        description: Filter by role_definition (exact match)
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      - in: query
+        name: user
+        schema:
+          type: string
+        description: Filter by user (exact match)
+      tags:
+      - Service Index
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedServiceRoleUserAssignmentList'
+          description: ''
+      x-ai-description: List all service index role user assignments
+      summary: Service index role user assignments list
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-user-assignments/assign/:
+    post:
+      operationId: service_index_role_user_assignments_assign_create
+      description: List of user assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+          description: ''
+      x-ai-description: Create new service index role user assignments assign
+      summary: Service index role user assignments assign create
+      x-summary-source: derived
+  /api/gateway/v1/service-index/role-user-assignments/unassign/:
+    post:
+      operationId: service_index_role_user_assignments_unassign_create
+      description: List of user assignments for cross-service communication
+      tags:
+      - Service Index
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceRoleUserAssignment_3'
+          description: ''
+      x-ai-description: Create new service index role user assignments unassign
+      summary: Service index role user assignments unassign create
+      x-summary-source: derived
+components:
+  schemas:
+    PaginatedDABContentTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DABContentType'
+    DABPermission:
+      type: object
+      properties:
+        api_slug:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          maxLength: 201
+        codename:
+          type: string
+          description: A codename for the permission, in the format {action}_{model_name}. Where action is typically the view set action (view/list/etc) from Django rest framework.
+          maxLength: 100
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        name:
+          type: string
+          description: The name of this permission.
+          maxLength: 255
+      required:
+      - codename
+      - name
+    Resource:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data: {}
+        url:
+          type: string
+          readOnly: true
+        additional_data:
+          type: string
+          readOnly: true
+      required:
+      - resource_data
+    ServiceRoleTeamAssignmentRequest:
+      type: object
+      properties:
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        role_definition:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        team_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - team_ansible_id
+    ResourceRequest:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data: {}
+      required:
+      - resource_data
+    PaginatedResourceTypeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceType'
+    ResourceType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: The name of this resource type.
+        externally_managed:
+          type: boolean
+          description: Is this resource type managed externally from this service.
+        shared_resource_type:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+      - externally_managed
+    PatchedResourceRequest:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data: {}
+    ServiceRoleTeamAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        team_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - team_ansible_id
+    DABContentType:
+      type: object
+      properties:
+        api_slug:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          maxLength: 201
+        service:
+          type: string
+          description: service namespace to track what service this type is for. Can have a value of shared, which indicates it is synchronized.
+          maxLength: 100
+        app_label:
+          type: string
+          description: Django app that the model is in. This is an internal technical detail that does not affect API use.
+          maxLength: 100
+        model:
+          type: string
+          description: Name of the type according to the Django ORM Meta model_name convention. Comes from the python class, but lowercase with no spaces.
+          maxLength: 100
+        parent_content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        pk_field_type:
+          type: string
+          description: Database field type of the primary key field of the model, relevant for interal logic tracking permissions.
+          maxLength: 100
+      required:
+      - app_label
+      - model
+    PaginatedServiceRoleUserAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleUserAssignment'
+    ServiceRoleUserAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - user_ansible_id
+    ServiceRoleUserAssignmentRequest:
+      type: object
+      properties:
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        role_definition:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - user_ansible_id
+    PaginatedServiceRoleTeamAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleTeamAssignment'
+    PaginatedDABPermissionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DABPermission'
+    PaginatedResourceListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceList'
+    ResourceList:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+    PaginatedDABContentTypeList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DABContentType_2'
+    DABPermission_2:
+      type: object
+      properties:
+        api_slug:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          maxLength: 201
+        codename:
+          type: string
+          description: A codename for the permission, in the format {action}_{model_name}. Where action is typically the view set action (view/list/etc) from Django rest framework.
+          maxLength: 100
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        name:
+          type: string
+          description: The name of this permission.
+          maxLength: 255
+      required:
+      - codename
+      - content_type
+      - name
+    Resource_2:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data: {}
+        url:
+          type: string
+          readOnly: true
+        additional_data:
+          type: string
+          readOnly: true
+      required:
+      - additional_data
+      - has_serializer
+      - name
+      - object_id
+      - resource_data
+      - url
+    ResourceType_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: The name of this resource type.
+        externally_managed:
+          type: boolean
+          description: Is this resource type managed externally from this service.
+        shared_resource_type:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+      - externally_managed
+      - id
+      - name
+      - shared_resource_type
+      - url
+    ServiceRoleTeamAssignment_2:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        team_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - content_type
+      - created
+      - role_definition
+      - team_ansible_id
+    DABContentType_2:
+      type: object
+      properties:
+        api_slug:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          maxLength: 201
+        service:
+          type: string
+          description: service namespace to track what service this type is for. Can have a value of shared, which indicates it is synchronized.
+          maxLength: 100
+        app_label:
+          type: string
+          description: Django app that the model is in. This is an internal technical detail that does not affect API use.
+          maxLength: 100
+        model:
+          type: string
+          description: Name of the type according to the Django ORM Meta model_name convention. Comes from the python class, but lowercase with no spaces.
+          maxLength: 100
+        parent_content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        pk_field_type:
+          type: string
+          description: Database field type of the primary key field of the model, relevant for interal logic tracking permissions.
+          maxLength: 100
+      required:
+      - app_label
+      - model
+      - parent_content_type
+    PaginatedServiceRoleUserAssignmentList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
+    ServiceRoleUserAssignment_2:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - content_type
+      - created
+      - role_definition
+      - user_ansible_id
+    PaginatedServiceRoleTeamAssignmentList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
+    PaginatedDABPermissionList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DABPermission_2'
+    ResourceList_2:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data:
+          writeOnly: true
+          default: {}
+        url:
+          type: string
+          readOnly: true
+      required:
+      - has_serializer
+      - name
+      - object_id
+      - url
+    PatchedResource:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data: {}
+        url:
+          type: string
+          readOnly: true
+        additional_data:
+          type: string
+          readOnly: true
+    ServiceRoleTeamAssignment_3:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        team_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - team_ansible_id
+    ServiceRoleUserAssignment_3:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - user_ansible_id
+    ResourceList_3:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data:
+          writeOnly: true
+          default: {}
+        url:
+          type: string
+          readOnly: true
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

@@ -1,0 +1,443 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V1 Repo API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V1 Repo'
+paths:
+  /api/automation-hub/_ui/v1/repo/{distro_base_path}/:
+    get:
+      operationId: api_automation_hub__ui_v1_repo_list
+      description: 'Viewset that uses CollectionVersion''s within distribution to display data for Collection''s.
+
+
+        Collection list is filterable by FilterSet and includes latest CollectionVersion.
+
+
+        Collection detail includes CollectionVersion that is latest or via query param ''version''.'
+      parameters:
+      - in: query
+        name: deprecated
+        schema:
+          type: boolean
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: include_related
+        schema:
+          type: string
+      - in: query
+        name: keywords
+        schema:
+          type: string
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: name
+        schema:
+          type: string
+      - in: query
+        name: namespace
+        schema:
+          type: string
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: ordering
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -authors
+            - -contents
+            - -dependencies
+            - -description
+            - -docs_blob
+            - -documentation
+            - -files
+            - -homepage
+            - -is_highest
+            - -issues
+            - -license
+            - -manifest
+            - -name
+            - -namespace
+            - -pk
+            - -pulp_created
+            - -pulp_id
+            - -pulp_last_updated
+            - -pulp_type
+            - -repository
+            - -requires_ansible
+            - -search_vector
+            - -sha256
+            - -timestamp_of_interest
+            - -upstream_id
+            - -version
+            - -version_major
+            - -version_minor
+            - -version_patch
+            - -version_prerelease
+            - authors
+            - contents
+            - dependencies
+            - description
+            - docs_blob
+            - documentation
+            - files
+            - homepage
+            - is_highest
+            - issues
+            - license
+            - manifest
+            - name
+            - namespace
+            - pk
+            - pulp_created
+            - pulp_id
+            - pulp_last_updated
+            - pulp_type
+            - repository
+            - requires_ansible
+            - search_vector
+            - sha256
+            - timestamp_of_interest
+            - upstream_id
+            - version
+            - version_major
+            - version_minor
+            - version_patch
+            - version_prerelease
+        description: 'Ordering
+
+
+          * `pulp_id` - Pulp id
+
+          * `-pulp_id` - Pulp id (descending)
+
+          * `pulp_created` - Pulp created
+
+          * `-pulp_created` - Pulp created (descending)
+
+          * `pulp_last_updated` - Pulp last updated
+
+          * `-pulp_last_updated` - Pulp last updated (descending)
+
+          * `pulp_type` - Pulp type
+
+          * `-pulp_type` - Pulp type (descending)
+
+          * `upstream_id` - Upstream id
+
+          * `-upstream_id` - Upstream id (descending)
+
+          * `timestamp_of_interest` - Timestamp of interest
+
+          * `-timestamp_of_interest` - Timestamp of interest (descending)
+
+          * `authors` - Authors
+
+          * `-authors` - Authors (descending)
+
+          * `contents` - Contents
+
+          * `-contents` - Contents (descending)
+
+          * `dependencies` - Dependencies
+
+          * `-dependencies` - Dependencies (descending)
+
+          * `description` - Description
+
+          * `-description` - Description (descending)
+
+          * `docs_blob` - Docs blob
+
+          * `-docs_blob` - Docs blob (descending)
+
+          * `manifest` - Manifest
+
+          * `-manifest` - Manifest (descending)
+
+          * `files` - Files
+
+          * `-files` - Files (descending)
+
+          * `documentation` - Documentation
+
+          * `-documentation` - Documentation (descending)
+
+          * `homepage` - Homepage
+
+          * `-homepage` - Homepage (descending)
+
+          * `issues` - Issues
+
+          * `-issues` - Issues (descending)
+
+          * `license` - License
+
+          * `-license` - License (descending)
+
+          * `name` - Name
+
+          * `-name` - Name (descending)
+
+          * `namespace` - Namespace
+
+          * `-namespace` - Namespace (descending)
+
+          * `repository` - Repository
+
+          * `-repository` - Repository (descending)
+
+          * `requires_ansible` - Requires ansible
+
+          * `-requires_ansible` - Requires ansible (descending)
+
+          * `sha256` - Sha256
+
+          * `-sha256` - Sha256 (descending)
+
+          * `version` - Version
+
+          * `-version` - Version (descending)
+
+          * `version_major` - Version major
+
+          * `-version_major` - Version major (descending)
+
+          * `version_minor` - Version minor
+
+          * `-version_minor` - Version minor (descending)
+
+          * `version_patch` - Version patch
+
+          * `-version_patch` - Version patch (descending)
+
+          * `version_prerelease` - Version prerelease
+
+          * `-version_prerelease` - Version prerelease (descending)
+
+          * `is_highest` - Is highest
+
+          * `-is_highest` - Is highest (descending)
+
+          * `search_vector` - Search vector
+
+          * `-search_vector` - Search vector (descending)
+
+          * `pk` - Pk
+
+          * `-pk` - Pk (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: orphaned_for
+        schema:
+          type: number
+        description: Minutes Content has been orphaned for. -1 uses ORPHAN_PROTECTION_TIME.
+      - in: query
+        name: pulp_href__in
+        schema:
+          type: array
+          items:
+            type: string
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: pulp_id__in
+        schema:
+          type: array
+          items:
+            type: string
+            format: uuid
+        description: Multiple values may be separated by commas.
+        explode: false
+        style: form
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: repository_version
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_added
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: repository_version_removed
+        schema:
+          type: string
+        description: Repository Version referenced by HREF
+      - in: query
+        name: sign_state
+        schema:
+          type: string
+      - in: query
+        name: tags
+        schema:
+          type: string
+        description: Filter by comma separate list of tags that must all be matched
+      - in: query
+        name: version
+        schema:
+          type: string
+        description: Filter results where version matches value
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 Repo'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedgalaxy.LoginResponseList'
+          description: ''
+      summary: Api automation hub ui v1 repo list
+      x-summary-source: derived
+  /api/automation-hub/_ui/v1/repo/{distro_base_path}/{namespace}/{name}/:
+    get:
+      operationId: api_automation_hub__ui_v1_repo_read
+      description: 'Viewset that uses CollectionVersion''s within distribution to display data for Collection''s.
+
+
+        Collection list is filterable by FilterSet and includes latest CollectionVersion.
+
+
+        Collection detail includes CollectionVersion that is latest or via query param ''version''.'
+      parameters:
+      - in: path
+        name: distro_base_path
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: namespace
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V1 Repo'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.LoginResponse'
+          description: ''
+      summary: Api automation hub ui v1 repo read
+      x-summary-source: derived
+components:
+  schemas:
+    Paginatedgalaxy.LoginResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/galaxy.LoginResponse'
+    galaxy.LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username

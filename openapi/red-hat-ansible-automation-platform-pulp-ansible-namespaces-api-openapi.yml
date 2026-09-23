@@ -1,0 +1,256 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Pulp_Ansible: Namespaces API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Pulp_Ansible: Namespaces'
+paths:
+  /api/automation-hub/pulp/api/v3/pulp_ansible/namespaces/:
+    get:
+      operationId: pulp_ansible_namespaces_list
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: List namespaces
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Namespaces'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paginatedgalaxy.NamespaceResponseList'
+          description: ''
+  /api/automation-hub/pulp/api/v3/pulp_ansible/namespaces/{id}/:
+    get:
+      operationId: pulp_ansible_namespaces_read
+      description: 'A customized named ModelViewSet that knows how to register itself with the Pulp API router.
+
+
+        This viewset is discoverable by its name.
+
+        "Normal" Django Models and Master/Detail models are supported by the ``register_with`` method.
+
+
+        Attributes:
+
+        lookup_field (str): The name of the field by which an object should be looked up, in
+
+        addition to any parent lookups if this ViewSet is nested. Defaults to ''pk''
+
+        endpoint_name (str): The name of the final path segment that should identify the ViewSet''s
+
+        collection endpoint.
+
+        nest_prefix (str): Optional prefix under which this ViewSet should be nested. This must
+
+        correspond to the "parent_prefix" of a router with rest_framework_nested.NestedMixin.
+
+        None indicates this ViewSet should not be nested.
+
+        parent_lookup_kwargs (dict): Optional mapping of key names that would appear in self.kwargs
+
+        to django model filter expressions that can be used with the corresponding value from
+
+        self.kwargs, used only by a nested ViewSet to filter based on the parent object''s
+
+        identity.
+
+        schema (DefaultSchema): The schema class to use by default in a viewset.'
+      summary: Inspect a namespace
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this namespace.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Pulp_Ansible: Namespaces'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/galaxy.NamespaceResponse'
+          description: ''
+components:
+  schemas:
+    Paginatedgalaxy.NamespaceResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/galaxy.NamespaceResponse'
+    galaxy.NamespaceResponse:
+      type: object
+      description: 'NamespaceSerializer but without ''links'' or ''resources''.
+
+
+        For use in _ui/collection detail views.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 256
+        avatar_url:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 256
+        groups:
+          type: string
+        users:
+          type: string
+        related_fields:
+          allOf:
+          - $ref: '#/components/schemas/NamespaceRelatedFieldResponse'
+          readOnly: true
+        metadata_sha256:
+          type: string
+          readOnly: true
+        avatar_sha256:
+          type: string
+          readOnly: true
+    MyPermissionsFieldResponse:
+      type: object
+    NamespaceRelatedFieldResponse:
+      type: object
+      description: "Serializer only returns fields specified in 'include_related' query param.\n\nThis allows for fields that require more database queries to be optionally\nincluded in API responses, which lowers the load on the backend. This is\nintended as a way to include extra data in list views.\n\nUsage:\n\nThis functions the same as DRF's base `serializers.Serializer` class with the\nexception that it will only return fields specified in the `?include_related=`\nquery parameter.\n\nExample:\n\nMySerializer(RelatedFieldsBaseSerializer):\n    foo = CharField()\n    bar = CharField()\n\nMySerializer will return:\n\n{\"foo\": None} when called with `?include_related=foo` and {\"foo\": None, \"bar\" None}\nwhen called with `?include_related=foo&include_related=bar`."
+      properties:
+        my_permissions:
+          allOf:
+          - $ref: '#/components/schemas/MyPermissionsFieldResponse'
+          readOnly: true

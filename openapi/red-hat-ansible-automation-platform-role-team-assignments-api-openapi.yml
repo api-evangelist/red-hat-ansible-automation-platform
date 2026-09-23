@@ -1,0 +1,894 @@
+openapi: 3.2.0
+info:
+  title: Red Hat Ansible Automation Platform Role Team Assignments…
+  version: '1.0'
+  description: 'Operations tagged role_team_assignments across 3 of this provider''s published API definitions: red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: /api/eda/v1
+tags:
+- name: role_team_assignments
+paths:
+  /api/v2/role_team_assignments/:
+    get:
+      operationId: role_team_assignments_list
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_team_assignments
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleTeamAssignmentList'
+          description: ''
+      x-ai-description: List RBAC role grants assigning permissions to teams for specific resources
+      summary: Role team assignments list
+      x-summary-source: derived
+    post:
+      operationId: role_team_assignments_create
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      tags:
+      - role_team_assignments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleTeamAssignmentRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleTeamAssignment'
+          description: ''
+      x-ai-description: Create a RBAC role grants assigning permissions to team for specific resources
+      summary: Role team assignments create
+      x-summary-source: derived
+  /api/v2/role_team_assignments/{id}/:
+    get:
+      operationId: role_team_assignments_retrieve
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role team assignment.
+        required: true
+      tags:
+      - role_team_assignments
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleTeamAssignment'
+          description: ''
+      x-ai-description: Retrieve a RBAC role grants assigning permissions to team for specific resources
+      summary: Role team assignments retrieve
+      x-summary-source: derived
+    delete:
+      operationId: role_team_assignments_destroy
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role team assignment.
+        required: true
+      tags:
+      - role_team_assignments
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a RBAC role grants assigning permissions to team for specific resources
+      summary: Role team assignments destroy
+      x-summary-source: derived
+  /role_team_assignments/:
+    get:
+      operationId: role_team_assignments_list
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - role_team_assignments
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedRoleTeamAssignmentList_2'
+          description: ''
+      summary: Role team assignments list
+      x-summary-source: derived
+    post:
+      operationId: role_team_assignments_create
+      description: Create a RoleTeamAssignment.
+      tags:
+      - role_team_assignments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleTeamAssignmentCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RoleTeamAssignmentCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RoleTeamAssignmentCreate'
+        required: true
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleTeamAssignment_2'
+          description: Return a created RoleTeamAssignment.
+      summary: Role team assignments create
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /role_team_assignments/{id}/:
+    get:
+      operationId: role_team_assignments_retrieve
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role team assignment.
+        required: true
+      tags:
+      - role_team_assignments
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleTeamAssignment_2'
+          description: ''
+      summary: Role team assignments retrieve
+      x-summary-source: derived
+    delete:
+      operationId: role_team_assignments_destroy
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role team assignment.
+        required: true
+      tags:
+      - role_team_assignments
+      security:
+      - EDAJWTAuthentication: []
+      responses:
+        '204':
+          description: No response body
+      summary: Role team assignments destroy
+      x-summary-source: derived
+    servers:
+    - url: /api/eda/v1
+  /api/gateway/v1/role_team_assignments/:
+    get:
+      operationId: role_team_assignments_list
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: query
+        name: order
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - in: query
+        name: order_by
+        schema:
+          type: string
+        description: Order results by field name. Prefix with '-' for descending order. Supports comma-separated values for multiple fields.
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role_level
+        schema:
+          type: string
+        description: Filter by role level for RBAC
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+        description: Filter by object type. Supports comma-separated values for multiple types.
+      tags:
+      - role_team_assignments
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGatewayRoleTeamAssignmentList'
+          description: ''
+      x-ai-description: List RBAC role grants assigning permissions to teams for specific resources
+      summary: Role team assignments list
+      x-summary-source: derived
+    post:
+      operationId: role_team_assignments_create
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      tags:
+      - role_team_assignments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GatewayRoleTeamAssignment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GatewayRoleTeamAssignment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GatewayRoleTeamAssignment'
+        required: true
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayRoleTeamAssignment'
+          description: ''
+      x-ai-description: Create a RBAC role grants assigning permissions to team for specific resources
+      summary: Role team assignments create
+      x-summary-source: derived
+  /api/gateway/v1/role_team_assignments/{id}/:
+    get:
+      operationId: role_team_assignments_retrieve
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role team assignment.
+        required: true
+      tags:
+      - role_team_assignments
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GatewayRoleTeamAssignment'
+          description: ''
+      x-ai-description: Retrieve a RBAC role grants assigning permissions to team for specific resources
+      summary: Role team assignments retrieve
+      x-summary-source: derived
+    delete:
+      operationId: role_team_assignments_destroy
+      description: 'Use this endpoint to give a team permission to a resource or an organization.
+
+        The needed data is the team, the role definition, and the object id.
+
+        The object must be of the type specified in the role definition.
+
+        The type given in the role definition and the provided object_id are used
+
+        to look up the resource.
+
+
+        After creation, the assignment cannot be edited, but can be deleted to
+
+        remove those permissions.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this role team assignment.
+        required: true
+      tags:
+      - role_team_assignments
+      security:
+      - OAuth2_Authentication: []
+      - SessionAuthentication: []
+      - Basic_Authentication: []
+      responses:
+        '204':
+          description: No response body
+      x-ai-description: Delete a RBAC role grants assigning permissions to team for specific resources
+      summary: Role team assignments destroy
+      x-summary-source: derived
+components:
+  schemas:
+    RoleTeamAssignmentRequest:
+      type: object
+      properties:
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - role_definition
+    PaginatedRoleTeamAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleTeamAssignment'
+    RoleTeamAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - role_definition
+    RoleTeamAssignmentCreate:
+      type: object
+      properties:
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - role_definition
+    PaginatedRoleTeamAssignmentList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleTeamAssignment_2'
+    RoleTeamAssignment_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - content_type
+      - created
+      - created_by
+      - id
+      - related
+      - role_definition
+      - summary_fields
+      - url
+    GatewayRoleTeamAssignment:
+      type: object
+      description: 'Custom serializer with Galaxy-specific validation for team role assignments
+
+
+        Teams can only be assigned roles where all permissions are in the ''galaxy'' service.
+
+        Gateway overrides actor queryset so team visibility is enforced here
+
+        rather than in DAB, since users/teams are owned by the resource provider.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - role_definition
+    PaginatedGatewayRoleTeamAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayRoleTeamAssignment'
+  securitySchemes:
+    EDAJWTAuthentication:
+      type: apiKey
+      name: X-DAB-JW-TOKEN
+      in: header
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    Basic_Authentication:
+      type: http
+      scheme: basic
+    OAuth2_Authentication:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: /o/authorize/
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+        password:
+          tokenUrl: /o/token/
+          scopes:
+            read: Read access to resources
+            write: Write access to resources (includes read)
+    SessionAuthentication:
+      type: apiKey
+      in: cookie
+      name: gateway_sessionid
+x-refined-from:
+- red-hat-ansible-automation-platform-automation-controller-openapi.json
+- red-hat-ansible-automation-platform-event-driven-ansible-openapi.json
+- red-hat-ansible-automation-platform-platform-gateway-openapi.json

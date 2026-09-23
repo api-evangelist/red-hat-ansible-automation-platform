@@ -1,0 +1,520 @@
+openapi: 3.2.0
+info:
+  title: 'Automation Hub Api: _Ui V2 Users API'
+  version: v3
+  description: Fetch, Upload, Organize, and Distribute Ansible Collections
+  contact:
+    name: Automation Hub Team
+    email: ansible-galaxy-team@redhat.com
+    url: https://www.ansible.com/products/automation-hub
+  license:
+    name: GPLv2+
+    url: https://raw.githubusercontent.com/ansible/galaxy_ng/main/LICENSE
+  x-logo:
+    url: https://pulp.plan.io/attachments/download/517478/pulp_logo_word_rectangle.svg
+  x-pulp-app-versions:
+    core: 3.49.40
+    galaxy: 4.12.0dev
+    ansible: 0.25.1
+    container: 2.19.5
+    certguard: 3.49.40
+    file: 3.49.40
+  x-pulp-domain-enabled: false
+servers:
+- url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
+tags:
+- name: 'Api: _Ui V2 Users'
+paths:
+  /api/automation-hub/_ui/v2/users/:
+    get:
+      operationId: api_automation_hub__ui_v2_users_list
+      summary: List users
+      parameters:
+      - in: query
+        name: date_joined
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: email
+        schema:
+          type: string
+      - in: query
+        name: email__contains
+        schema:
+          type: string
+      - in: query
+        name: email__startswith
+        schema:
+          type: string
+      - in: query
+        name: first_name
+        schema:
+          type: string
+      - in: query
+        name: first_name__contains
+        schema:
+          type: string
+      - in: query
+        name: first_name__startswith
+        schema:
+          type: string
+      - in: query
+        name: is_superuser
+        schema:
+          type: boolean
+      - in: query
+        name: last_name
+        schema:
+          type: string
+      - in: query
+        name: last_name__contains
+        schema:
+          type: string
+      - in: query
+        name: last_name__startswith
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: resource__ansible_id
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: sort
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - -date_joined
+            - -email
+            - -first_name
+            - -last_name
+            - -username
+            - date_joined
+            - email
+            - first_name
+            - last_name
+            - username
+        description: 'Ordering
+
+
+          * `username` - Username
+
+          * `-username` - Username (descending)
+
+          * `email` - Email
+
+          * `-email` - Email (descending)
+
+          * `first_name` - First name
+
+          * `-first_name` - First name (descending)
+
+          * `last_name` - Last name
+
+          * `-last_name` - Last name (descending)
+
+          * `date_joined` - Date joined
+
+          * `-date_joined` - Date joined (descending)'
+        explode: false
+        style: form
+      - in: query
+        name: username
+        schema:
+          type: string
+      - in: query
+        name: username__contains
+        schema:
+          type: string
+      - in: query
+        name: username__icontains
+        schema:
+          type: string
+      - in: query
+        name: username__startswith
+        schema:
+          type: string
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Users'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserDetailResponseList'
+          description: ''
+    post:
+      operationId: api_automation_hub__ui_v2_users_create
+      summary: Create an user
+      tags:
+      - 'Api: _Ui V2 Users'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateDelete'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateUpdateDeleteResponse'
+          description: ''
+  /api/automation-hub/_ui/v2/users/{id}/:
+    get:
+      operationId: api_automation_hub__ui_v2_users_read
+      summary: Inspect an user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this user.
+        required: true
+      - in: query
+        name: fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to include in the response.
+      - in: query
+        name: exclude_fields
+        schema:
+          type: array
+          items:
+            type: string
+        description: A list of fields to exclude from the response.
+      tags:
+      - 'Api: _Ui V2 Users'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailResponse'
+          description: ''
+    put:
+      operationId: api_automation_hub__ui_v2_users_update
+      summary: Update an user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Users'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreateUpdateDelete'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateUpdateDeleteResponse'
+          description: ''
+    patch:
+      operationId: api_automation_hub__ui_v2_users_partial_update
+      summary: Update an user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Users'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserCreateUpdateDelete'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserCreateUpdateDelete'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserCreateUpdateDelete'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateUpdateDeleteResponse'
+          description: ''
+    delete:
+      operationId: api_automation_hub__ui_v2_users_delete
+      summary: Delete an user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+          format: int64
+        description: A unique integer value identifying this user.
+        required: true
+      tags:
+      - 'Api: _Ui V2 Users'
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    UserCreateUpdateDelete:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        groups:
+          type: array
+          items:
+            type: object
+          writeOnly: true
+          default: []
+        teams:
+          type: array
+          items:
+            type: object
+          writeOnly: true
+          default: []
+        organizations:
+          type: array
+          items:
+            type: object
+          writeOnly: true
+          default: []
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+      required:
+      - username
+    UserCreateUpdateDeleteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        resource:
+          type: string
+          readOnly: true
+      required:
+      - username
+    PaginatedUserDetailResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDetailResponse'
+    PatchedUserCreateUpdateDelete:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          maxLength: 128
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        groups:
+          type: array
+          items:
+            type: object
+          writeOnly: true
+          default: []
+        teams:
+          type: array
+          items:
+            type: object
+          writeOnly: true
+          default: []
+        organizations:
+          type: array
+          items:
+            type: object
+          writeOnly: true
+          default: []
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+    UserDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          title: Email address
+          maxLength: 254
+        groups:
+          type: string
+          readOnly: true
+        teams:
+          type: string
+          readOnly: true
+        organizations:
+          type: string
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        resource:
+          type: string
+          readOnly: true
+      required:
+      - username
