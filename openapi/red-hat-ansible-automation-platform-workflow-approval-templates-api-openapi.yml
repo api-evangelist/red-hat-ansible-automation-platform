@@ -189,6 +189,32 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WorkflowApprovalList'
+    PatchedWorkflowApprovalTemplateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) before the approval node expires and fails.
     WorkflowApprovalTemplate:
       type: object
       properties:
@@ -481,29 +507,3 @@ components:
           readOnly: true
       required:
       - name
-    PatchedWorkflowApprovalTemplateRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) before the approval node expires and fails.

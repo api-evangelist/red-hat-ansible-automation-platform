@@ -10,6 +10,20 @@ info:
 tags:
 - name: AWX API
 paths:
+  /api/:
+    get:
+      operationId: api_retrieve
+      description: List supported API versions
+      tags:
+      - AWX API
+      security:
+      - {}
+      responses:
+        '200':
+          description: No response body
+      x-ai-description: List supported API versions
+      summary: Api retrieve
+      x-summary-source: derived
   /api/v2/:
     get:
       operationId: root_retrieve

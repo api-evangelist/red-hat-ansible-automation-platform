@@ -396,25 +396,7 @@ paths:
       x-ai-description: Create new ai streaming chat
 components:
   schemas:
-    ChatResponse:
-      type: object
-      properties:
-        conversation_id:
-          type: string
-          description: An ID that identifies the particular conversation is being requested for.
-        referenced_documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReferencedDocuments'
-        response:
-          type: string
-        truncated:
-          type: boolean
-      required:
-      - conversation_id
-      - response
-      - truncated
-    PlaybookExplanationFeedback:
+    PlaybookGenerationAction:
       type: object
       properties:
         action:
@@ -422,103 +404,42 @@ components:
           - '0'
           - '1'
           - '2'
+          - '3'
           type: string
-          description: '* `0` - ACCEPTED
+          description: '* `0` - OPEN
 
-            * `1` - REJECTED
+            * `1` - CLOSE_CANCEL
 
-            * `2` - IGNORED'
-          x-spec-enum-id: 4c6feea9f2cd2c84
-        explanationId:
+            * `2` - TRANSITION
+
+            * `3` - CLOSE_ACCEPT'
+          x-spec-enum-id: 693e8c4f477a387e
+        wizardId:
           type: string
           format: uuid
-          title: Explanation ID
-          description: A UUID that identifies the playbook explanation.
+          title: wizard ID
+          description: A UUID that identifies the UI session.
+        fromPage:
+          type: integer
+          title: page of origin
+          description: A number that indicate the page of origin
+        toPage:
+          type: integer
+          title: destination page
+          description: A number that indicate the destination page
       required:
       - action
-      - explanationId
-    ExplanationResponse:
+      - wizardId
+    ReferencedDocuments:
       type: object
       properties:
-        content:
+        docs_url:
           type: string
-        format:
-          type: string
-        explanationId:
-          type: string
-          format: uuid
-          title: Explanation ID
-          description: A UUID that identifies the particular explanation data is being requested for.
-      required:
-      - content
-      - format
-    GenerationRoleFileEntry:
-      type: object
-      properties:
-        path:
-          type: string
-        content:
-          type: string
-        file_type:
+        title:
           type: string
       required:
-      - content
-      - file_type
-      - path
-    InlineSuggestionFeedback:
-      type: object
-      properties:
-        userActionTime:
-          type: number
-          format: double
-        documentUri:
-          type: string
-        action:
-          enum:
-          - '0'
-          - '1'
-          - '2'
-          type: string
-          description: '* `0` - ACCEPTED
-
-            * `1` - REJECTED
-
-            * `2` - IGNORED'
-          x-spec-enum-id: 4c6feea9f2cd2c84
-        error:
-          type: string
-        suggestionId:
-          type: string
-          format: uuid
-          title: Suggestion ID
-          description: A UUID that identifies a suggestion.
-      required:
-      - action
-      - suggestionId
-    CompletionMetadata:
-      type: object
-      properties:
-        ansibleExtensionVersion:
-          type: string
-          title: Ansible vscode/vscodium extension version
-          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
-          pattern: v?\d+\.\d+\.\d+
-        documentUri:
-          type: string
-        activityId:
-          type: string
-          format: uuid
-          title: Activity ID
-          description: A UUID that identifies a user activity session within a given document.
-        ansibleFileType:
-          type: string
-          title: Ansible File Type
-          description: Ansible file type (playbook/tasks_in_role/tasks)
-        additionalContext:
-          type: object
-          additionalProperties: true
-          title: Additional Context
-          description: Additional context for completion API
+      - docs_url
+      - title
     GenerationPlaybookRequest:
       type: object
       properties:
@@ -556,20 +477,188 @@ components:
           $ref: '#/components/schemas/Metadata'
       required:
       - text
-    CompletionResponse:
+    CompletionRequest:
       type: object
       properties:
+        ansibleExtensionVersion:
+          type: string
+          title: Ansible vscode/vscodium extension version
+          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
+          pattern: v?\d+\.\d+\.\d+
+        prompt:
+          type: string
+          description: Editor prompt.
+        suggestionId:
+          type: string
+          format: uuid
+          title: Suggestion ID
+          description: A UUID that identifies a suggestion.
+        metadata:
+          $ref: '#/components/schemas/CompletionMetadata'
         model:
+          type: string
+      required:
+      - prompt
+    GenerationRoleFileEntry:
+      type: object
+      properties:
+        path:
+          type: string
+        content:
+          type: string
+        file_type:
+          type: string
+      required:
+      - content
+      - file_type
+      - path
+    SuggestionQualityFeedback:
+      type: object
+      properties:
+        prompt:
+          type: string
+          title: File Content used as context
+          description: File Content till end of task name description before cursor position.
+        providedSuggestion:
+          type: string
+          title: Provided Model suggestion
+          description: Inline suggestion from model as shared by user for given prompt.
+        expectedSuggestion:
+          type: string
+          title: Expected Model suggestion
+          description: Suggestion expected by the user.
+        additionalComment:
+          type: string
+          title: Additional Comment
+          description: Additional comment describing why the                    change was required in suggestion.
+      required:
+      - expectedSuggestion
+      - prompt
+      - providedSuggestion
+    InlineSuggestionFeedback:
+      type: object
+      properties:
+        userActionTime:
+          type: number
+          format: double
+        documentUri:
+          type: string
+        action:
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          type: string
+          description: '* `0` - ACCEPTED
+
+            * `1` - REJECTED
+
+            * `2` - IGNORED'
+          x-spec-enum-id: 4c6feea9f2cd2c84
+        error:
           type: string
         suggestionId:
           type: string
           format: uuid
-        predictions:
+          title: Suggestion ID
+          description: A UUID that identifies a suggestion.
+      required:
+      - action
+      - suggestionId
+    GenerationRoleResponse:
+      type: object
+      properties:
+        role:
+          type: string
+          description: Name of the role.
+        files:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/GenerationRoleFileEntry'
+        generationId:
+          type: string
+          format: uuid
+          title: Generation ID
+          description: A UUID that identifies the particular summary data is being requested for.
+        outline:
+          type: string
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenerationWarningResponse'
       required:
-      - predictions
+      - files
+      - outline
+      - role
+    CompletionMetadata:
+      type: object
+      properties:
+        ansibleExtensionVersion:
+          type: string
+          title: Ansible vscode/vscodium extension version
+          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
+          pattern: v?\d+\.\d+\.\d+
+        documentUri:
+          type: string
+        activityId:
+          type: string
+          format: uuid
+          title: Activity ID
+          description: A UUID that identifies a user activity session within a given document.
+        ansibleFileType:
+          type: string
+          title: Ansible File Type
+          description: Ansible file type (playbook/tasks_in_role/tasks)
+        additionalContext:
+          type: object
+          additionalProperties: true
+          title: Additional Context
+          description: Additional context for completion API
+    GenerationPlaybookResponse:
+      type: object
+      properties:
+        playbook:
+          type: string
+        format:
+          type: string
+        generationId:
+          type: string
+          format: uuid
+          title: Generation ID
+          description: A UUID that identifies the particular summary data is being requested for.
+        outline:
+          type: string
+        warnings:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenerationWarningResponse'
+      required:
+      - format
+      - outline
+      - playbook
+    PlaybookGenerationFeedback:
+      type: object
+      properties:
+        action:
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          type: string
+          description: '* `0` - ACCEPTED
+
+            * `1` - REJECTED
+
+            * `2` - IGNORED'
+          x-spec-enum-id: 4c6feea9f2cd2c84
+        wizardId:
+          type: string
+          format: uuid
+          title: Outline ID
+          description: A UUID that identifies the UI session.
+      required:
+      - action
+      - wizardId
     ContentMatchRequest:
       type: object
       properties:
@@ -593,69 +682,6 @@ components:
           $ref: '#/components/schemas/Metadata'
       required:
       - suggestions
-    ExplanationRequest:
-      type: object
-      properties:
-        ansibleExtensionVersion:
-          type: string
-          title: Ansible vscode/vscodium extension version
-          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
-          pattern: v?\d+\.\d+\.\d+
-        content:
-          type: string
-          title: Playbook content
-          description: The playbook that needs to be explained.
-        customPrompt:
-          type: string
-          default: ''
-          title: Custom prompt
-          description: Custom prompt passed to the LLM when explaining a playbook.
-        explanationId:
-          type: string
-          format: uuid
-          title: Explanation ID
-          description: A UUID that identifies the particular explanation data is being requested for.
-        model:
-          type: string
-          default: ''
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-      required:
-      - content
-    RoleGenerationAction:
-      type: object
-      properties:
-        action:
-          enum:
-          - '0'
-          - '1'
-          - '2'
-          - '3'
-          type: string
-          description: '* `0` - OPEN
-
-            * `1` - CLOSE_CANCEL
-
-            * `2` - TRANSITION
-
-            * `3` - CLOSE_ACCEPT'
-          x-spec-enum-id: 693e8c4f477a387e
-        wizardId:
-          type: string
-          format: uuid
-          title: wizard ID
-          description: A UUID that identifies the UI session.
-        fromPage:
-          type: integer
-          title: page of origin
-          description: A number that indicate the page of origin
-        toPage:
-          type: integer
-          title: destination page
-          description: A number that indicate the destination page
-      required:
-      - action
-      - wizardId
     ExplanationRoleRequest:
       type: object
       properties:
@@ -687,31 +713,6 @@ components:
       required:
       - files
       - roleName
-    ChatFeedback:
-      type: object
-      properties:
-        query:
-          type: string
-          title: Prompt
-          description: Prompt being sent to the LLM.
-        response:
-          $ref: '#/components/schemas/ChatResponse'
-        sentiment:
-          enum:
-          - '0'
-          - '1'
-          - NOT_LIKE
-          type: string
-          description: '* `0` - LIKE
-
-            * `1` - 1
-
-            * `NOT_LIKE` - NOT_LIKE'
-          x-spec-enum-id: e7383390620e7763
-      required:
-      - query
-      - response
-      - sentiment
     IssueFeedback:
       type: object
       properties:
@@ -736,314 +737,47 @@ components:
       - description
       - title
       - type
-    SentimentFeedback:
+    ExplanationResponse:
       type: object
       properties:
-        value:
-          type: integer
-          maximum: 5
-          minimum: 1
-        feedback:
-          type: string
-          title: Free form text feedback
-          description: Free form text feedback describing the reason for sentiment value.
-      required:
-      - feedback
-      - value
-    ContentMatchList:
-      type: object
-      properties:
-        contentmatch:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContentMatch'
-      required:
-      - contentmatch
-    GenerationWarningResponse:
-      type: object
-      properties:
-        id:
-          type: string
-        message:
-          type: string
-        details:
-          type: string
-      required:
-      - id
-      - message
-    CompletionRequest:
-      type: object
-      properties:
-        ansibleExtensionVersion:
-          type: string
-          title: Ansible vscode/vscodium extension version
-          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
-          pattern: v?\d+\.\d+\.\d+
-        prompt:
-          type: string
-          description: Editor prompt.
-        suggestionId:
-          type: string
-          format: uuid
-          title: Suggestion ID
-          description: A UUID that identifies a suggestion.
-        metadata:
-          $ref: '#/components/schemas/CompletionMetadata'
-        model:
-          type: string
-      required:
-      - prompt
-    StreamingChatRequest:
-      type: object
-      properties:
-        conversation_id:
-          type: string
-          description: An ID that identifies the particular conversation is being requested for.
-        query:
-          type: string
-          title: Query string
-          description: A query string to be sent to LLM.
-        model:
-          type: string
-          title: Model name
-          description: A model to be used on LLM.
-        provider:
-          type: string
-          title: Provider name
-          description: A name that identifies a LLM provider.
-        no_tools:
-          type: boolean
-          title: Bypass tools
-          description: Whether to bypass all tools and MCP servers
-        media_type:
-          type: string
-          description: A media type to be used in the output from LLM.
-      required:
-      - query
-    PlaybookGenerationAction:
-      type: object
-      properties:
-        action:
-          enum:
-          - '0'
-          - '1'
-          - '2'
-          - '3'
-          type: string
-          description: '* `0` - OPEN
-
-            * `1` - CLOSE_CANCEL
-
-            * `2` - TRANSITION
-
-            * `3` - CLOSE_ACCEPT'
-          x-spec-enum-id: 693e8c4f477a387e
-        wizardId:
-          type: string
-          format: uuid
-          title: wizard ID
-          description: A UUID that identifies the UI session.
-        fromPage:
-          type: integer
-          title: page of origin
-          description: A number that indicate the page of origin
-        toPage:
-          type: integer
-          title: destination page
-          description: A number that indicate the destination page
-      required:
-      - action
-      - wizardId
-    ChatRequest:
-      type: object
-      properties:
-        conversation_id:
-          type: string
-          description: An ID that identifies the particular conversation is being requested for.
-        query:
-          type: string
-          title: Query string
-          description: A query string to be sent to LLM.
-        model:
-          type: string
-          title: Model name
-          description: A model to be used on LLM.
-        provider:
-          type: string
-          title: Provider name
-          description: A name that identifies a LLM provider.
-        no_tools:
-          type: boolean
-          title: Bypass tools
-          description: Whether to bypass all tools and MCP servers
-      required:
-      - query
-    FeedbackRequest:
-      type: object
-      properties:
-        ansibleExtensionVersion:
-          type: string
-          title: Ansible vscode/vscodium extension version
-          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
-          pattern: v?\d+\.\d+\.\d+
-        inlineSuggestion:
-          $ref: '#/components/schemas/InlineSuggestionFeedback'
-        issueFeedback:
-          $ref: '#/components/schemas/IssueFeedback'
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-        model:
-          type: string
-        playbookExplanationFeedback:
-          $ref: '#/components/schemas/PlaybookExplanationFeedback'
-        playbookGenerationFeedback:
-          $ref: '#/components/schemas/PlaybookGenerationFeedback'
-        playbookGenerationAction:
-          $ref: '#/components/schemas/PlaybookGenerationAction'
-        roleGenerationAction:
-          $ref: '#/components/schemas/RoleGenerationAction'
-        sentimentFeedback:
-          $ref: '#/components/schemas/SentimentFeedback'
-        suggestionQualityFeedback:
-          $ref: '#/components/schemas/SuggestionQualityFeedback'
-        chatFeedback:
-          $ref: '#/components/schemas/ChatFeedback'
-    ReferencedDocuments:
-      type: object
-      properties:
-        docs_url:
-          type: string
-        title:
-          type: string
-      required:
-      - docs_url
-      - title
-    SuggestionQualityFeedback:
-      type: object
-      properties:
-        prompt:
-          type: string
-          title: File Content used as context
-          description: File Content till end of task name description before cursor position.
-        providedSuggestion:
-          type: string
-          title: Provided Model suggestion
-          description: Inline suggestion from model as shared by user for given prompt.
-        expectedSuggestion:
-          type: string
-          title: Expected Model suggestion
-          description: Suggestion expected by the user.
-        additionalComment:
-          type: string
-          title: Additional Comment
-          description: Additional comment describing why the                    change was required in suggestion.
-      required:
-      - expectedSuggestion
-      - prompt
-      - providedSuggestion
-    PlaybookGenerationFeedback:
-      type: object
-      properties:
-        action:
-          enum:
-          - '0'
-          - '1'
-          - '2'
-          type: string
-          description: '* `0` - ACCEPTED
-
-            * `1` - REJECTED
-
-            * `2` - IGNORED'
-          x-spec-enum-id: 4c6feea9f2cd2c84
-        wizardId:
-          type: string
-          format: uuid
-          title: Outline ID
-          description: A UUID that identifies the UI session.
-      required:
-      - action
-      - wizardId
-    ContentMatchResponse:
-      type: object
-      properties:
-        contentmatches:
-          type: array
-          items:
-            $ref: '#/components/schemas/ContentMatchList'
-      required:
-      - contentmatches
-    GenerationRoleResponse:
-      type: object
-      properties:
-        role:
-          type: string
-          description: Name of the role.
-        files:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenerationRoleFileEntry'
-        generationId:
-          type: string
-          format: uuid
-          title: Generation ID
-          description: A UUID that identifies the particular summary data is being requested for.
-        outline:
-          type: string
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenerationWarningResponse'
-      required:
-      - files
-      - outline
-      - role
-    GenerationPlaybookResponse:
-      type: object
-      properties:
-        playbook:
+        content:
           type: string
         format:
           type: string
-        generationId:
+        explanationId:
           type: string
           format: uuid
-          title: Generation ID
-          description: A UUID that identifies the particular summary data is being requested for.
-        outline:
-          type: string
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/GenerationWarningResponse'
+          title: Explanation ID
+          description: A UUID that identifies the particular explanation data is being requested for.
       required:
+      - content
       - format
-      - outline
-      - playbook
-    ContentMatch:
+    ChatResponse:
       type: object
       properties:
-        repo_name:
+        conversation_id:
           type: string
-        repo_url:
+          description: An ID that identifies the particular conversation is being requested for.
+        referenced_documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferencedDocuments'
+        response:
           type: string
-          format: uri
-        path:
-          type: string
-        license:
-          type: string
-        data_source_description:
-          type: string
-        score:
-          type: number
-          format: double
+        truncated:
+          type: boolean
       required:
-      - data_source_description
-      - license
-      - path
-      - repo_name
-      - repo_url
-      - score
+      - conversation_id
+      - response
+      - truncated
+    Metadata:
+      type: object
+      properties:
+        ansibleExtensionVersion:
+          type: string
+          title: Ansible vscode/vscodium extension version
+          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
+          pattern: v?\d+\.\d+\.\d+
     GenerationRoleRequest:
       type: object
       properties:
@@ -1096,7 +830,142 @@ components:
           $ref: '#/components/schemas/Metadata'
       required:
       - text
-    Metadata:
+    ChatRequest:
+      type: object
+      properties:
+        conversation_id:
+          type: string
+          description: An ID that identifies the particular conversation is being requested for.
+        query:
+          type: string
+          title: Query string
+          description: A query string to be sent to LLM.
+        model:
+          type: string
+          title: Model name
+          description: A model to be used on LLM.
+        provider:
+          type: string
+          title: Provider name
+          description: A name that identifies a LLM provider.
+        no_tools:
+          type: boolean
+          title: Bypass tools
+          description: Whether to bypass all tools and MCP servers
+      required:
+      - query
+    GenerationWarningResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        details:
+          type: string
+      required:
+      - id
+      - message
+    RoleGenerationAction:
+      type: object
+      properties:
+        action:
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          - '3'
+          type: string
+          description: '* `0` - OPEN
+
+            * `1` - CLOSE_CANCEL
+
+            * `2` - TRANSITION
+
+            * `3` - CLOSE_ACCEPT'
+          x-spec-enum-id: 693e8c4f477a387e
+        wizardId:
+          type: string
+          format: uuid
+          title: wizard ID
+          description: A UUID that identifies the UI session.
+        fromPage:
+          type: integer
+          title: page of origin
+          description: A number that indicate the page of origin
+        toPage:
+          type: integer
+          title: destination page
+          description: A number that indicate the destination page
+      required:
+      - action
+      - wizardId
+    ContentMatch:
+      type: object
+      properties:
+        repo_name:
+          type: string
+        repo_url:
+          type: string
+          format: uri
+        path:
+          type: string
+        license:
+          type: string
+        data_source_description:
+          type: string
+        score:
+          type: number
+          format: double
+      required:
+      - data_source_description
+      - license
+      - path
+      - repo_name
+      - repo_url
+      - score
+    StreamingChatRequest:
+      type: object
+      properties:
+        conversation_id:
+          type: string
+          description: An ID that identifies the particular conversation is being requested for.
+        query:
+          type: string
+          title: Query string
+          description: A query string to be sent to LLM.
+        model:
+          type: string
+          title: Model name
+          description: A model to be used on LLM.
+        provider:
+          type: string
+          title: Provider name
+          description: A name that identifies a LLM provider.
+        no_tools:
+          type: boolean
+          title: Bypass tools
+          description: Whether to bypass all tools and MCP servers
+        media_type:
+          type: string
+          description: A media type to be used in the output from LLM.
+      required:
+      - query
+    CompletionResponse:
+      type: object
+      properties:
+        model:
+          type: string
+        suggestionId:
+          type: string
+          format: uuid
+        predictions:
+          type: array
+          items:
+            type: string
+      required:
+      - predictions
+    FeedbackRequest:
       type: object
       properties:
         ansibleExtensionVersion:
@@ -1104,6 +973,137 @@ components:
           title: Ansible vscode/vscodium extension version
           description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
           pattern: v?\d+\.\d+\.\d+
+        inlineSuggestion:
+          $ref: '#/components/schemas/InlineSuggestionFeedback'
+        issueFeedback:
+          $ref: '#/components/schemas/IssueFeedback'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        model:
+          type: string
+        playbookExplanationFeedback:
+          $ref: '#/components/schemas/PlaybookExplanationFeedback'
+        playbookGenerationFeedback:
+          $ref: '#/components/schemas/PlaybookGenerationFeedback'
+        playbookGenerationAction:
+          $ref: '#/components/schemas/PlaybookGenerationAction'
+        roleGenerationAction:
+          $ref: '#/components/schemas/RoleGenerationAction'
+        sentimentFeedback:
+          $ref: '#/components/schemas/SentimentFeedback'
+        suggestionQualityFeedback:
+          $ref: '#/components/schemas/SuggestionQualityFeedback'
+        chatFeedback:
+          $ref: '#/components/schemas/ChatFeedback'
+    ChatFeedback:
+      type: object
+      properties:
+        query:
+          type: string
+          title: Prompt
+          description: Prompt being sent to the LLM.
+        response:
+          $ref: '#/components/schemas/ChatResponse'
+        sentiment:
+          enum:
+          - '0'
+          - '1'
+          - NOT_LIKE
+          type: string
+          description: '* `0` - LIKE
+
+            * `1` - 1
+
+            * `NOT_LIKE` - NOT_LIKE'
+          x-spec-enum-id: e7383390620e7763
+      required:
+      - query
+      - response
+      - sentiment
+    ExplanationRequest:
+      type: object
+      properties:
+        ansibleExtensionVersion:
+          type: string
+          title: Ansible vscode/vscodium extension version
+          description: User's installed Ansible extension version, in format vMAJOR.MINOR.PATCH
+          pattern: v?\d+\.\d+\.\d+
+        content:
+          type: string
+          title: Playbook content
+          description: The playbook that needs to be explained.
+        customPrompt:
+          type: string
+          default: ''
+          title: Custom prompt
+          description: Custom prompt passed to the LLM when explaining a playbook.
+        explanationId:
+          type: string
+          format: uuid
+          title: Explanation ID
+          description: A UUID that identifies the particular explanation data is being requested for.
+        model:
+          type: string
+          default: ''
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+      required:
+      - content
+    PlaybookExplanationFeedback:
+      type: object
+      properties:
+        action:
+          enum:
+          - '0'
+          - '1'
+          - '2'
+          type: string
+          description: '* `0` - ACCEPTED
+
+            * `1` - REJECTED
+
+            * `2` - IGNORED'
+          x-spec-enum-id: 4c6feea9f2cd2c84
+        explanationId:
+          type: string
+          format: uuid
+          title: Explanation ID
+          description: A UUID that identifies the playbook explanation.
+      required:
+      - action
+      - explanationId
+    SentimentFeedback:
+      type: object
+      properties:
+        value:
+          type: integer
+          maximum: 5
+          minimum: 1
+        feedback:
+          type: string
+          title: Free form text feedback
+          description: Free form text feedback describing the reason for sentiment value.
+      required:
+      - feedback
+      - value
+    ContentMatchList:
+      type: object
+      properties:
+        contentmatch:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentMatch'
+      required:
+      - contentmatch
+    ContentMatchResponse:
+      type: object
+      properties:
+        contentmatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentMatchList'
+      required:
+      - contentmatches
   securitySchemes:
     cookieAuth:
       type: apiKey

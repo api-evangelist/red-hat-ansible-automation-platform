@@ -427,6 +427,31 @@ components:
           type: string
           readOnly: true
           description: The secret will only be plain text on generation, afterwards it will be encrypted.
+    PaginatedServiceKeyList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceKey'
     ServiceKey:
       type: object
       properties:
@@ -510,31 +535,6 @@ components:
       required:
       - mark_previous_inactive
       - service_cluster
-    PaginatedServiceKeyList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceKey'
   securitySchemes:
     Basic_Authentication:
       type: http

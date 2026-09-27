@@ -64,6 +64,22 @@ paths:
           description: ''
 components:
   schemas:
+    PulpImportCheckResponse:
+      type: object
+      description: Return the response to a PulpImport import-check call.
+      properties:
+        toc:
+          allOf:
+          - $ref: '#/components/schemas/EvaluationResponse'
+          description: Evaluation of proposed 'toc' file for PulpImport
+        path:
+          allOf:
+          - $ref: '#/components/schemas/EvaluationResponse'
+          description: Evaluation of proposed 'path' file for PulpImport
+        repo_mapping:
+          allOf:
+          - $ref: '#/components/schemas/EvaluationResponse'
+          description: Evaluation of proposed 'repo_mapping' file for PulpImport
     EvaluationResponse:
       type: object
       description: Results from evaluating a proposed parameter to a PulpImport call.
@@ -83,22 +99,6 @@ components:
       - context
       - is_valid
       - messages
-    PulpImportCheckResponse:
-      type: object
-      description: Return the response to a PulpImport import-check call.
-      properties:
-        toc:
-          allOf:
-          - $ref: '#/components/schemas/EvaluationResponse'
-          description: Evaluation of proposed 'toc' file for PulpImport
-        path:
-          allOf:
-          - $ref: '#/components/schemas/EvaluationResponse'
-          description: Evaluation of proposed 'path' file for PulpImport
-        repo_mapping:
-          allOf:
-          - $ref: '#/components/schemas/EvaluationResponse'
-          description: Evaluation of proposed 'repo_mapping' file for PulpImport
     PulpImportCheck:
       type: object
       description: 'Check validity of provided import-options.

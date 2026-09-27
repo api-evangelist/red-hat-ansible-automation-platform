@@ -453,44 +453,6 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    Upload:
-      type: object
-      description: Serializer for chunked uploads.
-      properties:
-        size:
-          type: integer
-          format: int64
-          description: The size of the upload in bytes.
-      required:
-      - size
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    UploadChunk:
-      type: object
-      description: A mixin for validating unknown serializers' fields.
-      properties:
-        file:
-          type: string
-          format: binary
-          writeOnly: true
-          description: A chunk of the uploaded file.
-        sha256:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The SHA-256 checksum of the chunk if available.
-      required:
-      - file
     NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -515,18 +477,97 @@ components:
           type: string
       required:
       - role
-    UploadChunkResponse:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    PaginatedUploadResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadResponse'
+    UploadChunk:
       type: object
       description: A mixin for validating unknown serializers' fields.
       properties:
-        offset:
-          type: integer
-          format: int64
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: A chunk of the uploaded file.
+        sha256:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The SHA-256 checksum of the chunk if available.
+      required:
+      - file
+    UploadResponse:
+      type: object
+      description: Serializer for chunked uploads.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
           readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         size:
           type: integer
           format: int64
+          description: The size of the upload in bytes.
+        completed:
+          type: string
+          format: date-time
           readOnly: true
+          description: Timestamp when upload is committed.
+      required:
+      - size
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
     UploadCommit:
       type: object
       description: A mixin for validating unknown serializers' fields.
@@ -571,66 +612,25 @@ components:
           readOnly: true
       required:
       - size
-    MyPermissionsResponse:
+    UploadChunkResponse:
       type: object
+      description: A mixin for validating unknown serializers' fields.
       properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    UploadResponse:
+        offset:
+          type: integer
+          format: int64
+          readOnly: true
+        size:
+          type: integer
+          format: int64
+          readOnly: true
+    Upload:
       type: object
       description: Serializer for chunked uploads.
       properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         size:
           type: integer
           format: int64
           description: The size of the upload in bytes.
-        completed:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp when upload is committed.
       required:
       - size
-    PaginatedUploadResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UploadResponse'

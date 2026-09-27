@@ -347,10 +347,24 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedAccessPolicy:
+    AccessPolicyResponse:
       type: object
       description: Serializer for AccessPolicy.
       properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         permissions_assignment:
           type: array
           items:
@@ -366,9 +380,19 @@ components:
           items:
             type: object
           description: List of policy statements defining the policy.
+        viewset_name:
+          type: string
+          readOnly: true
+          description: The name of ViewSet this AccessPolicy authorizes.
+        customized:
+          type: boolean
+          readOnly: true
+          description: True if the AccessPolicy has been user-modified. False otherwise.
         queryset_scoping:
           type: object
           description: A callable for performing queryset scoping. See plugin documentation for valid callables. Set to blank to turn off queryset scoping.
+      required:
+      - statements
     AccessPolicy:
       type: object
       description: Serializer for AccessPolicy.
@@ -418,24 +442,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AccessPolicyResponse'
-    AccessPolicyResponse:
+    PatchedAccessPolicy:
       type: object
       description: Serializer for AccessPolicy.
       properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         permissions_assignment:
           type: array
           items:
@@ -451,16 +461,6 @@ components:
           items:
             type: object
           description: List of policy statements defining the policy.
-        viewset_name:
-          type: string
-          readOnly: true
-          description: The name of ViewSet this AccessPolicy authorizes.
-        customized:
-          type: boolean
-          readOnly: true
-          description: True if the AccessPolicy has been user-modified. False otherwise.
         queryset_scoping:
           type: object
           description: A callable for performing queryset scoping. See plugin documentation for valid callables. Set to blank to turn off queryset scoping.
-      required:
-      - statements

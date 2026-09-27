@@ -1827,62 +1827,38 @@ paths:
           description: ''
 components:
   schemas:
-    StatesEnum:
-      enum:
-      - skipped
-      - completed
-      - failed
-      - canceled
-      type: string
-      description: '* `skipped` - skipped
-
-        * `completed` - completed
-
-        * `failed` - failed
-
-        * `canceled` - canceled'
-    ProgressReportResponse:
+    PaginatedTaskSummaryResponseList:
       type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
       properties:
-        message:
-          type: string
-          readOnly: true
-          description: The message shown to the user for the progress report.
-        code:
-          type: string
-          readOnly: true
-          description: Identifies the type of progress report'.
-        state:
-          type: string
-          readOnly: true
-          description: 'The current state of the progress report. The possible values are: ''waiting'', ''skipped'', ''running'', ''completed'', ''failed'', ''canceled'' and ''canceling''. The default is ''waiting''.'
-        total:
-          type: integer
-          format: int64
-          readOnly: true
-          description: The total count of items.
-        done:
-          type: integer
-          format: int64
-          readOnly: true
-          description: The count of items already processed. Defaults to 0.
-        suffix:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The suffix to be shown with the progress report.
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskSummaryResponse'
     ObjectRolesResponse:
       type: object
       properties:
@@ -1892,59 +1868,45 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    AsyncOperationResponse:
+    Purge:
       type: object
-      description: Serializer for asynchronous operations.
       properties:
-        task:
+        finished_before:
           type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    PaginatedTaskResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
+          format: date-time
+          default: '2026-07-19'
+          description: Purge tasks completed earlier than this timestamp. Format '%Y-%m-%d[T%H:%M:%S]'
+        states:
           type: array
           items:
-            $ref: '#/components/schemas/TaskResponse'
-    PatchedTaskCancel:
+            $ref: '#/components/schemas/StatesEnum'
+          default:
+          - completed
+          description: List of task-states to be purged. Only 'final' states are allowed.
+    NestedRoleResponse:
       type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+      description: 'Serializer to add/remove object roles to/from users/groups.
 
 
-        This ensures that all Serializers provide values for the ''pulp_href` field.
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
 
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        state:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
           type: string
-          minLength: 1
-          description: The desired state of the task. Only 'canceled' is accepted.
+      required:
+      - role
     TaskResponse:
       type: object
       properties:
@@ -2000,77 +1962,59 @@ components:
       - started_at
       - state
       - updated_at
-    PaginatedTaskSummaryResponseList:
+    AsyncOperationResponse:
       type: object
+      description: Serializer for asynchronous operations.
       properties:
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-              example: 123
-        links:
-          type: object
-          properties:
-            first:
-              type:
-              - string
-              - 'null'
-            previous:
-              type:
-              - string
-              - 'null'
-            next:
-              type:
-              - string
-              - 'null'
-            last:
-              type:
-              - string
-              - 'null'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskSummaryResponse'
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
+        task:
           type: string
+          format: uri
+          description: The href of the task.
       required:
-      - role
-    Purge:
+      - task
+    TaskSummaryResponse:
       type: object
+      description: 'TaskSerializer but without detail fields.
+
+
+        For use in /tasks/<str:pk>/ detail views.'
       properties:
-        finished_before:
+        pulp_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        state:
+          type: string
+        started_at:
           type: string
           format: date-time
-          default: '2026-07-19'
-          description: Purge tasks completed earlier than this timestamp. Format '%Y-%m-%d[T%H:%M:%S]'
-        states:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatesEnum'
-          default:
-          - completed
-          description: List of task-states to be purged. Only 'final' states are allowed.
+        finished_at:
+          type: string
+          format: date-time
+        href:
+          type: string
+          readOnly: true
+      required:
+      - finished_at
+      - name
+      - pulp_id
+      - started_at
+      - state
+    StatesEnum:
+      enum:
+      - skipped
+      - completed
+      - failed
+      - canceled
+      type: string
+      description: '* `skipped` - skipped
+
+        * `completed` - completed
+
+        * `failed` - failed
+
+        * `canceled` - canceled'
     MyPermissionsResponse:
       type: object
       properties:
@@ -2107,32 +2051,88 @@ components:
           minLength: 1
       required:
       - role
-    TaskSummaryResponse:
+    PatchedTaskCancel:
       type: object
-      description: 'TaskSerializer but without detail fields.
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
 
 
-        For use in /tasks/<str:pk>/ detail views.'
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
       properties:
-        pulp_id:
-          type: string
-          format: uuid
-        name:
-          type: string
         state:
           type: string
-        started_at:
-          type: string
-          format: date-time
-        finished_at:
-          type: string
-          format: date-time
-        href:
+          minLength: 1
+          description: The desired state of the task. Only 'canceled' is accepted.
+    PaginatedTaskResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskResponse'
+    ProgressReportResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        message:
           type: string
           readOnly: true
-      required:
-      - finished_at
-      - name
-      - pulp_id
-      - started_at
-      - state
+          description: The message shown to the user for the progress report.
+        code:
+          type: string
+          readOnly: true
+          description: Identifies the type of progress report'.
+        state:
+          type: string
+          readOnly: true
+          description: 'The current state of the progress report. The possible values are: ''waiting'', ''skipped'', ''running'', ''completed'', ''failed'', ''canceled'' and ''canceling''. The default is ''waiting''.'
+        total:
+          type: integer
+          format: int64
+          readOnly: true
+          description: The total count of items.
+        done:
+          type: integer
+          format: int64
+          readOnly: true
+          description: The count of items already processed. Defaults to 0.
+        suffix:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The suffix to be shown with the progress report.

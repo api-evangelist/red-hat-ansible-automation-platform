@@ -531,45 +531,39 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedSystemJobTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SystemJobTemplate'
-    ScheduleRequest:
+    Schedule:
       type: object
       properties:
         rrule:
           type:
           - string
           - 'null'
-          minLength: 1
           description: A value representing the schedules iCal recurrence rule.
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
         name:
           type:
           - string
           - 'null'
-          minLength: 1
           maxLength: 512
         description:
           type:
@@ -667,6 +661,35 @@ components:
           - 'null'
           default: true
           description: Enables processing of this schedule.
+        dtstart:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The first occurrence of the schedule occurs on or after this time.
+        dtend:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
+        next_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The next time that the scheduled action will run.
+        timezone:
+          type: string
+          readOnly: true
+          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
+        until:
+          type: string
+          readOnly: true
+          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
       required:
       - name
       - rrule
@@ -852,6 +875,213 @@ components:
           readOnly: true
       required:
       - name
+    PaginatedScheduleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+    ScheduleRequest:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A value representing the schedules iCal recurrence rule.
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        unified_job_template:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Enables processing of this schedule.
+      required:
+      - name
+      - rrule
+      - unified_job_template
+    NotificationTemplateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
     NotificationTemplate:
       type: object
       properties:
@@ -939,6 +1169,56 @@ components:
       - name
       - notification_type
       - organization
+    PaginatedSystemJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemJobList'
+    PaginatedSystemJobTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemJobTemplate'
     SystemJobTemplate:
       type: object
       properties:
@@ -1080,283 +1360,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NotificationTemplate'
-    NotificationTemplateRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        notification_configuration:
-          default: {}
-        messages:
-          default:
-            started: null
-            success: null
-            error: null
-            workflow_approval: null
-          description: Optional custom messages for notification template.
-      required:
-      - name
-      - notification_type
-      - organization
-    Schedule:
-      type: object
-      properties:
-        rrule:
-          type:
-          - string
-          - 'null'
-          description: A value representing the schedules iCal recurrence rule.
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        extra_data:
-          default: {}
-        inventory:
-          type:
-          - integer
-          - 'null'
-          description: Inventory applied as a prompt, assuming job template prompts for inventory
-        scm_branch:
-          type:
-          - string
-          - 'null'
-        job_type:
-          enum:
-          - run
-          - check
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-        job_tags:
-          type:
-          - string
-          - 'null'
-        skip_tags:
-          type:
-          - string
-          - 'null'
-        limit:
-          type:
-          - string
-          - 'null'
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          - null
-          type:
-          - integer
-          - 'null'
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        forks:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        job_slice_count:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        timeout:
-          type:
-          - integer
-          - 'null'
-        unified_job_template:
-          type: integer
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Enables processing of this schedule.
-        dtstart:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The first occurrence of the schedule occurs on or after this time.
-        dtend:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
-        next_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The next time that the scheduled action will run.
-        timezone:
-          type: string
-          readOnly: true
-          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
-        until:
-          type: string
-          readOnly: true
-          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
-      required:
-      - name
-      - rrule
-      - unified_job_template
-    PaginatedSystemJobListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SystemJobList'
-    PaginatedScheduleList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Schedule'

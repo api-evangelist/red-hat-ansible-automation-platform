@@ -258,31 +258,33 @@ paths:
           description: ''
 components:
   schemas:
-    Paginatedansible.RoleResponseList:
+    ansible.Role:
       type: object
-      required:
-      - count
-      - results
+      description: A serializer for Role versions.
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
+        artifact:
+          type: string
           format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
+          description: Artifact file representing the physical content
+        repository:
+          type: string
           format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.RoleResponse'
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        version:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        namespace:
+          type: string
+          minLength: 1
+      required:
+      - artifact
+      - name
+      - namespace
+      - version
     ansible.RoleResponse:
       type: object
       description: A serializer for Role versions.
@@ -316,30 +318,28 @@ components:
       - name
       - namespace
       - version
-    ansible.Role:
+    Paginatedansible.RoleResponseList:
       type: object
-      description: A serializer for Role versions.
-      properties:
-        artifact:
-          type: string
-          format: uri
-          description: Artifact file representing the physical content
-        repository:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of a repository the new content unit should be associated with.
-        version:
-          type: string
-          minLength: 1
-        name:
-          type: string
-          minLength: 1
-        namespace:
-          type: string
-          minLength: 1
       required:
-      - artifact
-      - name
-      - namespace
-      - version
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.RoleResponse'

@@ -673,7 +673,7 @@ paths:
       x-summary-source: derived
   /teams/:
     get:
-      operationId: teams_list
+      operationId: getTeams
       description: List all teams.
       parameters:
       - in: query
@@ -721,11 +721,13 @@ paths:
           description: Return a list of teams.
       summary: Teams list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_list
     servers:
     - url: /api/eda/v1
   /teams/{id}/:
     get:
-      operationId: teams_retrieve
+      operationId: getTeamsById
       description: Get team by its id
       parameters:
       - in: path
@@ -747,11 +749,13 @@ paths:
           description: Return a team by its id.
       summary: Teams retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_retrieve
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/teams/:
     get:
-      operationId: teams_list
+      operationId: getApiGatewayV1Teams
       description: API endpoint that allows groups to be viewed or edited.
       parameters:
       - in: query
@@ -923,8 +927,10 @@ paths:
       x-ai-description: List organization subdivisions that group users for bulk permission assignment and role-based access control
       summary: Teams list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_list
     post:
-      operationId: teams_create
+      operationId: postApiGatewayV1Teams
       description: API endpoint that allows groups to be viewed or edited.
       tags:
       - Teams
@@ -954,9 +960,11 @@ paths:
       x-ai-description: Create a organization subdivisions that group user for bulk permission assignment and role-based access control
       summary: Teams create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_create
   /api/gateway/v1/teams/{id}/:
     get:
-      operationId: teams_retrieve
+      operationId: getApiGatewayV1TeamsById
       description: API endpoint that allows groups to be viewed or edited.
       parameters:
       - in: path
@@ -981,8 +989,10 @@ paths:
       x-ai-description: Retrieve a organization subdivisions that group user for bulk permission assignment and role-based access control
       summary: Teams retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_retrieve
     put:
-      operationId: teams_update
+      operationId: putApiGatewayV1TeamsById
       description: API endpoint that allows groups to be viewed or edited.
       parameters:
       - in: path
@@ -1019,8 +1029,10 @@ paths:
       x-ai-description: Update a organization subdivisions that group user for bulk permission assignment and role-based access control
       summary: Teams update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_update
     patch:
-      operationId: teams_partial_update
+      operationId: patchApiGatewayV1TeamsById
       description: API endpoint that allows groups to be viewed or edited.
       parameters:
       - in: path
@@ -1056,8 +1068,10 @@ paths:
       x-ai-description: Update a organization subdivisions that group user for bulk permission assignment and role-based access control
       summary: Teams partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_partial_update
     delete:
-      operationId: teams_destroy
+      operationId: deleteApiGatewayV1TeamsById
       description: API endpoint that allows groups to be viewed or edited.
       parameters:
       - in: path
@@ -1078,6 +1092,8 @@ paths:
       x-ai-description: Delete a organization subdivisions that group user for bulk permission assignment and role-based access control
       summary: Teams destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_destroy
   /api/gateway/v1/teams/{id}/admins/:
     get:
       operationId: teams_admins_list
@@ -1477,7 +1493,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/teams/{id}/users/:
     get:
-      operationId: teams_users_list
+      operationId: getApiGatewayV1TeamsByIdUsers
       description: 'Manage User objects in the ''users'' relationship of this particular Team.
 
 
@@ -1768,6 +1784,8 @@ paths:
       x-ai-description: List all users for a team
       summary: Teams users list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: teams_users_list
   /api/gateway/v1/teams/{id}/users/associate/:
     post:
       operationId: teams_users_associate_create
@@ -1874,322 +1892,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    TeamCredentialSerializerCreateRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        team:
-          type:
-          - integer
-          - 'null'
-          writeOnly: true
-          description: Write-only field used to add team to owner role. If provided, do not give either user or organization. Only valid for creation.
-      required:
-      - credential_type
-      - name
-    PaginatedRoleList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
-    Role:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        description:
-          type: string
-          readOnly: true
-    PaginatedTeamCredentialSerializerCreateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TeamCredentialSerializerCreate'
-    Team:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'
-    TeamCredentialSerializerCreate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        managed:
-          type: boolean
-          readOnly: true
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        kind:
-          type: string
-          readOnly: true
-        cloud:
-          type: string
-          readOnly: true
-        kubernetes:
-          type: string
-          readOnly: true
-      required:
-      - credential_type
-      - name
     User:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        username:
-          type:
-          - string
-          - 'null'
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-        last_login:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-      required:
-      - username
-    RoleSerializerWithParentAccess:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        description:
-          type: string
-          readOnly: true
-    ResourceAccessListElement:
       type: object
       properties:
         id:
@@ -2283,7 +1986,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Team'
-    ActivityStream:
+    TeamRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    Team:
       type: object
       properties:
         id:
@@ -2301,65 +2023,28 @@ components:
         summary_fields:
           type: string
           readOnly: true
-        timestamp:
+        created:
           type: string
-          format: date-time
           readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
+        modified:
+          type: string
+          readOnly: true
+        name:
           type:
           - string
           - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
+          maxLength: 512
+        description:
           type:
           - string
           - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
+          default: ''
+        organization:
+          type: integer
       required:
-      - object1
-      - object2
-      - operation
-    PaginatedProjectList:
+      - name
+      - organization
+    PaginatedResourceAccessListElementList:
       type: object
       required:
       - count
@@ -2383,7 +2068,32 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Project'
+            $ref: '#/components/schemas/ResourceAccessListElement'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     Project:
       type: object
       properties:
@@ -2647,7 +2357,7 @@ components:
           description: Field used to change the password.
       required:
       - username
-    PaginatedUserList:
+    PaginatedTeamCredentialSerializerCreateList:
       type: object
       required:
       - count
@@ -2671,7 +2381,325 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: '#/components/schemas/TeamCredentialSerializerCreate'
+    TeamCredentialSerializerCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
+          type: string
+          readOnly: true
+        cloud:
+          type: string
+          readOnly: true
+        kubernetes:
+          type: string
+          readOnly: true
+      required:
+      - credential_type
+      - name
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    RoleSerializerWithParentAccess:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    PatchedTeamRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+    ResourceAccessListElement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    TeamCredentialSerializerCreateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        team:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: Write-only field used to add team to owner role. If provided, do not give either user or organization. Only valid for creation.
+      required:
+      - credential_type
+      - name
+    PaginatedProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
     PaginatedRoleSerializerWithParentAccessList:
       type: object
       required:
@@ -2697,42 +2725,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RoleSerializerWithParentAccess'
-    PatchedTeamRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-    TeamRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
-    PaginatedResourceAccessListElementList:
+    PaginatedRoleList:
       type: object
       required:
       - count
@@ -2756,7 +2749,32 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ResourceAccessListElement'
+            $ref: '#/components/schemas/Role'
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
     TeamDetail:
       type: object
       properties:
@@ -2807,6 +2825,22 @@ components:
       - name
       - organization
       - resource
+    OrganizationRef:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The organization description.
+      required:
+      - id
+      - name
     Team_2:
       type: object
       properties:
@@ -2859,22 +2893,6 @@ components:
       - name
       - organization_id
       - resource
-    OrganizationRef:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        description:
-          type: string
-          description: The organization description.
-      required:
-      - id
-      - name
     PaginatedTeamList_2:
       type: object
       properties:
@@ -3016,6 +3034,67 @@ components:
           description: Indicates if this user is managed by the system. It cannot be modified once created.
       required:
       - username
+    PatchedTeam:
+      type: object
+      description: 'Class to be used by apps to check permissions to related objects
+
+
+        This is a core part of integrating permission checks with REST APIs.
+
+        Full enablement of checks is accomplished by this plus
+
+        the permission class.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        organization:
+          type: integer
+          readOnly: true
+          description: The organization of this team.
+        description:
+          type: string
+          description: The team description.
     UserAssociate:
       type: object
       description: Serializer used for adding objects to a many-to-many relationship
@@ -3025,17 +3104,6 @@ components:
           items:
             type: integer
           description: A list of users to add to this relationship.
-      required:
-      - instances
-    UserDisassociate:
-      type: object
-      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of users to remove from this relationship.
       required:
       - instances
     Team_3:
@@ -3101,67 +3169,17 @@ components:
       required:
       - name
       - organization
-    PatchedTeam:
+    UserDisassociate:
       type: object
-      description: 'Class to be used by apps to check permissions to related objects
-
-
-        This is a core part of integrating permission checks with REST APIs.
-
-        Full enablement of checks is accomplished by this plus
-
-        the permission class.'
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
       properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        organization:
-          type: integer
-          readOnly: true
-          description: The organization of this team.
-        description:
-          type: string
-          description: The team description.
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of users to remove from this relationship.
+      required:
+      - instances
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

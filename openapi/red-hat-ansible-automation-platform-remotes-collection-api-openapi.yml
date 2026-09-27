@@ -762,38 +762,110 @@ paths:
           description: ''
 components:
   schemas:
-    AnsibleRepositoryResponse:
+    ansible.CollectionRemoteResponse:
       type: object
+      description: A serializer for Collection Remotes.
       properties:
+        pk:
+          type: string
+          format: uuid
+          readOnly: true
+          title: Pulp id
         name:
           type: string
-        description:
+          readOnly: true
+        url:
+          type: string
+          description: The URL of an external content source.
+        auth_url:
           type:
           - string
           - 'null'
-        next_version:
-          type: integer
-          format: int64
-          maximum: 2147483647
-          minimum: 0
-        distributions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnsibleDistributionResponse'
-          readOnly: true
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          description: The string version of Collection requirements yaml.
         created_at:
           type: string
           format: date-time
         updated_at:
           type: string
           format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          description: Remote user.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
         last_sync_task:
           type: string
           readOnly: true
+        repositories:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsibleRepositoryResponse'
+          readOnly: true
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          description: User for proxy authentication.
+        write_only_fields:
+          type: array
+          items: {}
+          readOnly: true
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
       required:
-      - created_at
-      - name
-      - updated_at
+      - url
     AnsibleDistributionResponse:
       type: object
       properties:
@@ -817,20 +889,6 @@ components:
       - created_at
       - name
       - updated_at
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
     SetLabel:
       type: object
       description: Serializer for synchronously setting a label.
@@ -846,6 +904,207 @@ components:
       required:
       - key
       - value
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    Patchedansible.CollectionRemote:
+      type: object
+      description: A serializer for Collection Remotes.
+      properties:
+        url:
+          type: string
+          minLength: 1
+          description: The URL of an external content source.
+        auth_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The URL to receive a session token from, e.g. used with Automation Hub.
+          maxLength: 255
+        token:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          maxLength: 2000
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/PolicyDb6Enum'
+          default: immediate
+          description: 'The policy to use when downloading content.
+
+
+            * `immediate` - immediate
+
+            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+        requirements_file:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The string version of Collection requirements yaml.
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Remote user.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Remote password.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded client certificate used for authentication.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: User for proxy authentication.
+        proxy_password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: Password for proxy authentication.
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        signed_only:
+          type: boolean
+          description: Sync only collections that have a signature
     ansible.CollectionRemote:
       type: object
       description: A serializer for Collection Remotes.
@@ -962,28 +1221,42 @@ components:
           description: Sync only collections that have a signature
       required:
       - url
-    AsyncOperationResponse:
+    MyPermissionsResponse:
       type: object
-      description: Serializer for asynchronous operations.
       properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
+        permissions:
+          type: array
+          items:
+            type: string
       required:
-      - task
-    UnsetLabelResponse:
+      - permissions
+    NestedRole:
       type: object
-      description: Serializer for synchronously setting a label.
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        key:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
           type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
+          minLength: 1
       required:
-      - key
+      - role
     Paginatedansible.CollectionRemoteResponseList:
       type: object
       properties:
@@ -1016,308 +1289,35 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ansible.CollectionRemoteResponse'
-    ObjectRolesResponse:
+    AnsibleRepositoryResponse:
       type: object
       properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    Patchedansible.CollectionRemote:
-      type: object
-      description: A serializer for Collection Remotes.
-      properties:
-        url:
-          type: string
-          minLength: 1
-          description: The URL of an external content source.
-        auth_url:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: The URL to receive a session token from, e.g. used with Automation Hub.
-          maxLength: 255
-        token:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          maxLength: 2000
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/PolicyDb6Enum'
-          default: immediate
-          description: 'The policy to use when downloading content.
-
-
-            * `immediate` - immediate
-
-            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
-        requirements_file:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: The string version of Collection requirements yaml.
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Remote user.
-        password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: Remote password.
-        tls_validation:
-          type: boolean
-          description: If True, TLS peer validation must be performed.
-        client_key:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: A PEM encoded private key used for authentication.
-        client_cert:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: A PEM encoded client certificate used for authentication.
-        ca_cert:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
-        download_concurrency:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of simultaneous connections. If not set then the default value will be used.
-          minimum: 1
-        proxy_url:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: 'The proxy URL. Format: scheme://host:port'
-        proxy_username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: User for proxy authentication.
-        proxy_password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: Password for proxy authentication.
-        rate_limit:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Limits requests per second for each concurrent downloader
-        signed_only:
-          type: boolean
-          description: Sync only collections that have a signature
-    ansible.CollectionRemoteResponse:
-      type: object
-      description: A serializer for Collection Remotes.
-      properties:
-        pk:
-          type: string
-          format: uuid
-          readOnly: true
-          title: Pulp id
         name:
           type: string
+        description:
+          type:
+          - string
+          - 'null'
+        next_version:
+          type: integer
+          format: int64
+          maximum: 2147483647
+          minimum: 0
+        distributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsibleDistributionResponse'
           readOnly: true
-        url:
-          type: string
-          description: The URL of an external content source.
-        auth_url:
-          type:
-          - string
-          - 'null'
-          description: The URL to receive a session token from, e.g. used with Automation Hub.
-          maxLength: 255
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/PolicyDb6Enum'
-          default: immediate
-          description: 'The policy to use when downloading content.
-
-
-            * `immediate` - immediate
-
-            * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
-        requirements_file:
-          type:
-          - string
-          - 'null'
-          description: The string version of Collection requirements yaml.
         created_at:
           type: string
           format: date-time
         updated_at:
           type: string
           format: date-time
-        username:
-          type:
-          - string
-          - 'null'
-          description: Remote user.
-        tls_validation:
-          type: boolean
-          description: If True, TLS peer validation must be performed.
-        client_cert:
-          type:
-          - string
-          - 'null'
-          description: A PEM encoded client certificate used for authentication.
-        ca_cert:
-          type:
-          - string
-          - 'null'
-          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
         last_sync_task:
           type: string
           readOnly: true
-        repositories:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnsibleRepositoryResponse'
-          readOnly: true
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        download_concurrency:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of simultaneous connections. If not set then the default value will be used.
-          minimum: 1
-        proxy_url:
-          type:
-          - string
-          - 'null'
-          description: 'The proxy URL. Format: scheme://host:port'
-        proxy_username:
-          type:
-          - string
-          - 'null'
-          description: User for proxy authentication.
-        write_only_fields:
-          type: array
-          items: {}
-          readOnly: true
-        rate_limit:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Limits requests per second for each concurrent downloader
-        signed_only:
-          type: boolean
-          description: Sync only collections that have a signature
       required:
-      - url
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    PolicyDb6Enum:
-      enum:
-      - immediate
-      - When syncing, download all metadata and content now.
-      type: string
-      description: '* `immediate` - immediate
-
-        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
+      - created_at
+      - name
+      - updated_at

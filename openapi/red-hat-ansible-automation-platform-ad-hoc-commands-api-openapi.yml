@@ -423,6 +423,12 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    UnifiedJobStdout:
+      type: object
+      properties:
+        result_stdout:
+          type: string
+          readOnly: true
     PaginatedAdHocCommandEventList:
       type: object
       required:
@@ -448,7 +454,288 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdHocCommandEvent'
-    PaginatedNotificationList:
+    AdHocCommandList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        execution_node:
+          type: string
+          readOnly: true
+          description: The node the job executed on.
+        controller_node:
+          type: string
+          readOnly: true
+          description: The instance that managed the execution environment.
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential:
+          type:
+          - integer
+          - 'null'
+        module_name:
+          enum:
+          - command
+          - shell
+          - yum
+          - apt
+          - apt_key
+          - apt_repository
+          - apt_rpm
+          - service
+          - group
+          - user
+          - mount
+          - ping
+          - selinux
+          - setup
+          - win_ping
+          - win_service
+          - win_updates
+          - win_group
+          - win_user
+          type: string
+          description: '* `command` - command
+
+            * `shell` - shell
+
+            * `yum` - yum
+
+            * `apt` - apt
+
+            * `apt_key` - apt_key
+
+            * `apt_repository` - apt_repository
+
+            * `apt_rpm` - apt_rpm
+
+            * `service` - service
+
+            * `group` - group
+
+            * `user` - user
+
+            * `mount` - mount
+
+            * `ping` - ping
+
+            * `selinux` - selinux
+
+            * `setup` - setup
+
+            * `win_ping` - win_ping
+
+            * `win_service` - win_service
+
+            * `win_updates` - win_updates
+
+            * `win_group` - win_group
+
+            * `win_user` - win_user'
+          x-spec-enum-id: 857230cdbb58eda2
+          default: command
+        module_args:
+          type:
+          - string
+          - 'null'
+          default: ''
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+    PaginatedAdHocCommandListList:
       type: object
       required:
       - count
@@ -472,7 +759,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Notification'
+            $ref: '#/components/schemas/AdHocCommandList'
     AdHocCommandListRequest:
       type: object
       properties:
@@ -618,62 +905,125 @@ components:
           - boolean
           - 'null'
           default: false
-    UnifiedJobStdout:
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    Notification:
       type: object
       properties:
-        result_stdout:
+        id:
+          type: integer
+          readOnly: true
+        type:
           type: string
           readOnly: true
-    PaginatedAdHocCommandListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        notification_template:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdHocCommandList'
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+          readOnly: true
+        error:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - pending
+          - successful
+          - failed
+          type: string
+          description: '* `pending` - Pending
+
+            * `successful` - Successful
+
+            * `failed` - Failed'
+          x-spec-enum-id: 91d6a0571e1ae0e7
+          readOnly: true
+        notifications_sent:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        recipients:
+          type: string
+          readOnly: true
+        subject:
+          type: string
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+          description: Notification body
+      required:
+      - notification_type
     AdHocCommandDetail:
       type: object
       properties:
@@ -973,100 +1323,6 @@ components:
         host_status_counts:
           readOnly: true
           description: Playbook stats from the Ansible playbook_on_stats event.
-    Notification:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        notification_template:
-          type: integer
-          readOnly: true
-        error:
-          type: string
-          readOnly: true
-        status:
-          enum:
-          - pending
-          - successful
-          - failed
-          type: string
-          description: '* `pending` - Pending
-
-            * `successful` - Successful
-
-            * `failed` - Failed'
-          x-spec-enum-id: 91d6a0571e1ae0e7
-          readOnly: true
-        notifications_sent:
-          type: integer
-          readOnly: true
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        recipients:
-          type: string
-          readOnly: true
-        subject:
-          type: string
-          readOnly: true
-        body:
-          type: string
-          readOnly: true
-          description: Notification body
-      required:
-      - notification_type
     ActivityStream:
       type: object
       properties:
@@ -1255,284 +1511,28 @@ components:
           readOnly: true
       required:
       - event
-    AdHocCommandList:
+    PaginatedActivityStreamList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          readOnly: true
-        launch_type:
-          enum:
-          - manual
-          - relaunch
-          - callback
-          - scheduled
-          - dependency
-          - workflow
-          - webhook
-          - sync
-          - scm
-          type: string
-          description: '* `manual` - Manual
-
-            * `relaunch` - Relaunch
-
-            * `callback` - Callback
-
-            * `scheduled` - Scheduled
-
-            * `dependency` - Dependency
-
-            * `workflow` - Workflow
-
-            * `webhook` - Webhook
-
-            * `sync` - Sync
-
-            * `scm` - SCM Update'
-          x-spec-enum-id: e5bed25c2e652da3
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled'
-          x-spec-enum-id: 6021859c28387823
-          readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        failed:
-          type: boolean
-          readOnly: true
-        started:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
           - string
           - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job was queued for starting.
-        finished:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job finished execution.
-        canceled_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time when the cancel request was sent.
-        elapsed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
-          readOnly: true
-          description: Elapsed time in seconds that the job ran.
-        job_explanation:
-          type: string
-          readOnly: true
-          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
-        execution_node:
-          type: string
-          readOnly: true
-          description: The node the job executed on.
-        controller_node:
-          type: string
-          readOnly: true
-          description: The instance that managed the execution environment.
-        launched_by:
-          type: string
-          readOnly: true
-        work_unit_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The Receptor work unit ID associated with this job.
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential:
-          type:
-          - integer
-          - 'null'
-        module_name:
-          enum:
-          - command
-          - shell
-          - yum
-          - apt
-          - apt_key
-          - apt_repository
-          - apt_rpm
-          - service
-          - group
-          - user
-          - mount
-          - ping
-          - selinux
-          - setup
-          - win_ping
-          - win_service
-          - win_updates
-          - win_group
-          - win_user
-          type: string
-          description: '* `command` - command
-
-            * `shell` - shell
-
-            * `yum` - yum
-
-            * `apt` - apt
-
-            * `apt_key` - apt_key
-
-            * `apt_repository` - apt_repository
-
-            * `apt_rpm` - apt_rpm
-
-            * `service` - service
-
-            * `group` - group
-
-            * `user` - user
-
-            * `mount` - mount
-
-            * `ping` - ping
-
-            * `selinux` - selinux
-
-            * `setup` - setup
-
-            * `win_ping` - win_ping
-
-            * `win_service` - win_service
-
-            * `win_updates` - win_updates
-
-            * `win_group` - win_group
-
-            * `win_user` - win_user'
-          x-spec-enum-id: 857230cdbb58eda2
-          default: command
-        module_args:
-          type:
-          - string
-          - 'null'
-          default: ''
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'

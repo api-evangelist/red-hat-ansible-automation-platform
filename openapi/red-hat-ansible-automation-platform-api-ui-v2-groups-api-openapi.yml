@@ -210,6 +210,17 @@ paths:
           description: No response body
 components:
   schemas:
+    Group:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name
+          maxLength: 150
+      required:
+      - name
     GroupResponse:
       type: object
       description: Serializer for Group.
@@ -228,24 +239,6 @@ components:
           readOnly: true
       required:
       - name
-    Group:
-      type: object
-      description: Serializer for Group.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Name
-          maxLength: 150
-      required:
-      - name
-    PatchedGroup:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 150
     PaginatedGroupResponseList:
       type: object
       properties:
@@ -278,3 +271,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GroupResponse'
+    PatchedGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 150

@@ -214,21 +214,14 @@ paths:
           description: No response body
 components:
   schemas:
-    OrganizationResponse:
+    PatchedOrganization:
       type: object
       properties:
-        id:
-          type: string
-          readOnly: true
         name:
           type: string
+          minLength: 1
           description: The name of this resource.
           maxLength: 512
-        resource:
-          type: string
-          readOnly: true
-      required:
-      - name
     PaginatedOrganizationResponseList:
       type: object
       required:
@@ -254,14 +247,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrganizationResponse'
-    PatchedOrganization:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The name of this resource.
-          maxLength: 512
     Organization:
       type: object
       properties:
@@ -270,5 +255,20 @@ components:
           minLength: 1
           description: The name of this resource.
           maxLength: 512
+      required:
+      - name
+    OrganizationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        resource:
+          type: string
+          readOnly: true
       required:
       - name

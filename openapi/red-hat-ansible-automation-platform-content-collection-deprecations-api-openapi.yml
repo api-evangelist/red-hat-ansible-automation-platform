@@ -189,6 +189,61 @@ paths:
           description: ''
 components:
   schemas:
+    Paginatedansible.AnsibleCollectionDeprecatedResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.AnsibleCollectionDeprecatedResponse'
+    ansible.AnsibleCollectionDeprecated:
+      type: object
+      description: A serializer for Ansible Collection Deprecations.
+      properties:
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        name:
+          type: string
+          minLength: 1
+          description: The name of the Collection.
+        namespace:
+          type: string
+          minLength: 1
+          description: The namespace of the Collection.
+      required:
+      - name
+      - namespace
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     ansible.AnsibleCollectionDeprecatedResponse:
       type: object
       description: A serializer for Ansible Collection Deprecations.
@@ -216,58 +271,3 @@ components:
       required:
       - name
       - namespace
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    ansible.AnsibleCollectionDeprecated:
-      type: object
-      description: A serializer for Ansible Collection Deprecations.
-      properties:
-        repository:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of a repository the new content unit should be associated with.
-        name:
-          type: string
-          minLength: 1
-          description: The name of the Collection.
-        namespace:
-          type: string
-          minLength: 1
-          description: The namespace of the Collection.
-      required:
-      - name
-      - namespace
-    Paginatedansible.AnsibleCollectionDeprecatedResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.AnsibleCollectionDeprecatedResponse'

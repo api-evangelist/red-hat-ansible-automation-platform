@@ -388,47 +388,6 @@ components:
           description: The href of the task.
       required:
       - task
-    ansible.CollectionVersion:
-      type: object
-      description: A serializer for CollectionVersion Content.
-      properties:
-        upload:
-          type: string
-          format: uri
-          writeOnly: true
-          description: An uncommitted upload that may be turned into the content unit.
-        artifact:
-          type: string
-          format: uri
-          description: Artifact file representing the physical content
-        repository:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of a repository the new content unit should be associated with.
-        file:
-          type: string
-          format: binary
-          writeOnly: true
-          description: An uploaded file that may be turned into the content unit.
-        expected_name:
-          type: string
-          writeOnly: true
-          minLength: 1
-          description: The name of the collection.
-          maxLength: 64
-        expected_namespace:
-          type: string
-          writeOnly: true
-          minLength: 1
-          description: The namespace of the collection.
-          maxLength: 64
-        expected_version:
-          type: string
-          writeOnly: true
-          minLength: 1
-          description: The version of the collection.
-          maxLength: 128
     Paginatedansible.CollectionVersionResponseList:
       type: object
       required:
@@ -599,3 +558,44 @@ components:
           type: string
           readOnly: true
           description: The name of the Tag.
+    ansible.CollectionVersion:
+      type: object
+      description: A serializer for CollectionVersion Content.
+      properties:
+        upload:
+          type: string
+          format: uri
+          writeOnly: true
+          description: An uncommitted upload that may be turned into the content unit.
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: An uploaded file that may be turned into the content unit.
+        expected_name:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The name of the collection.
+          maxLength: 64
+        expected_namespace:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The namespace of the collection.
+          maxLength: 64
+        expected_version:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The version of the collection.
+          maxLength: 128

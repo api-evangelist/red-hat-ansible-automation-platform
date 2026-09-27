@@ -940,7 +940,7 @@ paths:
       x-summary-source: derived
   /service-index/:
     get:
-      operationId: service_index_retrieve
+      operationId: getServiceIndex
       description: Link other resource registry endpoints
       tags:
       - Service Index
@@ -951,11 +951,13 @@ paths:
           description: No response body
       summary: Service index retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_retrieve
     servers:
     - url: /api/eda/v1
   /service-index/metadata/:
     get:
-      operationId: service_index_metadata_retrieve
+      operationId: getServiceIndexMetadata
       tags:
       - Service Index
       security:
@@ -965,11 +967,13 @@ paths:
           description: No response body
       summary: Service index metadata retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_metadata_retrieve
     servers:
     - url: /api/eda/v1
   /service-index/object-delete/:
     post:
-      operationId: service_index_object_delete_create
+      operationId: postServiceIndexObjectDelete
       description: 'Delete all role assignments (user and team) for a specific resource.
 
 
@@ -992,11 +996,13 @@ paths:
       x-ai-description: Remove all role assignments for a resource indexed from connected AAP services
       summary: Service index object delete create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_object_delete_create
     servers:
     - url: /api/eda/v1
   /service-index/resource-types/:
     get:
-      operationId: service_index_resource_types_list
+      operationId: getServiceIndexResourceTypes
       description: Index of the resource types that are configured in the system.
       parameters:
       - name: page
@@ -1024,11 +1030,13 @@ paths:
           description: ''
       summary: Service index resource types list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resource_types_list
     servers:
     - url: /api/eda/v1
   /service-index/resource-types/{name}/:
     get:
-      operationId: service_index_resource_types_retrieve
+      operationId: getServiceIndexResourceTypesByName
       description: Index of the resource types that are configured in the system.
       parameters:
       - in: path
@@ -1050,11 +1058,13 @@ paths:
           description: ''
       summary: Service index resource types retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resource_types_retrieve
     servers:
     - url: /api/eda/v1
   /service-index/resource-types/{name}/manifest/:
     get:
-      operationId: service_index_resource_types_manifest_retrieve
+      operationId: getServiceIndexResourceTypesByNameManifest
       description: Returns the as a stream the csv of resource_id,hash for a given resource type.
       parameters:
       - in: path
@@ -1076,11 +1086,13 @@ paths:
           description: ''
       summary: Service index resource types manifest retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resource_types_manifest_retrieve
     servers:
     - url: /api/eda/v1
   /service-index/resources/:
     get:
-      operationId: service_index_resources_list
+      operationId: getServiceIndexResources
       description: 'List all resources. Accepts an optional ''extra_fields'' query parameter (comma-separated) to include additional fields in the response. Supported values: resource_data.'
       parameters:
       - name: page
@@ -1108,8 +1120,10 @@ paths:
           description: ''
       summary: Service index resources list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_list
     post:
-      operationId: service_index_resources_create
+      operationId: postServiceIndexResources
       description: Index of all the resources in the system.
       tags:
       - Service Index
@@ -1136,11 +1150,13 @@ paths:
           description: ''
       summary: Service index resources create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_create
     servers:
     - url: /api/eda/v1
   /service-index/resources/{ansible_id}/:
     get:
-      operationId: service_index_resources_retrieve
+      operationId: getServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -1163,8 +1179,10 @@ paths:
           description: ''
       summary: Service index resources retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_retrieve
     put:
-      operationId: service_index_resources_update
+      operationId: putServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -1199,8 +1217,10 @@ paths:
           description: ''
       summary: Service index resources update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_update
     patch:
-      operationId: service_index_resources_partial_update
+      operationId: patchServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -1234,8 +1254,10 @@ paths:
           description: ''
       summary: Service index resources partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_partial_update
     delete:
-      operationId: service_index_resources_destroy
+      operationId: deleteServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -1254,11 +1276,13 @@ paths:
           description: No response body
       summary: Service index resources destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_destroy
     servers:
     - url: /api/eda/v1
   /service-index/role-permissions/:
     get:
-      operationId: service_index_role_permissions_list
+      operationId: getServiceIndexRolePermissions
       description: List of permissions managed with the RBAC system
       parameters:
       - name: page
@@ -1292,11 +1316,13 @@ paths:
           description: ''
       summary: Service index role permissions list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_permissions_list
     servers:
     - url: /api/eda/v1
   /service-index/role-team-assignments/:
     get:
-      operationId: service_index_role_team_assignments_list
+      operationId: getServiceIndexRoleTeamAssignments
       description: List of team role assignments for cross-service communication
       parameters:
       - name: page
@@ -1330,11 +1356,13 @@ paths:
           description: ''
       summary: Service index role team assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_team_assignments_list
     servers:
     - url: /api/eda/v1
   /service-index/role-team-assignments/assign/:
     post:
-      operationId: service_index_role_team_assignments_assign_create
+      operationId: postServiceIndexRoleTeamAssignmentsAssign
       description: List of team role assignments for cross-service communication
       tags:
       - Service Index
@@ -1361,11 +1389,13 @@ paths:
           description: ''
       summary: Service index role team assignments assign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_team_assignments_assign_create
     servers:
     - url: /api/eda/v1
   /service-index/role-team-assignments/unassign/:
     post:
-      operationId: service_index_role_team_assignments_unassign_create
+      operationId: postServiceIndexRoleTeamAssignmentsUnassign
       description: List of team role assignments for cross-service communication
       tags:
       - Service Index
@@ -1392,11 +1422,13 @@ paths:
           description: ''
       summary: Service index role team assignments unassign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_team_assignments_unassign_create
     servers:
     - url: /api/eda/v1
   /service-index/role-types/:
     get:
-      operationId: service_index_role_types_list
+      operationId: getServiceIndexRoleTypes
       description: List of types registered with the RBAC system, or loaded in from external system
       parameters:
       - name: page
@@ -1430,11 +1462,13 @@ paths:
           description: ''
       summary: Service index role types list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_types_list
     servers:
     - url: /api/eda/v1
   /service-index/role-user-assignments/:
     get:
-      operationId: service_index_role_user_assignments_list
+      operationId: getServiceIndexRoleUserAssignments
       description: List of user assignments for cross-service communication
       parameters:
       - name: page
@@ -1468,11 +1502,13 @@ paths:
           description: ''
       summary: Service index role user assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_user_assignments_list
     servers:
     - url: /api/eda/v1
   /service-index/role-user-assignments/assign/:
     post:
-      operationId: service_index_role_user_assignments_assign_create
+      operationId: postServiceIndexRoleUserAssignmentsAssign
       description: List of user assignments for cross-service communication
       tags:
       - Service Index
@@ -1499,11 +1535,13 @@ paths:
           description: ''
       summary: Service index role user assignments assign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_user_assignments_assign_create
     servers:
     - url: /api/eda/v1
   /service-index/role-user-assignments/unassign/:
     post:
-      operationId: service_index_role_user_assignments_unassign_create
+      operationId: postServiceIndexRoleUserAssignmentsUnassign
       description: List of user assignments for cross-service communication
       tags:
       - Service Index
@@ -1530,11 +1568,13 @@ paths:
           description: ''
       summary: Service index role user assignments unassign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_user_assignments_unassign_create
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/service-index/:
     get:
-      operationId: service_index_retrieve
+      operationId: getApiGatewayV1ServiceIndex
       description: Link other resource registry endpoints
       tags:
       - Service Index
@@ -1548,9 +1588,11 @@ paths:
       x-ai-description: Retrieve single service index
       summary: Service index retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_retrieve
   /api/gateway/v1/service-index/metadata/:
     get:
-      operationId: service_index_metadata_retrieve
+      operationId: getApiGatewayV1ServiceIndexMetadata
       tags:
       - Service Index
       security:
@@ -1563,9 +1605,11 @@ paths:
       x-ai-description: Retrieve single service index metadatum
       summary: Service index metadata retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_metadata_retrieve
   /api/gateway/v1/service-index/object-delete/:
     post:
-      operationId: service_index_object_delete_create
+      operationId: postApiGatewayV1ServiceIndexObjectDelete
       description: 'Delete all role assignments (user and team) for a specific resource.
 
 
@@ -1590,9 +1634,11 @@ paths:
       x-ai-description: Remove all role assignments for a resource indexed from connected AAP services
       summary: Service index object delete create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_object_delete_create
   /api/gateway/v1/service-index/resource-types/:
     get:
-      operationId: service_index_resource_types_list
+      operationId: getApiGatewayV1ServiceIndexResourceTypes
       description: Index of the resource types that are configured in the system.
       parameters:
       - in: query
@@ -1682,9 +1728,11 @@ paths:
       x-ai-description: List all service index resource types
       summary: Service index resource types list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resource_types_list
   /api/gateway/v1/service-index/resource-types/{name}/:
     get:
-      operationId: service_index_resource_types_retrieve
+      operationId: getApiGatewayV1ServiceIndexResourceTypesByName
       description: Index of the resource types that are configured in the system.
       parameters:
       - in: path
@@ -1709,9 +1757,11 @@ paths:
       x-ai-description: Retrieve single service index resource type
       summary: Service index resource types retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resource_types_retrieve
   /api/gateway/v1/service-index/resource-types/{name}/manifest/:
     get:
-      operationId: service_index_resource_types_manifest_retrieve
+      operationId: getApiGatewayV1ServiceIndexResourceTypesByNameManifest
       description: Returns the as a stream the csv of resource_id,hash for a given resource type.
       parameters:
       - in: path
@@ -1736,9 +1786,11 @@ paths:
       x-ai-description: Retrieve single manifest for a resource-type
       summary: Service index resource types manifest retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resource_types_manifest_retrieve
   /api/gateway/v1/service-index/resources/:
     get:
-      operationId: service_index_resources_list
+      operationId: getApiGatewayV1ServiceIndexResources
       description: Index of all the resources in the system.
       parameters:
       - in: query
@@ -1853,8 +1905,10 @@ paths:
       x-ai-description: List all service index resources
       summary: Service index resources list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_list
     post:
-      operationId: service_index_resources_create
+      operationId: postApiGatewayV1ServiceIndexResources
       description: Index of all the resources in the system.
       tags:
       - Service Index
@@ -1884,9 +1938,11 @@ paths:
       x-ai-description: Create new service index resource
       summary: Service index resources create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_create
   /api/gateway/v1/service-index/resources/{ansible_id}/:
     get:
-      operationId: service_index_resources_retrieve
+      operationId: getApiGatewayV1ServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -1912,8 +1968,10 @@ paths:
       x-ai-description: Retrieve single service index resource
       summary: Service index resources retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_retrieve
     put:
-      operationId: service_index_resources_update
+      operationId: putApiGatewayV1ServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -1951,8 +2009,10 @@ paths:
       x-ai-description: Update existing service index resource
       summary: Service index resources update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_update
     patch:
-      operationId: service_index_resources_partial_update
+      operationId: patchApiGatewayV1ServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -1989,8 +2049,10 @@ paths:
       x-ai-description: Partially update existing service index resource
       summary: Service index resources partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_partial_update
     delete:
-      operationId: service_index_resources_destroy
+      operationId: deleteApiGatewayV1ServiceIndexResourcesByAnsibleId
       description: Index of all the resources in the system.
       parameters:
       - in: path
@@ -2012,9 +2074,11 @@ paths:
       x-ai-description: Delete existing service index resource
       summary: Service index resources destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_resources_destroy
   /api/gateway/v1/service-index/role-permissions/:
     get:
-      operationId: service_index_role_permissions_list
+      operationId: getApiGatewayV1ServiceIndexRolePermissions
       description: List of permissions managed with the RBAC system
       parameters:
       - in: query
@@ -2131,9 +2195,11 @@ paths:
       x-ai-description: List all service index role permissions
       summary: Service index role permissions list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_permissions_list
   /api/gateway/v1/service-index/role-team-assignments/:
     get:
-      operationId: service_index_role_team_assignments_list
+      operationId: getApiGatewayV1ServiceIndexRoleTeamAssignments
       description: List of team role assignments for cross-service communication
       parameters:
       - in: query
@@ -2280,9 +2346,11 @@ paths:
       x-ai-description: List all service index role team assignments
       summary: Service index role team assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_team_assignments_list
   /api/gateway/v1/service-index/role-team-assignments/assign/:
     post:
-      operationId: service_index_role_team_assignments_assign_create
+      operationId: postApiGatewayV1ServiceIndexRoleTeamAssignmentsAssign
       description: List of team role assignments for cross-service communication
       tags:
       - Service Index
@@ -2312,9 +2380,11 @@ paths:
       x-ai-description: Create new service index role team assignments assign
       summary: Service index role team assignments assign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_team_assignments_assign_create
   /api/gateway/v1/service-index/role-team-assignments/unassign/:
     post:
-      operationId: service_index_role_team_assignments_unassign_create
+      operationId: postApiGatewayV1ServiceIndexRoleTeamAssignmentsUnassign
       description: List of team role assignments for cross-service communication
       tags:
       - Service Index
@@ -2344,9 +2414,11 @@ paths:
       x-ai-description: Create new service index role team assignments unassign
       summary: Service index role team assignments unassign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_team_assignments_unassign_create
   /api/gateway/v1/service-index/role-types/:
     get:
-      operationId: service_index_role_types_list
+      operationId: getApiGatewayV1ServiceIndexRoleTypes
       description: List of types registered with the RBAC system, or loaded in from external system
       parameters:
       - in: query
@@ -2483,9 +2555,11 @@ paths:
       x-ai-description: List all service index role types
       summary: Service index role types list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_types_list
   /api/gateway/v1/service-index/role-user-assignments/:
     get:
-      operationId: service_index_role_user_assignments_list
+      operationId: getApiGatewayV1ServiceIndexRoleUserAssignments
       description: List of user assignments for cross-service communication
       parameters:
       - in: query
@@ -2632,9 +2706,11 @@ paths:
       x-ai-description: List all service index role user assignments
       summary: Service index role user assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_user_assignments_list
   /api/gateway/v1/service-index/role-user-assignments/assign/:
     post:
-      operationId: service_index_role_user_assignments_assign_create
+      operationId: postApiGatewayV1ServiceIndexRoleUserAssignmentsAssign
       description: List of user assignments for cross-service communication
       tags:
       - Service Index
@@ -2664,9 +2740,11 @@ paths:
       x-ai-description: Create new service index role user assignments assign
       summary: Service index role user assignments assign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_user_assignments_assign_create
   /api/gateway/v1/service-index/role-user-assignments/unassign/:
     post:
-      operationId: service_index_role_user_assignments_unassign_create
+      operationId: postApiGatewayV1ServiceIndexRoleUserAssignmentsUnassign
       description: List of user assignments for cross-service communication
       tags:
       - Service Index
@@ -2696,139 +2774,10 @@ paths:
       x-ai-description: Create new service index role user assignments unassign
       summary: Service index role user assignments unassign create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: service_index_role_user_assignments_unassign_create
 components:
   schemas:
-    PaginatedDABContentTypeList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DABContentType'
-    DABPermission:
-      type: object
-      properties:
-        api_slug:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          maxLength: 201
-        codename:
-          type: string
-          description: A codename for the permission, in the format {action}_{model_name}. Where action is typically the view set action (view/list/etc) from Django rest framework.
-          maxLength: 100
-        content_type:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          readOnly: true
-        name:
-          type: string
-          description: The name of this permission.
-          maxLength: 255
-      required:
-      - codename
-      - name
-    Resource:
-      type: object
-      properties:
-        object_id:
-          type: string
-          readOnly: true
-          description: The object id for this resource.
-        name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The name of this resource.
-        ansible_id:
-          type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-        has_serializer:
-          type: boolean
-          readOnly: true
-        resource_data: {}
-        url:
-          type: string
-          readOnly: true
-        additional_data:
-          type: string
-          readOnly: true
-      required:
-      - resource_data
-    ServiceRoleTeamAssignmentRequest:
-      type: object
-      properties:
-        created_by_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        object_id:
-          type:
-          - string
-          - 'null'
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-        role_definition:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        team_ansible_id:
-          type: string
-          format: uuid
-      required:
-      - role_definition
-      - team_ansible_id
-    ResourceRequest:
-      type: object
-      properties:
-        ansible_id:
-          type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-          minLength: 1
-        resource_data: {}
-      required:
-      - resource_data
     PaginatedResourceTypeList:
       type: object
       required:
@@ -2854,47 +2803,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ResourceType'
-    ResourceType:
+    PaginatedDABContentTypeList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-          description: The name of this resource type.
-        externally_managed:
-          type: boolean
-          description: Is this resource type managed externally from this service.
-        shared_resource_type:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-      required:
-      - externally_managed
-    PatchedResourceRequest:
-      type: object
-      properties:
-        ansible_id:
-          type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-          minLength: 1
-        resource_data: {}
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DABContentType'
     ServiceRoleTeamAssignment:
       type: object
       properties:
@@ -2962,7 +2895,49 @@ components:
       required:
       - app_label
       - model
-    PaginatedServiceRoleUserAssignmentList:
+    DABPermission:
+      type: object
+      properties:
+        api_slug:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          maxLength: 201
+        codename:
+          type: string
+          description: A codename for the permission, in the format {action}_{model_name}. Where action is typically the view set action (view/list/etc) from Django rest framework.
+          maxLength: 100
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        name:
+          type: string
+          description: The name of this permission.
+          maxLength: 255
+      required:
+      - codename
+      - name
+    ResourceRequest:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data: {}
+      required:
+      - resource_data
+    PaginatedDABPermissionList:
       type: object
       required:
       - count
@@ -2986,7 +2961,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ServiceRoleUserAssignment'
+            $ref: '#/components/schemas/DABPermission'
     ServiceRoleUserAssignment:
       type: object
       properties:
@@ -3024,107 +2999,6 @@ components:
       required:
       - role_definition
       - user_ansible_id
-    ServiceRoleUserAssignmentRequest:
-      type: object
-      properties:
-        created_by_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        object_id:
-          type:
-          - string
-          - 'null'
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-        role_definition:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        user_ansible_id:
-          type: string
-          format: uuid
-      required:
-      - role_definition
-      - user_ansible_id
-    PaginatedServiceRoleTeamAssignmentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceRoleTeamAssignment'
-    PaginatedDABPermissionList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DABPermission'
-    PaginatedResourceListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceList'
     ResourceList:
       type: object
       properties:
@@ -3157,6 +3031,212 @@ components:
         url:
           type: string
           readOnly: true
+    ServiceRoleTeamAssignmentRequest:
+      type: object
+      properties:
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        role_definition:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        team_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - team_ansible_id
+    PaginatedServiceRoleTeamAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleTeamAssignment'
+    PatchedResourceRequest:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data: {}
+    ServiceRoleUserAssignmentRequest:
+      type: object
+      properties:
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        role_definition:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - user_ansible_id
+    PaginatedResourceListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceList'
+    Resource:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data: {}
+        url:
+          type: string
+          readOnly: true
+        additional_data:
+          type: string
+          readOnly: true
+      required:
+      - resource_data
+    ResourceType:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: The name of this resource type.
+        externally_managed:
+          type: boolean
+          description: Is this resource type managed externally from this service.
+        shared_resource_type:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+      - externally_managed
+    PaginatedServiceRoleUserAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleUserAssignment'
     PaginatedDABContentTypeList_2:
       type: object
       properties:
@@ -3189,6 +3269,109 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DABContentType_2'
+    PatchedResource:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data: {}
+        url:
+          type: string
+          readOnly: true
+        additional_data:
+          type: string
+          readOnly: true
+    ServiceRoleTeamAssignment_2:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        team_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - content_type
+      - created
+      - role_definition
+      - team_ansible_id
+    DABContentType_2:
+      type: object
+      properties:
+        api_slug:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          maxLength: 201
+        service:
+          type: string
+          description: service namespace to track what service this type is for. Can have a value of shared, which indicates it is synchronized.
+          maxLength: 100
+        app_label:
+          type: string
+          description: Django app that the model is in. This is an internal technical detail that does not affect API use.
+          maxLength: 100
+        model:
+          type: string
+          description: Name of the type according to the Django ORM Meta model_name convention. Comes from the python class, but lowercase with no spaces.
+          maxLength: 100
+        parent_content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        pk_field_type:
+          type: string
+          description: Database field type of the primary key field of the model, relevant for interal logic tracking permissions.
+          maxLength: 100
+      required:
+      - app_label
+      - model
+      - parent_content_type
     DABPermission_2:
       type: object
       properties:
@@ -3212,6 +3395,146 @@ components:
       - codename
       - content_type
       - name
+    PaginatedDABPermissionList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DABPermission_2'
+    ServiceRoleUserAssignment_2:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        role_definition:
+          type: string
+          description: The name of this role.
+        user_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - content_type
+      - created
+      - role_definition
+      - user_ansible_id
+    ResourceList_2:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        resource_data:
+          writeOnly: true
+          default: {}
+        url:
+          type: string
+          readOnly: true
+      required:
+      - has_serializer
+      - name
+      - object_id
+      - url
+    PaginatedServiceRoleTeamAssignmentList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
     Resource_2:
       type: object
       properties:
@@ -3282,73 +3605,6 @@ components:
       - name
       - shared_resource_type
       - url
-    ServiceRoleTeamAssignment_2:
-      type: object
-      properties:
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        object_id:
-          type:
-          - string
-          - 'null'
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-        content_type:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          readOnly: true
-        role_definition:
-          type: string
-          description: The name of this role.
-        team_ansible_id:
-          type: string
-          format: uuid
-      required:
-      - content_type
-      - created
-      - role_definition
-      - team_ansible_id
-    DABContentType_2:
-      type: object
-      properties:
-        api_slug:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          maxLength: 201
-        service:
-          type: string
-          description: service namespace to track what service this type is for. Can have a value of shared, which indicates it is synchronized.
-          maxLength: 100
-        app_label:
-          type: string
-          description: Django app that the model is in. This is an internal technical detail that does not affect API use.
-          maxLength: 100
-        model:
-          type: string
-          description: Name of the type according to the Django ORM Meta model_name convention. Comes from the python class, but lowercase with no spaces.
-          maxLength: 100
-        parent_content_type:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          readOnly: true
-        pk_field_type:
-          type: string
-          description: Database field type of the primary key field of the model, relevant for interal logic tracking permissions.
-          maxLength: 100
-      required:
-      - app_label
-      - model
-      - parent_content_type
     PaginatedServiceRoleUserAssignmentList_2:
       type: object
       properties:
@@ -3381,182 +3637,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ServiceRoleUserAssignment_2'
-    ServiceRoleUserAssignment_2:
-      type: object
-      properties:
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        object_id:
-          type:
-          - string
-          - 'null'
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-        content_type:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          readOnly: true
-        role_definition:
-          type: string
-          description: The name of this role.
-        user_ansible_id:
-          type: string
-          format: uuid
-      required:
-      - content_type
-      - created
-      - role_definition
-      - user_ansible_id
-    PaginatedServiceRoleTeamAssignmentList_2:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceRoleTeamAssignment_2'
-    PaginatedDABPermissionList_2:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DABPermission_2'
-    ResourceList_2:
-      type: object
-      properties:
-        object_id:
-          type: string
-          readOnly: true
-          description: The object id for this resource.
-        name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The name of this resource.
-        ansible_id:
-          type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-        has_serializer:
-          type: boolean
-          readOnly: true
-        resource_data:
-          writeOnly: true
-          default: {}
-        url:
-          type: string
-          readOnly: true
-      required:
-      - has_serializer
-      - name
-      - object_id
-      - url
-    PatchedResource:
-      type: object
-      properties:
-        object_id:
-          type: string
-          readOnly: true
-          description: The object id for this resource.
-        name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The name of this resource.
-        ansible_id:
-          type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-        has_serializer:
-          type: boolean
-          readOnly: true
-        resource_data: {}
-        url:
-          type: string
-          readOnly: true
-        additional_data:
-          type: string
-          readOnly: true
     ServiceRoleTeamAssignment_3:
       type: object
       properties:

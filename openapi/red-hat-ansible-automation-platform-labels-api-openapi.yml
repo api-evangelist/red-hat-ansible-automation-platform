@@ -173,6 +173,41 @@ components:
         organization:
           type: integer
           description: Organization this label belongs to.
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
     PaginatedLabelList:
       type: object
       required:
@@ -206,41 +241,6 @@ components:
           - string
           - 'null'
           minLength: 1
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
-      required:
-      - name
-      - organization
-    Label:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
           maxLength: 512
         organization:
           type: integer

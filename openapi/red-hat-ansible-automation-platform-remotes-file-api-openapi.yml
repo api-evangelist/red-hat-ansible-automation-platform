@@ -720,20 +720,6 @@ paths:
           description: ''
 components:
   schemas:
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
     SetLabel:
       type: object
       description: Serializer for synchronously setting a label.
@@ -749,6 +735,16 @@ components:
       required:
       - key
       - value
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
     ObjectRolesResponse:
       type: object
       properties:
@@ -758,16 +754,30 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    AsyncOperationResponse:
+    NestedRoleResponse:
       type: object
-      description: Serializer for asynchronous operations.
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        task:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
           type: string
-          format: uri
-          description: The href of the task.
       required:
-      - task
+      - role
     UnsetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
@@ -780,6 +790,31 @@ components:
           readOnly: true
       required:
       - key
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    Policy762Enum:
+      enum:
+      - immediate
+      - on_demand
+      - streamed
+      type: string
+      description: '* `immediate` - When syncing, download all metadata and content now.
+
+        * `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.
+
+        * `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again.'
     Patchedfile.FileRemote:
       type: object
       description: Serializer for File Remotes.
@@ -918,17 +953,16 @@ components:
           - 'null'
           format: int64
           description: Limits requests per second for each concurrent downloader
-    Policy762Enum:
-      enum:
-      - immediate
-      - on_demand
-      - streamed
-      type: string
-      description: '* `immediate` - When syncing, download all metadata and content now.
-
-        * `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.
-
-        * `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again.'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     file.FileRemote:
       type: object
       description: Serializer for File Remotes.
@@ -1070,30 +1104,6 @@ components:
       required:
       - name
       - url
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
     MyPermissionsResponse:
       type: object
       properties:
@@ -1103,16 +1113,6 @@ components:
             type: string
       required:
       - permissions
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -1140,6 +1140,31 @@ components:
           minLength: 1
       required:
       - role
+    Paginatedfile.FileRemoteResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.FileRemoteResponse'
     file.FileRemoteResponse:
       type: object
       description: Serializer for File Remotes.
@@ -1269,28 +1294,3 @@ components:
       required:
       - name
       - url
-    Paginatedfile.FileRemoteResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/file.FileRemoteResponse'

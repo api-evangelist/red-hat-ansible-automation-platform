@@ -379,67 +379,6 @@ components:
           type: string
       required:
       - role
-    PaginatedTaskScheduleResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskScheduleResponse'
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
     TaskScheduleResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -495,3 +434,64 @@ components:
       - dispatch_interval
       - name
       - task_name
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    PaginatedTaskScheduleResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskScheduleResponse'

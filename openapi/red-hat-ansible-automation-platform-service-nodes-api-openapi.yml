@@ -342,31 +342,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedServiceNodeList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceNode'
     PatchedServiceNode:
       type: object
       properties:
@@ -424,6 +399,31 @@ components:
           type: string
           description: A comma-separated list of roles to assign to a node; to be selective about which routes point to it.
           maxLength: 255
+    PaginatedServiceNodeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceNode'
     ServiceNode:
       type: object
       properties:

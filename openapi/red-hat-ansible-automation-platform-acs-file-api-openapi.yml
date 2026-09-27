@@ -521,16 +521,54 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    TaskGroupOperationResponse:
+    NestedRoleResponse:
       type: object
-      description: Serializer for asynchronous operations that return a task group.
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        task_group:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    Patchedfile.FileAlternateContentSource:
+      type: object
+      description: Serializer for File alternate content source.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name of Alternate Content Source.
+        last_refreshed:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of last refresh of AlternateContentSource.
+        paths:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: List of paths that will be appended to the Remote url when searching for content.
+        remote:
           type: string
           format: uri
-          description: The href of the task group.
-      required:
-      - task_group
+          description: The remote to provide alternate content source.
     AsyncOperationResponse:
       type: object
       description: Serializer for asynchronous operations.
@@ -566,30 +604,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/file.FileAlternateContentSourceResponse'
-    NestedRoleResponse:
+    MyPermissionsResponse:
       type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        users:
+        permissions:
           type: array
           items:
             type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
       required:
-      - role
+      - permissions
     file.FileAlternateContentSourceResponse:
       type: object
       description: Serializer for File alternate content source.
@@ -629,66 +652,6 @@ components:
       required:
       - name
       - remote
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    Patchedfile.FileAlternateContentSource:
-      type: object
-      description: Serializer for File alternate content source.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Name of Alternate Content Source.
-        last_refreshed:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date of last refresh of AlternateContentSource.
-        paths:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: List of paths that will be appended to the Remote url when searching for content.
-        remote:
-          type: string
-          format: uri
-          description: The remote to provide alternate content source.
-    file.FileAlternateContentSource:
-      type: object
-      description: Serializer for File alternate content source.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Name of Alternate Content Source.
-        last_refreshed:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Date of last refresh of AlternateContentSource.
-        paths:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: List of paths that will be appended to the Remote url when searching for content.
-        remote:
-          type: string
-          format: uri
-          description: The remote to provide alternate content source.
-      required:
-      - name
-      - remote
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -716,3 +679,40 @@ components:
           minLength: 1
       required:
       - role
+    file.FileAlternateContentSource:
+      type: object
+      description: Serializer for File alternate content source.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Name of Alternate Content Source.
+        last_refreshed:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Date of last refresh of AlternateContentSource.
+        paths:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: List of paths that will be appended to the Remote url when searching for content.
+        remote:
+          type: string
+          format: uri
+          description: The remote to provide alternate content source.
+      required:
+      - name
+      - remote
+    TaskGroupOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations that return a task group.
+      properties:
+        task_group:
+          type: string
+          format: uri
+          description: The href of the task group.
+      required:
+      - task_group

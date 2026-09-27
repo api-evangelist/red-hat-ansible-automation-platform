@@ -510,31 +510,31 @@ components:
           type: string
       required:
       - role
-    PaginatedContentRedirectContentGuardResponseList:
+    ContentRedirectContentGuard:
       type: object
-      required:
-      - count
-      - results
+      description: A serializer for ContentRedirectContentGuard.
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
+          minLength: 1
+          description: An optional description.
+      required:
+      - name
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
           type: array
           items:
-            $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
+            type: string
+      required:
+      - permissions
     PatchedContentRedirectContentGuard:
       type: object
       description: A serializer for ContentRedirectContentGuard.
@@ -549,15 +549,6 @@ components:
           - 'null'
           minLength: 1
           description: An optional description.
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -585,22 +576,31 @@ components:
           minLength: 1
       required:
       - role
-    ContentRedirectContentGuard:
+    PaginatedContentRedirectContentGuardResponseList:
       type: object
-      description: A serializer for ContentRedirectContentGuard.
+      required:
+      - count
+      - results
       properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          minLength: 1
-          description: An optional description.
-      required:
-      - name
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
     ContentRedirectContentGuardResponse:
       type: object
       description: A serializer for ContentRedirectContentGuard.

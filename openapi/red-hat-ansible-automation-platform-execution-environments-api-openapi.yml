@@ -347,6 +347,75 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    ExecutionEnvironmentRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this execution environment.
+        image:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          title: Image location
+          description: The full image location, including the container registry, image name, and version tag.
+          maxLength: 1024
+        credential:
+          type:
+          - integer
+          - 'null'
+        pull:
+          enum:
+          - always
+          - missing
+          - never
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 63475462f6c34286
+          default: ''
+          description: 'Pull image before running?
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
+      required:
+      - image
+      - name
+    CopyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+    Copy:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
     UnifiedJobTemplate:
       type: object
       properties:
@@ -446,6 +515,31 @@ components:
           description: The container image to be used for execution.
       required:
       - name
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
     PatchedExecutionEnvironmentRequest:
       type: object
       properties:
@@ -497,110 +591,6 @@ components:
             * `missing` - Only pull the image if not present before running.
 
             * `never` - Never pull container before running.'
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'
-    ExecutionEnvironmentRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: The organization used to determine access to this execution environment.
-        image:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          title: Image location
-          description: The full image location, including the container registry, image name, and version tag.
-          maxLength: 1024
-        credential:
-          type:
-          - integer
-          - 'null'
-        pull:
-          enum:
-          - always
-          - missing
-          - never
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 63475462f6c34286
-          default: ''
-          description: 'Pull image before running?
-
-
-            * `always` - Always pull container before running.
-
-            * `missing` - Only pull the image if not present before running.
-
-            * `never` - Never pull container before running.'
-      required:
-      - image
-      - name
-    PaginatedUnifiedJobTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedJobTemplate'
     ActivityStream:
       type: object
       properties:
@@ -753,14 +743,31 @@ components:
       required:
       - image
       - name
-    CopyRequest:
+    PaginatedUnifiedJobTemplateList:
       type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
       required:
-      - name
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedJobTemplate'
     PaginatedExecutionEnvironmentList:
       type: object
       required:
@@ -786,10 +793,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExecutionEnvironment'
-    Copy:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name

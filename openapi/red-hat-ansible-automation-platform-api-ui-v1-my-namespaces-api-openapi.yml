@@ -285,6 +285,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/galaxy.NamespaceResponse'
+    NamespaceLink:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 32
+        url:
+          type: string
+          minLength: 1
+          maxLength: 256
+      required:
+      - name
+      - url
     Patchedgalaxy.Namespace:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -325,64 +339,6 @@ components:
           type: string
         resources:
           type: string
-    galaxy.Namespace:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 64
-        company:
-          type: string
-          maxLength: 64
-        email:
-          type: string
-          maxLength: 256
-        avatar_url:
-          type: string
-          format: uri
-        description:
-          type: string
-          maxLength: 256
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/NamespaceLink'
-        groups:
-          type: string
-        users:
-          type: string
-        resources:
-          type: string
-      required:
-      - name
-    MyPermissionsFieldResponse:
-      type: object
-    NamespaceLink:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 32
-        url:
-          type: string
-          minLength: 1
-          maxLength: 256
-      required:
-      - name
-      - url
     galaxy.NamespaceResponse:
       type: object
       description: 'NamespaceSerializer but without ''links'' or ''resources''.
@@ -435,3 +391,47 @@ components:
           allOf:
           - $ref: '#/components/schemas/MyPermissionsFieldResponse'
           readOnly: true
+    MyPermissionsFieldResponse:
+      type: object
+    galaxy.Namespace:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 256
+        avatar_url:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 256
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLink'
+        groups:
+          type: string
+        users:
+          type: string
+        resources:
+          type: string
+      required:
+      - name

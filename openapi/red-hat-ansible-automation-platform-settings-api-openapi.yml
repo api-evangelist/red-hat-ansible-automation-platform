@@ -147,7 +147,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/settings/:
     get:
-      operationId: settings_list
+      operationId: getApiGatewayV1Settings
       description: 'A view class for managing and displaying all section of settings, with their urls and names
 
         Endpoint: ''/api/gateway/v1/settings/'''
@@ -180,6 +180,8 @@ paths:
       x-ai-description: List setting categories grouping related Gateway configuration preferences
       summary: Settings list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: settings_list
   /api/gateway/v1/settings/{category_slug}/:
     get:
       operationId: settings_getter
@@ -214,7 +216,7 @@ paths:
       summary: Settings getter
       x-summary-source: derived
     put:
-      operationId: settings_update
+      operationId: putApiGatewayV1SettingsByCategorySlug
       description: 'A view class for managing and displaying a group of settings for a specific category.
 
         Endpoint: ''/api/gateway/v1/settings//''
@@ -256,6 +258,8 @@ paths:
       x-ai-description: Update Gateway preferences within a category
       summary: Settings update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: settings_update
     delete:
       operationId: settings_destroyer
       description: 'Revert all preferences in the current category to their default values
@@ -282,7 +286,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/settings/{category_slug}/{preference_name}/:
     get:
-      operationId: settings_retrieve
+      operationId: getApiGatewayV1SettingsByCategorySlugByPreferenceName
       description: 'A view class for managing and displaying a single setting information for a specified category.
 
         URL pattern: ''/api/gateway/v1/settings///''
@@ -321,8 +325,10 @@ paths:
       x-ai-description: Get a single Gateway preference by category and name
       summary: Settings retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: settings_retrieve
     delete:
-      operationId: settings_destroy
+      operationId: deleteApiGatewayV1SettingsByCategorySlugByPreferenceName
       description: 'revert the setting `preference_name` in section `category_slug` to its default value.
 
         The `category_slug` parameter must be specified (i.e., cannot be ''all'')
@@ -355,8 +361,48 @@ paths:
       x-ai-description: Revert a single Gateway preference to default, excluding read-only and encrypted settings
       summary: Settings destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: settings_destroy
 components:
   schemas:
+    PaginatedSettingCategoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SettingCategory'
+    SettingCategory:
+      type: object
+      description: Serialize setting category
+      properties:
+        url:
+          type: string
+          readOnly: true
+        slug:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
     PatchedSettingSingletonRequest:
       type: object
       description: Present a group of settings (by category) as a single object.
@@ -1042,31 +1088,6 @@ components:
           default: true
           title: Enable Live Updates in the UI
           description: If disabled, the page will not refresh when events are received. Reloading the page will be required to get the latest details.
-    PaginatedSettingCategoryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SettingCategory'
     SettingSingletonRequest:
       type: object
       description: Present a group of settings (by category) as a single object.
@@ -1752,19 +1773,6 @@ components:
           default: true
           title: Enable Live Updates in the UI
           description: If disabled, the page will not refresh when events are received. Reloading the page will be required to get the latest details.
-    SettingCategory:
-      type: object
-      description: Serialize setting category
-      properties:
-        url:
-          type: string
-          readOnly: true
-        slug:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
     SettingSingleton:
       type: object
       description: Present a group of settings (by category) as a single object.
@@ -2607,50 +2615,6 @@ components:
               adj_list: []
           title: List of all named url graph nodes.
           description: Read-only list of key-value pairs that exposes named URL graph topology. Use this list to programmatically generate named URLs for resources
-    PaginatedSettingSectionListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SettingSectionList'
-    SettingPreference:
-      type: object
-      properties:
-        section:
-          type:
-          - string
-          - 'null'
-          title: Section Name
-          maxLength: 150
-        name:
-          type: string
-          maxLength: 150
-        value:
-          description: 'Given the *incoming* primitive data, return the value for this field
-
-            that should be validated and transformed to a native value.'
-          readOnly: true
-      required:
-      - name
     SettingSection:
       type: object
       properties:
@@ -2881,6 +2845,50 @@ components:
         name:
           type: string
           readOnly: true
+    PaginatedSettingSectionListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SettingSectionList'
+    SettingPreference:
+      type: object
+      properties:
+        section:
+          type:
+          - string
+          - 'null'
+          title: Section Name
+          maxLength: 150
+        name:
+          type: string
+          maxLength: 150
+        value:
+          description: 'Given the *incoming* primitive data, return the value for this field
+
+            that should be validated and transformed to a native value.'
+          readOnly: true
+      required:
+      - name
   securitySchemes:
     Basic_Authentication:
       type: http

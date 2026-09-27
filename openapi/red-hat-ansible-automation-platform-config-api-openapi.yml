@@ -64,7 +64,7 @@ paths:
       x-summary-source: derived
   /config/:
     get:
-      operationId: config_retrieve
+      operationId: getConfig
       description: Get the current configuration info of EDA.
       tags:
       - Config
@@ -79,6 +79,8 @@ paths:
           description: Return the current configuration info of EDA.
       summary: Config retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: config_retrieve
     servers:
     - url: /api/eda/v1
 components:

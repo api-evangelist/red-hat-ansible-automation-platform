@@ -112,7 +112,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/me/:
     get:
-      operationId: me_list
+      operationId: getApiGatewayV1Me
       parameters:
       - in: query
         name: order
@@ -168,68 +168,10 @@ paths:
       x-ai-description: Retrieve details about the current authenticated user
       summary: Me list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: me_list
 components:
   schemas:
-    MarkdownUserResponse:
-      type: object
-      properties:
-        content:
-          type: string
-          readOnly: true
-      required:
-      - content
-    Organization:
-      type: object
-      properties:
-        id:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        name:
-          type: string
-          readOnly: true
-        has_api_key:
-          type: boolean
-          readOnly: true
-        has_telemetry_opt_out:
-          type: string
-          readOnly: true
-      required:
-      - has_api_key
-      - has_telemetry_opt_out
-      - id
-      - name
-    UserPlan:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        expired_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        accept_marketing:
-          type: boolean
-        plan:
-          $ref: '#/components/schemas/Plan'
-      required:
-      - created_at
-      - plan
-    Plan:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 80
-      required:
-      - id
-      - name
     UserResponse:
       type: object
       properties:
@@ -269,6 +211,66 @@ components:
       - username
       - userplan_set
       - uuid
+    Plan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 80
+      required:
+      - id
+      - name
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        name:
+          type: string
+          readOnly: true
+        has_api_key:
+          type: boolean
+          readOnly: true
+        has_telemetry_opt_out:
+          type: string
+          readOnly: true
+      required:
+      - has_api_key
+      - has_telemetry_opt_out
+      - id
+      - name
+    MarkdownUserResponse:
+      type: object
+      properties:
+        content:
+          type: string
+          readOnly: true
+      required:
+      - content
+    UserPlan:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expired_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        accept_marketing:
+          type: boolean
+        plan:
+          $ref: '#/components/schemas/Plan'
+      required:
+      - created_at
+      - plan
     PaginatedUserList:
       type: object
       required:

@@ -1723,7 +1723,7 @@ paths:
     - url: /api/eda/v1
   /organizations/{id}/teams/:
     get:
-      operationId: organizations_teams_list
+      operationId: getOrganizationsByIdTeams
       description: List all teams of the organization
       parameters:
       - in: query
@@ -1772,11 +1772,13 @@ paths:
           description: ''
       summary: Organizations teams list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_teams_list
     servers:
     - url: /api/eda/v1
   /organizations/{id}/:
     get:
-      operationId: organizations_retrieve
+      operationId: getOrganizationsById
       parameters:
       - in: path
         name: id
@@ -1797,11 +1799,13 @@ paths:
           description: ''
       summary: Organizations retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_retrieve
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/organizations/:
     get:
-      operationId: organizations_list
+      operationId: getApiGatewayV1Organizations
       description: API endpoint that allows organizations to be viewed or edited.
       parameters:
       - in: query
@@ -1973,8 +1977,10 @@ paths:
       x-ai-description: List logical collection of users, teams, and resources for organizing access control
       summary: Organizations list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_list
     post:
-      operationId: organizations_create
+      operationId: postApiGatewayV1Organizations
       description: API endpoint that allows organizations to be viewed or edited.
       tags:
       - Organizations
@@ -2004,9 +2010,11 @@ paths:
       x-ai-description: Create a logical collection of users, teams, and resource for organizing access control
       summary: Organizations create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_create
   /api/gateway/v1/organizations/{id}/:
     get:
-      operationId: organizations_retrieve
+      operationId: getApiGatewayV1OrganizationsById
       description: API endpoint that allows organizations to be viewed or edited.
       parameters:
       - in: path
@@ -2031,8 +2039,10 @@ paths:
       x-ai-description: Retrieve a logical collection of users, teams, and resource for organizing access control
       summary: Organizations retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_retrieve
     put:
-      operationId: organizations_update
+      operationId: putApiGatewayV1OrganizationsById
       description: API endpoint that allows organizations to be viewed or edited.
       parameters:
       - in: path
@@ -2069,8 +2079,10 @@ paths:
       x-ai-description: Update a logical collection of users, teams, and resource for organizing access control
       summary: Organizations update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_update
     patch:
-      operationId: organizations_partial_update
+      operationId: patchApiGatewayV1OrganizationsById
       description: API endpoint that allows organizations to be viewed or edited.
       parameters:
       - in: path
@@ -2106,8 +2118,10 @@ paths:
       x-ai-description: Update a logical collection of users, teams, and resource for organizing access control
       summary: Organizations partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_partial_update
     delete:
-      operationId: organizations_destroy
+      operationId: deleteApiGatewayV1OrganizationsById
       description: API endpoint that allows organizations to be viewed or edited.
       parameters:
       - in: path
@@ -2128,9 +2142,11 @@ paths:
       x-ai-description: Delete a logical collection of users, teams, and resource for organizing access control
       summary: Organizations destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_destroy
   /api/gateway/v1/organizations/{id}/admins/:
     get:
-      operationId: organizations_admins_list
+      operationId: getApiGatewayV1OrganizationsByIdAdmins
       description: 'Manage User objects in the ''admins'' relationship of this particular Organization.
 
 
@@ -2421,6 +2437,8 @@ paths:
       x-ai-description: List all admins for an organization
       summary: Organizations admins list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_admins_list
   /api/gateway/v1/organizations/{id}/admins/associate/:
     post:
       operationId: organizations_admins_associate_create
@@ -2527,7 +2545,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/organizations/{id}/teams/:
     get:
-      operationId: organizations_teams_list
+      operationId: getApiGatewayV1OrganizationsByIdTeams
       description: 'Manage Team objects in the ''teams'' relationship of this particular Organization.
 
 
@@ -2711,9 +2729,11 @@ paths:
       x-ai-description: List organization subdivisions that group users for bulk permission assignment and role-based access control
       summary: Organizations teams list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_teams_list
   /api/gateway/v1/organizations/{id}/users/:
     get:
-      operationId: organizations_users_list
+      operationId: getApiGatewayV1OrganizationsByIdUsers
       description: 'Manage User objects in the ''users'' relationship of this particular Organization.
 
 
@@ -3004,6 +3024,8 @@ paths:
       x-ai-description: List all users for an organization
       summary: Organizations users list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: organizations_users_list
   /api/gateway/v1/organizations/{id}/users/associate/:
     post:
       operationId: organizations_users_associate_create
@@ -3110,7 +3132,473 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedRoleList:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    WorkflowJobTemplateRequest:
+      type: object
+      description: Provide recent jobs and survey details in summary_fields
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        survey_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
+    JobTemplateRequest:
+      type: object
+      description: Provide recent jobs and survey details in summary_fields
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        project:
+          type:
+          - integer
+          - 'null'
+        playbook:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        job_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        force_handlers:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        start_at_task:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        use_fact_cache:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        host_config_key:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_diff_mode_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_job_type_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_verbosity_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_credential_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_execution_environment_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_forks_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_job_slice_count_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_timeout_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_instance_groups_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        survey_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        job_slice_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 1
+          description: The number of jobs to slice into at runtime. Will cause the Job Template to launch a workflow if value is greater than 1.
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the job template will prevent adding any inventory or organization instance groups to the list of preferred instances groups to run on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+      required:
+      - name
+    PaginatedCredentialList:
       type: object
       required:
       - count
@@ -3134,8 +3622,290 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Role'
-    Inventory:
+            $ref: '#/components/schemas/Credential'
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        max_hosts:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: Maximum number of hosts allowed to be managed by this organization.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Local absolute file path containing a custom Python virtualenv to use
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run by this organization.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+      required:
+      - name
+    ExecutionEnvironmentRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this execution environment.
+        image:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          title: Image location
+          description: The full image location, including the container registry, image name, and version tag.
+          maxLength: 1024
+        credential:
+          type:
+          - integer
+          - 'null'
+        pull:
+          enum:
+          - always
+          - missing
+          - never
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 63475462f6c34286
+          default: ''
+          description: 'Pull image before running?
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
+      required:
+      - image
+      - name
+    PatchedOrganizationRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        max_hosts:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: Maximum number of hosts allowed to be managed by this organization.
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run by this organization.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+    PaginatedTeamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+    TeamRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    NotificationTemplateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    PaginatedOrganizationCredentialSerializerCreateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrganizationCredentialSerializerCreate'
+    Team:
       type: object
       properties:
         id:
@@ -3170,141 +3940,10 @@ components:
           - 'null'
           default: ''
         organization:
-          type:
-          - integer
-          - 'null'
-          description: Organization containing this inventory.
-        kind:
-          enum:
-          - ''
-          - smart
-          - constructed
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 2ff9e8df76c2ad0e
-          default: ''
-          description: 'Kind of inventory being represented.
-
-
-            * `` - Hosts have a direct link to this inventory.
-
-            * `smart` - Hosts for inventory generated using the host_filter property.
-
-            * `constructed` - Parse list of source inventories with the constructed inventory plugin.'
-        host_filter:
-          type:
-          - string
-          - 'null'
-          description: Filter that will be applied to the hosts of this inventory.
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory variables in JSON or YAML format.
-        has_active_failures:
-          type: boolean
-          readOnly: true
-          description: This field is deprecated and will be removed in a future release. Flag indicating whether any hosts in this inventory have failed.
-        total_hosts:
           type: integer
-          minimum: 0
-          readOnly: true
-          description: This field is deprecated and will be removed in a future release. Total number of hosts in this inventory.
-        hosts_with_active_failures:
-          type: integer
-          minimum: 0
-          readOnly: true
-          description: This field is deprecated and will be removed in a future release. Number of hosts in this inventory with active failures.
-        total_groups:
-          type: integer
-          minimum: 0
-          readOnly: true
-          description: This field is deprecated and will be removed in a future release. Total number of groups in this inventory.
-        has_inventory_sources:
-          type: boolean
-          readOnly: true
-          description: This field is deprecated and will be removed in a future release. Flag indicating whether this inventory has any external inventory sources.
-        total_inventory_sources:
-          type: integer
-          minimum: 0
-          readOnly: true
-          description: Total number of external inventory sources configured within this inventory.
-        inventory_sources_with_failures:
-          type: integer
-          minimum: 0
-          readOnly: true
-          description: Number of external inventory sources in this inventory with failures.
-        pending_deletion:
-          type: boolean
-          readOnly: true
-          description: Flag indicating the inventory is being deleted.
-        prevent_instance_group_fallback:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
       required:
       - name
       - organization
-    PaginatedInstanceGroupList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InstanceGroup'
-    Role:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        description:
-          type: string
-          readOnly: true
     ProjectRequest:
       type: object
       properties:
@@ -3436,46 +4075,7 @@ components:
           description: An optional credential used for validating files in the project against unexpected changes.
       required:
       - name
-    Team:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
-    PaginatedActivityStreamList:
+    PaginatedResourceAccessListElementList:
       type: object
       required:
       - count
@@ -3499,8 +4099,8 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ActivityStream'
-    Credential:
+            $ref: '#/components/schemas/ResourceAccessListElement'
+    Inventory:
       type: object
       properties:
         id:
@@ -3538,551 +4138,89 @@ components:
           type:
           - integer
           - 'null'
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        managed:
+          description: Organization containing this inventory.
+        kind:
+          enum:
+          - ''
+          - smart
+          - constructed
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 2ff9e8df76c2ad0e
+          default: ''
+          description: 'Kind of inventory being represented.
+
+
+            * `` - Hosts have a direct link to this inventory.
+
+            * `smart` - Hosts for inventory generated using the host_filter property.
+
+            * `constructed` - Parse list of source inventories with the constructed inventory plugin.'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          description: Filter that will be applied to the hosts of this inventory.
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+        has_active_failures:
           type: boolean
           readOnly: true
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        kind:
-          type: string
-          readOnly: true
-        cloud:
-          type: string
-          readOnly: true
-        kubernetes:
-          type: string
-          readOnly: true
-      required:
-      - credential_type
-      - name
-    PaginatedWorkflowJobTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+          description: This field is deprecated and will be removed in a future release. Flag indicating whether any hosts in this inventory have failed.
+        total_hosts:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkflowJobTemplate'
-    PaginatedInventoryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+          minimum: 0
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Total number of hosts in this inventory.
+        hosts_with_active_failures:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Inventory'
-    PaginatedExecutionEnvironmentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+          minimum: 0
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Number of hosts in this inventory with active failures.
+        total_groups:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExecutionEnvironment'
-    CredentialRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        credential_type:
+          minimum: 0
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Total number of groups in this inventory.
+        has_inventory_sources:
+          type: boolean
+          readOnly: true
+          description: This field is deprecated and will be removed in a future release. Flag indicating whether this inventory has any external inventory sources.
+        total_inventory_sources:
           type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-      required:
-      - credential_type
-      - name
-    User:
-      type: object
-      properties:
-        id:
+          minimum: 0
+          readOnly: true
+          description: Total number of external inventory sources configured within this inventory.
+        inventory_sources_with_failures:
           type: integer
+          minimum: 0
           readOnly: true
-        type:
-          type: string
+          description: Number of external inventory sources in this inventory with failures.
+        pending_deletion:
+          type: boolean
           readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        username:
-          type:
-          - string
-          - 'null'
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
+          description: Flag indicating the inventory is being deleted.
+        prevent_instance_group_fallback:
           type:
           - boolean
           - 'null'
           default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-        last_login:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-      required:
-      - username
-    PaginatedCredentialList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Credential'
-    PatchedOrganizationRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        max_hosts:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-          description: Maximum number of hosts allowed to be managed by this organization.
-        default_environment:
-          type:
-          - integer
-          - 'null'
-          description: The default execution environment for jobs run by this organization.
+          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
         opa_query_path:
           type:
           - string
           - 'null'
           description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
           maxLength: 128
-    ResourceAccessListElement:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        username:
-          type:
-          - string
-          - 'null'
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-        last_login:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-      required:
-      - username
-    PaginatedTeamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Team'
-    ActivityStream:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
-          type:
-          - string
-          - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
-      required:
-      - object1
-      - object2
-      - operation
-    InstanceGroupRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 250
-        max_concurrent_jobs:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
-        max_forks:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
-        is_container_group:
-          type: boolean
-          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
-        credential:
-          type:
-          - integer
-          - 'null'
-        policy_instance_percentage:
-          type: integer
-          maximum: 100
-          minimum: 0
-          default: 0
-          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
-        policy_instance_minimum:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
-        policy_instance_list:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: List of exact-match Instances that will be assigned to this group
-        pod_spec_override:
-          type:
-          - string
-          - 'null'
-          default: ''
       required:
       - name
-    ExecutionEnvironment:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: The organization used to determine access to this execution environment.
-        image:
-          type:
-          - string
-          - 'null'
-          title: Image location
-          description: The full image location, including the container registry, image name, and version tag.
-          maxLength: 1024
-        managed:
-          type: boolean
-          readOnly: true
-        credential:
-          type:
-          - integer
-          - 'null'
-        pull:
-          enum:
-          - always
-          - missing
-          - never
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 63475462f6c34286
-          default: ''
-          description: 'Pull image before running?
-
-
-            * `always` - Always pull container before running.
-
-            * `missing` - Only pull the image if not present before running.
-
-            * `never` - Never pull container before running.'
-      required:
-      - image
-      - name
+      - organization
     PaginatedNotificationTemplateList:
       type: object
       required:
@@ -4108,67 +4246,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NotificationTemplate'
-    OrganizationCredentialSerializerCreate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: Inherit permissions from organization roles. If provided on creation, do not give either user or team.
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        managed:
-          type: boolean
-          readOnly: true
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        kind:
-          type: string
-          readOnly: true
-        cloud:
-          type: string
-          readOnly: true
-        kubernetes:
-          type: string
-          readOnly: true
-      required:
-      - credential_type
-      - name
-    PaginatedProjectList:
+    PaginatedWorkflowJobTemplateList:
       type: object
       required:
       - count
@@ -4192,35 +4270,57 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Project'
-    OrganizationCredentialSerializerCreateRequest:
+            $ref: '#/components/schemas/WorkflowJobTemplate'
+    PaginatedUserList:
       type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: Inherit permissions from organization roles. If provided on creation, do not give either user or team.
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
       required:
-      - credential_type
-      - name
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PaginatedExecutionEnvironmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExecutionEnvironment'
     Project:
       type: object
       properties:
@@ -4799,6 +4899,852 @@ components:
           maxLength: 128
       required:
       - name
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+      required:
+      - username
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    NotificationTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    ExecutionEnvironment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this execution environment.
+        image:
+          type:
+          - string
+          - 'null'
+          title: Image location
+          description: The full image location, including the container registry, image name, and version tag.
+          maxLength: 1024
+        managed:
+          type: boolean
+          readOnly: true
+        credential:
+          type:
+          - integer
+          - 'null'
+        pull:
+          enum:
+          - always
+          - missing
+          - never
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 63475462f6c34286
+          default: ''
+          description: 'Pull image before running?
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
+      required:
+      - image
+      - name
+    OrganizationRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        max_hosts:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: Maximum number of hosts allowed to be managed by this organization.
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run by this organization.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+      required:
+      - name
+    ResourceAccessListElement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    PaginatedInventoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inventory'
+    PaginatedInstanceGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceGroup'
+    InstanceGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 250
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        capacity:
+          type: string
+          readOnly: true
+        consumed_capacity:
+          type: string
+          readOnly: true
+        percent_capacity_remaining:
+          type: string
+          readOnly: true
+        jobs_running:
+          type: string
+          readOnly: true
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        jobs_total:
+          type: integer
+          readOnly: true
+          description: Count of all jobs that target this instance group
+        instances:
+          type: string
+          readOnly: true
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
+        summary_fields:
+          type: string
+          readOnly: true
+      required:
+      - name
+    Credential:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
+          type: string
+          readOnly: true
+        cloud:
+          type: string
+          readOnly: true
+        kubernetes:
+          type: string
+          readOnly: true
+      required:
+      - credential_type
+      - name
+    PaginatedProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    OrganizationCredentialSerializerCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: Inherit permissions from organization roles. If provided on creation, do not give either user or team.
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
+          type: string
+          readOnly: true
+        cloud:
+          type: string
+          readOnly: true
+        kubernetes:
+          type: string
+          readOnly: true
+      required:
+      - credential_type
+      - name
+    InstanceGroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 250
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
+      required:
+      - name
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    PaginatedJobTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobTemplate'
+    OrganizationCredentialSerializerCreateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: Inherit permissions from organization roles. If provided on creation, do not give either user or team.
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+      required:
+      - credential_type
+      - name
+    CredentialRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+      required:
+      - credential_type
+      - name
     WorkflowJobTemplate:
       type: object
       description: Provide recent jobs and survey details in summary_fields
@@ -4994,104 +5940,7 @@ components:
           - 'null'
       required:
       - name
-    UserRequest:
-      type: object
-      properties:
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-      required:
-      - username
-    ExecutionEnvironmentRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: The organization used to determine access to this execution environment.
-        image:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          title: Image location
-          description: The full image location, including the container registry, image name, and version tag.
-          maxLength: 1024
-        credential:
-          type:
-          - integer
-          - 'null'
-        pull:
-          enum:
-          - always
-          - missing
-          - never
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 63475462f6c34286
-          default: ''
-          description: 'Pull image before running?
-
-
-            * `always` - Always pull container before running.
-
-            * `missing` - Only pull the image if not present before running.
-
-            * `never` - Never pull container before running.'
-      required:
-      - image
-      - name
-    PaginatedUserList:
+    PaginatedActivityStreamList:
       type: object
       required:
       - count
@@ -5115,866 +5964,54 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/User'
-    WorkflowJobTemplateRequest:
-      type: object
-      description: Provide recent jobs and survey details in summary_fields
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: The organization used to determine access to this template.
-        survey_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_variables_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        inventory:
-          type:
-          - integer
-          - 'null'
-          description: Inventory applied as a prompt, assuming job template prompts for inventory
-        limit:
-          type:
-          - string
-          - 'null'
-        scm_branch:
-          type:
-          - string
-          - 'null'
-        ask_inventory_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_scm_branch_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_limit_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        ask_labels_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_skip_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        skip_tags:
-          type:
-          - string
-          - 'null'
-        job_tags:
-          type:
-          - string
-          - 'null'
-      required:
-      - name
-    JobTemplateRequest:
-      type: object
-      description: Provide recent jobs and survey details in summary_fields
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        project:
-          type:
-          - integer
-          - 'null'
-        playbook:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
-          maxLength: 1024
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        job_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        force_handlers:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        skip_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        start_at_task:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        use_fact_cache:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        host_config_key:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        ask_scm_branch_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_diff_mode_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_variables_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_limit_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_skip_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_job_type_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_verbosity_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_inventory_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_credential_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_execution_environment_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_labels_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_forks_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_job_slice_count_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_timeout_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_instance_groups_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        survey_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        job_slice_count:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 1
-          description: The number of jobs to slice into at runtime. Will cause the Job Template to launch a workflow if value is greater than 1.
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        prevent_instance_group_fallback:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the job template will prevent adding any inventory or organization instance groups to the list of preferred instances groups to run on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
-      required:
-      - name
-    PaginatedOrganizationCredentialSerializerCreateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrganizationCredentialSerializerCreate'
-    NotificationTemplateRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        notification_configuration:
-          default: {}
-        messages:
-          default:
-            started: null
-            success: null
-            error: null
-            workflow_approval: null
-          description: Optional custom messages for notification template.
-      required:
-      - name
-      - notification_type
-      - organization
-    NotificationTemplate:
+            $ref: '#/components/schemas/ActivityStream'
+    Organization_2:
       type: object
       properties:
         id:
           type: integer
           readOnly: true
-        type:
+        name:
           type: string
-          readOnly: true
-        url:
+          description: The name of this resource.
+          maxLength: 512
+        description:
           type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
+          description: The organization description.
+        resource:
+          type: object
+          additionalProperties: true
           readOnly: true
         created:
           type: string
+          format: date-time
           readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
         modified:
           type: string
+          format: date-time
           readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
+          description: The date/time this resource was created.
+        modified_by:
           type:
           - integer
           - 'null'
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        notification_configuration:
-          default: {}
-        messages:
-          default:
-            started: null
-            success: null
-            error: null
-            workflow_approval: null
-          description: Optional custom messages for notification template.
+          readOnly: true
+          description: The user who last modified this resource.
       required:
+      - created
+      - created_by
+      - id
+      - modified
+      - modified_by
       - name
-      - notification_type
-      - organization
-    Organization:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        max_hosts:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-          description: Maximum number of hosts allowed to be managed by this organization.
-        custom_virtualenv:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: Local absolute file path containing a custom Python virtualenv to use
-        default_environment:
-          type:
-          - integer
-          - 'null'
-          description: The default execution environment for jobs run by this organization.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
-      required:
-      - name
-    PaginatedJobTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobTemplate'
-    OrganizationRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        max_hosts:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-          description: Maximum number of hosts allowed to be managed by this organization.
-        default_environment:
-          type:
-          - integer
-          - 'null'
-          description: The default execution environment for jobs run by this organization.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
-      required:
-      - name
-    TeamRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
-    InstanceGroup:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 250
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        capacity:
-          type: string
-          readOnly: true
-        consumed_capacity:
-          type: string
-          readOnly: true
-        percent_capacity_remaining:
-          type: string
-          readOnly: true
-        jobs_running:
-          type: string
-          readOnly: true
-        max_concurrent_jobs:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
-        max_forks:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
-        jobs_total:
-          type: integer
-          readOnly: true
-          description: Count of all jobs that target this instance group
-        instances:
-          type: string
-          readOnly: true
-        is_container_group:
-          type: boolean
-          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
-        credential:
-          type:
-          - integer
-          - 'null'
-        policy_instance_percentage:
-          type: integer
-          maximum: 100
-          minimum: 0
-          default: 0
-          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
-        policy_instance_minimum:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
-        policy_instance_list:
-          type: array
-          items:
-            type: string
-          description: List of exact-match Instances that will be assigned to this group
-        pod_spec_override:
-          type:
-          - string
-          - 'null'
-          default: ''
-        summary_fields:
-          type: string
-          readOnly: true
-      required:
-      - name
-    PaginatedResourceAccessListElementList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceAccessListElement'
-    PaginatedOrganizationList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Organization_2'
+      - resource
     Team_2:
       type: object
       properties:
@@ -6027,53 +6064,6 @@ components:
       - name
       - organization_id
       - resource
-    Organization_2:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        description:
-          type: string
-          description: The organization description.
-        resource:
-          type: object
-          additionalProperties: true
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-      required:
-      - created
-      - created_by
-      - id
-      - modified
-      - modified_by
-      - name
-      - resource
     PaginatedTeamList_2:
       type: object
       properties:
@@ -6106,6 +6096,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Team_2'
+    PaginatedOrganizationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organization_2'
     User_2:
       type: object
       description: Disallows editing of system user and enforces superuser requirement.
@@ -6215,17 +6237,61 @@ components:
           description: Indicates if this user is managed by the system. It cannot be modified once created.
       required:
       - username
-    UserAssociate:
+    Organization_3:
       type: object
-      description: Serializer used for adding objects to a many-to-many relationship
       properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of users to add to this relationship.
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The organization description.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Indicates if this organization is managed by the system. It cannot be modified once created.
       required:
-      - instances
+      - name
     PaginatedOrganizationList_2:
       type: object
       required:
@@ -6251,15 +6317,68 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Organization_3'
-    UserDisassociate:
+    PatchedOrganization:
       type: object
-      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The organization description.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Indicates if this organization is managed by the system. It cannot be modified once created.
+    UserAssociate:
+      type: object
+      description: Serializer used for adding objects to a many-to-many relationship
       properties:
         instances:
           type: array
           items:
             type: integer
-          description: A list of users to remove from this relationship.
+          description: A list of users to add to this relationship.
       required:
       - instances
     Team_3:
@@ -6325,114 +6444,17 @@ components:
       required:
       - name
       - organization
-    Organization_3:
+    UserDisassociate:
       type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
       properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        description:
-          type: string
-          description: The organization description.
-        managed:
-          type: boolean
-          readOnly: true
-          description: Indicates if this organization is managed by the system. It cannot be modified once created.
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of users to remove from this relationship.
       required:
-      - name
-    PatchedOrganization:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        description:
-          type: string
-          description: The organization description.
-        managed:
-          type: boolean
-          readOnly: true
-          description: Indicates if this organization is managed by the system. It cannot be modified once created.
+      - instances
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

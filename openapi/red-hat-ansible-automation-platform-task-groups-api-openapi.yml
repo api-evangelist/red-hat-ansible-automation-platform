@@ -168,6 +168,88 @@ paths:
           description: ''
 components:
   schemas:
+    MinimalTaskResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: The name of task.
+        state:
+          type: string
+          readOnly: true
+          description: 'The current state of the task. The possible values include: ''waiting'', ''skipped'', ''running'', ''completed'', ''failed'', ''canceled'' and ''canceling''.'
+        unblocked_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of when this task was identified ready for pickup.
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of when this task started execution.
+        finished_at:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of when this task stopped execution.
+        worker:
+          type: string
+          format: uri
+          readOnly: true
+          description: The worker associated with this task. This field is empty if a worker is not yet assigned.
+      required:
+      - name
+    PaginatedTaskGroupResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskGroupResponse'
     TaskGroupResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -240,63 +322,6 @@ components:
       required:
       - all_tasks_dispatched
       - description
-    MinimalTaskResponse:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        name:
-          type: string
-          description: The name of task.
-        state:
-          type: string
-          readOnly: true
-          description: 'The current state of the task. The possible values include: ''waiting'', ''skipped'', ''running'', ''completed'', ''failed'', ''canceled'' and ''canceling''.'
-        unblocked_at:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of when this task was identified ready for pickup.
-        started_at:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of when this task started execution.
-        finished_at:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of when this task stopped execution.
-        worker:
-          type: string
-          format: uri
-          readOnly: true
-          description: The worker associated with this task. This field is empty if a worker is not yet assigned.
-      required:
-      - name
     GroupProgressReportResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -335,28 +360,3 @@ components:
           - 'null'
           readOnly: true
           description: The suffix to be shown with the group progress report.
-    PaginatedTaskGroupResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskGroupResponse'

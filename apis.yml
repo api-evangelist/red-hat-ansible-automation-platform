@@ -373,32 +373,6 @@ apis:
       https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
   - type: Console
     url: https://console.redhat.com/ansible/ansible-dashboard
-- aid: red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-api-api
-  name: Red Hat Ansible Automation Platform API
-  description: The api API from Red Hat Ansible Automation Platform — 6 operation(s) for api.
-  humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
-  baseURL: https://controller-host/api/v2/
-  tags: []
-  tags_raw:
-  - api
-  properties:
-  - type: OpenAPI
-    url: openapi/red-hat-ansible-automation-platform-api-api-openapi.yml
-  - type: Documentation
-    url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
-  - type: APIReference
-    url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
-  - type: Authentication
-    url: >-
-      https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
-  - type: Documentation
-    url: >-
-      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
-  - type: Documentation
-    url: >-
-      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
-  - type: Console
-    url: https://console.redhat.com/ansible/ansible-dashboard
 - aid: >-
     red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-api-automation-hub-api
   name: 'Red Hat Ansible Automation Platform Api: Automation-Hub API'
@@ -9403,6 +9377,59 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/red-hat-ansible-automation-platform-workflow-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  - type: APIReference
+    url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
+  - type: Authentication
+    url: >-
+      https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
+  - type: Documentation
+    url: >-
+      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
+  - type: Documentation
+    url: >-
+      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
+  - type: Console
+    url: https://console.redhat.com/ansible/ansible-dashboard
+- aid: >-
+    red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-aap-gateway-api-api
+  name: Red Hat Ansible Automation Platform AAP Gateway API
+  description: >-
+    The AAP Gateway API API from Red Hat Ansible Automation Platform — 1 operation(s) for aap gateway
+    api.
+  humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  baseURL: https://catalog-host/api/v1/
+  tags:
+  - AAP Gateway API
+  properties:
+  - type: OpenAPI
+    url: openapi/red-hat-ansible-automation-platform-aap-gateway-api-api-openapi.yml
+  - type: Documentation
+    url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  - type: APIReference
+    url: https://docs.ansible.com/automation-controller/latest/html/controllerapi/api_ref.html
+  - type: Authentication
+    url: >-
+      https://docs.ansible.com/automation-controller/latest/html/controllerapi/authentication.html
+  - type: Documentation
+    url: >-
+      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/managing_red_hat_certified_and_ansible_galaxy_collections_in_automation_hub/
+  - type: Documentation
+    url: >-
+      https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/event-driven_ansible_controller_user_guide/
+  - type: Console
+    url: https://console.redhat.com/ansible/ansible-dashboard
+- aid: red-hat-ansible-automation-platform:red-hat-ansible-automation-platform-debug-api
+  name: Red Hat Ansible Automation Platform Debug API
+  description: The Debug API from Red Hat Ansible Automation Platform — 4 operation(s) for debug.
+  humanURL: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
+  baseURL: https://catalog-host/api/v1/
+  tags:
+  - Debug
+  properties:
+  - type: OpenAPI
+    url: openapi/red-hat-ansible-automation-platform-debug-api-openapi.yml
   - type: Documentation
     url: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/
   - type: APIReference

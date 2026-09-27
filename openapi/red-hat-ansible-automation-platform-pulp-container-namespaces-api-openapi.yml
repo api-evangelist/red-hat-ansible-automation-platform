@@ -412,16 +412,30 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    AsyncOperationResponse:
+    NestedRoleResponse:
       type: object
-      description: Serializer for asynchronous operations.
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        task:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
           type: string
-          format: uri
-          description: The href of the task.
       required:
-      - task
+      - role
     Paginatedcontainer.ContainerNamespaceResponseList:
       type: object
       required:
@@ -469,39 +483,16 @@ components:
           type: string
       required:
       - name
-    container.ContainerNamespace:
+    AsyncOperationResponse:
       type: object
-      description: Serializer for ContainerNamespaces.
+      description: Serializer for asynchronous operations.
       properties:
-        name:
+        task:
           type: string
-          minLength: 1
+          format: uri
+          description: The href of the task.
       required:
-      - name
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
+      - task
     MyPermissionsResponse:
       type: object
       properties:
@@ -538,3 +529,12 @@ components:
           minLength: 1
       required:
       - role
+    container.ContainerNamespace:
+      type: object
+      description: Serializer for ContainerNamespaces.
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name

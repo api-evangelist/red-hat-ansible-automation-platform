@@ -708,20 +708,6 @@ paths:
           description: ''
 components:
   schemas:
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
     SetLabel:
       type: object
       description: Serializer for synchronously setting a label.
@@ -737,6 +723,16 @@ components:
       required:
       - key
       - value
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
     ObjectRolesResponse:
       type: object
       properties:
@@ -746,85 +742,6 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
-      required:
-      - key
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
-    Paginatedcontainer.ContainerPullThroughRemoteResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/container.ContainerPullThroughRemoteResponse'
-    Policy8e2Enum:
-      enum:
-      - on_demand
-      type: string
-      description: '* `on_demand` - on_demand'
     NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -849,49 +766,63 @@ components:
           type: string
       required:
       - role
-    MyPermissionsResponse:
+    UnsetLabelResponse:
       type: object
+      description: Serializer for synchronously setting a label.
       properties:
-        permissions:
-          type: array
-          items:
-            type: string
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
       required:
-      - permissions
-    container.ContainerPullThroughRemoteResponse:
+      - key
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    Patchedcontainer.ContainerPullThroughRemote:
       type: object
       description: A serializer for a remote used in the pull-through distribution.
       properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the most recent update of the remote.
         name:
           type: string
+          minLength: 1
           description: A unique name for this remote.
         url:
           type: string
+          minLength: 1
           description: The URL of an external content source.
         ca_cert:
           type:
           - string
           - 'null'
+          minLength: 1
           description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
         client_cert:
           type:
           - string
           - 'null'
+          minLength: 1
           description: A PEM encoded client certificate used for authentication.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
         tls_validation:
           type: boolean
           description: If True, TLS peer validation must be performed.
@@ -899,7 +830,36 @@ components:
           type:
           - string
           - 'null'
+          minLength: 1
           description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The username to authenticte to the proxy.
+        proxy_password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The password to authenticate to the proxy. Extra leading and trailing whitespace characters are not trimmed.
+        username:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The username to be used for authentication when syncing.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The password to be used for authentication when syncing. Extra leading and trailing whitespace characters are not trimmed.
         pulp_labels:
           type: object
           additionalProperties:
@@ -962,23 +922,21 @@ components:
           - 'null'
           format: int64
           description: Limits requests per second for each concurrent downloader
-        hidden_fields:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              is_set:
-                type: boolean
-            required:
-            - is_set
-            - name
-          readOnly: true
-          description: List of hidden (write only) fields
+    Policy8e2Enum:
+      enum:
+      - on_demand
+      type: string
+      description: '* `on_demand` - on_demand'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
       required:
-      - name
-      - url
+      - task
     container.ContainerPullThroughRemote:
       type: object
       description: A serializer for a remote used in the pull-through distribution.
@@ -1112,47 +1070,101 @@ components:
       required:
       - name
       - url
-    UnsetLabel:
+    MyPermissionsResponse:
       type: object
-      description: Serializer for synchronously setting a label.
       properties:
-        key:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
           type: string
           minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
       required:
-      - key
-    Patchedcontainer.ContainerPullThroughRemote:
+      - role
+    Paginatedcontainer.ContainerPullThroughRemoteResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/container.ContainerPullThroughRemoteResponse'
+    container.ContainerPullThroughRemoteResponse:
       type: object
       description: A serializer for a remote used in the pull-through distribution.
       properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent update of the remote.
         name:
           type: string
-          minLength: 1
           description: A unique name for this remote.
         url:
           type: string
-          minLength: 1
           description: The URL of an external content source.
         ca_cert:
           type:
           - string
           - 'null'
-          minLength: 1
           description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
         client_cert:
           type:
           - string
           - 'null'
-          minLength: 1
           description: A PEM encoded client certificate used for authentication.
-        client_key:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: A PEM encoded private key used for authentication.
         tls_validation:
           type: boolean
           description: If True, TLS peer validation must be performed.
@@ -1160,36 +1172,7 @@ components:
           type:
           - string
           - 'null'
-          minLength: 1
           description: 'The proxy URL. Format: scheme://host:port'
-        proxy_username:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The username to authenticte to the proxy.
-        proxy_password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The password to authenticate to the proxy. Extra leading and trailing whitespace characters are not trimmed.
-        username:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The username to be used for authentication when syncing.
-        password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The password to be used for authentication when syncing. Extra leading and trailing whitespace characters are not trimmed.
         pulp_labels:
           type: object
           additionalProperties:
@@ -1252,3 +1235,20 @@ components:
           - 'null'
           format: int64
           description: Limits requests per second for each concurrent downloader
+        hidden_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              is_set:
+                type: boolean
+            required:
+            - is_set
+            - name
+          readOnly: true
+          description: List of hidden (write only) fields
+      required:
+      - name
+      - url

@@ -268,7 +268,7 @@ paths:
       x-summary-source: derived
   /api/automation-hub/pulp/api/v3/roles/:
     get:
-      operationId: roles_list
+      operationId: getApiAutomationHubPulpApiV3Roles
       description: ViewSet for Role.
       summary: List roles
       parameters:
@@ -471,6 +471,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedRoleResponseList'
           description: ''
+      x-operation-id-source: normalized
+      x-operation-id-original: roles_list
     post:
       operationId: roles_create
       description: ViewSet for Role.
@@ -621,31 +623,6 @@ paths:
     - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
 components:
   schemas:
-    PaginatedRoleList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
     User:
       type: object
       properties:
@@ -715,69 +692,6 @@ components:
           readOnly: true
       required:
       - username
-    Role:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        description:
-          type: string
-          readOnly: true
-    Team:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
     UserRequest:
       type: object
       properties:
@@ -821,6 +735,30 @@ components:
           description: Field used to change the password.
       required:
       - username
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
     PaginatedTeamList:
       type: object
       required:
@@ -846,6 +784,89 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Team'
+    TeamRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
     PaginatedUserList:
       type: object
       required:
@@ -871,25 +892,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-    TeamRequest:
+    Role_2:
       type: object
+      description: Serializer for Role.
       properties:
         name:
-          type:
-          - string
-          - 'null'
+          type: string
           minLength: 1
-          maxLength: 512
+          description: The name of this role.
         description:
           type:
           - string
           - 'null'
-          default: ''
-        organization:
-          type: integer
+          minLength: 1
+          description: An optional description.
+        permissions:
+          type: array
+          items:
+            type: string
+          description: List of permissions defining the role.
       required:
       - name
-      - organization
+      - permissions
     PaginatedRoleResponseList:
       type: object
       required:
@@ -915,47 +939,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RoleResponse'
-    Role_2:
-      type: object
-      description: Serializer for Role.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        permissions:
-          type: array
-          items:
-            type: string
-          description: List of permissions defining the role.
-      required:
-      - name
-      - permissions
-    PatchedRole:
-      type: object
-      description: Serializer for Role.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        permissions:
-          type: array
-          items:
-            type: string
-          description: List of permissions defining the role.
     RoleResponse:
       type: object
       description: Serializer for Role.
@@ -994,6 +977,25 @@ components:
       required:
       - name
       - permissions
+    PatchedRole:
+      type: object
+      description: Serializer for Role.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        permissions:
+          type: array
+          items:
+            type: string
+          description: List of permissions defining the role.
 x-refined-from:
 - red-hat-ansible-automation-platform-automation-controller-openapi.json
 - red-hat-ansible-automation-platform-automation-hub-openapi.json

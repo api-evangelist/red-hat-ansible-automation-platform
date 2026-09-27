@@ -151,7 +151,7 @@ paths:
       x-summary-source: derived
   /role_user_assignments/:
     get:
-      operationId: role_user_assignments_list
+      operationId: getRoleUserAssignments
       parameters:
       - name: page
         required: false
@@ -184,8 +184,10 @@ paths:
           description: ''
       summary: Role user assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_list
     post:
-      operationId: role_user_assignments_create
+      operationId: postRoleUserAssignments
       description: Create a RoleUserAssignment.
       tags:
       - role_user_assignments
@@ -212,11 +214,13 @@ paths:
           description: Return a created RoleUserAssignment.
       summary: Role user assignments create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_create
     servers:
     - url: /api/eda/v1
   /role_user_assignments/{id}/:
     get:
-      operationId: role_user_assignments_retrieve
+      operationId: getRoleUserAssignmentsById
       parameters:
       - in: path
         name: id
@@ -237,8 +241,10 @@ paths:
           description: ''
       summary: Role user assignments retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_retrieve
     delete:
-      operationId: role_user_assignments_destroy
+      operationId: deleteRoleUserAssignmentsById
       parameters:
       - in: path
         name: id
@@ -255,11 +261,13 @@ paths:
           description: No response body
       summary: Role user assignments destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_destroy
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/role_user_assignments/:
     get:
-      operationId: role_user_assignments_list
+      operationId: getApiGatewayV1RoleUserAssignments
       parameters:
       - in: query
         name: order
@@ -315,8 +323,10 @@ paths:
       x-ai-description: List RBAC role grants assigning permissions to users for specific resources
       summary: Role user assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_list
     post:
-      operationId: role_user_assignments_create
+      operationId: postApiGatewayV1RoleUserAssignments
       description: Give a user permission to a resource, an organization, or globally (when allowed). Must specify 'role_definition' and exactly one of 'user' or 'user_ansible_id'. Can specify at most one of 'object_id' or 'object_ansible_id' (omit both for global roles). The content_type of the role definition and the provided object_id are used to look up the resource. After creation, the assignment cannot be edited, but can be deleted to remove those permissions.
       tags:
       - role_user_assignments
@@ -367,9 +377,11 @@ paths:
       x-ai-description: Create a RBAC role grants assigning permissions to user for specific resources
       summary: Role user assignments create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_create
   /api/gateway/v1/role_user_assignments/{id}/:
     get:
-      operationId: role_user_assignments_retrieve
+      operationId: getApiGatewayV1RoleUserAssignmentsById
       parameters:
       - in: path
         name: id
@@ -393,8 +405,10 @@ paths:
       x-ai-description: Retrieve a RBAC role grants assigning permissions to user for specific resources
       summary: Role user assignments retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_retrieve
     delete:
-      operationId: role_user_assignments_destroy
+      operationId: deleteApiGatewayV1RoleUserAssignmentsById
       parameters:
       - in: path
         name: id
@@ -414,6 +428,8 @@ paths:
       x-ai-description: Delete a RBAC role grants assigning permissions to user for specific resources
       summary: Role user assignments destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_assignments_destroy
 components:
   schemas:
     RoleUserAssignment:

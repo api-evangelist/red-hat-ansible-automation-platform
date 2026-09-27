@@ -1377,7 +1377,141 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedRoleList:
+    CopyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    Host:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+        has_active_failures:
+          type: string
+          readOnly: true
+        has_inventory_sources:
+          type: string
+          readOnly: true
+        last_job:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        last_job_host_summary:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        ansible_facts_modified:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time ansible_facts was last modified.
+      required:
+      - inventory
+      - name
+    PaginatedResourceAccessListElementList:
       type: object
       required:
       - count
@@ -1401,7 +1535,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Role'
+            $ref: '#/components/schemas/ResourceAccessListElement'
     Inventory:
       type: object
       properties:
@@ -1523,512 +1657,6 @@ components:
       required:
       - name
       - organization
-    PaginatedInstanceGroupList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InstanceGroup'
-    Role:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        description:
-          type: string
-          readOnly: true
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'
-    InventoryRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: Organization containing this inventory.
-        kind:
-          enum:
-          - ''
-          - smart
-          - constructed
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 2ff9e8df76c2ad0e
-          default: ''
-          description: 'Kind of inventory being represented.
-
-
-            * `` - Hosts have a direct link to this inventory.
-
-            * `smart` - Hosts for inventory generated using the host_filter property.
-
-            * `constructed` - Parse list of source inventories with the constructed inventory plugin.'
-        host_filter:
-          type:
-          - string
-          - 'null'
-          description: Filter that will be applied to the hosts of this inventory.
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory variables in JSON or YAML format.
-        prevent_instance_group_fallback:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
-      required:
-      - name
-      - organization
-    PaginatedInventoryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Inventory'
-    GroupTree:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
-        children:
-          type: string
-          readOnly: true
-      required:
-      - inventory
-      - name
-    Host:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Is this host online and available for running jobs?
-        instance_id:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The value used by the remote inventory source to uniquely identify the host
-          maxLength: 1024
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-        has_active_failures:
-          type: string
-          readOnly: true
-        has_inventory_sources:
-          type: string
-          readOnly: true
-        last_job:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        last_job_host_summary:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        ansible_facts_modified:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time ansible_facts was last modified.
-      required:
-      - inventory
-      - name
-    PaginatedHostList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Host'
-    ResourceAccessListElement:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        username:
-          type:
-          - string
-          - 'null'
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-        last_login:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-      required:
-      - username
-    ActivityStream:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
-          type:
-          - string
-          - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
-      required:
-      - object1
-      - object2
-      - operation
-    Label:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
-      required:
-      - name
-      - organization
-    InventoryVariableDataRequest:
-      type: object
-      properties:
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory variables in JSON or YAML format.
     PaginatedInventorySourceList:
       type: object
       required:
@@ -2054,342 +1682,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InventorySource'
-    InstanceGroupRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 250
-        max_concurrent_jobs:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
-        max_forks:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
-        is_container_group:
-          type: boolean
-          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
-        credential:
-          type:
-          - integer
-          - 'null'
-        policy_instance_percentage:
-          type: integer
-          maximum: 100
-          minimum: 0
-          default: 0
-          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
-        policy_instance_minimum:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
-        policy_instance_list:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: List of exact-match Instances that will be assigned to this group
-        pod_spec_override:
-          type:
-          - string
-          - 'null'
-          default: ''
-      required:
-      - name
-    PaginatedGroupList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Group'
-    PaginatedLabelList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Label'
-    LabelRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
-      required:
-      - name
-      - organization
-    GroupRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
-    Group:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
-    InventorySourceUpdate:
-      type: object
-      properties:
-        can_update:
-          type: boolean
-          readOnly: true
-    AdHocCommandListRequest:
-      type: object
-      properties:
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential:
-          type:
-          - integer
-          - 'null'
-        module_name:
-          enum:
-          - command
-          - shell
-          - yum
-          - apt
-          - apt_key
-          - apt_repository
-          - apt_rpm
-          - service
-          - group
-          - user
-          - mount
-          - ping
-          - selinux
-          - setup
-          - win_ping
-          - win_service
-          - win_updates
-          - win_group
-          - win_user
-          type: string
-          description: '* `command` - command
-
-            * `shell` - shell
-
-            * `yum` - yum
-
-            * `apt` - apt
-
-            * `apt_key` - apt_key
-
-            * `apt_repository` - apt_repository
-
-            * `apt_rpm` - apt_rpm
-
-            * `service` - service
-
-            * `group` - group
-
-            * `user` - user
-
-            * `mount` - mount
-
-            * `ping` - ping
-
-            * `selinux` - selinux
-
-            * `setup` - setup
-
-            * `win_ping` - win_ping
-
-            * `win_service` - win_service
-
-            * `win_updates` - win_updates
-
-            * `win_group` - win_group
-
-            * `win_user` - win_user'
-          x-spec-enum-id: 857230cdbb58eda2
-          default: command
-        module_args:
-          type:
-          - string
-          - 'null'
-          default: ''
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
     JobTemplate:
       type: object
       description: Provide recent jobs and survey details in summary_fields
@@ -2748,6 +2040,157 @@ components:
           maxLength: 128
       required:
       - name
+    InventorySourceUpdate:
+      type: object
+      properties:
+        can_update:
+          type: boolean
+          readOnly: true
+    AdHocCommandListRequest:
+      type: object
+      properties:
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential:
+          type:
+          - integer
+          - 'null'
+        module_name:
+          enum:
+          - command
+          - shell
+          - yum
+          - apt
+          - apt_key
+          - apt_repository
+          - apt_rpm
+          - service
+          - group
+          - user
+          - mount
+          - ping
+          - selinux
+          - setup
+          - win_ping
+          - win_service
+          - win_updates
+          - win_group
+          - win_user
+          type: string
+          description: '* `command` - command
+
+            * `shell` - shell
+
+            * `yum` - yum
+
+            * `apt` - apt
+
+            * `apt_key` - apt_key
+
+            * `apt_repository` - apt_repository
+
+            * `apt_rpm` - apt_rpm
+
+            * `service` - service
+
+            * `group` - group
+
+            * `user` - user
+
+            * `mount` - mount
+
+            * `ping` - ping
+
+            * `selinux` - selinux
+
+            * `setup` - setup
+
+            * `win_ping` - win_ping
+
+            * `win_service` - win_service
+
+            * `win_updates` - win_updates
+
+            * `win_group` - win_group
+
+            * `win_user` - win_user'
+          x-spec-enum-id: 857230cdbb58eda2
+          default: command
+        module_args:
+          type:
+          - string
+          - 'null'
+          default: ''
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
     PatchedInventoryVariableDataRequest:
       type: object
       properties:
@@ -2757,6 +2200,730 @@ components:
           - 'null'
           default: ''
           description: Inventory variables in JSON or YAML format.
+    HostRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    GroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    ResourceAccessListElement:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    PaginatedInventoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inventory'
+    LabelRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    PaginatedInstanceGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceGroup'
+    PatchedInventoryRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: Organization containing this inventory.
+        kind:
+          enum:
+          - ''
+          - smart
+          - constructed
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 2ff9e8df76c2ad0e
+          default: ''
+          description: 'Kind of inventory being represented.
+
+
+            * `` - Hosts have a direct link to this inventory.
+
+            * `smart` - Hosts for inventory generated using the host_filter property.
+
+            * `constructed` - Parse list of source inventories with the constructed inventory plugin.'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          description: Filter that will be applied to the hosts of this inventory.
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+    GroupTree:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+        children:
+          type: string
+          readOnly: true
+      required:
+      - inventory
+      - name
+    PaginatedHostList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Host'
+    PaginatedGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    InventorySource:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        source:
+          enum:
+          - azure_rm
+          - controller
+          - ec2
+          - gce
+          - insights
+          - openshift_virtualization
+          - openstack
+          - rhv
+          - satellite6
+          - terraform
+          - vmware
+          - scm
+          - constructed
+          type: string
+          description: '* `azure_rm` - Microsoft Azure Resource Manager
+
+            * `controller` - Red Hat Ansible Automation Platform
+
+            * `ec2` - Amazon EC2
+
+            * `gce` - Google Compute Engine
+
+            * `insights` - Red Hat Insights
+
+            * `openshift_virtualization` - OpenShift Virtualization
+
+            * `openstack` - OpenStack
+
+            * `rhv` - Red Hat Virtualization
+
+            * `satellite6` - Red Hat Satellite 6
+
+            * `terraform` - Terraform State
+
+            * `vmware` - VMware vCenter
+
+            * `scm` - Sourced from a Project
+
+            * `constructed` - Template additional groups and hostvars at runtime'
+          x-spec-enum-id: 2e54dfe09d4f7d8d
+        source_path:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        source_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source variables in YAML or JSON format.
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        credential:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          description: Cloud credential to use for inventory updates.
+        enabled_var:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
+        enabled_value:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
+        overwrite:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local groups and hosts from remote inventory source.
+        overwrite_vars:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local variables from remote inventory source.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Local absolute file path containing a custom Python virtualenv to use
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: '* `0` - 0 (WARNING)
+
+            * `1` - 1 (INFO)
+
+            * `2` - 2 (DEBUG)'
+          x-spec-enum-id: 48197bd695a06691
+          default: 1
+          minimum: 0
+          maximum: 9223372036854775807
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Enter host, group or pattern match
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - none
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `none` - No External Source'
+          x-spec-enum-id: 697673f6ed4abf52
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        inventory:
+          type:
+          - integer
+          - 'null'
+        update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        source_project:
+          type:
+          - integer
+          - 'null'
+          description: Project containing inventory file used as source.
+        last_update_failed:
+          type: boolean
+          readOnly: true
+        last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - inventory
+      - name
+      - source
+    Copy:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
     AdHocCommandList:
       type: object
       properties:
@@ -3038,14 +3205,81 @@ components:
           - boolean
           - 'null'
           default: false
-    Copy:
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    InstanceGroupRequest:
       type: object
       properties:
         name:
-          type: string
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 250
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
       required:
       - name
-    PaginatedAdHocCommandListList:
+    PaginatedLabelList:
       type: object
       required:
       - count
@@ -3069,7 +3303,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/AdHocCommandList'
+            $ref: '#/components/schemas/Label'
     PaginatedJobTemplateList:
       type: object
       required:
@@ -3095,372 +3329,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/JobTemplate'
-    InventorySource:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        source:
-          enum:
-          - azure_rm
-          - controller
-          - ec2
-          - gce
-          - insights
-          - openshift_virtualization
-          - openstack
-          - rhv
-          - satellite6
-          - terraform
-          - vmware
-          - scm
-          - constructed
-          type: string
-          description: '* `azure_rm` - Microsoft Azure Resource Manager
-
-            * `controller` - Red Hat Ansible Automation Platform
-
-            * `ec2` - Amazon EC2
-
-            * `gce` - Google Compute Engine
-
-            * `insights` - Red Hat Insights
-
-            * `openshift_virtualization` - OpenShift Virtualization
-
-            * `openstack` - OpenStack
-
-            * `rhv` - Red Hat Virtualization
-
-            * `satellite6` - Red Hat Satellite 6
-
-            * `terraform` - Terraform State
-
-            * `vmware` - VMware vCenter
-
-            * `scm` - Sourced from a Project
-
-            * `constructed` - Template additional groups and hostvars at runtime'
-          x-spec-enum-id: 2e54dfe09d4f7d8d
-        source_path:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        source_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory source variables in YAML or JSON format.
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
-          maxLength: 1024
-        credential:
-          type:
-          - integer
-          - 'null'
-          minimum: 1
-          description: Cloud credential to use for inventory updates.
-        enabled_var:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
-        enabled_value:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
-        host_filter:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
-        overwrite:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Overwrite local groups and hosts from remote inventory source.
-        overwrite_vars:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Overwrite local variables from remote inventory source.
-        custom_virtualenv:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: Local absolute file path containing a custom Python virtualenv to use
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          type: integer
-          description: '* `0` - 0 (WARNING)
-
-            * `1` - 1 (INFO)
-
-            * `2` - 2 (DEBUG)'
-          x-spec-enum-id: 48197bd695a06691
-          default: 1
-          minimum: 0
-          maximum: 9223372036854775807
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Enter host, group or pattern match
-        last_job_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        last_job_failed:
-          type: boolean
-          readOnly: true
-        next_job_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          - never updated
-          - none
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled
-
-            * `never updated` - Never Updated
-
-            * `none` - No External Source'
-          x-spec-enum-id: 697673f6ed4abf52
-          readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        inventory:
-          type:
-          - integer
-          - 'null'
-        update_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        update_cache_timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        source_project:
-          type:
-          - integer
-          - 'null'
-          description: Project containing inventory file used as source.
-        last_update_failed:
-          type: boolean
-          readOnly: true
-        last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - inventory
-      - name
-      - source
-    HostRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Is this host online and available for running jobs?
-        instance_id:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The value used by the remote inventory source to uniquely identify the host
-          maxLength: 1024
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
-    InventoryVariableData:
-      type: object
-      properties:
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory variables in JSON or YAML format.
-    CopyRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-      required:
-      - name
-    PatchedInventoryRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: Organization containing this inventory.
-        kind:
-          enum:
-          - ''
-          - smart
-          - constructed
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 2ff9e8df76c2ad0e
-          default: ''
-          description: 'Kind of inventory being represented.
-
-
-            * `` - Hosts have a direct link to this inventory.
-
-            * `smart` - Hosts for inventory generated using the host_filter property.
-
-            * `constructed` - Parse list of source inventories with the constructed inventory plugin.'
-        host_filter:
-          type:
-          - string
-          - 'null'
-          description: Filter that will be applied to the hosts of this inventory.
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory variables in JSON or YAML format.
-        prevent_instance_group_fallback:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
     InventorySourceRequest:
       type: object
       properties:
@@ -3629,6 +3497,138 @@ components:
       - inventory
       - name
       - source
+    PaginatedAdHocCommandListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdHocCommandList'
+    InventoryVariableDataRequest:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+    InventoryVariableData:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+    InventoryRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: Organization containing this inventory.
+        kind:
+          enum:
+          - ''
+          - smart
+          - constructed
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 2ff9e8df76c2ad0e
+          default: ''
+          description: 'Kind of inventory being represented.
+
+
+            * `` - Hosts have a direct link to this inventory.
+
+            * `smart` - Hosts for inventory generated using the host_filter property.
+
+            * `constructed` - Parse list of source inventories with the constructed inventory plugin.'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          description: Filter that will be applied to the hosts of this inventory.
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory variables in JSON or YAML format.
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the inventory will prevent adding any organization instance groups to the list of preferred instances groups to run associated job templates on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+      required:
+      - name
+      - organization
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
     InstanceGroup:
       type: object
       properties:
@@ -3717,7 +3717,7 @@ components:
           readOnly: true
       required:
       - name
-    PaginatedResourceAccessListElementList:
+    PaginatedActivityStreamList:
       type: object
       required:
       - count
@@ -3741,4 +3741,4 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ResourceAccessListElement'
+            $ref: '#/components/schemas/ActivityStream'

@@ -54,6 +54,16 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     OrphansCleanup:
       type: object
       properties:
@@ -67,13 +77,3 @@ components:
           - 'null'
           format: int64
           description: The time in minutes for how long Pulp will hold orphan Content and Artifacts before they become candidates for deletion by this orphan cleanup task. This should ideally be longer than your longest running task otherwise any content created during that task could be cleaned up before the task finishes. If not specified, a default value is taken from the setting ORPHAN_PROTECTION_TIME.
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task

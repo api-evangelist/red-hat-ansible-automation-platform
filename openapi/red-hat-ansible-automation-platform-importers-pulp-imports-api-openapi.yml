@@ -167,6 +167,16 @@ paths:
           description: No response body
 components:
   schemas:
+    TaskGroupOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations that return a task group.
+      properties:
+        task_group:
+          type: string
+          format: uri
+          description: The href of the task group.
+      required:
+      - task_group
     ImportResponse:
       type: object
       description: Serializer for Imports.
@@ -236,13 +246,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ImportResponse'
-    TaskGroupOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations that return a task group.
-      properties:
-        task_group:
-          type: string
-          format: uri
-          description: The href of the task group.
-      required:
-      - task_group

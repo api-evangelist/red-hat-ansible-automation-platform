@@ -74,31 +74,6 @@ paths:
           description: ''
 components:
   schemas:
-    PaginatedServiceRoleTeamAssignmentResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceRoleTeamAssignmentResponse'
     ServiceRoleTeamAssignmentResponse:
       type: object
       properties:
@@ -133,3 +108,28 @@ components:
       required:
       - role_definition
       - team_ansible_id
+    PaginatedServiceRoleTeamAssignmentResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceRoleTeamAssignmentResponse'

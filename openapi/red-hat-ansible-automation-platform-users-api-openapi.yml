@@ -627,7 +627,7 @@ paths:
       x-summary-source: derived
   /api/automation-hub/pulp/api/v3/users/:
     get:
-      operationId: users_list
+      operationId: getApiAutomationHubPulpApiV3Users
       description: ViewSet for User.
       summary: List users
       parameters:
@@ -898,8 +898,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/PaginatedUserResponseList'
           description: ''
+      x-operation-id-source: normalized
+      x-operation-id-original: users_list
     post:
-      operationId: users_create
+      operationId: postApiAutomationHubPulpApiV3Users
       description: ViewSet for User.
       summary: Create an user
       tags:
@@ -923,6 +925,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserResponse'
           description: ''
+      x-operation-id-source: normalized
+      x-operation-id-original: users_create
     servers:
     - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
   /api/automation-hub/pulp/api/v3/users/{id}/:
@@ -962,7 +966,7 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
           description: ''
     put:
-      operationId: users_update
+      operationId: putApiAutomationHubPulpApiV3UsersById
       description: ViewSet for User.
       summary: Update an user
       parameters:
@@ -994,8 +998,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserResponse'
           description: ''
+      x-operation-id-source: normalized
+      x-operation-id-original: users_update
     patch:
-      operationId: users_partial_update
+      operationId: patchApiAutomationHubPulpApiV3UsersById
       description: ViewSet for User.
       summary: Update an user
       parameters:
@@ -1027,6 +1033,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserResponse'
           description: ''
+      x-operation-id-source: normalized
+      x-operation-id-original: users_partial_update
     delete:
       operationId: users_delete
       description: ViewSet for User.
@@ -1048,7 +1056,7 @@ paths:
     - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
   /users/:
     get:
-      operationId: users_list
+      operationId: getUsers
       description: List users
       parameters:
       - in: query
@@ -1095,11 +1103,13 @@ paths:
           description: Return a list of users.
       summary: Users list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_list
     servers:
     - url: /api/eda/v1
   /users/{id}/:
     get:
-      operationId: users_retrieve
+      operationId: getUsersById
       description: Retrieve a user by their id
       parameters:
       - in: path
@@ -1121,8 +1131,10 @@ paths:
           description: Return a user.
       summary: Users retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_retrieve
     patch:
-      operationId: users_partial_update
+      operationId: patchUsersById
       description: Partial update of a user.
       parameters:
       - in: path
@@ -1157,6 +1169,8 @@ paths:
           description: Update is prohibited
       summary: Users partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_partial_update
     servers:
     - url: /api/eda/v1
   /users/me/:
@@ -1291,7 +1305,7 @@ paths:
     - url: /api/eda/v1
   /api/gateway/v1/users/:
     get:
-      operationId: users_list
+      operationId: getApiGatewayV1Users
       description: API endpoint that allows users to be viewed or edited.
       parameters:
       - in: query
@@ -1563,8 +1577,10 @@ paths:
       x-ai-description: List authenticated platform users with permissions assigned directly or via team membership
       summary: Users list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_list
     post:
-      operationId: users_create
+      operationId: postApiGatewayV1Users
       description: API endpoint that allows users to be viewed or edited.
       tags:
       - Users
@@ -1594,9 +1610,11 @@ paths:
       x-ai-description: Create a authenticated platform user with permissions assigned directly or via team membership
       summary: Users create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_create
   /api/gateway/v1/users/{id}/:
     get:
-      operationId: users_retrieve
+      operationId: getApiGatewayV1UsersById
       description: API endpoint that allows users to be viewed or edited.
       parameters:
       - in: path
@@ -1621,8 +1639,10 @@ paths:
       x-ai-description: Retrieve a authenticated platform user with permissions assigned directly or via team membership
       summary: Users retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_retrieve
     put:
-      operationId: users_update
+      operationId: putApiGatewayV1UsersById
       description: API endpoint that allows users to be viewed or edited.
       parameters:
       - in: path
@@ -1659,8 +1679,10 @@ paths:
       x-ai-description: Update a authenticated platform user with permissions assigned directly or via team membership
       summary: Users update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_update
     patch:
-      operationId: users_partial_update
+      operationId: patchApiGatewayV1UsersById
       description: API endpoint that allows users to be viewed or edited.
       parameters:
       - in: path
@@ -1696,8 +1718,10 @@ paths:
       x-ai-description: Update a authenticated platform user with permissions assigned directly or via team membership
       summary: Users partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_partial_update
     delete:
-      operationId: users_destroy
+      operationId: deleteApiGatewayV1UsersById
       description: API endpoint that allows users to be viewed or edited.
       parameters:
       - in: path
@@ -1718,6 +1742,8 @@ paths:
       x-ai-description: Delete a authenticated platform user with permissions assigned directly or via team membership
       summary: Users destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_destroy
   /api/gateway/v1/users/{id}/authenticators/:
     get:
       operationId: users_authenticators_retrieve
@@ -1867,7 +1893,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/users/{id}/teams/:
     get:
-      operationId: users_teams_list
+      operationId: getApiGatewayV1UsersByIdTeams
       description: Update the corresponding resource in each service.
       parameters:
       - in: path
@@ -1931,6 +1957,8 @@ paths:
       x-ai-description: List all teams for an user
       summary: Users teams list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: users_teams_list
   /api/gateway/v1/users/{id}/tokens/:
     get:
       operationId: users_tokens_retrieve
@@ -1960,81 +1988,75 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedRoleSerializerWithParentAccessList:
+    ResourceAccessListElement:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        username:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleSerializerWithParentAccess'
-    PaginatedUserCredentialSerializerCreateList:
-      type: object
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
       required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserCredentialSerializerCreate'
-    PaginatedProjectList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
+      - username
     User:
       type: object
       properties:
@@ -2104,6 +2126,74 @@ components:
           readOnly: true
       required:
       - username
+    PaginatedProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+      required:
+      - username
     UserCredentialSerializerCreate:
       type: object
       properties:
@@ -2159,6 +2249,365 @@ components:
       required:
       - credential_type
       - name
+    PatchedUserRequest:
+      type: object
+      properties:
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+    PaginatedTeamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+    UserCredentialSerializerCreateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        user:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: Write-only field used to add user to owner role. If provided, do not give either team or organization. Only valid for creation.
+      required:
+      - credential_type
+      - name
+    PaginatedUserCredentialSerializerCreateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserCredentialSerializerCreate'
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    PaginatedRoleSerializerWithParentAccessList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleSerializerWithParentAccess'
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    RoleSerializerWithParentAccess:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    PaginatedResourceAccessListElementList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceAccessListElement'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     Project:
       type: object
       properties:
@@ -2379,427 +2828,38 @@ components:
           readOnly: true
       required:
       - name
-    RoleSerializerWithParentAccess:
+    PaginatedUserResponseList:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        description:
-          type: string
-          readOnly: true
-    Team:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
-    ResourceAccessListElement:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        username:
-          type:
-          - string
-          - 'null'
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-        last_login:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-      required:
-      - username
-    PatchedUserRequest:
-      type: object
-      properties:
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-    UserRequest:
-      type: object
-      properties:
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-      required:
-      - username
-    PaginatedTeamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
           type: array
           items:
-            $ref: '#/components/schemas/Team'
-    UserCredentialSerializerCreateRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        user:
-          type:
-          - integer
-          - 'null'
-          writeOnly: true
-          description: Write-only field used to add user to owner role. If provided, do not give either team or organization. Only valid for creation.
-      required:
-      - credential_type
-      - name
-    PaginatedUserList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'
-    ActivityStream:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
-          type:
-          - string
-          - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
-      required:
-      - object1
-      - object2
-      - operation
-    PaginatedResourceAccessListElementList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceAccessListElement'
+            $ref: '#/components/schemas/UserResponse'
     PatchedUser:
       type: object
       properties:
@@ -2870,38 +2930,6 @@ components:
           description: Designates that this user has all permissions without explicitly assigning them.
       required:
       - username
-    PaginatedUserResponseList:
-      type: object
-      properties:
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-              example: 123
-        links:
-          type: object
-          properties:
-            first:
-              type:
-              - string
-              - 'null'
-            previous:
-              type:
-              - string
-              - 'null'
-            next:
-              type:
-              - string
-              - 'null'
-            last:
-              type:
-              - string
-              - 'null'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserResponse'
     UserResponse:
       type: object
       properties:
@@ -2944,13 +2972,6 @@ components:
           readOnly: true
       required:
       - username
-    PatchedUserUpdateIsSuperuser:
-      type: object
-      properties:
-        is_superuser:
-          type: boolean
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
     PaginatedAwxTokenList:
       type: object
       properties:
@@ -3036,6 +3057,40 @@ components:
       required:
       - name
       - token
+    AwxToken:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        user_id:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - modified_at
+      - name
+      - user_id
+    PatchedUserUpdateIsSuperuser:
+      type: object
+      properties:
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
     UserList:
       type: object
       properties:
@@ -3065,33 +3120,6 @@ components:
       - last_name
       - resource
       - username
-    AwxToken:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-        description:
-          type: string
-        user_id:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - id
-      - modified_at
-      - name
-      - user_id
     PaginatedUserListList:
       type: object
       properties:
@@ -3340,6 +3368,61 @@ components:
           description: Indicates if this user is managed by the system. It cannot be modified once created.
       required:
       - username
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        description:
+          type: string
+          description: The organization description.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Indicates if this organization is managed by the system. It cannot be modified once created.
+      required:
+      - name
     PaginatedOrganizationList:
       type: object
       required:
@@ -3428,61 +3511,6 @@ components:
       required:
       - name
       - organization
-    Organization:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        description:
-          type: string
-          description: The organization description.
-        managed:
-          type: boolean
-          readOnly: true
-          description: Indicates if this organization is managed by the system. It cannot be modified once created.
-      required:
-      - name
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

@@ -313,6 +313,16 @@ components:
           readOnly: true
       required:
       - deprecated
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     PaginatedCollectionResponseList:
       type: object
       properties:
@@ -345,16 +355,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CollectionResponse'
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     PatchedCollection:
       type: object
       description: A serializer for a Collection.

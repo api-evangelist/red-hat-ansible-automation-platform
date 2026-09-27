@@ -331,59 +331,6 @@ paths:
           description: No response body
 components:
   schemas:
-    PaginatedPulpImporterResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PulpImporterResponse'
-    PulpImporterResponse:
-      type: object
-      description: Serializer for PulpImporters.
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        name:
-          type: string
-          description: Unique name of the Importer.
-        repo_mapping:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'Mapping of repo names in an export file to the repo names in Pulp. For example, if the export has a repo named ''foo'' and the repo to import content into was ''bar'', the mapping would be "{''foo'': ''bar''}".'
-      required:
-      - name
     PatchedPulpImporter:
       type: object
       description: Serializer for PulpImporters.
@@ -414,3 +361,56 @@ components:
           description: 'Mapping of repo names in an export file to the repo names in Pulp. For example, if the export has a repo named ''foo'' and the repo to import content into was ''bar'', the mapping would be "{''foo'': ''bar''}".'
       required:
       - name
+    PulpImporterResponse:
+      type: object
+      description: Serializer for PulpImporters.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: Unique name of the Importer.
+        repo_mapping:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Mapping of repo names in an export file to the repo names in Pulp. For example, if the export has a repo named ''foo'' and the repo to import content into was ''bar'', the mapping would be "{''foo'': ''bar''}".'
+      required:
+      - name
+    PaginatedPulpImporterResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PulpImporterResponse'

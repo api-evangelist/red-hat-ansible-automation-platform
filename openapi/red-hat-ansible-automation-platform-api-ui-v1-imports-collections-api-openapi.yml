@@ -146,6 +146,49 @@ paths:
           description: ''
 components:
   schemas:
+    ImportTaskDetailResponse:
+      type: object
+      description: A serializer for a CollectionImport list view.
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          type: string
+        namespace:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        finished_at:
+          type: string
+          format: date-time
+        error:
+          type: object
+        messages:
+          type: object
+      required:
+      - created_at
+      - error
+      - finished_at
+      - id
+      - messages
+      - name
+      - namespace
+      - started_at
+      - state
+      - updated_at
+      - version
     ImportTaskListResponse:
       type: object
       description: A serializer for a CollectionImport list view.
@@ -215,46 +258,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ImportTaskListResponse'
-    ImportTaskDetailResponse:
-      type: object
-      description: A serializer for a CollectionImport list view.
-      properties:
-        id:
-          type: string
-          format: uuid
-        state:
-          type: string
-        namespace:
-          type: string
-        name:
-          type: string
-        version:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        started_at:
-          type: string
-          format: date-time
-        finished_at:
-          type: string
-          format: date-time
-        error:
-          type: object
-        messages:
-          type: object
-      required:
-      - created_at
-      - error
-      - finished_at
-      - id
-      - messages
-      - name
-      - namespace
-      - started_at
-      - state
-      - updated_at
-      - version

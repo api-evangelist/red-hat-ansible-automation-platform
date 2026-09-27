@@ -192,16 +192,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilesystemExportResponse'
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     FilesystemExportResponse:
       type: object
       description: Serializer for FilesystemExports.
@@ -237,6 +227,16 @@ components:
           type: object
           readOnly: true
           description: Any additional parameters that were used to create the export.
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     FilesystemExport:
       type: object
       description: Serializer for FilesystemExports.

@@ -391,6 +391,66 @@ paths:
           description: No response body
 components:
   schemas:
+    Artifact:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        file:
+          type: string
+          format: binary
+          description: The stored file.
+        size:
+          type: integer
+          format: int64
+          description: The size of the file in bytes.
+        md5:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The MD5 checksum of the file if available.
+        sha1:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-1 checksum of the file if available.
+        sha224:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-224 checksum of the file if available.
+        sha256:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-256 checksum of the file if available.
+        sha384:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-384 checksum of the file if available.
+        sha512:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: The SHA-512 checksum of the file if available.
+      required:
+      - file
     ArtifactResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -455,66 +515,6 @@ components:
           type:
           - string
           - 'null'
-          description: The SHA-512 checksum of the file if available.
-      required:
-      - file
-    Artifact:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        file:
-          type: string
-          format: binary
-          description: The stored file.
-        size:
-          type: integer
-          format: int64
-          description: The size of the file in bytes.
-        md5:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: The MD5 checksum of the file if available.
-        sha1:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: The SHA-1 checksum of the file if available.
-        sha224:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: The SHA-224 checksum of the file if available.
-        sha256:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: The SHA-256 checksum of the file if available.
-        sha384:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: The SHA-384 checksum of the file if available.
-        sha512:
-          type:
-          - string
-          - 'null'
-          minLength: 1
           description: The SHA-512 checksum of the file if available.
       required:
       - file

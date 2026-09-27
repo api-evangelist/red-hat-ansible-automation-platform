@@ -505,58 +505,120 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    InstanceHealthCheck:
+    PaginatedReceptorAddressList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        uuid:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          readOnly: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReceptorAddress'
+    PatchedInstanceRequest:
+      type: object
+      properties:
         hostname:
           type:
           - string
           - 'null'
-          readOnly: true
-        ip_address:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        version:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        last_health_check:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: Last time a health check was ran on this instance to refresh cpu, memory, and capacity.
-        errors:
-          type: string
-          readOnly: true
-          description: Any error details from the last health check.
-        cpu:
+          minLength: 1
+          maxLength: 250
+          pattern: ^localhost$|^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$
+        capacity_adjustment:
           type: string
           format: decimal
-          pattern: ^-?\d{0,3}(?:\.\d{0,1})?$
-          readOnly: true
-        memory:
-          type: integer
-          readOnly: true
-          description: Total system memory of this instance in bytes.
-        cpu_capacity:
-          type: integer
-          readOnly: true
-        mem_capacity:
-          type: integer
-          readOnly: true
-        capacity:
-          type: integer
-          readOnly: true
+          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
+          default: '1.00'
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+        managed_by_policy:
+          type:
+          - boolean
+          - 'null'
+          default: true
+        node_type:
+          enum:
+          - control
+          - execution
+          - hybrid
+          - hop
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: a8ac655d7e95642d
+          default: execution
+          description: 'Role that this node plays in the mesh.
+
+
+            * `control` - Control plane node
+
+            * `execution` - Execution plane node
+
+            * `hybrid` - Controller and execution
+
+            * `hop` - Message-passing node, no execution capability'
+        node_state:
+          enum:
+          - provisioning
+          - provision-fail
+          - installed
+          - ready
+          - unavailable
+          - deprovisioning
+          - deprovision-fail
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 16153846e23ecc6d
+          default: installed
+          description: 'Indicates the current life cycle stage of this instance.
+
+
+            * `provisioning` - Provisioning
+
+            * `provision-fail` - Provisioning Failure
+
+            * `installed` - Installed
+
+            * `ready` - Ready
+
+            * `unavailable` - Unavailable
+
+            * `deprovisioning` - De-provisioning
+
+            * `deprovision-fail` - De-provisioning Failure'
+        peers:
+          type: array
+          items:
+            type: integer
+          description: Primary keys of receptor addresses to peer to.
+        listener_port:
+          type:
+          - integer
+          - 'null'
+        peers_from_control_nodes:
+          type: boolean
     Instance:
       type: object
       properties:
@@ -754,6 +816,56 @@ components:
           readOnly: true
       required:
       - hostname
+    InstanceGroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 250
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
+      required:
+      - name
     PaginatedInstanceGroupList:
       type: object
       required:
@@ -779,6 +891,360 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/InstanceGroup'
+    InstanceRequest:
+      type: object
+      properties:
+        hostname:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 250
+          pattern: ^localhost$|^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$
+        capacity_adjustment:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
+          default: '1.00'
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+        managed_by_policy:
+          type:
+          - boolean
+          - 'null'
+          default: true
+        node_type:
+          enum:
+          - control
+          - execution
+          - hybrid
+          - hop
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: a8ac655d7e95642d
+          default: execution
+          description: 'Role that this node plays in the mesh.
+
+
+            * `control` - Control plane node
+
+            * `execution` - Execution plane node
+
+            * `hybrid` - Controller and execution
+
+            * `hop` - Message-passing node, no execution capability'
+        node_state:
+          enum:
+          - provisioning
+          - provision-fail
+          - installed
+          - ready
+          - unavailable
+          - deprovisioning
+          - deprovision-fail
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 16153846e23ecc6d
+          default: installed
+          description: 'Indicates the current life cycle stage of this instance.
+
+
+            * `provisioning` - Provisioning
+
+            * `provision-fail` - Provisioning Failure
+
+            * `installed` - Installed
+
+            * `ready` - Ready
+
+            * `unavailable` - Unavailable
+
+            * `deprovisioning` - De-provisioning
+
+            * `deprovision-fail` - De-provisioning Failure'
+        peers:
+          type: array
+          items:
+            type: integer
+          description: Primary keys of receptor addresses to peer to.
+        listener_port:
+          type:
+          - integer
+          - 'null'
+        peers_from_control_nodes:
+          type: boolean
+      required:
+      - hostname
+    ReceptorAddress:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        address:
+          type:
+          - string
+          - 'null'
+          description: Routable address for this instance.
+          maxLength: 255
+        port:
+          type: integer
+          maximum: 65535
+          minimum: 0
+          default: 27199
+          description: Port for the address.
+        protocol:
+          enum:
+          - tcp
+          - ws
+          - wss
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 66927b81fe0555f9
+          default: tcp
+          description: 'Protocol to use for the Receptor listener, ''tcp'', ''wss'', or ''ws''.
+
+
+            * `tcp` - TCP
+
+            * `ws` - WS
+
+            * `wss` - WSS'
+        websocket_path:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Websocket path.
+          maxLength: 255
+        is_internal:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If True, only routable within the Kubernetes cluster.
+        canonical:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If True, this address is the canonical address for the instance.
+        instance:
+          type: integer
+        peers_from_control_nodes:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If True, control plane cluster nodes should automatically peer to it.
+        full_address:
+          type: string
+          readOnly: true
+      required:
+      - address
+      - instance
+    InstanceHealthCheck:
+      type: object
+      properties:
+        uuid:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        hostname:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        ip_address:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        version:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        last_health_check:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: Last time a health check was ran on this instance to refresh cpu, memory, and capacity.
+        errors:
+          type: string
+          readOnly: true
+          description: Any error details from the last health check.
+        cpu:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,1})?$
+          readOnly: true
+        memory:
+          type: integer
+          readOnly: true
+          description: Total system memory of this instance in bytes.
+        cpu_capacity:
+          type: integer
+          readOnly: true
+        mem_capacity:
+          type: integer
+          readOnly: true
+        capacity:
+          type: integer
+          readOnly: true
+    PaginatedUnifiedJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UnifiedJobList'
+    InstanceGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 250
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        capacity:
+          type: string
+          readOnly: true
+        consumed_capacity:
+          type: string
+          readOnly: true
+        percent_capacity_remaining:
+          type: string
+          readOnly: true
+        jobs_running:
+          type: string
+          readOnly: true
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        jobs_total:
+          type: integer
+          readOnly: true
+          description: Count of all jobs that target this instance group
+        instances:
+          type: string
+          readOnly: true
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
+        summary_fields:
+          type: string
+          readOnly: true
+      required:
+      - name
+    PaginatedInstanceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Instance'
     UnifiedJobList:
       type: object
       properties:
@@ -935,469 +1401,3 @@ components:
           description: The Receptor work unit ID associated with this job.
       required:
       - name
-    ReceptorAddress:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        address:
-          type:
-          - string
-          - 'null'
-          description: Routable address for this instance.
-          maxLength: 255
-        port:
-          type: integer
-          maximum: 65535
-          minimum: 0
-          default: 27199
-          description: Port for the address.
-        protocol:
-          enum:
-          - tcp
-          - ws
-          - wss
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 66927b81fe0555f9
-          default: tcp
-          description: 'Protocol to use for the Receptor listener, ''tcp'', ''wss'', or ''ws''.
-
-
-            * `tcp` - TCP
-
-            * `ws` - WS
-
-            * `wss` - WSS'
-        websocket_path:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Websocket path.
-          maxLength: 255
-        is_internal:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If True, only routable within the Kubernetes cluster.
-        canonical:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If True, this address is the canonical address for the instance.
-        instance:
-          type: integer
-        peers_from_control_nodes:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If True, control plane cluster nodes should automatically peer to it.
-        full_address:
-          type: string
-          readOnly: true
-      required:
-      - address
-      - instance
-    InstanceRequest:
-      type: object
-      properties:
-        hostname:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 250
-          pattern: ^localhost$|^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$
-        capacity_adjustment:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
-          default: '1.00'
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-        managed_by_policy:
-          type:
-          - boolean
-          - 'null'
-          default: true
-        node_type:
-          enum:
-          - control
-          - execution
-          - hybrid
-          - hop
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: a8ac655d7e95642d
-          default: execution
-          description: 'Role that this node plays in the mesh.
-
-
-            * `control` - Control plane node
-
-            * `execution` - Execution plane node
-
-            * `hybrid` - Controller and execution
-
-            * `hop` - Message-passing node, no execution capability'
-        node_state:
-          enum:
-          - provisioning
-          - provision-fail
-          - installed
-          - ready
-          - unavailable
-          - deprovisioning
-          - deprovision-fail
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 16153846e23ecc6d
-          default: installed
-          description: 'Indicates the current life cycle stage of this instance.
-
-
-            * `provisioning` - Provisioning
-
-            * `provision-fail` - Provisioning Failure
-
-            * `installed` - Installed
-
-            * `ready` - Ready
-
-            * `unavailable` - Unavailable
-
-            * `deprovisioning` - De-provisioning
-
-            * `deprovision-fail` - De-provisioning Failure'
-        peers:
-          type: array
-          items:
-            type: integer
-          description: Primary keys of receptor addresses to peer to.
-        listener_port:
-          type:
-          - integer
-          - 'null'
-        peers_from_control_nodes:
-          type: boolean
-      required:
-      - hostname
-    PaginatedUnifiedJobListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UnifiedJobList'
-    PaginatedReceptorAddressList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReceptorAddress'
-    InstanceGroupRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 250
-        max_concurrent_jobs:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
-        max_forks:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
-        is_container_group:
-          type: boolean
-          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
-        credential:
-          type:
-          - integer
-          - 'null'
-        policy_instance_percentage:
-          type: integer
-          maximum: 100
-          minimum: 0
-          default: 0
-          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
-        policy_instance_minimum:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
-        policy_instance_list:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: List of exact-match Instances that will be assigned to this group
-        pod_spec_override:
-          type:
-          - string
-          - 'null'
-          default: ''
-      required:
-      - name
-    PatchedInstanceRequest:
-      type: object
-      properties:
-        hostname:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 250
-          pattern: ^localhost$|^127(?:\.[0-9]+){0,2}\.[0-9]+$|^(?:0*\:)*?:?0*1$
-        capacity_adjustment:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,1}(?:\.\d{0,2})?$
-          default: '1.00'
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-        managed_by_policy:
-          type:
-          - boolean
-          - 'null'
-          default: true
-        node_type:
-          enum:
-          - control
-          - execution
-          - hybrid
-          - hop
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: a8ac655d7e95642d
-          default: execution
-          description: 'Role that this node plays in the mesh.
-
-
-            * `control` - Control plane node
-
-            * `execution` - Execution plane node
-
-            * `hybrid` - Controller and execution
-
-            * `hop` - Message-passing node, no execution capability'
-        node_state:
-          enum:
-          - provisioning
-          - provision-fail
-          - installed
-          - ready
-          - unavailable
-          - deprovisioning
-          - deprovision-fail
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 16153846e23ecc6d
-          default: installed
-          description: 'Indicates the current life cycle stage of this instance.
-
-
-            * `provisioning` - Provisioning
-
-            * `provision-fail` - Provisioning Failure
-
-            * `installed` - Installed
-
-            * `ready` - Ready
-
-            * `unavailable` - Unavailable
-
-            * `deprovisioning` - De-provisioning
-
-            * `deprovision-fail` - De-provisioning Failure'
-        peers:
-          type: array
-          items:
-            type: integer
-          description: Primary keys of receptor addresses to peer to.
-        listener_port:
-          type:
-          - integer
-          - 'null'
-        peers_from_control_nodes:
-          type: boolean
-    InstanceGroup:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 250
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        capacity:
-          type: string
-          readOnly: true
-        consumed_capacity:
-          type: string
-          readOnly: true
-        percent_capacity_remaining:
-          type: string
-          readOnly: true
-        jobs_running:
-          type: string
-          readOnly: true
-        max_concurrent_jobs:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
-        max_forks:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
-        jobs_total:
-          type: integer
-          readOnly: true
-          description: Count of all jobs that target this instance group
-        instances:
-          type: string
-          readOnly: true
-        is_container_group:
-          type: boolean
-          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
-        credential:
-          type:
-          - integer
-          - 'null'
-        policy_instance_percentage:
-          type: integer
-          maximum: 100
-          minimum: 0
-          default: 0
-          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
-        policy_instance_minimum:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
-        policy_instance_list:
-          type: array
-          items:
-            type: string
-          description: List of exact-match Instances that will be assigned to this group
-        pod_spec_override:
-          type:
-          - string
-          - 'null'
-          default: ''
-        summary_fields:
-          type: string
-          readOnly: true
-      required:
-      - name
-    PaginatedInstanceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Instance'

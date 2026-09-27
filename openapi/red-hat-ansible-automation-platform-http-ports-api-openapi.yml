@@ -1012,17 +1012,6 @@ components:
       required:
       - name
       - number
-    AdditionalRouteAssociate:
-      type: object
-      description: Serializer used for adding objects to a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of additional routes to add to this relationship.
-      required:
-      - instances
     PaginatedHTTPPortList:
       type: object
       required:
@@ -1048,6 +1037,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/HTTPPort'
+    AdditionalRouteDisassociate:
+      type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of additional routes to remove from this relationship.
+      required:
+      - instances
     PatchedHTTPPort:
       type: object
       properties:
@@ -1130,15 +1130,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdditionalRoute'
-    AdditionalRouteDisassociate:
+    AdditionalRouteAssociate:
       type: object
-      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      description: Serializer used for adding objects to a many-to-many relationship
       properties:
         instances:
           type: array
           items:
             type: integer
-          description: A list of additional routes to remove from this relationship.
+          description: A list of additional routes to add to this relationship.
       required:
       - instances
   securitySchemes:

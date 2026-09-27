@@ -510,6 +510,67 @@ components:
           type: string
       required:
       - role
+    PaginatedHeaderContentGuardResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/HeaderContentGuardResponse'
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
     HeaderContentGuard:
       type: object
       description: A serializer for HeaderContentGuard.
@@ -542,95 +603,6 @@ components:
       - header_name
       - header_value
       - name
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    PaginatedHeaderContentGuardResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/HeaderContentGuardResponse'
-    PatchedHeaderContentGuard:
-      type: object
-      description: A serializer for HeaderContentGuard.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        header_name:
-          type: string
-          minLength: 1
-          description: The header name the guard will check on.
-        header_value:
-          type: string
-          minLength: 1
-          description: The value that will authorize the request.
-        jq_filter:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: A JQ syntax compatible filter. If jq_filter is not set, then the value willonly be Base64 decoded and checked as an explicit string match.
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
     HeaderContentGuardResponse:
       type: object
       description: A serializer for HeaderContentGuard.
@@ -672,3 +644,31 @@ components:
       - header_name
       - header_value
       - name
+    PatchedHeaderContentGuard:
+      type: object
+      description: A serializer for HeaderContentGuard.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        header_name:
+          type: string
+          minLength: 1
+          description: The header name the guard will check on.
+        header_value:
+          type: string
+          minLength: 1
+          description: The value that will authorize the request.
+        jq_filter:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A JQ syntax compatible filter. If jq_filter is not set, then the value willonly be Base64 decoded and checked as an explicit string match.

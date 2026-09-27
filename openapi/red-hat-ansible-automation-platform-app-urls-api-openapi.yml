@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: AAP gateway App URLS API
+  title: AAP gateway App URLs API
   version: v1
   description: AAP gateway API
 tags:

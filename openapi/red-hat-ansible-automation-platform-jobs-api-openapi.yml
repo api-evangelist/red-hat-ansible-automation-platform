@@ -658,84 +658,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    JobHostSummary:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        job:
-          type: integer
-          readOnly: true
-        host:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        constructed_host:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
-        host_name:
-          type: string
-          readOnly: true
-          default: ''
-        changed:
-          type: integer
-          minimum: 0
-          readOnly: true
-        dark:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failures:
-          type: integer
-          minimum: 0
-          readOnly: true
-        ok:
-          type: integer
-          minimum: 0
-          readOnly: true
-        processed:
-          type: integer
-          minimum: 0
-          readOnly: true
-        skipped:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        ignored:
-          type: integer
-          minimum: 0
-          readOnly: true
-        rescued:
-          type: integer
-          minimum: 0
-          readOnly: true
-    PaginatedActivityStreamList:
+    PaginatedCredentialList:
       type: object
       required:
       - count
@@ -759,66 +682,32 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ActivityStream'
-    Credential:
+            $ref: '#/components/schemas/Credential'
+    PaginatedJobEventList:
       type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        managed:
-          type: boolean
-          readOnly: true
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        kind:
-          type: string
-          readOnly: true
-        cloud:
-          type: string
-          readOnly: true
-        kubernetes:
-          type: string
-          readOnly: true
       required:
-      - credential_type
-      - name
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobEvent'
     Notification:
       type: object
       properties:
@@ -913,87 +802,6 @@ components:
           description: Notification body
       required:
       - notification_type
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-    PaginatedCredentialList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Credential'
-    PaginatedJobListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobList'
-    JobCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
     JobList:
       type: object
       properties:
@@ -1341,6 +1149,260 @@ components:
           maxLength: 128
       required:
       - name
+    JobRelaunch:
+      type: object
+      properties:
+        passwords_needed_to_start:
+          type: string
+          readOnly: true
+        retry_counts:
+          type: string
+          readOnly: true
+    PaginatedJobHostSummaryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobHostSummary'
+    PaginatedJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobList'
+    JobEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        event:
+          enum:
+          - runner_on_failed
+          - runner_on_start
+          - runner_on_ok
+          - runner_on_error
+          - runner_on_skipped
+          - runner_on_unreachable
+          - runner_on_no_hosts
+          - runner_on_async_poll
+          - runner_on_async_ok
+          - runner_on_async_failed
+          - runner_item_on_ok
+          - runner_item_on_failed
+          - runner_item_on_skipped
+          - runner_retry
+          - runner_on_file_diff
+          - playbook_on_start
+          - playbook_on_notify
+          - playbook_on_include
+          - playbook_on_no_hosts_matched
+          - playbook_on_no_hosts_remaining
+          - playbook_on_task_start
+          - playbook_on_vars_prompt
+          - playbook_on_setup
+          - playbook_on_import_for_host
+          - playbook_on_not_import_for_host
+          - playbook_on_play_start
+          - playbook_on_stats
+          - debug
+          - verbose
+          - deprecated
+          - warning
+          - system_warning
+          - error
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `runner_on_failed` - Host Failed
+
+            * `runner_on_start` - Host Started
+
+            * `runner_on_ok` - Host OK
+
+            * `runner_on_error` - Host Failure
+
+            * `runner_on_skipped` - Host Skipped
+
+            * `runner_on_unreachable` - Host Unreachable
+
+            * `runner_on_no_hosts` - No Hosts Remaining
+
+            * `runner_on_async_poll` - Host Polling
+
+            * `runner_on_async_ok` - Host Async OK
+
+            * `runner_on_async_failed` - Host Async Failure
+
+            * `runner_item_on_ok` - Item OK
+
+            * `runner_item_on_failed` - Item Failed
+
+            * `runner_item_on_skipped` - Item Skipped
+
+            * `runner_retry` - Host Retry
+
+            * `runner_on_file_diff` - File Difference
+
+            * `playbook_on_start` - Playbook Started
+
+            * `playbook_on_notify` - Running Handlers
+
+            * `playbook_on_include` - Including File
+
+            * `playbook_on_no_hosts_matched` - No Hosts Matched
+
+            * `playbook_on_no_hosts_remaining` - No Hosts Remaining
+
+            * `playbook_on_task_start` - Task Started
+
+            * `playbook_on_vars_prompt` - Variables Prompted
+
+            * `playbook_on_setup` - Gathering Facts
+
+            * `playbook_on_import_for_host` - internal: on Import for Host
+
+            * `playbook_on_not_import_for_host` - internal: on Not Import for Host
+
+            * `playbook_on_play_start` - Play Started
+
+            * `playbook_on_stats` - Playbook Complete
+
+            * `debug` - Debug
+
+            * `verbose` - Verbose
+
+            * `deprecated` - Deprecated
+
+            * `warning` - Warning
+
+            * `system_warning` - System Warning
+
+            * `error` - Error'
+          x-spec-enum-id: c0ba91bdee205c59
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
+          type: string
+          readOnly: true
+        event_data:
+          default: {}
+        event_level:
+          type: integer
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        changed:
+          type: boolean
+          readOnly: true
+        uuid:
+          type: string
+          readOnly: true
+        parent_uuid:
+          type: string
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        host_name:
+          type: string
+          readOnly: true
+        playbook:
+          type: string
+          readOnly: true
+        play:
+          type: string
+          readOnly: true
+        task:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+        stdout:
+          type: string
+          readOnly: true
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+      required:
+      - event
     ActivityStream:
       type: object
       properties:
@@ -1417,6 +1479,89 @@ components:
       - object1
       - object2
       - operation
+    JobCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
+    JobHostSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type: integer
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        constructed_host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
+        host_name:
+          type: string
+          readOnly: true
+          default: ''
+        changed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        dark:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+        ok:
+          type: integer
+          minimum: 0
+          readOnly: true
+        processed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        skipped:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        ignored:
+          type: integer
+          minimum: 0
+          readOnly: true
+        rescued:
+          type: integer
+          minimum: 0
+          readOnly: true
     Label:
       type: object
       properties:
@@ -1485,31 +1630,71 @@ components:
         credential_passwords:
           type: string
           writeOnly: true
-    PaginatedJobEventList:
+    Credential:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          maxLength: 512
+        description:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobEvent'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
+          type: string
+          readOnly: true
+        cloud:
+          type: string
+          readOnly: true
+        kubernetes:
+          type: string
+          readOnly: true
+      required:
+      - credential_type
+      - name
+    UnifiedJobStdout:
+      type: object
+      properties:
+        result_stdout:
+          type: string
+          readOnly: true
     PaginatedLabelList:
       type: object
       required:
@@ -1535,37 +1720,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Label'
-    PaginatedJobHostSummaryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobHostSummary'
-    UnifiedJobStdout:
-      type: object
-      properties:
-        result_stdout:
-          type: string
-          readOnly: true
     JobDetail:
       type: object
       properties:
@@ -1941,210 +2095,31 @@ components:
           readOnly: true
       required:
       - name
-    JobEvent:
+    PaginatedNotificationList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        job:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        event:
-          enum:
-          - runner_on_failed
-          - runner_on_start
-          - runner_on_ok
-          - runner_on_error
-          - runner_on_skipped
-          - runner_on_unreachable
-          - runner_on_no_hosts
-          - runner_on_async_poll
-          - runner_on_async_ok
-          - runner_on_async_failed
-          - runner_item_on_ok
-          - runner_item_on_failed
-          - runner_item_on_skipped
-          - runner_retry
-          - runner_on_file_diff
-          - playbook_on_start
-          - playbook_on_notify
-          - playbook_on_include
-          - playbook_on_no_hosts_matched
-          - playbook_on_no_hosts_remaining
-          - playbook_on_task_start
-          - playbook_on_vars_prompt
-          - playbook_on_setup
-          - playbook_on_import_for_host
-          - playbook_on_not_import_for_host
-          - playbook_on_play_start
-          - playbook_on_stats
-          - debug
-          - verbose
-          - deprecated
-          - warning
-          - system_warning
-          - error
-          - null
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          description: '* `runner_on_failed` - Host Failed
-
-            * `runner_on_start` - Host Started
-
-            * `runner_on_ok` - Host OK
-
-            * `runner_on_error` - Host Failure
-
-            * `runner_on_skipped` - Host Skipped
-
-            * `runner_on_unreachable` - Host Unreachable
-
-            * `runner_on_no_hosts` - No Hosts Remaining
-
-            * `runner_on_async_poll` - Host Polling
-
-            * `runner_on_async_ok` - Host Async OK
-
-            * `runner_on_async_failed` - Host Async Failure
-
-            * `runner_item_on_ok` - Item OK
-
-            * `runner_item_on_failed` - Item Failed
-
-            * `runner_item_on_skipped` - Item Skipped
-
-            * `runner_retry` - Host Retry
-
-            * `runner_on_file_diff` - File Difference
-
-            * `playbook_on_start` - Playbook Started
-
-            * `playbook_on_notify` - Running Handlers
-
-            * `playbook_on_include` - Including File
-
-            * `playbook_on_no_hosts_matched` - No Hosts Matched
-
-            * `playbook_on_no_hosts_remaining` - No Hosts Remaining
-
-            * `playbook_on_task_start` - Task Started
-
-            * `playbook_on_vars_prompt` - Variables Prompted
-
-            * `playbook_on_setup` - Gathering Facts
-
-            * `playbook_on_import_for_host` - internal: on Import for Host
-
-            * `playbook_on_not_import_for_host` - internal: on Not Import for Host
-
-            * `playbook_on_play_start` - Play Started
-
-            * `playbook_on_stats` - Playbook Complete
-
-            * `debug` - Debug
-
-            * `verbose` - Verbose
-
-            * `deprecated` - Deprecated
-
-            * `warning` - Warning
-
-            * `system_warning` - System Warning
-
-            * `error` - Error'
-          x-spec-enum-id: c0ba91bdee205c59
-        counter:
-          type: integer
-          minimum: 0
-          readOnly: true
-        event_display:
-          type: string
-          readOnly: true
-        event_data:
-          default: {}
-        event_level:
-          type: integer
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        changed:
-          type: boolean
-          readOnly: true
-        uuid:
-          type: string
-          readOnly: true
-        parent_uuid:
-          type: string
-          readOnly: true
-        host:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
-          - integer
+          - string
           - 'null'
-          readOnly: true
-        host_name:
-          type: string
-          readOnly: true
-        playbook:
-          type: string
-          readOnly: true
-        play:
-          type: string
-          readOnly: true
-        task:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-        stdout:
-          type: string
-          readOnly: true
-        start_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        end_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        verbosity:
-          type: integer
-          minimum: 0
-          readOnly: true
-      required:
-      - event
-    JobRelaunch:
-      type: object
-      properties:
-        passwords_needed_to_start:
-          type: string
-          readOnly: true
-        retry_counts:
-          type: string
-          readOnly: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
     JobCreateSchedule:
       type: object
       properties:
@@ -2154,3 +2129,28 @@ components:
         prompts:
           type: string
           readOnly: true
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'

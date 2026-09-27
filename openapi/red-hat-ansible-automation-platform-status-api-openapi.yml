@@ -72,7 +72,7 @@ paths:
     - url: /api/eda/v1
   /api/gateway/v1/status/:
     get:
-      operationId: status_retrieve
+      operationId: getApiGatewayV1Status
       description: API endpoint that shows status of platform services.
       parameters:
       - in: query
@@ -96,8 +96,35 @@ paths:
       x-ai-description: Returns the current Gateway platform status, including service health and version.
       summary: Status retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: status_retrieve
 components:
   schemas:
+    VersionResponse:
+      type: object
+      description: Serializer for the version information of Pulp components
+      properties:
+        component:
+          type: string
+          description: Name of a versioned component of Pulp
+        version:
+          type: string
+          description: Version of the component (e.g. 3.0.0)
+        package:
+          type: string
+          description: Python package name providing the component
+        module:
+          type: string
+          description: Python module name of the component
+        domain_compatible:
+          type: boolean
+          description: Domain feature compatibility of component
+      required:
+      - component
+      - domain_compatible
+      - module
+      - package
+      - version
     WorkerResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -148,106 +175,15 @@ components:
           format: uri
           readOnly: true
           description: The task this worker is currently executing, or empty if the worker is not currently assigned to a task.
-    ContentAppStatusResponse:
+    DatabaseConnectionResponse:
       type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
+      description: Serializer for the database connection information
       properties:
-        name:
-          type: string
-          readOnly: true
-          description: The name of the worker.
-        last_heartbeat:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the last time the worker talked to the service.
-        versions:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-          readOnly: true
-          description: Versions of the components installed.
-    ContentSettingsResponse:
-      type: object
-      description: Serializer for information about content-app-settings for the pulp instance
-      properties:
-        content_origin:
-          type: string
-          description: The CONTENT_ORIGIN setting for this Pulp instance
-        content_path_prefix:
-          type: string
-          description: The CONTENT_PATH_PREFIX setting for this Pulp instance
-      required:
-      - content_origin
-      - content_path_prefix
-    ApiAppStatusResponse:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        name:
-          type: string
-          readOnly: true
-          description: The name of the worker.
-        last_heartbeat:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the last time the worker talked to the service.
-        versions:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-          readOnly: true
-          description: Versions of the components installed.
-    VersionResponse:
-      type: object
-      description: Serializer for the version information of Pulp components
-      properties:
-        component:
-          type: string
-          description: Name of a versioned component of Pulp
-        version:
-          type: string
-          description: Version of the component (e.g. 3.0.0)
-        package:
-          type: string
-          description: Python package name providing the component
-        module:
-          type: string
-          description: Python module name of the component
-        domain_compatible:
+        connected:
           type: boolean
-          description: Domain feature compatibility of component
+          description: Info about whether the app can connect to the database
       required:
-      - component
-      - domain_compatible
-      - module
-      - package
-      - version
+      - connected
     StatusResponse:
       type: object
       description: Serializer for the status information of the app
@@ -299,24 +235,50 @@ components:
       - online_content_apps
       - online_workers
       - versions
-    RedisConnectionResponse:
+    ContentAppStatusResponse:
       type: object
-      description: Serializer for information about the Redis connection
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
       properties:
-        connected:
-          type: boolean
-          description: Info about whether the app can connect to Redis
-      required:
-      - connected
-    DatabaseConnectionResponse:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
+    ContentSettingsResponse:
       type: object
-      description: Serializer for the database connection information
+      description: Serializer for information about content-app-settings for the pulp instance
       properties:
-        connected:
-          type: boolean
-          description: Info about whether the app can connect to the database
+        content_origin:
+          type: string
+          description: The CONTENT_ORIGIN setting for this Pulp instance
+        content_path_prefix:
+          type: string
+          description: The CONTENT_PATH_PREFIX setting for this Pulp instance
       required:
-      - connected
+      - content_origin
+      - content_path_prefix
     StorageResponse:
       type: object
       description: Serializer for information about the storage system
@@ -346,6 +308,46 @@ components:
       - free
       - total
       - used
+    RedisConnectionResponse:
+      type: object
+      description: Serializer for information about the Redis connection
+      properties:
+        connected:
+          type: boolean
+          description: Info about whether the app can connect to Redis
+      required:
+      - connected
+    ApiAppStatusResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
     StatusResponse_2:
       type: object
       properties:
@@ -355,41 +357,7 @@ components:
           type: string
       required:
       - status
-    Ping:
-      type: object
-      properties:
-        status:
-          enum:
-          - good
-          - degraded
-          - failed
-          type: string
-          description: '* `good` - good
-
-            * `degraded` - degraded
-
-            * `failed` - failed'
-          x-spec-enum-id: 8f053d7a7629b617
-        version:
-          type: string
-        pong:
-          type: string
-          format: date-time
-        db_connected:
-          type: boolean
-        db_exception:
-          type: string
-        proxy_connected:
-          type: boolean
-        proxy_status_code:
-          type: integer
-        proxy_exception_type:
-          type: string
-    StatusResponseOptions:
-      oneOf:
-      - $ref: '#/components/schemas/Status'
-      - $ref: '#/components/schemas/ServiceKeysStatus'
-    Status:
+    ServiceKeysStatus:
       type: object
       properties:
         status:
@@ -408,8 +376,8 @@ components:
           type: string
           format: date-time
         services:
-          type: array
-          items:
+          type: object
+          additionalProperties:
             $ref: '#/components/schemas/StatusService'
       required:
       - services
@@ -465,7 +433,36 @@ components:
           type: boolean
         body:
           type: string
-    ServiceKeysStatus:
+    StatusResponseOptions:
+      oneOf:
+      - $ref: '#/components/schemas/Status'
+      - $ref: '#/components/schemas/ServiceKeysStatus'
+    StatusService:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        service_name:
+          type: string
+        nodes:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StatusNode'
+        response:
+          $ref: '#/components/schemas/RedisResponse'
+      required:
+      - nodes
+    Status:
       type: object
       properties:
         status:
@@ -484,8 +481,8 @@ components:
           type: string
           format: date-time
         services:
-          type: object
-          additionalProperties:
+          type: array
+          items:
             $ref: '#/components/schemas/StatusService'
       required:
       - services
@@ -521,31 +518,6 @@ components:
           type: boolean
         cluster_info:
           $ref: '#/components/schemas/ClusterInfo'
-    StatusService:
-      type: object
-      properties:
-        status:
-          enum:
-          - good
-          - degraded
-          - failed
-          type: string
-          description: '* `good` - good
-
-            * `degraded` - degraded
-
-            * `failed` - failed'
-          x-spec-enum-id: 8f053d7a7629b617
-        service_name:
-          type: string
-        nodes:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/StatusNode'
-        response:
-          $ref: '#/components/schemas/RedisResponse'
-      required:
-      - nodes
     ClusterInfo:
       type: object
       properties:
@@ -578,6 +550,36 @@ components:
         cluster_stats_messages_pong_received:
           type: string
         cluster_stats_messages_received:
+          type: string
+    Ping:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        version:
+          type: string
+        pong:
+          type: string
+          format: date-time
+        db_connected:
+          type: boolean
+        db_exception:
+          type: string
+        proxy_connected:
+          type: boolean
+        proxy_status_code:
+          type: integer
+        proxy_exception_type:
           type: string
   securitySchemes:
     EDAJWTAuthentication:

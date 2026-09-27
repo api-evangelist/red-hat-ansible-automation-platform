@@ -501,15 +501,6 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
     PaginatedRBACContentGuardResponseList:
       type: object
       required:
@@ -535,6 +526,157 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RBACContentGuardResponse'
+    GroupResponse:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          description: Name
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+      required:
+      - name
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    GroupUserResponse:
+      type: object
+      description: Serializer for Users that belong to a Group.
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+      - username
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    RBACContentGuard:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+      required:
+      - name
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    PatchedRBACContentGuard:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
     RBACContentGuardResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -583,145 +725,3 @@ components:
           readOnly: true
       required:
       - name
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    GroupUserResponse:
-      type: object
-      description: Serializer for Users that belong to a Group.
-      properties:
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          maxLength: 150
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-      required:
-      - username
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    GroupResponse:
-      type: object
-      description: Serializer for Group.
-      properties:
-        name:
-          type: string
-          description: Name
-          maxLength: 150
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        id:
-          type: integer
-          format: int64
-          readOnly: true
-      required:
-      - name
-    RBACContentGuard:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-      required:
-      - name
-    PatchedRBACContentGuard:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role

@@ -502,7 +502,7 @@ paths:
       x-summary-source: derived
   /role_definitions/:
     get:
-      operationId: role_definitions_list
+      operationId: getRoleDefinitions
       description: 'Role Definitions (roles) contain a list of permissions and can be used to
 
         assign those permissions to a user or team through the respective
@@ -547,8 +547,10 @@ paths:
           description: ''
       summary: Role definitions list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_list
     post:
-      operationId: role_definitions_create
+      operationId: postRoleDefinitions
       description: Create a RoleDefinition.
       tags:
       - role_definitions
@@ -575,11 +577,13 @@ paths:
           description: Return a created RoleDefinition.
       summary: Role definitions create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_create
     servers:
     - url: /api/eda/v1
   /role_definitions/{id}/:
     get:
-      operationId: role_definitions_retrieve
+      operationId: getRoleDefinitionsById
       description: 'Role Definitions (roles) contain a list of permissions and can be used to
 
         assign those permissions to a user or team through the respective
@@ -612,8 +616,10 @@ paths:
           description: ''
       summary: Role definitions retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_retrieve
     put:
-      operationId: role_definitions_update
+      operationId: putRoleDefinitionsById
       description: Update a RoleDefinition.
       parameters:
       - in: path
@@ -647,8 +653,10 @@ paths:
           description: Return an updated RoleDefinition.
       summary: Role definitions update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_update
     patch:
-      operationId: role_definitions_partial_update
+      operationId: patchRoleDefinitionsById
       description: 'Role Definitions (roles) contain a list of permissions and can be used to
 
         assign those permissions to a user or team through the respective
@@ -692,8 +700,10 @@ paths:
           description: ''
       summary: Role definitions partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_partial_update
     delete:
-      operationId: role_definitions_destroy
+      operationId: deleteRoleDefinitionsById
       description: 'Role Definitions (roles) contain a list of permissions and can be used to
 
         assign those permissions to a user or team through the respective
@@ -722,11 +732,13 @@ paths:
           description: No response body
       summary: Role definitions destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_destroy
     servers:
     - url: /api/eda/v1
   /role_definitions/{id}/team_assignments/:
     get:
-      operationId: role_definitions_team_assignments_list
+      operationId: getRoleDefinitionsByIdTeamAssignments
       description: 'Manage Role Team Assignment objects in the ''team_assignments'' relationship of this particular Role Definition.
 
 
@@ -772,11 +784,13 @@ paths:
           description: ''
       summary: Role definitions team assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_team_assignments_list
     servers:
     - url: /api/eda/v1
   /role_definitions/{id}/user_assignments/:
     get:
-      operationId: role_definitions_user_assignments_list
+      operationId: getRoleDefinitionsByIdUserAssignments
       description: 'Manage Role User Assignment objects in the ''user_assignments'' relationship of this particular Role Definition.
 
 
@@ -822,11 +836,13 @@ paths:
           description: ''
       summary: Role definitions user assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_user_assignments_list
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/role_definitions/:
     get:
-      operationId: role_definitions_list
+      operationId: getApiGatewayV1RoleDefinitions
       description: Update the corresponding resource in each service.
       parameters:
       - in: query
@@ -1003,8 +1019,10 @@ paths:
       x-ai-description: List RBAC roles defining permissions that can be managed and assigned to users and teams
       summary: Role definitions list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_list
     post:
-      operationId: role_definitions_create
+      operationId: postApiGatewayV1RoleDefinitions
       description: Update the corresponding resource in each service.
       tags:
       - role_definitions
@@ -1034,9 +1052,11 @@ paths:
       x-ai-description: Create a RBAC roles defining permissions that can be managed and assigned to users and teams
       summary: Role definitions create
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_create
   /api/gateway/v1/role_definitions/{id}/:
     get:
-      operationId: role_definitions_retrieve
+      operationId: getApiGatewayV1RoleDefinitionsById
       description: Update the corresponding resource in each service.
       parameters:
       - in: path
@@ -1061,8 +1081,10 @@ paths:
       x-ai-description: Retrieve a RBAC roles defining permissions that can be managed and assigned to users and teams
       summary: Role definitions retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_retrieve
     put:
-      operationId: role_definitions_update
+      operationId: putApiGatewayV1RoleDefinitionsById
       description: Update the corresponding resource in each service.
       parameters:
       - in: path
@@ -1099,8 +1121,10 @@ paths:
       x-ai-description: Update a RBAC roles defining permissions that can be managed and assigned to users and teams
       summary: Role definitions update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_update
     patch:
-      operationId: role_definitions_partial_update
+      operationId: patchApiGatewayV1RoleDefinitionsById
       description: Update the corresponding resource in each service.
       parameters:
       - in: path
@@ -1136,8 +1160,10 @@ paths:
       x-ai-description: Update a RBAC roles defining permissions that can be managed and assigned to users and teams
       summary: Role definitions partial update
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_partial_update
     delete:
-      operationId: role_definitions_destroy
+      operationId: deleteApiGatewayV1RoleDefinitionsById
       description: Update the corresponding resource in each service.
       parameters:
       - in: path
@@ -1158,9 +1184,11 @@ paths:
       x-ai-description: Delete a RBAC roles defining permissions that can be managed and assigned to users and teams
       summary: Role definitions destroy
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_destroy
   /api/gateway/v1/role_definitions/{id}/team_assignments/:
     get:
-      operationId: role_definitions_team_assignments_list
+      operationId: getApiGatewayV1RoleDefinitionsByIdTeamAssignments
       description: 'Manage Role Team Assignment objects in the ''team_assignments'' relationship of this particular Role Definition.
 
 
@@ -1229,9 +1257,11 @@ paths:
       x-ai-description: List all assignments for a role_definition
       summary: Role definitions team assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_team_assignments_list
   /api/gateway/v1/role_definitions/{id}/user_assignments/:
     get:
-      operationId: role_definitions_user_assignments_list
+      operationId: getApiGatewayV1RoleDefinitionsByIdUserAssignments
       description: 'Manage Role User Assignment objects in the ''user_assignments'' relationship of this particular Role Definition.
 
 
@@ -1300,8 +1330,32 @@ paths:
       x-ai-description: List all assignments for a role_definition
       summary: Role definitions user assignments list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_definitions_user_assignments_list
 components:
   schemas:
+    PatchedRoleDefinitionRequest:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
     RoleDefinitionRequest:
       type: object
       properties:
@@ -1327,6 +1381,172 @@ components:
       required:
       - name
       - permissions
+    RoleUserAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        user:
+          type:
+          - integer
+          - 'null'
+        user_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
+      required:
+      - role_definition
+    PaginatedRoleUserAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignment'
+    RoleDefinitionDetailRequest:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+      required:
+      - name
+      - permissions
+    RoleTeamAssignment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        team:
+          type:
+          - integer
+          - 'null'
+        team_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
+      required:
+      - role_definition
     PaginatedRoleDefinitionList:
       type: object
       required:
@@ -1352,28 +1572,70 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RoleDefinition'
-    PatchedRoleDefinitionRequest:
+    RoleDefinitionDetail:
       type: object
       properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
         permissions:
           type: array
           items:
             type: string
-            minLength: 1
             description: String to use for references to this type from other models in the API.
         content_type:
-          type:
-          - string
-          - 'null'
-          minLength: 1
+          type: string
           description: String to use for references to this type from other models in the API.
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
         name:
           type: string
-          minLength: 1
           description: The name of this role.
         description:
           type: string
           description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+      required:
+      - name
+      - permissions
     RoleDefinition:
       type: object
       properties:
@@ -1464,32 +1726,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RoleTeamAssignment'
-    PaginatedRoleUserAssignmentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleUserAssignment'
-    RoleUserAssignment:
+    PatchedRoleDefinition:
       type: object
       properties:
         id:
@@ -1507,7 +1744,69 @@ components:
           type: object
           additionalProperties:
             type: object
-            additionalProperties: {}
+            additionalProperties: true
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
+          type:
+          - string
+          - 'null'
+          description: String to use for references to this type from other models in the API.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+    RoleUserAssignment_2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: true
           readOnly: true
         created:
           type: string
@@ -1549,83 +1848,61 @@ components:
           format: uuid
           description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
       required:
+      - content_type
+      - created
+      - created_by
+      - id
+      - related
       - role_definition
-    RoleDefinitionDetail:
+      - summary_fields
+      - url
+    PaginatedRoleUserAssignmentList_2:
       type: object
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignment_2'
+    RoleDefinitionCreate:
+      type: object
+      properties:
         permissions:
           type: array
           items:
             type: string
             description: String to use for references to this type from other models in the API.
         content_type:
-          type: string
+          type:
+          - string
+          - 'null'
           description: String to use for references to this type from other models in the API.
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
         name:
           type: string
-          description: The name of this role.
-        description:
-          type: string
-          description: A description of this role.
-        managed:
-          type: boolean
-          readOnly: true
-          description: Is this role managed by the system (not changeable by the users).
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-      required:
-      - name
-      - permissions
-    RoleDefinitionDetailRequest:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: String to use for references to this type from other models in the API.
-        name:
-          type: string
-          minLength: 1
           description: The name of this role.
         description:
           type: string
@@ -1633,7 +1910,7 @@ components:
       required:
       - name
       - permissions
-    RoleTeamAssignment:
+    RoleTeamAssignment_2:
       type: object
       properties:
         id:
@@ -1651,7 +1928,7 @@ components:
           type: object
           additionalProperties:
             type: object
-            additionalProperties: {}
+            additionalProperties: true
           readOnly: true
         created:
           type: string
@@ -1693,7 +1970,14 @@ components:
           format: uuid
           description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
       required:
+      - content_type
+      - created
+      - created_by
+      - id
+      - related
       - role_definition
+      - summary_fields
+      - url
     PaginatedRoleDefinitionList_2:
       type: object
       properties:
@@ -1832,228 +2116,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RoleTeamAssignment_2'
-    RoleTeamAssignment_2:
+    PaginatedGatewayRoleTeamAssignmentList:
       type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: true
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        content_type:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          readOnly: true
-        object_id:
-          type:
-          - string
-          - 'null'
-          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource id of the object this role applies to. An alternative to the object_id field.
-        role_definition:
-          type: integer
-          description: The role definition which defines permissions conveyed by this assignment.
-        team:
-          type:
-          - integer
-          - 'null'
-        team_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
       required:
-      - content_type
-      - created
-      - created_by
-      - id
-      - related
-      - role_definition
-      - summary_fields
-      - url
-    PatchedRoleDefinition:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: true
-          readOnly: true
-        permissions:
-          type: array
-          items:
-            type: string
-            description: String to use for references to this type from other models in the API.
-        content_type:
-          type:
-          - string
-          - 'null'
-          description: String to use for references to this type from other models in the API.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        name:
-          type: string
-          description: The name of this role.
-        description:
-          type: string
-          description: A description of this role.
-        managed:
-          type: boolean
-          readOnly: true
-          description: Is this role managed by the system (not changeable by the users).
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-    RoleDefinitionCreate:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-            description: String to use for references to this type from other models in the API.
-        content_type:
-          type:
-          - string
-          - 'null'
-          description: String to use for references to this type from other models in the API.
-        name:
-          type: string
-          description: The name of this role.
-        description:
-          type: string
-          description: A description of this role.
-      required:
-      - name
-      - permissions
-    RoleUserAssignment_2:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: true
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        content_type:
-          type: string
-          description: String to use for references to this type from other models in the API.
-          readOnly: true
-        object_id:
-          type:
-          - string
-          - 'null'
-          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource id of the object this role applies to. An alternative to the object_id field.
-        role_definition:
-          type: integer
-          description: The role definition which defines permissions conveyed by this assignment.
-        user:
-          type:
-          - integer
-          - 'null'
-        user_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
-      required:
-      - content_type
-      - created
-      - created_by
-      - id
-      - related
-      - role_definition
-      - summary_fields
-      - url
-    PaginatedRoleUserAssignmentList_2:
-      type: object
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -2063,93 +2130,17 @@ components:
           - string
           - 'null'
           format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
+          example: http://api.example.org/accounts/?page=4
         previous:
           type:
           - string
           - 'null'
           format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
+          example: http://api.example.org/accounts/?page=2
         results:
           type: array
           items:
-            $ref: '#/components/schemas/RoleUserAssignment_2'
-    PatchedGatewayRoleDefinition:
-      type: object
-      description: 'Custom serializer with Gateway-specific validation
-
-
-        Generated by Claude Sonnet 4'
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        permissions:
-          type: array
-          items:
-            type: string
-            description: String to use for references to this type from other models in the API.
-        content_type:
-          type:
-          - string
-          - 'null'
-          description: String to use for references to this type from other models in the API.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        name:
-          type: string
-          description: The name of this role.
-        description:
-          type: string
-          description: A description of this role.
-        managed:
-          type: boolean
-          readOnly: true
-          description: Is this role managed by the system (not changeable by the users).
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
+            $ref: '#/components/schemas/GatewayRoleTeamAssignment'
     GatewayRoleTeamAssignment:
       type: object
       description: 'Custom serializer with Galaxy-specific validation for team role assignments
@@ -2219,6 +2210,31 @@ components:
           description: The resource ID of the team who will receive permissions from this assignment. An alternative to team field.
       required:
       - role_definition
+    PaginatedGatewayRoleDefinitionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GatewayRoleDefinition'
     GatewayRoleDefinition:
       type: object
       description: 'Custom serializer with Gateway-specific validation
@@ -2288,56 +2304,72 @@ components:
       required:
       - name
       - permissions
-    PaginatedGatewayRoleTeamAssignmentList:
+    PatchedGatewayRoleDefinition:
       type: object
-      required:
-      - count
-      - results
+      description: 'Custom serializer with Gateway-specific validation
+
+
+        Generated by Claude Sonnet 4'
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        permissions:
           type: array
           items:
-            $ref: '#/components/schemas/GatewayRoleTeamAssignment'
-    PaginatedGatewayRoleDefinitionList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
+            type: string
+            description: String to use for references to this type from other models in the API.
+        content_type:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          description: String to use for references to this type from other models in the API.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        name:
+          type: string
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
           type:
-          - string
+          - integer
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/GatewayRoleDefinition'
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

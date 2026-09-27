@@ -36,7 +36,7 @@ paths:
       x-summary-source: derived
   /role_metadata/:
     get:
-      operationId: role_metadata_retrieve
+      operationId: getRoleMetadata
       description: 'General data about models and permissions tracked by django-ansible-base RBAC
 
 
@@ -57,6 +57,8 @@ paths:
           description: No response body
       summary: Role metadata retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_metadata_retrieve
     servers:
     - url: /api/eda/v1
 components:

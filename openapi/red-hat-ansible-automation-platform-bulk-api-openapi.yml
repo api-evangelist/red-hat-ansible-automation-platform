@@ -105,6 +105,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    BulkHostDeleteRequest:
+      type: object
+      properties:
+        hosts:
+          type: array
+          items: {}
+          writeOnly: true
+          description: List of hosts ids to be deleted, e.g. [105, 130, 131, 200]
+          maxItems: 100000
+      required:
+      - hosts
     BulkJobLaunchRequest:
       type: object
       properties:
@@ -169,6 +180,41 @@ components:
       required:
       - hosts
       - inventory
+    BulkHostRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+      required:
+      - name
     BulkJobNodeRequest:
       type: object
       properties:
@@ -298,49 +344,3 @@ components:
             minimum: 1
       required:
       - unified_job_template
-    BulkHostDeleteRequest:
-      type: object
-      properties:
-        hosts:
-          type: array
-          items: {}
-          writeOnly: true
-          description: List of hosts ids to be deleted, e.g. [105, 130, 131, 200]
-          maxItems: 100000
-      required:
-      - hosts
-    BulkHostRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Is this host online and available for running jobs?
-        instance_id:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The value used by the remote inventory source to uniquely identify the host
-          maxLength: 1024
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-      required:
-      - name

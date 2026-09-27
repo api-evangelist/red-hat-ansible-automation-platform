@@ -709,6 +709,42 @@ paths:
           description: ''
 components:
   schemas:
+    UnTagImage:
+      type: object
+      description: A serializer for parsing and validating data associated with a manifest untagging.
+      properties:
+        tag:
+          type: string
+          minLength: 1
+          description: A tag name
+          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
+      required:
+      - tag
+    Paginatedcontainer.ContainerPushRepositoryResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/container.ContainerPushRepositoryResponse'
     ObjectRolesResponse:
       type: object
       properties:
@@ -718,6 +754,170 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    RepositorySign:
+      type: object
+      description: Serializer for container images signing.
+      properties:
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A signing service to sign with. This will override a signing service set on the repo.
+        future_base_path:
+          type: string
+          minLength: 1
+          description: Future base path content will be distributed at for sync repos
+        tags_list:
+          type: array
+          items: {}
+          description: A list of tags to sign.
+    Patchedcontainer.ContainerPushRepository:
+      type: object
+      description: Serializer for Container Push Repositories.
+      properties:
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A reference to an associated signing service.
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    container.ContainerPushRepository:
+      type: object
+      description: Serializer for Container Push Repositories.
+      properties:
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A reference to an associated signing service.
+      required:
+      - name
+    TagImage:
+      type: object
+      description: A serializer for parsing and validating data associated with a manifest tagging.
+      properties:
+        tag:
+          type: string
+          minLength: 1
+          description: A tag name
+          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
+        digest:
+          type: string
+          minLength: 1
+          description: sha256 of the Manifest file
+      required:
+      - digest
+      - tag
+    RemoveSignaturesResponse:
+      type: object
+      description: A serializer for parsing and validating data associated with the signatures removal.
+      properties:
+        signed_with_key_id:
+          type: string
+          description: key_id of the key the signatures were produced with
+      required:
+      - signed_with_key_id
+    RemoveImage:
+      type: object
+      description: A serializer for parsing and validating data associated with the image removal.
+      properties:
+        digest:
+          type: string
+          minLength: 1
+          description: sha256 of the Manifest file
+      required:
+      - digest
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
     container.ContainerPushRepositoryResponse:
       type: object
       description: Serializer for Container Push Repositories.
@@ -773,165 +973,6 @@ components:
           readOnly: true
       required:
       - name
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    UnTagImage:
-      type: object
-      description: A serializer for parsing and validating data associated with a manifest untagging.
-      properties:
-        tag:
-          type: string
-          minLength: 1
-          description: A tag name
-          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
-      required:
-      - tag
-    Paginatedcontainer.ContainerPushRepositoryResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/container.ContainerPushRepositoryResponse'
-    RemoveSignaturesResponse:
-      type: object
-      description: A serializer for parsing and validating data associated with the signatures removal.
-      properties:
-        signed_with_key_id:
-          type: string
-          description: key_id of the key the signatures were produced with
-      required:
-      - signed_with_key_id
-    RemoveSignatures:
-      type: object
-      description: A serializer for parsing and validating data associated with the signatures removal.
-      properties:
-        signed_with_key_id:
-          type: string
-          minLength: 1
-          description: key_id of the key the signatures were produced with
-      required:
-      - signed_with_key_id
-    RemoveImage:
-      type: object
-      description: A serializer for parsing and validating data associated with the image removal.
-      properties:
-        digest:
-          type: string
-          minLength: 1
-          description: sha256 of the Manifest file
-      required:
-      - digest
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    container.ContainerPushRepository:
-      type: object
-      description: Serializer for Container Push Repositories.
-      properties:
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A reference to an associated signing service.
-      required:
-      - name
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    TagImage:
-      type: object
-      description: A serializer for parsing and validating data associated with a manifest tagging.
-      properties:
-        tag:
-          type: string
-          minLength: 1
-          description: A tag name
-          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
-        digest:
-          type: string
-          minLength: 1
-          description: sha256 of the Manifest file
-      required:
-      - digest
-      - tag
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -959,54 +1000,13 @@ components:
           minLength: 1
       required:
       - role
-    RepositorySign:
+    RemoveSignatures:
       type: object
-      description: Serializer for container images signing.
+      description: A serializer for parsing and validating data associated with the signatures removal.
       properties:
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A signing service to sign with. This will override a signing service set on the repo.
-        future_base_path:
+        signed_with_key_id:
           type: string
           minLength: 1
-          description: Future base path content will be distributed at for sync repos
-        tags_list:
-          type: array
-          items: {}
-          description: A list of tags to sign.
-    Patchedcontainer.ContainerPushRepository:
-      type: object
-      description: Serializer for Container Push Repositories.
-      properties:
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A reference to an associated signing service.
+          description: key_id of the key the signatures were produced with
+      required:
+      - signed_with_key_id

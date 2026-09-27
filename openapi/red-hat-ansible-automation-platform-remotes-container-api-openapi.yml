@@ -726,20 +726,6 @@ paths:
           description: ''
 components:
   schemas:
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
     SetLabel:
       type: object
       description: Serializer for synchronously setting a label.
@@ -755,6 +741,16 @@ components:
       required:
       - key
       - value
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
     ObjectRolesResponse:
       type: object
       properties:
@@ -764,16 +760,30 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    AsyncOperationResponse:
+    NestedRoleResponse:
       type: object
-      description: Serializer for asynchronous operations.
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        task:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
           type: string
-          format: uri
-          description: The href of the task.
       required:
-      - task
+      - role
     UnsetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
@@ -786,163 +796,20 @@ components:
           readOnly: true
       required:
       - key
-    container.ContainerRemoteResponse:
+    SetLabelResponse:
       type: object
-      description: A Serializer for ContainerRemote.
+      description: Serializer for synchronously setting a label.
       properties:
-        pulp_href:
+        key:
           type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the most recent update of the remote.
-        name:
-          type: string
-          description: A unique name for this remote.
-        url:
-          type: string
-          description: The URL of an external content source.
-        ca_cert:
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
           type:
           - string
           - 'null'
-          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
-        client_cert:
-          type:
-          - string
-          - 'null'
-          description: A PEM encoded client certificate used for authentication.
-        tls_validation:
-          type: boolean
-          description: If True, TLS peer validation must be performed.
-        proxy_url:
-          type:
-          - string
-          - 'null'
-          description: 'The proxy URL. Format: scheme://host:port'
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        download_concurrency:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of simultaneous connections. If not set then the default value will be used.
-          minimum: 1
-        max_retries:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Maximum number of retry attempts after a download failure. If not set then the default value (3) will be used.
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/Policy762Enum'
-          default: immediate
-          description: "\n        immediate - All manifests and blobs are downloaded and saved during a sync.\n        on_demand - Only tags and manifests are downloaded. Blobs are not\n                    downloaded until they are requested for the first time by a client.\n        streamed - Blobs are streamed to the client with every request and never saved.\n        \n\n* `immediate` - When syncing, download all metadata and content now.\n* `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.\n* `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again."
-        total_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.total (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        connect_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        sock_connect_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.sock_connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        sock_read_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.sock_read (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        headers:
-          type: array
-          items:
-            type: object
-          description: Headers for aiohttp.Clientsession
-        rate_limit:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Limits requests per second for each concurrent downloader
-        hidden_fields:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              is_set:
-                type: boolean
-            required:
-            - is_set
-            - name
-          readOnly: true
-          description: List of hidden (write only) fields
-        upstream_name:
-          type: string
-          description: Name of the upstream repository
-        include_tags:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            maxLength: 255
-          description: "\n            A list of tags to include during sync.\n            Wildcards *, ? are recognized.\n            'include_tags' is evaluated before 'exclude_tags'.\n            "
-        exclude_tags:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-            maxLength: 255
-          description: "\n            A list of tags to exclude during sync.\n            Wildcards *, ? are recognized.\n            'exclude_tags' is evaluated after 'include_tags'.\n            "
-        sigstore:
-          type: string
-          description: A URL to a sigstore to download image signatures from
-          format: uri
       required:
-      - name
-      - upstream_name
-      - url
-    Policy762Enum:
-      enum:
-      - immediate
-      - on_demand
-      - streamed
-      type: string
-      description: '* `immediate` - When syncing, download all metadata and content now.
-
-        * `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.
-
-        * `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again.'
+      - key
+      - value
     container.ContainerRemote:
       type: object
       description: A Serializer for ContainerRemote.
@@ -1105,30 +972,52 @@ components:
       - name
       - upstream_name
       - url
-    NestedRoleResponse:
+    Policy762Enum:
+      enum:
+      - immediate
+      - on_demand
+      - streamed
+      type: string
+      description: '* `immediate` - When syncing, download all metadata and content now.
+
+        * `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.
+
+        * `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again.'
+    AsyncOperationResponse:
       type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
+      description: Serializer for asynchronous operations.
       properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
+        task:
           type: string
+          format: uri
+          description: The href of the task.
       required:
-      - role
+      - task
+    Paginatedcontainer.ContainerRemoteResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/container.ContainerRemoteResponse'
     MyPermissionsResponse:
       type: object
       properties:
@@ -1323,38 +1212,149 @@ components:
           minLength: 1
       required:
       - role
-    UnsetLabel:
+    container.ContainerRemoteResponse:
       type: object
-      description: Serializer for synchronously setting a label.
+      description: A Serializer for ContainerRemote.
       properties:
-        key:
+        pulp_href:
           type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    Paginatedcontainer.ContainerRemoteResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent update of the remote.
+        name:
+          type: string
+          description: A unique name for this remote.
+        url:
+          type: string
+          description: The URL of an external content source.
+        ca_cert:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        client_cert:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
+          description: A PEM encoded client certificate used for authentication.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          description: 'The proxy URL. Format: scheme://host:port'
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        max_retries:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Maximum number of retry attempts after a download failure. If not set then the default value (3) will be used.
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/Policy762Enum'
+          default: immediate
+          description: "\n        immediate - All manifests and blobs are downloaded and saved during a sync.\n        on_demand - Only tags and manifests are downloaded. Blobs are not\n                    downloaded until they are requested for the first time by a client.\n        streamed - Blobs are streamed to the client with every request and never saved.\n        \n\n* `immediate` - When syncing, download all metadata and content now.\n* `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.\n* `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again."
+        total_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.total (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        connect_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        sock_connect_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.sock_connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        sock_read_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.sock_read (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        headers:
           type: array
           items:
-            $ref: '#/components/schemas/container.ContainerRemoteResponse'
+            type: object
+          description: Headers for aiohttp.Clientsession
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        hidden_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              is_set:
+                type: boolean
+            required:
+            - is_set
+            - name
+          readOnly: true
+          description: List of hidden (write only) fields
+        upstream_name:
+          type: string
+          description: Name of the upstream repository
+        include_tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            maxLength: 255
+          description: "\n            A list of tags to include during sync.\n            Wildcards *, ? are recognized.\n            'include_tags' is evaluated before 'exclude_tags'.\n            "
+        exclude_tags:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            maxLength: 255
+          description: "\n            A list of tags to exclude during sync.\n            Wildcards *, ? are recognized.\n            'exclude_tags' is evaluated after 'include_tags'.\n            "
+        sigstore:
+          type: string
+          description: A URL to a sigstore to download image signatures from
+          format: uri
+      required:
+      - name
+      - upstream_name
+      - url

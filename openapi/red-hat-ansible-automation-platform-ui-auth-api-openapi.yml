@@ -24,20 +24,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SSOAuthenticator:
-      type: object
-      description: Serializer for SSO authenticator items in UI auth response.
-      properties:
-        name:
-          type: string
-          readOnly: true
-        login_url:
-          type: string
-          format: uri
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
     UIAuthResponse:
       type: object
       description: Serializer for UI authentication configuration response.
@@ -66,6 +52,20 @@ components:
           readOnly: true
         managed_cloud_install:
           type: boolean
+          readOnly: true
+    SSOAuthenticator:
+      type: object
+      description: Serializer for SSO authenticator items in UI auth response.
+      properties:
+        name:
+          type: string
+          readOnly: true
+        login_url:
+          type: string
+          format: uri
+          readOnly: true
+        type:
+          type: string
           readOnly: true
     PasswordAuthenticator:
       type: object

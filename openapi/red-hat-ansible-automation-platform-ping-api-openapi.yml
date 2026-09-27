@@ -27,7 +27,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/ping/:
     get:
-      operationId: ping_retrieve
+      operationId: getApiGatewayV1Ping
       tags:
       - Ping
       security:
@@ -44,6 +44,8 @@ paths:
       x-ai-description: Retrieve single ping
       summary: Ping retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: ping_retrieve
 components:
   schemas:
     Ping:

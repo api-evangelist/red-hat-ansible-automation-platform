@@ -281,7 +281,7 @@ paths:
       x-summary-source: derived
   /feature_flags/states/:
     get:
-      operationId: feature_flags_states_list
+      operationId: getFeatureFlagsStates
       description: 'A view class for displaying feature flags states.
 
         To add/update/remove a feature flag, see the instructions in
@@ -319,11 +319,13 @@ paths:
           description: ''
       summary: Feature flags states list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: feature_flags_states_list
     servers:
     - url: /api/eda/v1
   /feature_flags/states/{id}/:
     get:
-      operationId: feature_flags_states_retrieve
+      operationId: getFeatureFlagsStatesById
       description: 'A view class for displaying feature flags states.
 
         To add/update/remove a feature flag, see the instructions in
@@ -349,6 +351,8 @@ paths:
           description: ''
       summary: Feature flags states retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: feature_flags_states_retrieve
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/feature_flags/:
@@ -661,7 +665,7 @@ paths:
       x-summary-source: derived
   /api/gateway/v1/feature_flags/states/:
     get:
-      operationId: feature_flags_states_list
+      operationId: getApiGatewayV1FeatureFlagsStates
       description: 'A view class for displaying feature flags states.
 
         To add/update/remove a feature flag, see the instructions in
@@ -907,9 +911,11 @@ paths:
       x-ai-description: List all feature flags states
       summary: Feature flags states list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: feature_flags_states_list
   /api/gateway/v1/feature_flags/states/{id}/:
     get:
-      operationId: feature_flags_states_retrieve
+      operationId: getApiGatewayV1FeatureFlagsStatesById
       description: 'A view class for displaying feature flags states.
 
         To add/update/remove a feature flag, see the instructions in
@@ -938,6 +944,8 @@ paths:
       x-ai-description: Retrieve single feature flags state
       summary: Feature flags states retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: feature_flags_states_retrieve
 components:
   schemas:
     PaginatedFeatureFlagStatesList:
@@ -1025,13 +1033,6 @@ components:
       - name
       - state
     PatchedFeatureFlagPatch:
-      type: object
-      properties:
-        value:
-          type: string
-          description: The value used to evaluate the conditional specified.
-          maxLength: 127
-    FeatureFlagPatch:
       type: object
       properties:
         value:
@@ -1162,6 +1163,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FeatureFlag'
+    FeatureFlagPatch:
+      type: object
+      properties:
+        value:
+          type: string
+          description: The value used to evaluate the conditional specified.
+          maxLength: 127
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

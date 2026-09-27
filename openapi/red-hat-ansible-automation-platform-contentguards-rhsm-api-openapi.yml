@@ -337,7 +337,32 @@ paths:
           description: No response body
 components:
   schemas:
-    certguard.RHSMCertGuard:
+    Paginatedcertguard.RHSMCertGuardResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/certguard.RHSMCertGuardResponse'
+    Patchedcertguard.RHSMCertGuard:
       type: object
       description: RHSM Content Guard Serializer.
       properties:
@@ -355,9 +380,6 @@ components:
           type: string
           minLength: 1
           description: A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity.
-      required:
-      - ca_certificate
-      - name
     certguard.RHSMCertGuardResponse:
       type: object
       description: RHSM Content Guard Serializer.
@@ -390,7 +412,7 @@ components:
       required:
       - ca_certificate
       - name
-    Patchedcertguard.RHSMCertGuard:
+    certguard.RHSMCertGuard:
       type: object
       description: RHSM Content Guard Serializer.
       properties:
@@ -408,28 +430,6 @@ components:
           type: string
           minLength: 1
           description: A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity.
-    Paginatedcertguard.RHSMCertGuardResponseList:
-      type: object
       required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/certguard.RHSMCertGuardResponse'
+      - ca_certificate
+      - name

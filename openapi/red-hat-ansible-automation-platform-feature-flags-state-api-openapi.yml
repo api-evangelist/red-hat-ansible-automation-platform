@@ -33,7 +33,7 @@ paths:
       x-summary-source: derived
   /feature_flags_state/:
     get:
-      operationId: feature_flags_state_retrieve
+      operationId: getFeatureFlagsState
       description: A view class for displaying feature flags
       tags:
       - feature_flags_state
@@ -48,11 +48,13 @@ paths:
           description: ''
       summary: Feature flags state retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: feature_flags_state_retrieve
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/feature_flags_state/:
     get:
-      operationId: feature_flags_state_retrieve
+      operationId: getApiGatewayV1FeatureFlagsState
       description: A view class for displaying feature flags
       tags:
       - feature_flags_state
@@ -77,6 +79,8 @@ paths:
       x-ai-description: Retrieve single feature flags state
       summary: Feature flags state retrieve
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: feature_flags_state_retrieve
 components:
   schemas:
     ToggleTypeEnum:

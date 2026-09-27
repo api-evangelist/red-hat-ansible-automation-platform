@@ -151,7 +151,7 @@ paths:
       x-summary-source: derived
   /role_user_access/{model_name}/{id}/:
     get:
-      operationId: role_user_access_list
+      operationId: getRoleUserAccessByModelNameById
       description: 'Use this endpoint to get a list of users who have access to a resource.
 
         This is a list-only view that provides a list of users, plus extra data.'
@@ -198,11 +198,13 @@ paths:
           description: ''
       summary: Role user access list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_access_list
     servers:
     - url: /api/eda/v1
   /role_user_access/{model_name}/{id}/{actor_pk}/:
     get:
-      operationId: role_user_access_list_2
+      operationId: getRoleUserAccessByModelNameByIdByActorPk
       description: 'This gives drill-down information about the means of inheritance
 
         for all the permissions show in the higher-level view of the access list'
@@ -254,11 +256,13 @@ paths:
           description: ''
       summary: Role user access list 2
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_access_list_2
     servers:
     - url: /api/eda/v1
   /api/gateway/v1/role_user_access/{model_name}/{id}/:
     get:
-      operationId: role_user_access_list
+      operationId: getApiGatewayV1RoleUserAccessByModelNameById
       description: 'Use this endpoint to get a list of users who have access to a resource.
 
         This is a list-only view that provides a list of users, plus extra data.'
@@ -328,9 +332,11 @@ paths:
       x-ai-description: List all role user access
       summary: Role user access list
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_access_list
   /api/gateway/v1/role_user_access/{model_name}/{id}/{actor_pk}/:
     get:
-      operationId: role_user_access_list_2
+      operationId: getApiGatewayV1RoleUserAccessByModelNameByIdByActorPk
       description: 'This gives drill-down information about the means of inheritance
 
         for all the permissions show in the higher-level view of the access list'
@@ -405,6 +411,8 @@ paths:
       x-ai-description: List all role user access
       summary: Role user access list 2
       x-summary-source: derived
+      x-operation-id-source: normalized
+      x-operation-id-original: role_user_access_list_2
 components:
   schemas:
     UserAccessAssignment:
@@ -471,41 +479,6 @@ components:
           readOnly: true
       required:
       - role_definition
-    UserAccessViewSet_User_:
-      type: object
-      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        is_superuser:
-          type: boolean
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        object_role_assignments:
-          type: string
-          readOnly: true
-      required:
-      - username
     PaginatedUserAccessAssignmentList:
       type: object
       required:
@@ -556,6 +529,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserAccessViewSet_User_'
+    UserAccessViewSet_User_:
+      type: object
+      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        object_role_assignments:
+          type: string
+          readOnly: true
+      required:
+      - username
     UserAccessAssignment_2:
       type: object
       properties:
@@ -628,45 +636,6 @@ components:
       - role_definition
       - summary_fields
       - url
-    UserAccessViewSet_User__2:
-      type: object
-      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        is_superuser:
-          type: boolean
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        object_role_assignments:
-          type: string
-          readOnly: true
-      required:
-      - id
-      - object_role_assignments
-      - related
-      - url
-      - username
     PaginatedUserAccessAssignmentList_2:
       type: object
       properties:
@@ -731,6 +700,45 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserAccessViewSet_User__2'
+    UserAccessViewSet_User__2:
+      type: object
+      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        object_role_assignments:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - object_role_assignments
+      - related
+      - url
+      - username
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

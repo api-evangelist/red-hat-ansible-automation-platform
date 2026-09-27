@@ -355,16 +355,6 @@ components:
             $ref: '#/components/schemas/NestedRoleResponse'
       required:
       - roles
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -389,15 +379,54 @@ components:
           type: string
       required:
       - role
-    MyPermissionsResponse:
+    AsyncOperationResponse:
       type: object
+      description: Serializer for asynchronous operations.
       properties:
-        permissions:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    ansible.CollectionResponse:
+      type: object
+      description: A serializer for Ansible Collections.
+      properties:
+        name:
+          type: string
+          description: The name of the Collection.
+        namespace:
+          type: string
+          description: The namespace of the Collection.
+      required:
+      - name
+      - namespace
+    Paginatedansible.CollectionResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
           type: array
           items:
-            type: string
-      required:
-      - permissions
+            $ref: '#/components/schemas/ansible.CollectionResponse'
     CollectionOneShot:
       type: object
       description: A serializer for the Collection One Shot Upload API.
@@ -424,6 +453,15 @@ components:
           description: The expected version of the Collection to be verified against the metadata during import.
       required:
       - file
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -451,41 +489,3 @@ components:
           minLength: 1
       required:
       - role
-    Paginatedansible.CollectionResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.CollectionResponse'
-    ansible.CollectionResponse:
-      type: object
-      description: A serializer for Ansible Collections.
-      properties:
-        name:
-          type: string
-          description: The name of the Collection.
-        namespace:
-          type: string
-          description: The namespace of the Collection.
-      required:
-      - name
-      - namespace

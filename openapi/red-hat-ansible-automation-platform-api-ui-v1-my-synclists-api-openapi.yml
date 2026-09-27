@@ -206,6 +206,94 @@ paths:
           description: No response body
 components:
   schemas:
+    SyncListCollectionSummaryResponse:
+      type: object
+      properties:
+        namespace:
+          type: string
+          maxLength: 64
+        name:
+          type: string
+          maxLength: 64
+      required:
+      - name
+      - namespace
+    SyncListCollectionSummary:
+      type: object
+      properties:
+        namespace:
+          type: string
+          minLength: 1
+          maxLength: 64
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+      required:
+      - name
+      - namespace
+    PaginatedSyncListResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncListResponse'
+    PatchedSyncList:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        policy:
+          $ref: '#/components/schemas/Policy8baEnum'
+        upstream_repository:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        distribution:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncListCollectionSummary'
+        namespaces:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        groups:
+          type: string
     SyncList:
       type: object
       properties:
@@ -241,20 +329,6 @@ components:
       - groups
       - name
       - namespaces
-    SyncListCollectionSummary:
-      type: object
-      properties:
-        namespace:
-          type: string
-          minLength: 1
-          maxLength: 64
-        name:
-          type: string
-          minLength: 1
-          maxLength: 64
-      required:
-      - name
-      - namespace
     SyncListResponse:
       type: object
       properties:
@@ -298,36 +372,6 @@ components:
       - groups
       - name
       - namespaces
-    PatchedSyncList:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 64
-        policy:
-          $ref: '#/components/schemas/Policy8baEnum'
-        upstream_repository:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        distribution:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        collections:
-          type: array
-          items:
-            $ref: '#/components/schemas/SyncListCollectionSummary'
-        namespaces:
-          type: array
-          items:
-            type: string
-            minLength: 1
-        groups:
-          type: string
     Policy8baEnum:
       enum:
       - exclude
@@ -336,47 +380,3 @@ components:
       description: '* `exclude` - exclude
 
         * `include` - include'
-    PaginatedSyncListResponseList:
-      type: object
-      properties:
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-              example: 123
-        links:
-          type: object
-          properties:
-            first:
-              type:
-              - string
-              - 'null'
-            previous:
-              type:
-              - string
-              - 'null'
-            next:
-              type:
-              - string
-              - 'null'
-            last:
-              type:
-              - string
-              - 'null'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SyncListResponse'
-    SyncListCollectionSummaryResponse:
-      type: object
-      properties:
-        namespace:
-          type: string
-          maxLength: 64
-        name:
-          type: string
-          maxLength: 64
-      required:
-      - name
-      - namespace

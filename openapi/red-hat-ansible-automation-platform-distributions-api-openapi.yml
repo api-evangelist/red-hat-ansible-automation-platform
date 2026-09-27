@@ -303,6 +303,33 @@ paths:
           description: ''
 components:
   schemas:
+    RepositoryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        pulp_id:
+          type: string
+          format: uuid
+          readOnly: true
+        pulp_last_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        content_count:
+          type: integer
+          readOnly: true
+        gpgkey:
+          type: string
+      required:
+      - gpgkey
+      - name
     DistributionResponse:
       type: object
       properties:
@@ -352,30 +379,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DistributionResponse'
-    RepositoryResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        pulp_id:
-          type: string
-          format: uuid
-          readOnly: true
-        pulp_last_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        content_count:
-          type: integer
-          readOnly: true
-        gpgkey:
-          type: string
-      required:
-      - gpgkey
-      - name

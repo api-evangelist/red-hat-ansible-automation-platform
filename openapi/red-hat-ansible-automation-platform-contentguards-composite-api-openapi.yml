@@ -477,6 +477,31 @@ paths:
           description: ''
 components:
   schemas:
+    PaginatedCompositeContentGuardResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositeContentGuardResponse'
     ObjectRolesResponse:
       type: object
       properties:
@@ -510,7 +535,7 @@ components:
           type: string
       required:
       - role
-    PatchedCompositeContentGuard:
+    CompositeContentGuard:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
 
@@ -542,6 +567,8 @@ components:
             - 'null'
             format: uri
           description: List of ContentGuards to ask for access-permission.
+      required:
+      - name
     MyPermissionsResponse:
       type: object
       properties:
@@ -578,6 +605,38 @@ components:
           minLength: 1
       required:
       - role
+    PatchedCompositeContentGuard:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        guards:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+            format: uri
+          description: List of ContentGuards to ask for access-permission.
     CompositeContentGuardResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -624,62 +683,3 @@ components:
           description: List of ContentGuards to ask for access-permission.
       required:
       - name
-    CompositeContentGuard:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        guards:
-          type: array
-          items:
-            type:
-            - string
-            - 'null'
-            format: uri
-          description: List of ContentGuards to ask for access-permission.
-      required:
-      - name
-    PaginatedCompositeContentGuardResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CompositeContentGuardResponse'

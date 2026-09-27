@@ -259,18 +259,16 @@ paths:
           description: ''
 components:
   schemas:
-    CollectionUploadWithDownloadUrl:
+    AsyncOperationResponse:
       type: object
-      description: A serializer for the Collection One Shot Upload API.
+      description: Serializer for asynchronous operations.
       properties:
-        file:
+        task:
           type: string
-          format: binary
-        sha256:
-          type: string
-          minLength: 1
+          format: uri
+          description: The href of the task.
       required:
-      - file
+      - task
     CollectionOneShot:
       type: object
       description: A serializer for the Collection One Shot Upload API.
@@ -297,13 +295,15 @@ components:
           description: The expected version of the Collection to be verified against the metadata during import.
       required:
       - file
-    AsyncOperationResponse:
+    CollectionUploadWithDownloadUrl:
       type: object
-      description: Serializer for asynchronous operations.
+      description: A serializer for the Collection One Shot Upload API.
       properties:
-        task:
+        file:
           type: string
-          format: uri
-          description: The href of the task.
+          format: binary
+        sha256:
+          type: string
+          minLength: 1
       required:
-      - task
+      - file

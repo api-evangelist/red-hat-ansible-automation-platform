@@ -206,7 +206,26 @@ paths:
           description: No response body
 components:
   schemas:
-    ResourceResponse:
+    PatchedResource:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data:
+          type: object
+    ResourceListResponse:
       type: object
       properties:
         object_id:
@@ -235,16 +254,9 @@ components:
         has_serializer:
           type: boolean
           readOnly: true
-        resource_data:
-          type: object
         url:
           type: string
           readOnly: true
-        additional_data:
-          type: string
-          readOnly: true
-      required:
-      - resource_data
     Resource:
       type: object
       properties:
@@ -291,7 +303,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ResourceListResponse'
-    ResourceListResponse:
+    ResourceResponse:
       type: object
       properties:
         object_id:
@@ -320,25 +332,13 @@ components:
         has_serializer:
           type: boolean
           readOnly: true
+        resource_data:
+          type: object
         url:
           type: string
           readOnly: true
-    PatchedResource:
-      type: object
-      properties:
-        ansible_id:
+        additional_data:
           type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-          minLength: 1
-        resource_data:
-          type: object
+          readOnly: true
+      required:
+      - resource_data

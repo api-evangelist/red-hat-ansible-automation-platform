@@ -374,16 +374,6 @@ components:
       required:
       - name
       - path
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     PaginatedFilesystemExporterResponseList:
       type: object
       required:
@@ -409,30 +399,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilesystemExporterResponse'
-    PatchedFilesystemExporter:
-      type: object
-      description: Serializer for FilesystemExporters.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Unique name of the file system exporter.
-        path:
-          type: string
-          minLength: 1
-          description: File system location to export to.
-        method:
-          allOf:
-          - $ref: '#/components/schemas/MethodEnum'
-          default: write
-          description: 'Method of exporting
-
-
-            * `write` - Export by writing
-
-            * `hardlink` - Export by hardlinking
-
-            * `symlink` - Export by symlinking'
     FilesystemExporterResponse:
       type: object
       description: Serializer for FilesystemExporters.
@@ -472,6 +438,16 @@ components:
       required:
       - name
       - path
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     MethodEnum:
       enum:
       - write
@@ -483,3 +459,27 @@ components:
         * `hardlink` - Export by hardlinking
 
         * `symlink` - Export by symlinking'
+    PatchedFilesystemExporter:
+      type: object
+      description: Serializer for FilesystemExporters.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Unique name of the file system exporter.
+        path:
+          type: string
+          minLength: 1
+          description: File system location to export to.
+        method:
+          allOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          default: write
+          description: 'Method of exporting
+
+
+            * `write` - Export by writing
+
+            * `hardlink` - Export by hardlinking
+
+            * `symlink` - Export by symlinking'

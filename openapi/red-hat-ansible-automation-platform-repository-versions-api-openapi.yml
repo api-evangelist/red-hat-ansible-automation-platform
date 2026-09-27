@@ -243,26 +243,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RepositoryVersionResponse'
-    ContentSummaryResponse:
-      type: object
-      description: Serializer for the RepositoryVersion content summary
-      properties:
-        added:
-          type: object
-          additionalProperties:
-            type: object
-        removed:
-          type: object
-          additionalProperties:
-            type: object
-        present:
-          type: object
-          additionalProperties:
-            type: object
-      required:
-      - added
-      - present
-      - removed
     RepositoryVersionResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -308,3 +288,23 @@ components:
           - $ref: '#/components/schemas/ContentSummaryResponse'
           readOnly: true
           description: Various count summaries of the content in the version and the HREF to view them.
+    ContentSummaryResponse:
+      type: object
+      description: Serializer for the RepositoryVersion content summary
+      properties:
+        added:
+          type: object
+          additionalProperties:
+            type: object
+        removed:
+          type: object
+          additionalProperties:
+            type: object
+        present:
+          type: object
+          additionalProperties:
+            type: object
+      required:
+      - added
+      - present
+      - removed

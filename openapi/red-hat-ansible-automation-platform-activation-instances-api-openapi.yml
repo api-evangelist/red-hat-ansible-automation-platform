@@ -151,38 +151,31 @@ components:
         * `error` - error
 
         * `workers offline` - workers offline'
-    PaginatedActivationInstanceLogList:
+    ActivationInstanceLog:
       type: object
+      description: Serializer for the Activation Instance Log model.
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        log:
+          type: string
+        log_timestamp:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        log_created_at:
           type:
           - string
           - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivationInstanceLog'
+          format: date-time
+        activation_instance:
+          type: integer
+      required:
+      - activation_instance
+      - id
+      - log
     ActivationInstance:
       type: object
       description: Serializer for the Activation Instance model.
@@ -262,31 +255,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ActivationInstance'
-    ActivationInstanceLog:
+    PaginatedActivationInstanceLogList:
       type: object
-      description: Serializer for the Activation Instance Log model.
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        log:
-          type: string
-        log_timestamp:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-        log_created_at:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          format: date-time
-        activation_instance:
-          type: integer
-      required:
-      - activation_instance
-      - id
-      - log
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivationInstanceLog'
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey
