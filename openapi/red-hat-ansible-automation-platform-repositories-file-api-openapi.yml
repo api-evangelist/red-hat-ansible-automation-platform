@@ -712,209 +712,6 @@ paths:
           description: ''
 components:
   schemas:
-    SetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    file.FileRepositoryResponse:
-      type: object
-      description: Serializer for File Repositories.
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        versions_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        latest_version_href:
-          type: string
-          format: uri
-          readOnly: true
-        name:
-          type: string
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          description: An optional description.
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        remote:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An optional remote to use by default when syncing.
-        autopublish:
-          type: boolean
-          default: false
-          description: Whether to automatically create publications for new repository versions, and update any distributions pointing to this repository.
-        manifest:
-          type:
-          - string
-          - 'null'
-          default: PULP_MANIFEST
-          description: Filename to use for manifest file containing metadata for all the files.
-      required:
-      - name
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
-      required:
-      - key
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    Patchedfile.FileRepository:
-      type: object
-      description: Serializer for File Repositories.
-      properties:
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        remote:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An optional remote to use by default when syncing.
-        autopublish:
-          type: boolean
-          default: false
-          description: Whether to automatically create publications for new repository versions, and update any distributions pointing to this repository.
-        manifest:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          default: PULP_MANIFEST
-          description: Filename to use for manifest file containing metadata for all the files.
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     MyPermissionsResponse:
       type: object
       properties:
@@ -924,18 +721,31 @@ components:
             type: string
       required:
       - permissions
-    RepositorySyncURL:
+    Paginatedfile.FileRepositoryResponseList:
       type: object
-      description: A mixin for validating unknown serializers' fields.
+      required:
+      - count
+      - results
       properties:
-        remote:
-          type: string
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
           format: uri
-          description: A remote to sync from. This will override a remote set on repository.
-        mirror:
-          type: boolean
-          default: false
-          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.FileRepositoryResponse'
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -961,6 +771,74 @@ components:
         role:
           type: string
           minLength: 1
+      required:
+      - role
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    RepositorySyncURL:
+      type: object
+      description: A mixin for validating unknown serializers' fields.
+      properties:
+        remote:
+          type: string
+          format: uri
+          description: A remote to sync from. This will override a remote set on repository.
+        mirror:
+          type: boolean
+          default: false
+          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
       required:
       - role
     RepositoryAddRemoveContent:
@@ -1039,28 +917,150 @@ components:
           description: Filename to use for manifest file containing metadata for all the files.
       required:
       - name
-    Paginatedfile.FileRepositoryResponseList:
+    Patchedfile.FileRepository:
       type: object
-      required:
-      - count
-      - results
+      description: Serializer for File Repositories.
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        remote:
           type:
           - string
           - 'null'
           format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
+          description: An optional remote to use by default when syncing.
+        autopublish:
+          type: boolean
+          default: false
+          description: Whether to automatically create publications for new repository versions, and update any distributions pointing to this repository.
+        manifest:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          default: PULP_MANIFEST
+          description: Filename to use for manifest file containing metadata for all the files.
+    file.FileRepositoryResponse:
+      type: object
+      description: Serializer for File Repositories.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        versions_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        latest_version_href:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          description: An optional description.
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        remote:
           type:
           - string
           - 'null'
           format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
+          description: An optional remote to use by default when syncing.
+        autopublish:
+          type: boolean
+          default: false
+          description: Whether to automatically create publications for new repository versions, and update any distributions pointing to this repository.
+        manifest:
+          type:
+          - string
+          - 'null'
+          default: PULP_MANIFEST
+          description: Filename to use for manifest file containing metadata for all the files.
+      required:
+      - name
+    SetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
           type: array
           items:
-            $ref: '#/components/schemas/file.FileRepositoryResponse'
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value

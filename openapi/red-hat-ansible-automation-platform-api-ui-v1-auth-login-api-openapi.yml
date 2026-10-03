@@ -66,6 +66,16 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    galaxy.LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username
     galaxy.Login:
       type: object
       properties:
@@ -75,16 +85,6 @@ components:
         password:
           type: string
           minLength: 1
-      required:
-      - password
-      - username
-    galaxy.LoginResponse:
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
       required:
       - password
       - username

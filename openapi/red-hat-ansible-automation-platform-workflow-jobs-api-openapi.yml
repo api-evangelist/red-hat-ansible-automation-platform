@@ -425,6 +425,224 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    WorkflowJobList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        workflow_job_template:
+          type:
+          - integer
+          - 'null'
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        job_template:
+          type:
+          - integer
+          - 'null'
+          description: If automatically created for a sliced job run, the job template the workflow job was created from.
+        is_sliced_job:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        webhook_guid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier of the event that triggered this webhook
+          maxLength: 128
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
+      required:
+      - name
     WorkflowJobNodeList:
       type: object
       properties:
@@ -577,210 +795,6 @@ components:
           - 'null'
           description: An identifier coresponding to the workflow job template node that this node was created from.
           maxLength: 512
-    PaginatedWorkflowJobListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkflowJobList'
-    Label:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
-      required:
-      - name
-      - organization
-    PaginatedLabelList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Label'
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-    Notification:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        notification_template:
-          type: integer
-          readOnly: true
-        error:
-          type: string
-          readOnly: true
-        status:
-          enum:
-          - pending
-          - successful
-          - failed
-          type: string
-          description: '* `pending` - Pending
-
-            * `successful` - Successful
-
-            * `failed` - Failed'
-          x-spec-enum-id: 91d6a0571e1ae0e7
-          readOnly: true
-        notifications_sent:
-          type: integer
-          readOnly: true
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        recipients:
-          type: string
-          readOnly: true
-        subject:
-          type: string
-          readOnly: true
-        body:
-          type: string
-          readOnly: true
-          description: Notification body
-      required:
-      - notification_type
     WorkflowJob:
       type: object
       properties:
@@ -1010,6 +1024,147 @@ components:
           - 'null'
       required:
       - name
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    WorkflowJobCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    PaginatedLabelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+    PaginatedWorkflowJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowJobList'
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
     ActivityStream:
       type: object
       properties:
@@ -1086,6 +1241,100 @@ components:
       - object1
       - object2
       - operation
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        notification_template:
+          type: integer
+          readOnly: true
+        error:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - pending
+          - successful
+          - failed
+          type: string
+          description: '* `pending` - Pending
+
+            * `successful` - Successful
+
+            * `failed` - Failed'
+          x-spec-enum-id: 91d6a0571e1ae0e7
+          readOnly: true
+        notifications_sent:
+          type: integer
+          readOnly: true
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        recipients:
+          type: string
+          readOnly: true
+        subject:
+          type: string
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+          description: Notification body
+      required:
+      - notification_type
     PaginatedWorkflowJobNodeListList:
       type: object
       required:
@@ -1111,252 +1360,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WorkflowJobNodeList'
-    WorkflowJobCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
-    WorkflowJobList:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        unified_job_template:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        launch_type:
-          enum:
-          - manual
-          - relaunch
-          - callback
-          - scheduled
-          - dependency
-          - workflow
-          - webhook
-          - sync
-          - scm
-          type: string
-          description: '* `manual` - Manual
-
-            * `relaunch` - Relaunch
-
-            * `callback` - Callback
-
-            * `scheduled` - Scheduled
-
-            * `dependency` - Dependency
-
-            * `workflow` - Workflow
-
-            * `webhook` - Webhook
-
-            * `sync` - Sync
-
-            * `scm` - SCM Update'
-          x-spec-enum-id: e5bed25c2e652da3
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled'
-          x-spec-enum-id: 6021859c28387823
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        started:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job was queued for starting.
-        finished:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job finished execution.
-        canceled_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time when the cancel request was sent.
-        elapsed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
-          readOnly: true
-          description: Elapsed time in seconds that the job ran.
-        job_explanation:
-          type: string
-          readOnly: true
-          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
-        launched_by:
-          type: string
-          readOnly: true
-        work_unit_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The Receptor work unit ID associated with this job.
-        workflow_job_template:
-          type:
-          - integer
-          - 'null'
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        job_template:
-          type:
-          - integer
-          - 'null'
-          description: If automatically created for a sliced job run, the job template the workflow job was created from.
-        is_sliced_job:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        inventory:
-          type:
-          - integer
-          - 'null'
-          description: Inventory applied as a prompt, assuming job template prompts for inventory
-        limit:
-          type:
-          - string
-          - 'null'
-        scm_branch:
-          type:
-          - string
-          - 'null'
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        webhook_guid:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier of the event that triggered this webhook
-          maxLength: 128
-        skip_tags:
-          type:
-          - string
-          - 'null'
-        job_tags:
-          type:
-          - string
-          - 'null'
-      required:
-      - name
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'

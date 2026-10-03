@@ -95,6 +95,39 @@ paths:
           description: ''
 components:
   schemas:
+    MyPermissionsFieldResponse:
+      type: object
+    ContainerNamespaceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        my_permissions:
+          allOf:
+          - $ref: '#/components/schemas/MyPermissionsFieldResponse'
+          readOnly: true
+        owners:
+          type: array
+          items: {}
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - created_at
+      - id
+      - updated_at
     ContainerRepositoryResponse:
       type: object
       properties:
@@ -129,36 +162,3 @@ components:
           readOnly: true
       required:
       - namespace
-    ContainerNamespaceResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        my_permissions:
-          allOf:
-          - $ref: '#/components/schemas/MyPermissionsFieldResponse'
-          readOnly: true
-        owners:
-          type: array
-          items: {}
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - created_at
-      - id
-      - updated_at
-    MyPermissionsFieldResponse:
-      type: object

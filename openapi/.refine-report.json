@@ -343,7 +343,7 @@
     "red-hat-ansible-automation-platform-ui-plugin-routes-api-openapi.yml"
   ],
   "archived": [
-    "deleted 2 superseded output(s) from the previous generation"
+    "deleted 1 superseded output(s) from the previous generation"
   ],
   "errors": [],
   "warnings": [],
@@ -752,10 +752,11 @@
     "tag 'teams' spans 3 source specs (red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json): per-path servers applied",
     "tag 'users' spans 4 source specs (red-hat-ansible-automation-platform-automation-controller-openapi.json, red-hat-ansible-automation-platform-automation-hub-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json): per-path servers applied",
     "tag 'Status' spans 3 source specs (red-hat-ansible-automation-platform-automation-hub-openapi.json, red-hat-ansible-automation-platform-event-driven-ansible-openapi.json, red-hat-ansible-automation-platform-platform-gateway-openapi.json): per-path servers applied",
-    "superseded outputs removed: red-hat-ansible-automation-platform-api-api-openapi.yml, red-hat-ansible-automation-platform-cacertificates-api-openapi.yml",
-    "apis.yml register: written (+4 apis, 334 total)"
+    "superseded outputs removed: red-hat-ansible-automation-platform-cacertificates-api-openapi.yml",
+    "apis.yml register: written (+2 apis, 334 total)"
   ],
   "skipped": [
+    "red-hat-ansible-automation-platform-aap-gateway-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-access-policies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-acs-file-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-activation-instances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -767,7 +768,6 @@
     "red-hat-ansible-automation-platform-analytics-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-ansible-collections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-api-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "red-hat-ansible-automation-platform-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-api-automation-hub-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-api-content-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-api-content-api-openapi.yml: previously refined output, superseded by openapi/_original/",
@@ -912,6 +912,7 @@
     "red-hat-ansible-automation-platform-credential-types-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-credentials-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-dashboard-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "red-hat-ansible-automation-platform-debug-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-decision-environments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-distributions-ansible-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "red-hat-ansible-automation-platform-distributions-api-openapi.yml: previously refined output, superseded by openapi/_original/",

@@ -343,6 +343,12 @@ components:
           description: The href of the task.
       required:
       - task
+    PatchedCollection:
+      type: object
+      description: A serializer for a Collection.
+      properties:
+        deprecated:
+          type: boolean
     PaginatedCollectionResponseList:
       type: object
       properties:
@@ -375,9 +381,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CollectionResponse'
-    PatchedCollection:
-      type: object
-      description: A serializer for a Collection.
-      properties:
-        deprecated:
-          type: boolean

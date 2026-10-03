@@ -374,6 +374,15 @@ paths:
           description: ''
 components:
   schemas:
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
     UpstreamPulp:
       type: object
       description: Serializer for a Server.
@@ -441,83 +450,6 @@ components:
       - api_root
       - base_url
       - name
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    PaginatedUpstreamPulpResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UpstreamPulpResponse'
-    TaskGroupOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations that return a task group.
-      properties:
-        task_group:
-          type: string
-          format: uri
-          description: The href of the task group.
-      required:
-      - task_group
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -545,6 +477,41 @@ components:
           minLength: 1
       required:
       - role
+    TaskGroupOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations that return a task group.
+      properties:
+        task_group:
+          type: string
+          format: uri
+          description: The href of the task group.
+      required:
+      - task_group
+    PaginatedUpstreamPulpResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpstreamPulpResponse'
     UpstreamPulpResponse:
       type: object
       description: Serializer for a Server.
@@ -676,3 +643,36 @@ components:
           - string
           - 'null'
           description: One or more comma separated labels that will be used to filter distributions on the upstream Pulp. E.g. "foo=bar,key=val" or "foo,key"
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles

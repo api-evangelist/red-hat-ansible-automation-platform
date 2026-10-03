@@ -682,21 +682,15 @@ components:
       - base_path
       - name
       - remote
-    SetLabel:
+    MyPermissionsResponse:
       type: object
-      description: Serializer for synchronously setting a label.
       properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
+        permissions:
+          type: array
+          items:
+            type: string
       required:
-      - key
-      - value
+      - permissions
     Patchedcontainer.ContainerPullThroughDistribution:
       type: object
       description: A serializer for a specialized pull-through distribution referencing sub-distributions.
@@ -748,26 +742,7 @@ components:
           - 'null'
           minLength: 1
           description: An optional description.
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
+    NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -780,17 +755,65 @@ components:
           type: array
           items:
             type: string
+            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
+            minLength: 1
           default: []
         role:
           type: string
+          minLength: 1
       required:
       - role
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
+    Paginatedcontainer.ContainerPullThroughDistributionResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/container.ContainerPullThroughDistributionResponse'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     UnsetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
@@ -803,30 +826,6 @@ components:
           readOnly: true
       required:
       - key
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     container.ContainerPullThroughDistribution:
       type: object
       description: A serializer for a specialized pull-through distribution referencing sub-distributions.
@@ -882,41 +881,7 @@ components:
       - base_path
       - name
       - remote
-    Paginatedcontainer.ContainerPullThroughDistributionResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/container.ContainerPullThroughDistributionResponse'
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    NestedRole:
+    NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -929,17 +894,52 @@ components:
           type: array
           items:
             type: string
-            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
-            minLength: 1
           default: []
         role:
           type: string
-          minLength: 1
       required:
       - role
+    SetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value

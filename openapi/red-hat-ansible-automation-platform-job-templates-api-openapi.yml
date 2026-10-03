@@ -1413,7 +1413,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedCredentialList:
+    PaginatedJobTemplateList:
       type: object
       required:
       - count
@@ -1437,587 +1437,40 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Credential'
-    CopyRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-      required:
-      - name
-    JobTemplateRequest:
-      type: object
-      description: Provide recent jobs and survey details in summary_fields
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        project:
-          type:
-          - integer
-          - 'null'
-        playbook:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
-          maxLength: 1024
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        job_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        force_handlers:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        skip_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        start_at_task:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        use_fact_cache:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        host_config_key:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        ask_scm_branch_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_diff_mode_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_variables_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_limit_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_skip_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_job_type_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_verbosity_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_inventory_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_credential_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_execution_environment_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_labels_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_forks_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_job_slice_count_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_timeout_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_instance_groups_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        survey_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        job_slice_count:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 1
-          description: The number of jobs to slice into at runtime. Will cause the Job Template to launch a workflow if value is greater than 1.
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        prevent_instance_group_fallback:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the job template will prevent adding any inventory or organization instance groups to the list of preferred instances groups to run on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
-      required:
-      - name
-    PatchedJobTemplateRequest:
-      type: object
-      description: Provide recent jobs and survey details in summary_fields
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        project:
-          type:
-          - integer
-          - 'null'
-        playbook:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
-          maxLength: 1024
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        job_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        force_handlers:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        skip_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        start_at_task:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        use_fact_cache:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        host_config_key:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        ask_scm_branch_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_diff_mode_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_variables_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_limit_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_skip_tags_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_job_type_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_verbosity_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_inventory_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_credential_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_execution_environment_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_labels_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_forks_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_job_slice_count_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_timeout_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        ask_instance_groups_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        survey_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        job_slice_count:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 1
-          description: The number of jobs to slice into at runtime. Will cause the Job Template to launch a workflow if value is greater than 1.
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        prevent_instance_group_fallback:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the job template will prevent adding any inventory or organization instance groups to the list of preferred instances groups to run on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
-        opa_query_path:
-          type:
-          - string
-          - 'null'
-          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
-          maxLength: 128
-    ScheduleRequest:
+            $ref: '#/components/schemas/JobTemplate'
+    Schedule:
       type: object
       properties:
         rrule:
           type:
           - string
           - 'null'
-          minLength: 1
           description: A value representing the schedules iCal recurrence rule.
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
         name:
           type:
           - string
           - 'null'
-          minLength: 1
           maxLength: 512
         description:
           type:
@@ -2115,77 +1568,39 @@ components:
           - 'null'
           default: true
           description: Enables processing of this schedule.
+        dtstart:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The first occurrence of the schedule occurs on or after this time.
+        dtend:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
+        next_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The next time that the scheduled action will run.
+        timezone:
+          type: string
+          readOnly: true
+          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
+        until:
+          type: string
+          readOnly: true
+          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
       required:
       - name
       - rrule
       - unified_job_template
-    NotificationTemplateRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        notification_configuration:
-          default: {}
-        messages:
-          default:
-            started: null
-            success: null
-            error: null
-            workflow_approval: null
-          description: Optional custom messages for notification template.
-      required:
-      - name
-      - notification_type
-      - organization
     JobList:
       type: object
       properties:
@@ -2533,389 +1948,13 @@ components:
           maxLength: 128
       required:
       - name
-    PaginatedResourceAccessListElementList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceAccessListElement'
-    PaginatedNotificationTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTemplate'
-    WorkflowJobList:
+    Copy:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
         name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        unified_job_template:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        launch_type:
-          enum:
-          - manual
-          - relaunch
-          - callback
-          - scheduled
-          - dependency
-          - workflow
-          - webhook
-          - sync
-          - scm
           type: string
-          description: '* `manual` - Manual
-
-            * `relaunch` - Relaunch
-
-            * `callback` - Callback
-
-            * `scheduled` - Scheduled
-
-            * `dependency` - Dependency
-
-            * `workflow` - Workflow
-
-            * `webhook` - Webhook
-
-            * `sync` - Sync
-
-            * `scm` - SCM Update'
-          x-spec-enum-id: e5bed25c2e652da3
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled'
-          x-spec-enum-id: 6021859c28387823
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        started:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job was queued for starting.
-        finished:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job finished execution.
-        canceled_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time when the cancel request was sent.
-        elapsed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
-          readOnly: true
-          description: Elapsed time in seconds that the job ran.
-        job_explanation:
-          type: string
-          readOnly: true
-          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
-        launched_by:
-          type: string
-          readOnly: true
-        work_unit_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The Receptor work unit ID associated with this job.
-        workflow_job_template:
-          type:
-          - integer
-          - 'null'
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        job_template:
-          type:
-          - integer
-          - 'null'
-          description: If automatically created for a sliced job run, the job template the workflow job was created from.
-        is_sliced_job:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        inventory:
-          type:
-          - integer
-          - 'null'
-          description: Inventory applied as a prompt, assuming job template prompts for inventory
-        limit:
-          type:
-          - string
-          - 'null'
-        scm_branch:
-          type:
-          - string
-          - 'null'
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        webhook_guid:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier of the event that triggered this webhook
-          maxLength: 128
-        skip_tags:
-          type:
-          - string
-          - 'null'
-        job_tags:
-          type:
-          - string
-          - 'null'
       required:
       - name
-    JobLaunchRequest:
-      type: object
-      properties:
-        extra_vars:
-          writeOnly: true
-        inventory:
-          type: integer
-          writeOnly: true
-        scm_branch:
-          type: string
-          writeOnly: true
-        limit:
-          type: string
-          writeOnly: true
-        job_tags:
-          type: string
-          writeOnly: true
-        skip_tags:
-          type: string
-          writeOnly: true
-        job_type:
-          enum:
-          - run
-          - check
-          type: string
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          writeOnly: true
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          writeOnly: true
-        diff_mode:
-          type: boolean
-          writeOnly: true
-        credentials:
-          type: array
-          items:
-            type: integer
-            writeOnly: true
-          writeOnly: true
-        credential_passwords:
-          type: string
-          writeOnly: true
-        execution_environment:
-          type: integer
-          writeOnly: true
-        labels:
-          type: array
-          items:
-            type: integer
-            writeOnly: true
-          writeOnly: true
-        forks:
-          type: integer
-          minimum: 0
-          writeOnly: true
-        job_slice_count:
-          type: integer
-          minimum: 0
-          writeOnly: true
-        timeout:
-          type: integer
-          writeOnly: true
-        instance_groups:
-          type: array
-          items:
-            type: integer
-            writeOnly: true
-          writeOnly: true
-    PaginatedJobListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobList'
     JobTemplate:
       type: object
       description: Provide recent jobs and survey details in summary_fields
@@ -3274,7 +2313,7 @@ components:
           maxLength: 128
       required:
       - name
-    PaginatedRoleList:
+    PaginatedResourceAccessListElementList:
       type: object
       required:
       - count
@@ -3298,7 +2337,124 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Role'
+            $ref: '#/components/schemas/ResourceAccessListElement'
+    NotificationTemplateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    InstanceGroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 250
+        max_concurrent_jobs:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
+        max_forks:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        is_container_group:
+          type: boolean
+          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
+        credential:
+          type:
+          - integer
+          - 'null'
+        policy_instance_percentage:
+          type: integer
+          maximum: 100
+          minimum: 0
+          default: 0
+          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
+        policy_instance_minimum:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
+        policy_instance_list:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: List of exact-match Instances that will be assigned to this group
+        pod_spec_override:
+          type:
+          - string
+          - 'null'
+          default: ''
+      required:
+      - name
     ActivityStream:
       type: object
       properties:
@@ -3375,7 +2531,534 @@ components:
       - object1
       - object2
       - operation
-    NotificationTemplate:
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          readOnly: true
+    JobLaunchRequest:
+      type: object
+      properties:
+        extra_vars:
+          writeOnly: true
+        inventory:
+          type: integer
+          writeOnly: true
+        scm_branch:
+          type: string
+          writeOnly: true
+        limit:
+          type: string
+          writeOnly: true
+        job_tags:
+          type: string
+          writeOnly: true
+        skip_tags:
+          type: string
+          writeOnly: true
+        job_type:
+          enum:
+          - run
+          - check
+          type: string
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          writeOnly: true
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          writeOnly: true
+        diff_mode:
+          type: boolean
+          writeOnly: true
+        credentials:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        credential_passwords:
+          type: string
+          writeOnly: true
+        execution_environment:
+          type: integer
+          writeOnly: true
+        labels:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+        forks:
+          type: integer
+          minimum: 0
+          writeOnly: true
+        job_slice_count:
+          type: integer
+          minimum: 0
+          writeOnly: true
+        timeout:
+          type: integer
+          writeOnly: true
+        instance_groups:
+          type: array
+          items:
+            type: integer
+            writeOnly: true
+          writeOnly: true
+    PaginatedInstanceGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstanceGroup'
+    PatchedJobTemplateRequest:
+      type: object
+      description: Provide recent jobs and survey details in summary_fields
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        project:
+          type:
+          - integer
+          - 'null'
+        playbook:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        job_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        force_handlers:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        start_at_task:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        use_fact_cache:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        host_config_key:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_diff_mode_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_job_type_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_verbosity_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_credential_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_execution_environment_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_forks_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_job_slice_count_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_timeout_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_instance_groups_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        survey_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        job_slice_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 1
+          description: The number of jobs to slice into at runtime. Will cause the Job Template to launch a workflow if value is greater than 1.
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the job template will prevent adding any inventory or organization instance groups to the list of preferred instances groups to run on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
+    PaginatedScheduleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+    CopyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+    PaginatedWorkflowJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowJobList'
+    PaginatedLabelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
+    CredentialRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+      required:
+      - credential_type
+      - name
+    Credential:
       type: object
       properties:
         id:
@@ -3413,56 +3096,53 @@ components:
           type:
           - integer
           - 'null'
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
+          type: string
+          readOnly: true
+        cloud:
+          type: string
+          readOnly: true
+        kubernetes:
+          type: string
+          readOnly: true
+      required:
+      - credential_type
+      - name
+    PaginatedNotificationTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        notification_configuration:
-          default: {}
-        messages:
-          default:
-            started: null
-            success: null
-            error: null
-            workflow_approval: null
-          description: Optional custom messages for notification template.
-      required:
-      - name
-      - notification_type
-      - organization
-    ResourceAccessListElement:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTemplate'
+    WorkflowJobList:
       type: object
       properties:
         id:
@@ -3486,52 +3166,226 @@ components:
         modified:
           type: string
           readOnly: true
-        username:
+        name:
           type:
           - string
           - 'null'
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
+          maxLength: 512
+        description:
           type:
           - string
           - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
           default: ''
-          description: Field used to change the password.
-        last_login:
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        started:
           type:
           - string
           - 'null'
           format: date-time
           readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        workflow_job_template:
+          type:
+          - integer
+          - 'null'
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        job_template:
+          type:
+          - integer
+          - 'null'
+          description: If automatically created for a sliced job run, the job template the workflow job was created from.
+        is_sliced_job:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        webhook_guid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier of the event that triggered this webhook
+          maxLength: 128
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
       required:
-      - username
-    LabelRequest:
+      - name
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    WorkflowJobListRequest:
       type: object
       properties:
         name:
@@ -3540,12 +3394,88 @@ components:
           - 'null'
           minLength: 1
           maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        workflow_job_template:
+          type:
+          - integer
+          - 'null'
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        job_template:
+          type:
+          - integer
+          - 'null'
+          description: If automatically created for a sliced job run, the job template the workflow job was created from.
+        is_sliced_job:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        limit:
+          type:
+          - string
+          - 'null'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        webhook_guid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier of the event that triggered this webhook
+          maxLength: 128
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        job_tags:
+          type:
+          - string
+          - 'null'
       required:
       - name
-      - organization
     JobLaunch:
       type: object
       properties:
@@ -3653,239 +3583,287 @@ components:
         defaults:
           type: string
           readOnly: true
-    PaginatedWorkflowJobListList:
+    JobTemplateRequest:
       type: object
-      required:
-      - count
-      - results
+      description: Provide recent jobs and survey details in summary_fields
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkflowJobList'
-    Label:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
         name:
           type:
           - string
           - 'null'
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
-      required:
-      - name
-      - organization
-    PaginatedInstanceGroupList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InstanceGroup'
-    InstanceGroup:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 250
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        capacity:
-          type: string
-          readOnly: true
-        consumed_capacity:
-          type: string
-          readOnly: true
-        percent_capacity_remaining:
-          type: string
-          readOnly: true
-        jobs_running:
-          type: string
-          readOnly: true
-        max_concurrent_jobs:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of concurrent jobs to run on a group. When set to zero, no maximum is enforced.
-        max_forks:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
-        jobs_total:
-          type: integer
-          readOnly: true
-          description: Count of all jobs that target this instance group
-        instances:
-          type: string
-          readOnly: true
-        is_container_group:
-          type: boolean
-          description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
-        credential:
-          type:
-          - integer
-          - 'null'
-        policy_instance_percentage:
-          type: integer
-          maximum: 100
-          minimum: 0
-          default: 0
-          description: Minimum percentage of all instances that will be automatically assigned to this group when new instances come online.
-        policy_instance_minimum:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Static minimum number of Instances that will be automatically assign to this group when new instances come online.
-        policy_instance_list:
-          type: array
-          items:
-            type: string
-          description: List of exact-match Instances that will be assigned to this group
-        pod_spec_override:
-          type:
-          - string
-          - 'null'
-          default: ''
-        summary_fields:
-          type: string
-          readOnly: true
-      required:
-      - name
-    Credential:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
+          minLength: 1
           maxLength: 512
         description:
           type:
           - string
           - 'null'
           default: ''
-        organization:
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
           type:
           - integer
           - 'null'
-        credential_type:
+        project:
+          type:
+          - integer
+          - 'null'
+        playbook:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        forks:
           type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        managed:
-          type: boolean
-          readOnly: true
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        kind:
-          type: string
-          readOnly: true
-        cloud:
-          type: string
-          readOnly: true
-        kubernetes:
-          type: string
-          readOnly: true
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        job_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        force_handlers:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        start_at_task:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        use_fact_cache:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        host_config_key:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        ask_scm_branch_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_diff_mode_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_variables_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_limit_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_skip_tags_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_job_type_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_verbosity_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_inventory_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_credential_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_execution_environment_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_labels_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_forks_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_job_slice_count_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_timeout_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        ask_instance_groups_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        survey_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        job_slice_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 1
+          description: The number of jobs to slice into at runtime. Will cause the Job Template to launch a workflow if value is greater than 1.
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        prevent_instance_group_fallback:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the job template will prevent adding any inventory or organization instance groups to the list of preferred instances groups to run on.If this setting is enabled and you provided an empty list, the global instance groups will be applied.
+        opa_query_path:
+          type:
+          - string
+          - 'null'
+          description: The query path for the OPA policy to evaluate prior to job execution. The query path should be formatted as package/rule.
+          maxLength: 128
       required:
-      - credential_type
       - name
-    PaginatedScheduleList:
+    PaginatedCredentialList:
       type: object
       required:
       - count
@@ -3909,22 +3887,10 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Schedule'
-    Copy:
+            $ref: '#/components/schemas/Credential'
+    ResourceAccessListElement:
       type: object
       properties:
-        name:
-          type: string
-      required:
-      - name
-    Schedule:
-      type: object
-      properties:
-        rrule:
-          type:
-          - string
-          - 'null'
-          description: A value representing the schedules iCal recurrence rule.
         id:
           type: integer
           readOnly: true
@@ -3946,10 +3912,65 @@ components:
         modified:
           type: string
           readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    ScheduleRequest:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A value representing the schedules iCal recurrence rule.
         name:
           type:
           - string
           - 'null'
+          minLength: 1
           maxLength: 512
         description:
           type:
@@ -4047,40 +4068,51 @@ components:
           - 'null'
           default: true
           description: Enables processing of this schedule.
-        dtstart:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The first occurrence of the schedule occurs on or after this time.
-        dtend:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
-        next_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The next time that the scheduled action will run.
-        timezone:
-          type: string
-          readOnly: true
-          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
-        until:
-          type: string
-          readOnly: true
-          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
       required:
       - name
       - rrule
       - unified_job_template
-    Role:
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    LabelRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    Label:
       type: object
       properties:
         id:
@@ -4098,21 +4130,173 @@ components:
         summary_fields:
           type: string
           readOnly: true
-        name:
+        created:
           type: string
           readOnly: true
-        description:
+        modified:
           type: string
           readOnly: true
-    InstanceGroupRequest:
-      type: object
-      properties:
         name:
           type:
           - string
           - 'null'
-          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    NotificationTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    PaginatedJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobList'
+    InstanceGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
           maxLength: 250
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        capacity:
+          type: string
+          readOnly: true
+        consumed_capacity:
+          type: string
+          readOnly: true
+        percent_capacity_remaining:
+          type: string
+          readOnly: true
+        jobs_running:
+          type: string
+          readOnly: true
         max_concurrent_jobs:
           type: integer
           minimum: 0
@@ -4123,6 +4307,13 @@ components:
           minimum: 0
           default: 0
           description: Maximum number of forks to execute concurrently on a group. When set to zero, no maximum is enforced.
+        jobs_total:
+          type: integer
+          readOnly: true
+          description: Count of all jobs that target this instance group
+        instances:
+          type: string
+          readOnly: true
         is_container_group:
           type: boolean
           description: Indicates whether instances in this group are containerized.Containerized groups have a designated Openshift or Kubernetes cluster.
@@ -4145,205 +4336,14 @@ components:
           type: array
           items:
             type: string
-            minLength: 1
           description: List of exact-match Instances that will be assigned to this group
         pod_spec_override:
           type:
           - string
           - 'null'
           default: ''
+        summary_fields:
+          type: string
+          readOnly: true
       required:
       - name
-    PaginatedLabelList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Label'
-    PaginatedJobTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobTemplate'
-    CredentialRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-      required:
-      - credential_type
-      - name
-    WorkflowJobListRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        workflow_job_template:
-          type:
-          - integer
-          - 'null'
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        job_template:
-          type:
-          - integer
-          - 'null'
-          description: If automatically created for a sliced job run, the job template the workflow job was created from.
-        is_sliced_job:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        inventory:
-          type:
-          - integer
-          - 'null'
-          description: Inventory applied as a prompt, assuming job template prompts for inventory
-        limit:
-          type:
-          - string
-          - 'null'
-        scm_branch:
-          type:
-          - string
-          - 'null'
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        webhook_guid:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier of the event that triggered this webhook
-          maxLength: 128
-        skip_tags:
-          type:
-          - string
-          - 'null'
-        job_tags:
-          type:
-          - string
-          - 'null'
-      required:
-      - name
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'

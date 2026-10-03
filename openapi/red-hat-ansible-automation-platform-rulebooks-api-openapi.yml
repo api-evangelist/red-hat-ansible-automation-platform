@@ -183,38 +183,22 @@ components:
       - modified_at
       - name
       - organization_id
-    PaginatedSourceList:
+    Source:
       type: object
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Source'
+        name:
+          type: string
+          description: Name of the source
+        source_info:
+          type: string
+          description: The information about the source
+        rulebook_hash:
+          type: string
+          description: Hash of the rulebook
+      required:
+      - name
+      - rulebook_hash
+      - source_info
     PaginatedRulebookList:
       type: object
       properties:
@@ -247,22 +231,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Rulebook'
-    Source:
+    PaginatedSourceList:
       type: object
       properties:
-        name:
-          type: string
-          description: Name of the source
-        source_info:
-          type: string
-          description: The information about the source
-        rulebook_hash:
-          type: string
-          description: Hash of the rulebook
-      required:
-      - name
-      - rulebook_hash
-      - source_info
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

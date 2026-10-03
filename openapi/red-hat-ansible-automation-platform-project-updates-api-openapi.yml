@@ -369,12 +369,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    UnifiedJobStdout:
-      type: object
-      properties:
-        result_stdout:
-          type: string
-          readOnly: true
     ProjectUpdateEvent:
       type: object
       properties:
@@ -561,6 +555,319 @@ components:
           readOnly: true
       required:
       - event
+    PaginatedProjectUpdateListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectUpdateList'
+    ProjectUpdateDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        scm_revision:
+          type: string
+          readOnly: true
+          description: The SCM Revision discovered by this update for the given project and branch.
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_args:
+          type: string
+          readOnly: true
+        job_cwd:
+          type: string
+          readOnly: true
+        job_env:
+          readOnly: true
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        execution_node:
+          type: string
+          readOnly: true
+          description: The node the job executed on.
+        result_traceback:
+          type: string
+          readOnly: true
+        event_processing_finished:
+          type: boolean
+          readOnly: true
+          description: Indicates whether all of the events generated by this unified job have been saved to the database.
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        project:
+          type: integer
+          readOnly: true
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: check
+        job_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Parts of the project update playbook that will be run.
+          maxLength: 1024
+        host_status_counts:
+          readOnly: true
+          description: Playbook stats from the Ansible playbook_on_stats event.
+        playbook_counts:
+          type: string
+          readOnly: true
+          description: A count of all plays and tasks for the job run.
+      required:
+      - name
+    ProjectUpdateCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
     InventoryUpdateList:
       type: object
       properties:
@@ -876,6 +1183,181 @@ components:
       required:
       - name
       - source
+    PaginatedInventoryUpdateListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryUpdateList'
+    UnifiedJobStdout:
+      type: object
+      properties:
+        result_stdout:
+          type: string
+          readOnly: true
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PaginatedProjectUpdateEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectUpdateEvent'
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        notification_template:
+          type: integer
+          readOnly: true
+        error:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - pending
+          - successful
+          - failed
+          type: string
+          description: '* `pending` - Pending
+
+            * `successful` - Successful
+
+            * `failed` - Failed'
+          x-spec-enum-id: 91d6a0571e1ae0e7
+          readOnly: true
+        notifications_sent:
+          type: integer
+          readOnly: true
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        recipients:
+          type: string
+          readOnly: true
+        subject:
+          type: string
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+          description: Notification body
+      required:
+      - notification_type
     ProjectUpdateList:
       type: object
       properties:
@@ -1136,485 +1618,3 @@ components:
           maxLength: 1024
       required:
       - name
-    ProjectUpdateCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
-    ProjectUpdateDetail:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        local_path:
-          type:
-          - string
-          - 'null'
-          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
-          maxLength: 1024
-        scm_type:
-          enum:
-          - ''
-          - git
-          - svn
-          - insights
-          - archive
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 18ccf5bfb5c453d7
-          default: ''
-          description: 'Specifies the source control system used to store the project.
-
-
-            * `` - Manual
-
-            * `git` - Git
-
-            * `svn` - Subversion
-
-            * `insights` - Red Hat Insights
-
-            * `archive` - Remote Archive'
-        scm_url:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The location where the project is stored.
-          maxLength: 1024
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Specific branch, tag or commit to checkout.
-          maxLength: 256
-        scm_refspec:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: For git projects, an additional refspec to fetch.
-          maxLength: 1024
-        scm_clean:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Discard any local changes before syncing the project.
-        scm_track_submodules:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Track submodules latest commits on defined branch.
-        scm_delete_on_update:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Delete the project before syncing.
-        credential:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        scm_revision:
-          type: string
-          readOnly: true
-          description: The SCM Revision discovered by this update for the given project and branch.
-        unified_job_template:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        launch_type:
-          enum:
-          - manual
-          - relaunch
-          - callback
-          - scheduled
-          - dependency
-          - workflow
-          - webhook
-          - sync
-          - scm
-          type: string
-          description: '* `manual` - Manual
-
-            * `relaunch` - Relaunch
-
-            * `callback` - Callback
-
-            * `scheduled` - Scheduled
-
-            * `dependency` - Dependency
-
-            * `workflow` - Workflow
-
-            * `webhook` - Webhook
-
-            * `sync` - Sync
-
-            * `scm` - SCM Update'
-          x-spec-enum-id: e5bed25c2e652da3
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled'
-          x-spec-enum-id: 6021859c28387823
-          readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        failed:
-          type: boolean
-          readOnly: true
-        started:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job was queued for starting.
-        finished:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job finished execution.
-        canceled_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time when the cancel request was sent.
-        elapsed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
-          readOnly: true
-          description: Elapsed time in seconds that the job ran.
-        job_args:
-          type: string
-          readOnly: true
-        job_cwd:
-          type: string
-          readOnly: true
-        job_env:
-          readOnly: true
-        job_explanation:
-          type: string
-          readOnly: true
-          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
-        execution_node:
-          type: string
-          readOnly: true
-          description: The node the job executed on.
-        result_traceback:
-          type: string
-          readOnly: true
-        event_processing_finished:
-          type: boolean
-          readOnly: true
-          description: Indicates whether all of the events generated by this unified job have been saved to the database.
-        launched_by:
-          type: string
-          readOnly: true
-        work_unit_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The Receptor work unit ID associated with this job.
-        project:
-          type: integer
-          readOnly: true
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: check
-        job_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Parts of the project update playbook that will be run.
-          maxLength: 1024
-        host_status_counts:
-          readOnly: true
-          description: Playbook stats from the Ansible playbook_on_stats event.
-        playbook_counts:
-          type: string
-          readOnly: true
-          description: A count of all plays and tasks for the job run.
-      required:
-      - name
-    PaginatedInventoryUpdateListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InventoryUpdateList'
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-    Notification:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        notification_template:
-          type: integer
-          readOnly: true
-        error:
-          type: string
-          readOnly: true
-        status:
-          enum:
-          - pending
-          - successful
-          - failed
-          type: string
-          description: '* `pending` - Pending
-
-            * `successful` - Successful
-
-            * `failed` - Failed'
-          x-spec-enum-id: 91d6a0571e1ae0e7
-          readOnly: true
-        notifications_sent:
-          type: integer
-          readOnly: true
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        recipients:
-          type: string
-          readOnly: true
-        subject:
-          type: string
-          readOnly: true
-        body:
-          type: string
-          readOnly: true
-          description: Notification body
-      required:
-      - notification_type
-    PaginatedProjectUpdateEventList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProjectUpdateEvent'
-    PaginatedProjectUpdateListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProjectUpdateList'

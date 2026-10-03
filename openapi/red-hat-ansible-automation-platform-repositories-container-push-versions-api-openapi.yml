@@ -345,6 +345,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    Repair:
+      type: object
+      properties:
+        verify_checksums:
+          type: boolean
+          default: true
+          description: Will verify that the checksum of all stored files matches what saved in the database. Otherwise only the existence of the files will be checked. Enabled by default
     PaginatedRepositoryVersionResponseList:
       type: object
       required:
@@ -370,16 +377,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RepositoryVersionResponse'
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     ContentSummaryResponse:
       type: object
       description: Serializer for the RepositoryVersion content summary
@@ -400,13 +397,16 @@ components:
       - added
       - present
       - removed
-    Repair:
+    AsyncOperationResponse:
       type: object
+      description: Serializer for asynchronous operations.
       properties:
-        verify_checksums:
-          type: boolean
-          default: true
-          description: Will verify that the checksum of all stored files matches what saved in the database. Otherwise only the existence of the files will be checked. Enabled by default
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     RepositoryVersionResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`

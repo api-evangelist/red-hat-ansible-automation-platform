@@ -210,6 +210,16 @@ components:
           type: object
           readOnly: true
           description: Filename and sha256-checksum of table-of-contents for this export
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     PaginatedPulpExportResponseList:
       type: object
       required:
@@ -235,16 +245,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PulpExportResponse'
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     PulpExport:
       type: object
       description: Serializer for PulpExports.

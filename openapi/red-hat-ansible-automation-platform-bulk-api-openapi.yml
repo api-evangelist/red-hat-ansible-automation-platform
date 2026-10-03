@@ -116,70 +116,6 @@ components:
           maxItems: 100000
       required:
       - hosts
-    BulkJobLaunchRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          writeOnly: true
-          default: Bulk Job Launch
-          maxLength: 512
-        jobs:
-          type: array
-          items:
-            $ref: '#/components/schemas/BulkJobNodeRequest'
-          writeOnly: true
-          description: 'List of jobs to be launched, JSON. e.g. [{"unified_job_template": 7}, {"unified_job_template": 10}]'
-        description:
-          type: string
-          writeOnly: true
-          minLength: 1
-        extra_vars:
-          writeOnly: true
-        organization:
-          type:
-          - integer
-          - 'null'
-          writeOnly: true
-          description: Inherit permissions from this organization. If not provided, a organization the user is a member of will be selected automatically.
-        inventory:
-          type: integer
-          writeOnly: true
-        limit:
-          type: string
-          writeOnly: true
-          minLength: 1
-        scm_branch:
-          type: string
-          writeOnly: true
-          minLength: 1
-        skip_tags:
-          type: string
-          writeOnly: true
-          minLength: 1
-        job_tags:
-          type: string
-          writeOnly: true
-          minLength: 1
-      required:
-      - jobs
-    BulkHostCreateRequest:
-      type: object
-      properties:
-        inventory:
-          type: integer
-          writeOnly: true
-          description: Primary Key ID of inventory to add hosts to.
-        hosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/BulkHostRequest'
-          writeOnly: true
-          description: 'List of hosts to be created, JSON. e.g. [{"name": "example.com"}, {"name": "127.0.0.1"}]'
-          maxItems: 100000
-      required:
-      - hosts
-      - inventory
     BulkHostRequest:
       type: object
       properties:
@@ -344,3 +280,67 @@ components:
             minimum: 1
       required:
       - unified_job_template
+    BulkJobLaunchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          writeOnly: true
+          default: Bulk Job Launch
+          maxLength: 512
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkJobNodeRequest'
+          writeOnly: true
+          description: 'List of jobs to be launched, JSON. e.g. [{"unified_job_template": 7}, {"unified_job_template": 10}]'
+        description:
+          type: string
+          writeOnly: true
+          minLength: 1
+        extra_vars:
+          writeOnly: true
+        organization:
+          type:
+          - integer
+          - 'null'
+          writeOnly: true
+          description: Inherit permissions from this organization. If not provided, a organization the user is a member of will be selected automatically.
+        inventory:
+          type: integer
+          writeOnly: true
+        limit:
+          type: string
+          writeOnly: true
+          minLength: 1
+        scm_branch:
+          type: string
+          writeOnly: true
+          minLength: 1
+        skip_tags:
+          type: string
+          writeOnly: true
+          minLength: 1
+        job_tags:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - jobs
+    BulkHostCreateRequest:
+      type: object
+      properties:
+        inventory:
+          type: integer
+          writeOnly: true
+          description: Primary Key ID of inventory to add hosts to.
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkHostRequest'
+          writeOnly: true
+          description: 'List of hosts to be created, JSON. e.g. [{"name": "example.com"}, {"name": "127.0.0.1"}]'
+          maxItems: 100000
+      required:
+      - hosts
+      - inventory

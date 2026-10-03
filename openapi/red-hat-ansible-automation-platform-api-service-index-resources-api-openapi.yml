@@ -225,7 +225,7 @@ components:
           minLength: 1
         resource_data:
           type: object
-    ResourceListResponse:
+    ResourceResponse:
       type: object
       properties:
         object_id:
@@ -254,9 +254,16 @@ components:
         has_serializer:
           type: boolean
           readOnly: true
+        resource_data:
+          type: object
         url:
           type: string
           readOnly: true
+        additional_data:
+          type: string
+          readOnly: true
+      required:
+      - resource_data
     Resource:
       type: object
       properties:
@@ -303,7 +310,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ResourceListResponse'
-    ResourceResponse:
+    ResourceListResponse:
       type: object
       properties:
         object_id:
@@ -332,13 +339,6 @@ components:
         has_serializer:
           type: boolean
           readOnly: true
-        resource_data:
-          type: object
         url:
           type: string
           readOnly: true
-        additional_data:
-          type: string
-          readOnly: true
-      required:
-      - resource_data

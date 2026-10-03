@@ -270,12 +270,212 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SystemJobCancel:
+    PaginatedSystemJobEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemJobEvent'
+    SystemJobList:
       type: object
       properties:
-        can_cancel:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        failed:
           type: boolean
           readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        execution_node:
+          type: string
+          readOnly: true
+          description: The node the job executed on.
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        system_job_template:
+          type:
+          - integer
+          - 'null'
+        job_type:
+          enum:
+          - cleanup_jobs
+          - cleanup_activitystream
+          - cleanup_sessions
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `cleanup_jobs` - Remove jobs older than a certain number of days
+
+            * `cleanup_activitystream` - Remove activity stream entries older than a certain number of days
+
+            * `cleanup_sessions` - Removes expired browser sessions from the database'
+          x-spec-enum-id: c3fb7965187f07c2
+          default: ''
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        result_stdout:
+          type: string
+          readOnly: true
+      required:
+      - name
     SystemJob:
       type: object
       properties:
@@ -472,7 +672,13 @@ components:
           readOnly: true
       required:
       - name
-    SystemJobList:
+    SystemJobCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
+    SystemJobEvent:
       type: object
       properties:
         id:
@@ -496,163 +702,45 @@ components:
         modified:
           type: string
           readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        unified_job_template:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        launch_type:
-          enum:
-          - manual
-          - relaunch
-          - callback
-          - scheduled
-          - dependency
-          - workflow
-          - webhook
-          - sync
-          - scm
+        event:
           type: string
-          description: '* `manual` - Manual
-
-            * `relaunch` - Relaunch
-
-            * `callback` - Callback
-
-            * `scheduled` - Scheduled
-
-            * `dependency` - Dependency
-
-            * `workflow` - Workflow
-
-            * `webhook` - Webhook
-
-            * `sync` - Sync
-
-            * `scm` - SCM Update'
-          x-spec-enum-id: e5bed25c2e652da3
           readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
           type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled'
-          x-spec-enum-id: 6021859c28387823
           readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
+        event_data:
+          default: {}
         failed:
-          type: boolean
-          readOnly: true
-        started:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job was queued for starting.
-        finished:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job finished execution.
-        canceled_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time when the cancel request was sent.
-        elapsed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
-          readOnly: true
-          description: Elapsed time in seconds that the job ran.
-        job_explanation:
           type: string
           readOnly: true
-          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
-        execution_node:
+        changed:
           type: string
           readOnly: true
-          description: The node the job executed on.
-        launched_by:
+        uuid:
           type: string
           readOnly: true
-        work_unit_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The Receptor work unit ID associated with this job.
-        system_job_template:
-          type:
-          - integer
-          - 'null'
-        job_type:
-          enum:
-          - cleanup_jobs
-          - cleanup_activitystream
-          - cleanup_sessions
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `cleanup_jobs` - Remove jobs older than a certain number of days
-
-            * `cleanup_activitystream` - Remove activity stream entries older than a certain number of days
-
-            * `cleanup_sessions` - Removes expired browser sessions from the database'
-          x-spec-enum-id: c3fb7965187f07c2
-          default: ''
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        result_stdout:
+        stdout:
           type: string
           readOnly: true
-      required:
-      - name
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+        system_job:
+          type: integer
+          readOnly: true
     PaginatedNotificationList:
       type: object
       required:
@@ -772,31 +860,6 @@ components:
           description: Notification body
       required:
       - notification_type
-    PaginatedSystemJobEventList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SystemJobEvent'
     PaginatedSystemJobListList:
       type: object
       required:
@@ -822,66 +885,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SystemJobList'
-    SystemJobEvent:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        event:
-          type: string
-          readOnly: true
-        counter:
-          type: integer
-          minimum: 0
-          readOnly: true
-        event_display:
-          type: string
-          readOnly: true
-        event_data:
-          default: {}
-        failed:
-          type: string
-          readOnly: true
-        changed:
-          type: string
-          readOnly: true
-        uuid:
-          type: string
-          readOnly: true
-        stdout:
-          type: string
-          readOnly: true
-        start_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        end_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        verbosity:
-          type: integer
-          minimum: 0
-          readOnly: true
-        system_job:
-          type: integer
-          readOnly: true

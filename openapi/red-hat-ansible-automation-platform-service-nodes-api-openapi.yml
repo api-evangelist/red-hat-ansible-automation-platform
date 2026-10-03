@@ -342,63 +342,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedServiceNode:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        address:
-          type: string
-          description: The network address to route traffic for this service to.
-          maxLength: 255
-        service_cluster:
-          type: integer
-          description: The AAP Service cluster that this node belongs to.
-        tags:
-          type: string
-          description: A comma-separated list of roles to assign to a node; to be selective about which routes point to it.
-          maxLength: 255
     PaginatedServiceNodeList:
       type: object
       required:
@@ -485,6 +428,63 @@ components:
       - address
       - name
       - service_cluster
+    PatchedServiceNode:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        address:
+          type: string
+          description: The network address to route traffic for this service to.
+          maxLength: 255
+        service_cluster:
+          type: integer
+          description: The AAP Service cluster that this node belongs to.
+        tags:
+          type: string
+          description: A comma-separated list of roles to assign to a node; to be selective about which routes point to it.
+          maxLength: 255
   securitySchemes:
     Basic_Authentication:
       type: http

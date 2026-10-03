@@ -154,7 +154,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedUserAccessAssignmentResponseList:
+    PaginatedUserAccessViewSet_User_ResponseList:
       type: object
       required:
       - count
@@ -178,7 +178,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/UserAccessAssignmentResponse'
+            $ref: '#/components/schemas/UserAccessViewSet_User_Response'
     UserAccessAssignmentResponse:
       type: object
       properties:
@@ -244,6 +244,31 @@ components:
           readOnly: true
       required:
       - role_definition
+    PaginatedUserAccessAssignmentResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserAccessAssignmentResponse'
     UserAccessViewSet_User_Response:
       type: object
       description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
@@ -280,28 +305,3 @@ components:
           readOnly: true
       required:
       - username
-    PaginatedUserAccessViewSet_User_ResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserAccessViewSet_User_Response'

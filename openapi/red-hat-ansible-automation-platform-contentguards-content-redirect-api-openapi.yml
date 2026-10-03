@@ -477,55 +477,6 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    ContentRedirectContentGuard:
-      type: object
-      description: A serializer for ContentRedirectContentGuard.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-      required:
-      - name
     MyPermissionsResponse:
       type: object
       properties:
@@ -535,20 +486,6 @@ components:
             type: string
       required:
       - permissions
-    PatchedContentRedirectContentGuard:
-      type: object
-      description: A serializer for ContentRedirectContentGuard.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -601,6 +538,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
     ContentRedirectContentGuardResponse:
       type: object
       description: A serializer for ContentRedirectContentGuard.
@@ -629,3 +590,42 @@ components:
           description: An optional description.
       required:
       - name
+    PatchedContentRedirectContentGuard:
+      type: object
+      description: A serializer for ContentRedirectContentGuard.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+    ContentRedirectContentGuard:
+      type: object
+      description: A serializer for ContentRedirectContentGuard.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+      required:
+      - name
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles

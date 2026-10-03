@@ -161,18 +161,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PatchedLabelRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
     Label:
       type: object
       properties:
@@ -208,6 +196,33 @@ components:
       required:
       - name
       - organization
+    LabelRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
+    PatchedLabelRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
     PaginatedLabelList:
       type: object
       required:
@@ -233,18 +248,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Label'
-    LabelRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
-      required:
-      - name
-      - organization

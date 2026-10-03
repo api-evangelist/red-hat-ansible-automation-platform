@@ -204,60 +204,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RoleUserAssignment:
-      type: object
-      properties:
-        object_id:
-          type:
-          - string
-          - 'null'
-          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource id of the object this role applies to. An alternative to the object_id field.
-        role_definition:
-          type: integer
-          format: int64
-          description: The role definition which defines permissions conveyed by this assignment.
-        user:
-          type: integer
-          format: int64
-        user_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
-      required:
-      - role_definition
-    PaginatedRoleUserAssignmentResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleUserAssignmentResponse'
     RoleUserAssignmentResponse:
       type: object
       properties:
@@ -320,3 +266,57 @@ components:
           description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
       required:
       - role_definition
+    RoleUserAssignment:
+      type: object
+      properties:
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          format: int64
+          description: The role definition which defines permissions conveyed by this assignment.
+        user:
+          type: integer
+          format: int64
+        user_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
+      required:
+      - role_definition
+    PaginatedRoleUserAssignmentResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignmentResponse'

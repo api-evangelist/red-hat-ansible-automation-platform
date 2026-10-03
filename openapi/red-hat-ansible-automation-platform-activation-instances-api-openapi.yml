@@ -116,6 +116,85 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedActivationInstanceLogList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivationInstanceLog'
+    ActivationInstance:
+      type: object
+      description: Serializer for the Activation Instance model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        git_hash:
+          type: string
+        status_message:
+          type:
+          - string
+          - 'null'
+        activation_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        organization_id:
+          type: integer
+          readOnly: true
+        started_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ended_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        queue_name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+      required:
+      - activation_id
+      - ended_at
+      - id
+      - organization_id
+      - queue_name
+      - started_at
     StatusEnum:
       enum:
       - starting
@@ -176,53 +255,6 @@ components:
       - activation_instance
       - id
       - log
-    ActivationInstance:
-      type: object
-      description: Serializer for the Activation Instance model.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-        status:
-          $ref: '#/components/schemas/StatusEnum'
-        git_hash:
-          type: string
-        status_message:
-          type:
-          - string
-          - 'null'
-        activation_id:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        organization_id:
-          type: integer
-          readOnly: true
-        started_at:
-          type: string
-          format: date-time
-          readOnly: true
-        ended_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        queue_name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-      required:
-      - activation_id
-      - ended_at
-      - id
-      - organization_id
-      - queue_name
-      - started_at
     PaginatedActivationInstanceList:
       type: object
       properties:
@@ -255,38 +287,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ActivationInstance'
-    PaginatedActivationInstanceLogList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivationInstanceLog'
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

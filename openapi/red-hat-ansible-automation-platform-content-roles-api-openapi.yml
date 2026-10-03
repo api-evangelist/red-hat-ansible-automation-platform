@@ -258,33 +258,6 @@ paths:
           description: ''
 components:
   schemas:
-    ansible.Role:
-      type: object
-      description: A serializer for Role versions.
-      properties:
-        artifact:
-          type: string
-          format: uri
-          description: Artifact file representing the physical content
-        repository:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of a repository the new content unit should be associated with.
-        version:
-          type: string
-          minLength: 1
-        name:
-          type: string
-          minLength: 1
-        namespace:
-          type: string
-          minLength: 1
-      required:
-      - artifact
-      - name
-      - namespace
-      - version
     ansible.RoleResponse:
       type: object
       description: A serializer for Role versions.
@@ -343,3 +316,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ansible.RoleResponse'
+    ansible.Role:
+      type: object
+      description: A serializer for Role versions.
+      properties:
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        version:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        namespace:
+          type: string
+          minLength: 1
+      required:
+      - artifact
+      - name
+      - namespace
+      - version

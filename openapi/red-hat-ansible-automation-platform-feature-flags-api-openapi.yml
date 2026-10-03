@@ -1032,7 +1032,7 @@ components:
       required:
       - name
       - state
-    PatchedFeatureFlagPatch:
+    FeatureFlagPatch:
       type: object
       properties:
         value:
@@ -1138,6 +1138,13 @@ components:
         state:
           type: string
           readOnly: true
+    PatchedFeatureFlagPatch:
+      type: object
+      properties:
+        value:
+          type: string
+          description: The value used to evaluate the conditional specified.
+          maxLength: 127
     PaginatedFeatureFlagList:
       type: object
       required:
@@ -1163,13 +1170,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FeatureFlag'
-    FeatureFlagPatch:
-      type: object
-      properties:
-        value:
-          type: string
-          description: The value used to evaluate the conditional specified.
-          maxLength: 127
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

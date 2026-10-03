@@ -1217,53 +1217,45 @@ paths:
     - url: /api/eda/v1
 components:
   schemas:
-    CopyRequest:
+    ProjectUpdateView:
       type: object
       properties:
-        name:
-          type: string
-          minLength: 1
-      required:
-      - name
-    PaginatedTeamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Team'
-    ScheduleRequest:
+        can_update:
+          type: boolean
+          readOnly: true
+    Schedule:
       type: object
       properties:
         rrule:
           type:
           - string
           - 'null'
-          minLength: 1
           description: A value representing the schedules iCal recurrence rule.
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
         name:
           type:
           - string
           - 'null'
-          minLength: 1
           maxLength: 512
         description:
           type:
@@ -1361,10 +1353,46 @@ components:
           - 'null'
           default: true
           description: Enables processing of this schedule.
+        dtstart:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The first occurrence of the schedule occurs on or after this time.
+        dtend:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
+        next_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The next time that the scheduled action will run.
+        timezone:
+          type: string
+          readOnly: true
+          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
+        until:
+          type: string
+          readOnly: true
+          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
       required:
       - name
       - rrule
       - unified_job_template
+    Copy:
+      type: object
+      properties:
+        name:
+          type: string
+      required:
+      - name
     NotificationTemplateRequest:
       type: object
       properties:
@@ -1432,138 +1460,7 @@ components:
       - name
       - notification_type
       - organization
-    ProjectRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        local_path:
-          type:
-          - string
-          - 'null'
-          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
-          maxLength: 1024
-        scm_type:
-          enum:
-          - ''
-          - git
-          - svn
-          - insights
-          - archive
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 18ccf5bfb5c453d7
-          default: ''
-          description: 'Specifies the source control system used to store the project.
-
-
-            * `` - Manual
-
-            * `git` - Git
-
-            * `svn` - Subversion
-
-            * `insights` - Red Hat Insights
-
-            * `archive` - Remote Archive'
-        scm_url:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The location where the project is stored.
-          maxLength: 1024
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Specific branch, tag or commit to checkout.
-          maxLength: 256
-        scm_refspec:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: For git projects, an additional refspec to fetch.
-          maxLength: 1024
-        scm_clean:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Discard any local changes before syncing the project.
-        scm_track_submodules:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Track submodules latest commits on defined branch.
-        scm_delete_on_update:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Delete the project before syncing.
-        credential:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: The organization used to determine access to this template.
-        scm_update_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Update the project when a job is launched that uses the project.
-        scm_update_cache_timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
-        allow_override:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Allow changing the SCM branch or revision in a job template that uses this project.
-        default_environment:
-          type:
-          - integer
-          - 'null'
-          description: The default execution environment for jobs run using this project.
-        signature_validation_credential:
-          type:
-          - integer
-          - 'null'
-          description: An optional credential used for validating files in the project against unexpected changes.
-      required:
-      - name
-    Team:
+    ActivityStream:
       type: object
       properties:
         id:
@@ -1581,108 +1478,88 @@ components:
         summary_fields:
           type: string
           readOnly: true
-        created:
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
           type: string
           readOnly: true
-        modified:
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
           type: string
           readOnly: true
         name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
-    PaginatedResourceAccessListElementList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceAccessListElement'
-    PaginatedNotificationTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTemplate'
-    PaginatedInventorySourceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InventorySource'
-    ProjectInventories:
-      type: object
-      properties:
-        inventory_files:
+          type: string
           readOnly: true
-          description: Array of inventory files and directories available within this project, not comprehensive.
+        description:
+          type: string
+          readOnly: true
     ProjectUpdateList:
       type: object
       properties:
@@ -1943,6 +1820,81 @@ components:
           maxLength: 1024
       required:
       - name
+    PaginatedProjectList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project'
+    PaginatedInventorySourceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventorySource'
+    PaginatedProjectUpdateListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProjectUpdateList'
     Project:
       type: object
       properties:
@@ -2163,380 +2115,6 @@ components:
           readOnly: true
       required:
       - name
-    PatchedProjectRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        local_path:
-          type:
-          - string
-          - 'null'
-          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
-          maxLength: 1024
-        scm_type:
-          enum:
-          - ''
-          - git
-          - svn
-          - insights
-          - archive
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: 18ccf5bfb5c453d7
-          default: ''
-          description: 'Specifies the source control system used to store the project.
-
-
-            * `` - Manual
-
-            * `git` - Git
-
-            * `svn` - Subversion
-
-            * `insights` - Red Hat Insights
-
-            * `archive` - Remote Archive'
-        scm_url:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The location where the project is stored.
-          maxLength: 1024
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Specific branch, tag or commit to checkout.
-          maxLength: 256
-        scm_refspec:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: For git projects, an additional refspec to fetch.
-          maxLength: 1024
-        scm_clean:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Discard any local changes before syncing the project.
-        scm_track_submodules:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Track submodules latest commits on defined branch.
-        scm_delete_on_update:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Delete the project before syncing.
-        credential:
-          type:
-          - integer
-          - 'null'
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        organization:
-          type:
-          - integer
-          - 'null'
-          description: The organization used to determine access to this template.
-        scm_update_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Update the project when a job is launched that uses the project.
-        scm_update_cache_timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
-        allow_override:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Allow changing the SCM branch or revision in a job template that uses this project.
-        default_environment:
-          type:
-          - integer
-          - 'null'
-          description: The default execution environment for jobs run using this project.
-        signature_validation_credential:
-          type:
-          - integer
-          - 'null'
-          description: An optional credential used for validating files in the project against unexpected changes.
-    ProjectPlaybooks:
-      type: object
-      properties:
-        playbooks:
-          type: string
-          readOnly: true
-          description: Array of playbooks available within this project.
-    ActivityStream:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
-          type:
-          - string
-          - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
-      required:
-      - object1
-      - object2
-      - operation
-    NotificationTemplate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        notification_configuration:
-          default: {}
-        messages:
-          default:
-            started: null
-            success: null
-            error: null
-            workflow_approval: null
-          description: Optional custom messages for notification template.
-      required:
-      - name
-      - notification_type
-      - organization
-    ResourceAccessListElement:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        username:
-          type:
-          - string
-          - 'null'
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
-        last_login:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-      required:
-      - username
-    ProjectUpdateView:
-      type: object
-      properties:
-        can_update:
-          type: boolean
-          readOnly: true
     PaginatedScheduleList:
       type: object
       required:
@@ -2562,7 +2140,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Schedule'
-    PaginatedProjectUpdateListList:
+    CopyRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+      required:
+      - name
+    PaginatedNotificationTemplateList:
       type: object
       required:
       - count
@@ -2586,7 +2172,32 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ProjectUpdateList'
+            $ref: '#/components/schemas/NotificationTemplate'
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
     InventorySource:
       type: object
       properties:
@@ -2837,46 +2448,9 @@ components:
       - inventory
       - name
       - source
-    Copy:
+    ResourceAccessListElement:
       type: object
       properties:
-        name:
-          type: string
-      required:
-      - name
-    PaginatedProjectList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project'
-    Schedule:
-      type: object
-      properties:
-        rrule:
-          type:
-          - string
-          - 'null'
-          description: A value representing the schedules iCal recurrence rule.
         id:
           type: integer
           readOnly: true
@@ -2898,10 +2472,65 @@ components:
         modified:
           type: string
           readOnly: true
+        username:
+          type:
+          - string
+          - 'null'
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - username
+    ScheduleRequest:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A value representing the schedules iCal recurrence rule.
         name:
           type:
           - string
           - 'null'
+          minLength: 1
           maxLength: 512
         description:
           type:
@@ -2999,63 +2628,35 @@ components:
           - 'null'
           default: true
           description: Enables processing of this schedule.
-        dtstart:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The first occurrence of the schedule occurs on or after this time.
-        dtend:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The last occurrence of the schedule occurs before this time, aftewards the schedule expires.
-        next_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The next time that the scheduled action will run.
-        timezone:
-          type: string
-          readOnly: true
-          description: The timezone this schedule runs in. This field is extracted from the RRULE. If the timezone in the RRULE is a link to another timezone, the link will be reflected in this field.
-        until:
-          type: string
-          readOnly: true
-          description: The date this schedule will end. This field is computed from the RRULE. If the schedule does not end an empty string will be returned
       required:
       - name
       - rrule
       - unified_job_template
-    Role:
+    PaginatedTeamList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        description:
-          type: string
-          readOnly: true
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
     PaginatedRoleList:
       type: object
       required:
@@ -3081,7 +2682,406 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Role'
-    PaginatedActivityStreamList:
+    NotificationTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
+    ProjectPlaybooks:
+      type: object
+      properties:
+        playbooks:
+          type: string
+          readOnly: true
+          description: Array of playbooks available within this project.
+    ProjectInventories:
+      type: object
+      properties:
+        inventory_files:
+          readOnly: true
+          description: Array of inventory files and directories available within this project, not comprehensive.
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    PatchedProjectRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        scm_update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Update the project when a job is launched that uses the project.
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
+        allow_override:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Allow changing the SCM branch or revision in a job template that uses this project.
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run using this project.
+        signature_validation_credential:
+          type:
+          - integer
+          - 'null'
+          description: An optional credential used for validating files in the project against unexpected changes.
+    ProjectRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        local_path:
+          type:
+          - string
+          - 'null'
+          description: Local path (relative to PROJECTS_ROOT) containing playbooks and related files for this project.
+          maxLength: 1024
+        scm_type:
+          enum:
+          - ''
+          - git
+          - svn
+          - insights
+          - archive
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: 18ccf5bfb5c453d7
+          default: ''
+          description: 'Specifies the source control system used to store the project.
+
+
+            * `` - Manual
+
+            * `git` - Git
+
+            * `svn` - Subversion
+
+            * `insights` - Red Hat Insights
+
+            * `archive` - Remote Archive'
+        scm_url:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The location where the project is stored.
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Specific branch, tag or commit to checkout.
+          maxLength: 256
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: For git projects, an additional refspec to fetch.
+          maxLength: 1024
+        scm_clean:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Discard any local changes before syncing the project.
+        scm_track_submodules:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Track submodules latest commits on defined branch.
+        scm_delete_on_update:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Delete the project before syncing.
+        credential:
+          type:
+          - integer
+          - 'null'
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        organization:
+          type:
+          - integer
+          - 'null'
+          description: The organization used to determine access to this template.
+        scm_update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Update the project when a job is launched that uses the project.
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: The number of seconds after the last project update ran that a new project update will be launched as a job dependency.
+        allow_override:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Allow changing the SCM branch or revision in a job template that uses this project.
+        default_environment:
+          type:
+          - integer
+          - 'null'
+          description: The default execution environment for jobs run using this project.
+        signature_validation_credential:
+          type:
+          - integer
+          - 'null'
+          description: An optional credential used for validating files in the project against unexpected changes.
+      required:
+      - name
+    PaginatedResourceAccessListElementList:
       type: object
       required:
       - count
@@ -3105,23 +3105,185 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ActivityStream'
-    OrganizationRef:
+            $ref: '#/components/schemas/ResourceAccessListElement'
+    Project_2:
       type: object
       properties:
+        name:
+          type: string
+        description:
+          type: string
+        organization_id:
+          type: integer
+          readOnly: true
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+        signature_validation_credential_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        scm_branch:
+          type: string
+        scm_refspec:
+          type: string
+        verify_ssl:
+          type: boolean
+        proxy:
+          type: string
+          readOnly: true
+        update_revision_on_launch:
+          type: boolean
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
+        last_synced_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp of the last successful project sync
+        created_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        modified_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
         id:
           type: integer
           readOnly: true
+        url:
+          type: string
+          readOnly: true
+        scm_type:
+          allOf:
+          - $ref: '#/components/schemas/ScmTypeEnum'
+          readOnly: true
+        git_hash:
+          type: string
+          readOnly: true
+        import_state:
+          allOf:
+          - $ref: '#/components/schemas/ImportStateEnum'
+          readOnly: true
+        import_error:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - created_by
+      - git_hash
+      - id
+      - import_error
+      - import_state
+      - modified_at
+      - modified_by
+      - name
+      - organization_id
+      - proxy
+      - scm_type
+      - signature_validation_credential_id
+      - url
+    ImportStateEnum:
+      enum:
+      - pending
+      - running
+      - failed
+      - completed
+      type: string
+      description: '* `pending` - Pending
+
+        * `running` - Running
+
+        * `failed` - Failed
+
+        * `completed` - Completed'
+    ScmTypeEnum:
+      enum:
+      - git
+      type: string
+      description: '* `git` - Git'
+    ProjectCreateRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Source control repository URL.
+        proxy:
+          type: string
         name:
           type: string
-          description: The name of this resource.
-          maxLength: 512
         description:
           type: string
-          description: The organization description.
+        organization_id:
+          type: integer
+        eda_credential_id:
+          type:
+          - integer
+          - 'null'
+        signature_validation_credential_id:
+          type:
+          - integer
+          - 'null'
+        verify_ssl:
+          type: boolean
+        scm_type:
+          $ref: '#/components/schemas/ScmTypeEnum'
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          description: Specific branch, tag or commit to checkout.
+        scm_refspec:
+          type:
+          - string
+          - 'null'
+          description: For git projects, an additional refspec to fetch.
+        update_revision_on_launch:
+          type: boolean
+          default: false
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 86400
+          minimum: 0
+          default: 0
+          description: Cache timeout in seconds for project updates (0 = no cache, max 86400)
       required:
-      - id
       - name
+      - organization_id
+      - url
     EdaCredentialRef:
       type: object
       description: Serializer for EdaCredential reference.
@@ -3153,57 +3315,6 @@ components:
       - inputs
       - name
       - organization_id
-    PaginatedProjectList_2:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Project_2'
-    ScmTypeEnum:
-      enum:
-      - git
-      type: string
-      description: '* `git` - Git'
-    ImportStateEnum:
-      enum:
-      - pending
-      - running
-      - failed
-      - completed
-      type: string
-      description: '* `pending` - Pending
-
-        * `running` - Running
-
-        * `failed` - Failed
-
-        * `completed` - Completed'
     PatchedProjectUpdateRequest:
       type: object
       properties:
@@ -3363,165 +3474,54 @@ components:
       - proxy
       - scm_type
       - url
-    ProjectCreateRequest:
+    OrganizationRef:
       type: object
       properties:
-        url:
-          type: string
-          description: Source control repository URL.
-        proxy:
-          type: string
-        name:
-          type: string
-        description:
-          type: string
-        organization_id:
-          type: integer
-        eda_credential_id:
-          type:
-          - integer
-          - 'null'
-        signature_validation_credential_id:
-          type:
-          - integer
-          - 'null'
-        verify_ssl:
-          type: boolean
-        scm_type:
-          $ref: '#/components/schemas/ScmTypeEnum'
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          description: Specific branch, tag or commit to checkout.
-        scm_refspec:
-          type:
-          - string
-          - 'null'
-          description: For git projects, an additional refspec to fetch.
-        update_revision_on_launch:
-          type: boolean
-          default: false
-          description: Enable automatic project sync on activation launch
-        scm_update_cache_timeout:
-          type: integer
-          maximum: 86400
-          minimum: 0
-          default: 0
-          description: Cache timeout in seconds for project updates (0 = no cache, max 86400)
-      required:
-      - name
-      - organization_id
-      - url
-    Project_2:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        organization_id:
-          type: integer
-          readOnly: true
-        eda_credential_id:
-          type:
-          - integer
-          - 'null'
-        signature_validation_credential_id:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        scm_branch:
-          type: string
-        scm_refspec:
-          type: string
-        verify_ssl:
-          type: boolean
-        proxy:
-          type: string
-          readOnly: true
-        update_revision_on_launch:
-          type: boolean
-          description: Enable automatic project sync on activation launch
-        scm_update_cache_timeout:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
-        last_synced_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp of the last successful project sync
-        created_by:
-          type: object
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-        modified_by:
-          type: object
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
         id:
           type: integer
           readOnly: true
-        url:
+        name:
           type: string
-          readOnly: true
-        scm_type:
-          allOf:
-          - $ref: '#/components/schemas/ScmTypeEnum'
-          readOnly: true
-        git_hash:
+          description: The name of this resource.
+          maxLength: 512
+        description:
           type: string
-          readOnly: true
-        import_state:
-          allOf:
-          - $ref: '#/components/schemas/ImportStateEnum'
-          readOnly: true
-        import_error:
+          description: The organization description.
+      required:
+      - id
+      - name
+    PaginatedProjectList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - created_by
-      - git_hash
-      - id
-      - import_error
-      - import_state
-      - modified_at
-      - modified_by
-      - name
-      - organization_id
-      - proxy
-      - scm_type
-      - signature_validation_credential_id
-      - url
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Project_2'
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

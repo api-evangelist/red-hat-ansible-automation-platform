@@ -54,32 +54,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ServiceRoleTeamAssignment:
-      type: object
-      properties:
-        created_by_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        object_id:
-          type:
-          - string
-          - 'null'
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-        role_definition:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        team_ansible_id:
-          type: string
-          format: uuid
-      required:
-      - role_definition
-      - team_ansible_id
     ServiceRoleTeamAssignmentResponse:
       type: object
       properties:
@@ -107,6 +81,32 @@ components:
           readOnly: true
         role_definition:
           type: string
+          description: The name of this role.
+        team_ansible_id:
+          type: string
+          format: uuid
+      required:
+      - role_definition
+      - team_ansible_id
+    ServiceRoleTeamAssignment:
+      type: object
+      properties:
+        created_by_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        object_id:
+          type:
+          - string
+          - 'null'
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+        role_definition:
+          type: string
+          minLength: 1
           description: The name of this role.
         team_ansible_id:
           type: string

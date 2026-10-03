@@ -432,6 +432,31 @@ paths:
       x-operation-id-original: role_user_assignments_destroy
 components:
   schemas:
+    PaginatedRoleUserAssignmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignment'
     RoleUserAssignment:
       type: object
       properties:
@@ -467,60 +492,6 @@ components:
           type: string
           description: String to use for references to this type from other models in the API.
           readOnly: true
-        object_id:
-          type:
-          - string
-          - 'null'
-          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
-        object_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource id of the object this role applies to. An alternative to the object_id field.
-        role_definition:
-          type: integer
-          description: The role definition which defines permissions conveyed by this assignment.
-        user:
-          type:
-          - integer
-          - 'null'
-        user_ansible_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
-      required:
-      - role_definition
-    PaginatedRoleUserAssignmentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleUserAssignment'
-    RoleUserAssignmentCreate:
-      type: object
-      properties:
         object_id:
           type:
           - string
@@ -615,6 +586,35 @@ components:
       - role_definition
       - summary_fields
       - url
+    RoleUserAssignmentCreate:
+      type: object
+      properties:
+        object_id:
+          type:
+          - string
+          - 'null'
+          description: The primary key of the object this assignment applies to; null value indicates system-wide assignment.
+        object_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource id of the object this role applies to. An alternative to the object_id field.
+        role_definition:
+          type: integer
+          description: The role definition which defines permissions conveyed by this assignment.
+        user:
+          type:
+          - integer
+          - 'null'
+        user_ansible_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
+      required:
+      - role_definition
     PaginatedRoleUserAssignmentList_2:
       type: object
       properties:

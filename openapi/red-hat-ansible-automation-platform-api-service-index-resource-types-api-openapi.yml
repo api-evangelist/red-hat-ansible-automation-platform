@@ -97,30 +97,6 @@ paths:
           description: ''
 components:
   schemas:
-    ResourceTypeResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-          description: The name of this resource type.
-        externally_managed:
-          type: boolean
-          description: Is this resource type managed externally from this service.
-        shared_resource_type:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-      required:
-      - externally_managed
     PaginatedResourceTypeResponseList:
       type: object
       required:
@@ -146,3 +122,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ResourceTypeResponse'
+    ResourceTypeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+          description: The name of this resource type.
+        externally_managed:
+          type: boolean
+          description: Is this resource type managed externally from this service.
+        shared_resource_type:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+      - externally_managed

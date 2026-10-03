@@ -362,6 +362,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/certguard.RHSMCertGuardResponse'
+    certguard.RHSMCertGuard:
+      type: object
+      description: RHSM Content Guard Serializer.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        ca_certificate:
+          type: string
+          minLength: 1
+          description: A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity.
+      required:
+      - ca_certificate
+      - name
     Patchedcertguard.RHSMCertGuard:
       type: object
       description: RHSM Content Guard Serializer.
@@ -408,27 +429,6 @@ components:
           description: An optional description.
         ca_certificate:
           type: string
-          description: A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity.
-      required:
-      - ca_certificate
-      - name
-    certguard.RHSMCertGuard:
-      type: object
-      description: RHSM Content Guard Serializer.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        ca_certificate:
-          type: string
-          minLength: 1
           description: A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity.
       required:
       - ca_certificate

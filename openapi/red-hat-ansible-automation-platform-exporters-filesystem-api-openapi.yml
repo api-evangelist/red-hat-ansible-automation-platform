@@ -347,58 +347,6 @@ paths:
           description: ''
 components:
   schemas:
-    FilesystemExporter:
-      type: object
-      description: Serializer for FilesystemExporters.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Unique name of the file system exporter.
-        path:
-          type: string
-          minLength: 1
-          description: File system location to export to.
-        method:
-          allOf:
-          - $ref: '#/components/schemas/MethodEnum'
-          default: write
-          description: 'Method of exporting
-
-
-            * `write` - Export by writing
-
-            * `hardlink` - Export by hardlinking
-
-            * `symlink` - Export by symlinking'
-      required:
-      - name
-      - path
-    PaginatedFilesystemExporterResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FilesystemExporterResponse'
     FilesystemExporterResponse:
       type: object
       description: Serializer for FilesystemExporters.
@@ -438,27 +386,6 @@ components:
       required:
       - name
       - path
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    MethodEnum:
-      enum:
-      - write
-      - hardlink
-      - symlink
-      type: string
-      description: '* `write` - Export by writing
-
-        * `hardlink` - Export by hardlinking
-
-        * `symlink` - Export by symlinking'
     PatchedFilesystemExporter:
       type: object
       description: Serializer for FilesystemExporters.
@@ -483,3 +410,76 @@ components:
             * `hardlink` - Export by hardlinking
 
             * `symlink` - Export by symlinking'
+    PaginatedFilesystemExporterResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilesystemExporterResponse'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    FilesystemExporter:
+      type: object
+      description: Serializer for FilesystemExporters.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Unique name of the file system exporter.
+        path:
+          type: string
+          minLength: 1
+          description: File system location to export to.
+        method:
+          allOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          default: write
+          description: 'Method of exporting
+
+
+            * `write` - Export by writing
+
+            * `hardlink` - Export by hardlinking
+
+            * `symlink` - Export by symlinking'
+      required:
+      - name
+      - path
+    MethodEnum:
+      enum:
+      - write
+      - hardlink
+      - symlink
+      type: string
+      description: '* `write` - Export by writing
+
+        * `hardlink` - Export by hardlinking
+
+        * `symlink` - Export by symlinking'

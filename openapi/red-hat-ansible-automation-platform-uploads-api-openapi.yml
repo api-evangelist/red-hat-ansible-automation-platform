@@ -444,49 +444,6 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     PaginatedUploadResponseList:
       type: object
       required:
@@ -512,51 +469,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UploadResponse'
-    UploadChunk:
+    UploadCommit:
       type: object
       description: A mixin for validating unknown serializers' fields.
       properties:
-        file:
-          type: string
-          format: binary
-          writeOnly: true
-          description: A chunk of the uploaded file.
         sha256:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
+          type: string
           minLength: 1
-          description: The SHA-256 checksum of the chunk if available.
+          description: The expected sha256 checksum for the file.
       required:
-      - file
-    UploadResponse:
+      - sha256
+    Upload:
       type: object
       description: Serializer for chunked uploads.
       properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         size:
           type: integer
           format: int64
           description: The size of the upload in bytes.
-        completed:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp when upload is committed.
       required:
       - size
     MyPermissionsResponse:
@@ -568,16 +498,6 @@ components:
             type: string
       required:
       - permissions
-    UploadCommit:
-      type: object
-      description: A mixin for validating unknown serializers' fields.
-      properties:
-        sha256:
-          type: string
-          minLength: 1
-          description: The expected sha256 checksum for the file.
-      required:
-      - sha256
     UploadDetailResponse:
       type: object
       description: Serializer for chunked uploads.
@@ -612,6 +532,96 @@ components:
           readOnly: true
       required:
       - size
+    UploadResponse:
+      type: object
+      description: Serializer for chunked uploads.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        size:
+          type: integer
+          format: int64
+          description: The size of the upload in bytes.
+        completed:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp when upload is committed.
+      required:
+      - size
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    UploadChunk:
+      type: object
+      description: A mixin for validating unknown serializers' fields.
+      properties:
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: A chunk of the uploaded file.
+        sha256:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The SHA-256 checksum of the chunk if available.
+      required:
+      - file
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
     UploadChunkResponse:
       type: object
       description: A mixin for validating unknown serializers' fields.
@@ -624,13 +634,3 @@ components:
           type: integer
           format: int64
           readOnly: true
-    Upload:
-      type: object
-      description: Serializer for chunked uploads.
-      properties:
-        size:
-          type: integer
-          format: int64
-          description: The size of the upload in bytes.
-      required:
-      - size

@@ -61,32 +61,14 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SyncListCollectionSummaryResponse:
-      type: object
-      properties:
-        namespace:
-          type: string
-          maxLength: 64
-        name:
-          type: string
-          maxLength: 64
-      required:
-      - name
-      - namespace
-    SyncListCollectionSummary:
-      type: object
-      properties:
-        namespace:
-          type: string
-          minLength: 1
-          maxLength: 64
-        name:
-          type: string
-          minLength: 1
-          maxLength: 64
-      required:
-      - name
-      - namespace
+    Policy8baEnum:
+      enum:
+      - exclude
+      - include
+      type: string
+      description: '* `exclude` - exclude
+
+        * `include` - include'
     SyncList:
       type: object
       properties:
@@ -165,11 +147,29 @@ components:
       - groups
       - name
       - namespaces
-    Policy8baEnum:
-      enum:
-      - exclude
-      - include
-      type: string
-      description: '* `exclude` - exclude
-
-        * `include` - include'
+    SyncListCollectionSummary:
+      type: object
+      properties:
+        namespace:
+          type: string
+          minLength: 1
+          maxLength: 64
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+      required:
+      - name
+      - namespace
+    SyncListCollectionSummaryResponse:
+      type: object
+      properties:
+        namespace:
+          type: string
+          maxLength: 64
+        name:
+          type: string
+          maxLength: 64
+      required:
+      - name
+      - namespace

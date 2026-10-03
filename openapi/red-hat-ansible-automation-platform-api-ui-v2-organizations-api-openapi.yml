@@ -214,7 +214,7 @@ paths:
           description: No response body
 components:
   schemas:
-    PatchedOrganization:
+    Organization:
       type: object
       properties:
         name:
@@ -222,6 +222,8 @@ components:
           minLength: 1
           description: The name of this resource.
           maxLength: 512
+      required:
+      - name
     PaginatedOrganizationResponseList:
       type: object
       required:
@@ -247,7 +249,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrganizationResponse'
-    Organization:
+    PatchedOrganization:
       type: object
       properties:
         name:
@@ -255,8 +257,6 @@ components:
           minLength: 1
           description: The name of this resource.
           maxLength: 512
-      required:
-      - name
     OrganizationResponse:
       type: object
       properties:

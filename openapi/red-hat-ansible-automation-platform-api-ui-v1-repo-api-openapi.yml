@@ -399,6 +399,16 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    galaxy.LoginResponse:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+      - password
+      - username
     Paginatedgalaxy.LoginResponseList:
       type: object
       properties:
@@ -431,13 +441,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/galaxy.LoginResponse'
-    galaxy.LoginResponse:
-      type: object
-      properties:
-        username:
-          type: string
-        password:
-          type: string
-      required:
-      - password
-      - username

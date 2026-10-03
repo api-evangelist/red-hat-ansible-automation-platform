@@ -251,6 +251,46 @@ paths:
           description: ''
 components:
   schemas:
+    ansible.CollectionVersionMarkResponse:
+      type: object
+      description: A serializer for mark models.
+      properties:
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        marked_collection:
+          type: string
+          format: uri
+          description: The content this mark is pointing to.
+        value:
+          type: string
+          description: The string value of this mark.
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - marked_collection
+      - value
+    ansible.CollectionVersionMark:
+      type: object
+      description: A serializer for mark models.
+      properties:
+        marked_collection:
+          type: string
+          format: uri
+          description: The content this mark is pointing to.
+        value:
+          type: string
+          minLength: 1
+          description: The string value of this mark.
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - marked_collection
+      - value
     Paginatedansible.CollectionVersionMarkResponseList:
       type: object
       required:
@@ -276,43 +316,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ansible.CollectionVersionMarkResponse'
-    ansible.CollectionVersionMark:
-      type: object
-      description: A serializer for mark models.
-      properties:
-        marked_collection:
-          type: string
-          format: uri
-          description: The content this mark is pointing to.
-        value:
-          type: string
-          minLength: 1
-          description: The string value of this mark.
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - marked_collection
-      - value
-    ansible.CollectionVersionMarkResponse:
-      type: object
-      description: A serializer for mark models.
-      properties:
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        marked_collection:
-          type: string
-          format: uri
-          description: The content this mark is pointing to.
-        value:
-          type: string
-          description: The string value of this mark.
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - marked_collection
-      - value

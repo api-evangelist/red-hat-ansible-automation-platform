@@ -330,23 +330,6 @@ components:
       required:
       - gpgkey
       - name
-    DistributionResponse:
-      type: object
-      properties:
-        pulp_id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-        base_path:
-          type: string
-        repository:
-          $ref: '#/components/schemas/RepositoryResponse'
-      required:
-      - base_path
-      - name
-      - repository
     PaginatedDistributionResponseList:
       type: object
       properties:
@@ -379,3 +362,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DistributionResponse'
+    DistributionResponse:
+      type: object
+      properties:
+        pulp_id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        base_path:
+          type: string
+        repository:
+          $ref: '#/components/schemas/RepositoryResponse'
+      required:
+      - base_path
+      - name
+      - repository

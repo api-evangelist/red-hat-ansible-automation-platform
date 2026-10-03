@@ -247,6 +247,45 @@ paths:
           description: ''
 components:
   schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    file.FileContent:
+      type: object
+      description: Serializer for File Content.
+      properties:
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        relative_path:
+          type: string
+          minLength: 1
+          description: Path where the artifact is located relative to distributions base_path
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: An uploaded file that may be turned into the content unit.
+        upload:
+          type: string
+          format: uri
+          writeOnly: true
+          description: An uncommitted upload that may be turned into the content unit.
+      required:
+      - relative_path
     file.FileContentResponse:
       type: object
       description: Serializer for File Content.
@@ -323,42 +362,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/file.FileContentResponse'
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    file.FileContent:
-      type: object
-      description: Serializer for File Content.
-      properties:
-        repository:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of a repository the new content unit should be associated with.
-        artifact:
-          type: string
-          format: uri
-          description: Artifact file representing the physical content
-        relative_path:
-          type: string
-          minLength: 1
-          description: Path where the artifact is located relative to distributions base_path
-        file:
-          type: string
-          format: binary
-          writeOnly: true
-          description: An uploaded file that may be turned into the content unit.
-        upload:
-          type: string
-          format: uri
-          writeOnly: true
-          description: An uncommitted upload that may be turned into the content unit.
-      required:
-      - relative_path

@@ -177,6 +177,22 @@ components:
           description: The href of the task group.
       required:
       - task_group
+    PulpImport:
+      type: object
+      description: Serializer for call to import into Pulp.
+      properties:
+        path:
+          type: string
+          minLength: 1
+          description: Path to export that will be imported.
+        toc:
+          type: string
+          minLength: 1
+          description: Path to a table-of-contents file describing chunks to be validated, reassembled, and imported.
+        create_repositories:
+          type: boolean
+          default: false
+          description: If True, missing repositories will be automatically created during the import.
     ImportResponse:
       type: object
       description: Serializer for Imports.
@@ -205,22 +221,6 @@ components:
       required:
       - params
       - task
-    PulpImport:
-      type: object
-      description: Serializer for call to import into Pulp.
-      properties:
-        path:
-          type: string
-          minLength: 1
-          description: Path to export that will be imported.
-        toc:
-          type: string
-          minLength: 1
-          description: Path to a table-of-contents file describing chunks to be validated, reassembled, and imported.
-        create_repositories:
-          type: boolean
-          default: false
-          description: If True, missing repositories will be automatically created during the import.
     PaginatedImportResponseList:
       type: object
       required:

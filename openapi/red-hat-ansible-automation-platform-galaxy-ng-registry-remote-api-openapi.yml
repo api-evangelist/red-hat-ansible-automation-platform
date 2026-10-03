@@ -95,14 +95,6 @@ paths:
           description: ''
 components:
   schemas:
-    PolicyDb6Enum:
-      enum:
-      - immediate
-      - When syncing, download all metadata and content now.
-      type: string
-      description: '* `immediate` - immediate
-
-        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
     galaxy.ContainerRegistryRemoteResponse:
       type: object
       description: 'Every remote defined by a plugin should have a Remote serializer that inherits from this
@@ -182,3 +174,11 @@ components:
       required:
       - name
       - url
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'

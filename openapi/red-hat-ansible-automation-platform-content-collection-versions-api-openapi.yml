@@ -378,6 +378,55 @@ paths:
           description: ''
 components:
   schemas:
+    ansible.TagResponse:
+      type: object
+      description: A serializer for nesting in the CollectionVersion model.
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the Tag.
+    ansible.CollectionVersion:
+      type: object
+      description: A serializer for CollectionVersion Content.
+      properties:
+        upload:
+          type: string
+          format: uri
+          writeOnly: true
+          description: An uncommitted upload that may be turned into the content unit.
+        artifact:
+          type: string
+          format: uri
+          description: Artifact file representing the physical content
+        repository:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of a repository the new content unit should be associated with.
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+          description: An uploaded file that may be turned into the content unit.
+        expected_name:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The name of the collection.
+          maxLength: 64
+        expected_namespace:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The namespace of the collection.
+          maxLength: 64
+        expected_version:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: The version of the collection.
+          maxLength: 128
     AsyncOperationResponse:
       type: object
       description: Serializer for asynchronous operations.
@@ -388,31 +437,6 @@ components:
           description: The href of the task.
       required:
       - task
-    Paginatedansible.CollectionVersionResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.CollectionVersionResponse'
     ansible.CollectionVersionResponse:
       type: object
       description: A serializer for CollectionVersion Content.
@@ -550,52 +574,28 @@ components:
           readOnly: true
           description: The version of Ansible required to use the collection. Multiple versions can be separated with a comma.
           maxLength: 255
-    ansible.TagResponse:
+    Paginatedansible.CollectionVersionResponseList:
       type: object
-      description: A serializer for nesting in the CollectionVersion model.
+      required:
+      - count
+      - results
       properties:
-        name:
-          type: string
-          readOnly: true
-          description: The name of the Tag.
-    ansible.CollectionVersion:
-      type: object
-      description: A serializer for CollectionVersion Content.
-      properties:
-        upload:
-          type: string
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
           format: uri
-          writeOnly: true
-          description: An uncommitted upload that may be turned into the content unit.
-        artifact:
-          type: string
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
           format: uri
-          description: Artifact file representing the physical content
-        repository:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of a repository the new content unit should be associated with.
-        file:
-          type: string
-          format: binary
-          writeOnly: true
-          description: An uploaded file that may be turned into the content unit.
-        expected_name:
-          type: string
-          writeOnly: true
-          minLength: 1
-          description: The name of the collection.
-          maxLength: 64
-        expected_namespace:
-          type: string
-          writeOnly: true
-          minLength: 1
-          description: The namespace of the collection.
-          maxLength: 64
-        expected_version:
-          type: string
-          writeOnly: true
-          minLength: 1
-          description: The version of the collection.
-          maxLength: 128
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.CollectionVersionResponse'

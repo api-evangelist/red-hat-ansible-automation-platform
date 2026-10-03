@@ -64,41 +64,6 @@ paths:
           description: ''
 components:
   schemas:
-    PulpImportCheckResponse:
-      type: object
-      description: Return the response to a PulpImport import-check call.
-      properties:
-        toc:
-          allOf:
-          - $ref: '#/components/schemas/EvaluationResponse'
-          description: Evaluation of proposed 'toc' file for PulpImport
-        path:
-          allOf:
-          - $ref: '#/components/schemas/EvaluationResponse'
-          description: Evaluation of proposed 'path' file for PulpImport
-        repo_mapping:
-          allOf:
-          - $ref: '#/components/schemas/EvaluationResponse'
-          description: Evaluation of proposed 'repo_mapping' file for PulpImport
-    EvaluationResponse:
-      type: object
-      description: Results from evaluating a proposed parameter to a PulpImport call.
-      properties:
-        context:
-          type: string
-          description: Parameter value being evaluated.
-        is_valid:
-          type: boolean
-          description: True if evaluation passed, false otherwise.
-        messages:
-          type: array
-          items:
-            type: string
-          description: Messages describing results of all evaluations done. May be an empty list.
-      required:
-      - context
-      - is_valid
-      - messages
     PulpImportCheck:
       type: object
       description: 'Check validity of provided import-options.
@@ -120,3 +85,38 @@ components:
           type: string
           minLength: 1
           description: 'Mapping of repo names in an export file to the repo names in Pulp. For example, if the export has a repo named ''foo'' and the repo to import content into was ''bar'', the mapping would be "{''foo'': ''bar''}".'
+    EvaluationResponse:
+      type: object
+      description: Results from evaluating a proposed parameter to a PulpImport call.
+      properties:
+        context:
+          type: string
+          description: Parameter value being evaluated.
+        is_valid:
+          type: boolean
+          description: True if evaluation passed, false otherwise.
+        messages:
+          type: array
+          items:
+            type: string
+          description: Messages describing results of all evaluations done. May be an empty list.
+      required:
+      - context
+      - is_valid
+      - messages
+    PulpImportCheckResponse:
+      type: object
+      description: Return the response to a PulpImport import-check call.
+      properties:
+        toc:
+          allOf:
+          - $ref: '#/components/schemas/EvaluationResponse'
+          description: Evaluation of proposed 'toc' file for PulpImport
+        path:
+          allOf:
+          - $ref: '#/components/schemas/EvaluationResponse'
+          description: Evaluation of proposed 'path' file for PulpImport
+        repo_mapping:
+          allOf:
+          - $ref: '#/components/schemas/EvaluationResponse'
+          description: Evaluation of proposed 'repo_mapping' file for PulpImport

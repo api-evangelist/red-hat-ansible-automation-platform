@@ -726,121 +726,65 @@ paths:
           description: ''
 components:
   schemas:
-    SetLabel:
+    Paginatedcontainer.ContainerRemoteResponseList:
       type: object
-      description: Serializer for synchronously setting a label.
+      required:
+      - count
+      - results
       properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
+        count:
+          type: integer
+          example: 123
+        next:
           type:
           - string
           - 'null'
-      required:
-      - key
-      - value
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
-      required:
-      - key
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
           type:
           - string
           - 'null'
-      required:
-      - key
-      - value
-    container.ContainerRemote:
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/container.ContainerRemoteResponse'
+    container.ContainerRemoteResponse:
       type: object
       description: A Serializer for ContainerRemote.
       properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent update of the remote.
         name:
           type: string
-          minLength: 1
           description: A unique name for this remote.
         url:
           type: string
-          minLength: 1
           description: The URL of an external content source.
         ca_cert:
           type:
           - string
           - 'null'
-          minLength: 1
           description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
         client_cert:
           type:
           - string
           - 'null'
-          minLength: 1
           description: A PEM encoded client certificate used for authentication.
-        client_key:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: A PEM encoded private key used for authentication.
         tls_validation:
           type: boolean
           description: If True, TLS peer validation must be performed.
@@ -848,36 +792,7 @@ components:
           type:
           - string
           - 'null'
-          minLength: 1
           description: 'The proxy URL. Format: scheme://host:port'
-        proxy_username:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The username to authenticte to the proxy.
-        proxy_password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The password to authenticate to the proxy. Extra leading and trailing whitespace characters are not trimmed.
-        username:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The username to be used for authentication when syncing.
-        password:
-          type:
-          - string
-          - 'null'
-          writeOnly: true
-          minLength: 1
-          description: The password to be used for authentication when syncing. Extra leading and trailing whitespace characters are not trimmed.
         pulp_labels:
           type: object
           additionalProperties:
@@ -941,9 +856,22 @@ components:
           - 'null'
           format: int64
           description: Limits requests per second for each concurrent downloader
+        hidden_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              is_set:
+                type: boolean
+            required:
+            - is_set
+            - name
+          readOnly: true
+          description: List of hidden (write only) fields
         upstream_name:
           type: string
-          minLength: 1
           description: Name of the upstream repository
         include_tags:
           type:
@@ -951,7 +879,6 @@ components:
           - 'null'
           items:
             type: string
-            minLength: 1
             maxLength: 255
           description: "\n            A list of tags to include during sync.\n            Wildcards *, ? are recognized.\n            'include_tags' is evaluated before 'exclude_tags'.\n            "
         exclude_tags:
@@ -960,64 +887,30 @@ components:
           - 'null'
           items:
             type: string
-            minLength: 1
             maxLength: 255
           description: "\n            A list of tags to exclude during sync.\n            Wildcards *, ? are recognized.\n            'exclude_tags' is evaluated after 'include_tags'.\n            "
         sigstore:
           type: string
-          minLength: 1
           description: A URL to a sigstore to download image signatures from
           format: uri
       required:
       - name
       - upstream_name
       - url
-    Policy762Enum:
-      enum:
-      - immediate
-      - on_demand
-      - streamed
-      type: string
-      description: '* `immediate` - When syncing, download all metadata and content now.
-
-        * `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.
-
-        * `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again.'
-    AsyncOperationResponse:
+    SetLabelResponse:
       type: object
-      description: Serializer for asynchronous operations.
+      description: Serializer for synchronously setting a label.
       properties:
-        task:
+        key:
           type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    Paginatedcontainer.ContainerRemoteResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/container.ContainerRemoteResponse'
+      required:
+      - key
+      - value
     MyPermissionsResponse:
       type: object
       properties:
@@ -1212,40 +1105,128 @@ components:
           minLength: 1
       required:
       - role
-    container.ContainerRemoteResponse:
+    Policy762Enum:
+      enum:
+      - immediate
+      - on_demand
+      - streamed
+      type: string
+      description: '* `immediate` - When syncing, download all metadata and content now.
+
+        * `on_demand` - When syncing, download metadata, but do not download content now. Instead, download content as clients request it, and save it in Pulp to be served for future client requests.
+
+        * `streamed` - When syncing, download metadata, but do not download content now. Instead,download content as clients request it, but never save it in Pulp. This causes future requests for that same content to have to be downloaded again.'
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    SetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    container.ContainerRemote:
       type: object
       description: A Serializer for ContainerRemote.
       properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the most recent update of the remote.
         name:
           type: string
+          minLength: 1
           description: A unique name for this remote.
         url:
           type: string
+          minLength: 1
           description: The URL of an external content source.
         ca_cert:
           type:
           - string
           - 'null'
+          minLength: 1
           description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
         client_cert:
           type:
           - string
           - 'null'
+          minLength: 1
           description: A PEM encoded client certificate used for authentication.
+        client_key:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: A PEM encoded private key used for authentication.
         tls_validation:
           type: boolean
           description: If True, TLS peer validation must be performed.
@@ -1253,7 +1234,36 @@ components:
           type:
           - string
           - 'null'
+          minLength: 1
           description: 'The proxy URL. Format: scheme://host:port'
+        proxy_username:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The username to authenticte to the proxy.
+        proxy_password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The password to authenticate to the proxy. Extra leading and trailing whitespace characters are not trimmed.
+        username:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The username to be used for authentication when syncing.
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          minLength: 1
+          description: The password to be used for authentication when syncing. Extra leading and trailing whitespace characters are not trimmed.
         pulp_labels:
           type: object
           additionalProperties:
@@ -1317,22 +1327,9 @@ components:
           - 'null'
           format: int64
           description: Limits requests per second for each concurrent downloader
-        hidden_fields:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              is_set:
-                type: boolean
-            required:
-            - is_set
-            - name
-          readOnly: true
-          description: List of hidden (write only) fields
         upstream_name:
           type: string
+          minLength: 1
           description: Name of the upstream repository
         include_tags:
           type:
@@ -1340,6 +1337,7 @@ components:
           - 'null'
           items:
             type: string
+            minLength: 1
             maxLength: 255
           description: "\n            A list of tags to include during sync.\n            Wildcards *, ? are recognized.\n            'include_tags' is evaluated before 'exclude_tags'.\n            "
         exclude_tags:
@@ -1348,10 +1346,12 @@ components:
           - 'null'
           items:
             type: string
+            minLength: 1
             maxLength: 255
           description: "\n            A list of tags to exclude during sync.\n            Wildcards *, ? are recognized.\n            'exclude_tags' is evaluated after 'include_tags'.\n            "
         sigstore:
           type: string
+          minLength: 1
           description: A URL to a sigstore to download image signatures from
           format: uri
       required:

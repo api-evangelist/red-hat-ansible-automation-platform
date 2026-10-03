@@ -168,8 +168,38 @@ paths:
           description: ''
 components:
   schemas:
-    MyPermissionsFieldResponse:
+    Paginatedgalaxy.NamespaceResponseList:
       type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/galaxy.NamespaceResponse'
     galaxy.NamespaceResponse:
       type: object
       description: 'NamespaceSerializer but without ''links'' or ''resources''.
@@ -214,38 +244,6 @@ components:
         avatar_sha256:
           type: string
           readOnly: true
-    Paginatedgalaxy.NamespaceResponseList:
-      type: object
-      properties:
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-              example: 123
-        links:
-          type: object
-          properties:
-            first:
-              type:
-              - string
-              - 'null'
-            previous:
-              type:
-              - string
-              - 'null'
-            next:
-              type:
-              - string
-              - 'null'
-            last:
-              type:
-              - string
-              - 'null'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/galaxy.NamespaceResponse'
     NamespaceRelatedFieldResponse:
       type: object
       description: "Serializer only returns fields specified in 'include_related' query param.\n\nThis allows for fields that require more database queries to be optionally\nincluded in API responses, which lowers the load on the backend. This is\nintended as a way to include extra data in list views.\n\nUsage:\n\nThis functions the same as DRF's base `serializers.Serializer` class with the\nexception that it will only return fields specified in the `?include_related=`\nquery parameter.\n\nExample:\n\nMySerializer(RelatedFieldsBaseSerializer):\n    foo = CharField()\n    bar = CharField()\n\nMySerializer will return:\n\n{\"foo\": None} when called with `?include_related=foo` and {\"foo\": None, \"bar\" None}\nwhen called with `?include_related=foo&include_related=bar`."
@@ -254,3 +252,5 @@ components:
           allOf:
           - $ref: '#/components/schemas/MyPermissionsFieldResponse'
           readOnly: true
+    MyPermissionsFieldResponse:
+      type: object

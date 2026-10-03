@@ -196,37 +196,6 @@ components:
           description: Sync only collections that have a signature
       required:
       - url
-    AnsibleDistributionResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        base_path:
-          type: string
-        content_guard:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - base_path
-      - created_at
-      - name
-      - updated_at
-    PolicyDb6Enum:
-      enum:
-      - immediate
-      - When syncing, download all metadata and content now.
-      type: string
-      description: '* `immediate` - immediate
-
-        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
     ansible.CollectionRemote:
       type: object
       description: A serializer for Collection Remotes.
@@ -343,6 +312,37 @@ components:
           description: Sync only collections that have a signature
       required:
       - url
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+    AnsibleDistributionResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        base_path:
+          type: string
+        content_guard:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - base_path
+      - created_at
+      - name
+      - updated_at
     AnsibleRepositoryResponse:
       type: object
       properties:

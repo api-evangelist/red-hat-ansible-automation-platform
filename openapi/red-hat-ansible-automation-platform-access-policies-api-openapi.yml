@@ -347,6 +347,52 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PatchedAccessPolicy:
+      type: object
+      description: Serializer for AccessPolicy.
+      properties:
+        permissions_assignment:
+          type: array
+          items:
+            type: object
+          description: List of callables that define the new permissions to be created for new objects.This is deprecated. Use `creation_hooks` instead.
+        creation_hooks:
+          type: array
+          items:
+            type: object
+          description: List of callables that may associate user roles for new objects.
+        statements:
+          type: array
+          items:
+            type: object
+          description: List of policy statements defining the policy.
+        queryset_scoping:
+          type: object
+          description: A callable for performing queryset scoping. See plugin documentation for valid callables. Set to blank to turn off queryset scoping.
+    AccessPolicy:
+      type: object
+      description: Serializer for AccessPolicy.
+      properties:
+        permissions_assignment:
+          type: array
+          items:
+            type: object
+          description: List of callables that define the new permissions to be created for new objects.This is deprecated. Use `creation_hooks` instead.
+        creation_hooks:
+          type: array
+          items:
+            type: object
+          description: List of callables that may associate user roles for new objects.
+        statements:
+          type: array
+          items:
+            type: object
+          description: List of policy statements defining the policy.
+        queryset_scoping:
+          type: object
+          description: A callable for performing queryset scoping. See plugin documentation for valid callables. Set to blank to turn off queryset scoping.
+      required:
+      - statements
     AccessPolicyResponse:
       type: object
       description: Serializer for AccessPolicy.
@@ -393,30 +439,6 @@ components:
           description: A callable for performing queryset scoping. See plugin documentation for valid callables. Set to blank to turn off queryset scoping.
       required:
       - statements
-    AccessPolicy:
-      type: object
-      description: Serializer for AccessPolicy.
-      properties:
-        permissions_assignment:
-          type: array
-          items:
-            type: object
-          description: List of callables that define the new permissions to be created for new objects.This is deprecated. Use `creation_hooks` instead.
-        creation_hooks:
-          type: array
-          items:
-            type: object
-          description: List of callables that may associate user roles for new objects.
-        statements:
-          type: array
-          items:
-            type: object
-          description: List of policy statements defining the policy.
-        queryset_scoping:
-          type: object
-          description: A callable for performing queryset scoping. See plugin documentation for valid callables. Set to blank to turn off queryset scoping.
-      required:
-      - statements
     PaginatedAccessPolicyResponseList:
       type: object
       required:
@@ -442,25 +464,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AccessPolicyResponse'
-    PatchedAccessPolicy:
-      type: object
-      description: Serializer for AccessPolicy.
-      properties:
-        permissions_assignment:
-          type: array
-          items:
-            type: object
-          description: List of callables that define the new permissions to be created for new objects.This is deprecated. Use `creation_hooks` instead.
-        creation_hooks:
-          type: array
-          items:
-            type: object
-          description: List of callables that may associate user roles for new objects.
-        statements:
-          type: array
-          items:
-            type: object
-          description: List of policy statements defining the policy.
-        queryset_scoping:
-          type: object
-          description: A callable for performing queryset scoping. See plugin documentation for valid callables. Set to blank to turn off queryset scoping.

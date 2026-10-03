@@ -346,49 +346,6 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     ansible.CollectionResponse:
       type: object
       description: A serializer for Ansible Collections.
@@ -427,32 +384,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ansible.CollectionResponse'
-    CollectionOneShot:
-      type: object
-      description: A serializer for the Collection One Shot Upload API.
-      properties:
-        file:
-          type: string
-          format: binary
-          description: The Collection tarball.
-        sha256:
-          type: string
-          minLength: 1
-          description: An optional sha256 checksum of the uploaded file.
-        expected_namespace:
-          type: string
-          minLength: 1
-          description: The expected 'namespace' of the Collection to be verified against the metadata during import.
-        expected_name:
-          type: string
-          minLength: 1
-          description: The expected 'name' of the Collection to be verified against the metadata during import.
-        expected_version:
-          type: string
-          minLength: 1
-          description: The expected version of the Collection to be verified against the metadata during import.
-      required:
-      - file
     MyPermissionsResponse:
       type: object
       properties:
@@ -489,3 +420,72 @@ components:
           minLength: 1
       required:
       - role
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    CollectionOneShot:
+      type: object
+      description: A serializer for the Collection One Shot Upload API.
+      properties:
+        file:
+          type: string
+          format: binary
+          description: The Collection tarball.
+        sha256:
+          type: string
+          minLength: 1
+          description: An optional sha256 checksum of the uploaded file.
+        expected_namespace:
+          type: string
+          minLength: 1
+          description: The expected 'namespace' of the Collection to be verified against the metadata during import.
+        expected_name:
+          type: string
+          minLength: 1
+          description: The expected 'name' of the Collection to be verified against the metadata during import.
+        expected_version:
+          type: string
+          minLength: 1
+          description: The expected version of the Collection to be verified against the metadata during import.
+      required:
+      - file
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles

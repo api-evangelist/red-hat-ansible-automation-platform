@@ -54,6 +54,16 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     ReclaimSpace:
       type: object
       description: Serializer for reclaim disk space operation.
@@ -70,13 +80,3 @@ components:
           description: Will exclude repo versions from space reclaim.
       required:
       - repo_hrefs
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task

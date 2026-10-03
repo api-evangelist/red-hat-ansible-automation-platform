@@ -741,6 +741,253 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AuthenticatorMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        authenticator:
+          type: integer
+          description: The authenticator this mapping belongs to.
+        map_type:
+          enum:
+          - allow
+          - is_superuser
+          - role
+          - organization
+          - team
+          type: string
+          x-spec-enum-id: 4064e71cef1ae1e7
+          description: 'What will the map grant the user? System access (allow) a team or organization membership, the superuser flag or a role in the system.
+
+
+            * `allow` - allow
+
+            * `is_superuser` - is_superuser
+
+            * `role` - role
+
+            * `organization` - organization
+
+            * `team` - team'
+        role:
+          type:
+          - string
+          - 'null'
+          description: The role this map will grant the authenticating user to the targeted object. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        organization:
+          type:
+          - string
+          - 'null'
+          description: An organization name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        team:
+          type:
+          - string
+          - 'null'
+          description: A team name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax.
+          maxLength: 512
+        revoke:
+          type: boolean
+          description: Revoke the permission if a user does not meet this rule.
+        triggers:
+          description: Required. Trigger conditions dictionary that determines when this map applies. See /trigger_definition/ for structure details. Only one top-level key per request.
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The order in which this rule should be processed, smaller numbers are of higher precedence. Items with the same order will be executed in random order.
+      required:
+      - authenticator
+      - name
+      - triggers
+    AuthenticatorAssociate:
+      type: object
+      description: Serializer used for adding objects to a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of authenticators to add to this relationship.
+      required:
+      - instances
+    PaginatedAuthenticatorList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Authenticator'
+    AuthenticatorDisassociate:
+      type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of authenticators to remove from this relationship.
+      required:
+      - instances
+    PatchedAuthenticatorMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        authenticator:
+          type: integer
+          description: The authenticator this mapping belongs to.
+        map_type:
+          enum:
+          - allow
+          - is_superuser
+          - role
+          - organization
+          - team
+          type: string
+          x-spec-enum-id: 4064e71cef1ae1e7
+          description: 'What will the map grant the user? System access (allow) a team or organization membership, the superuser flag or a role in the system.
+
+
+            * `allow` - allow
+
+            * `is_superuser` - is_superuser
+
+            * `role` - role
+
+            * `organization` - organization
+
+            * `team` - team'
+        role:
+          type:
+          - string
+          - 'null'
+          description: The role this map will grant the authenticating user to the targeted object. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        organization:
+          type:
+          - string
+          - 'null'
+          description: An organization name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax
+          maxLength: 512
+        team:
+          type:
+          - string
+          - 'null'
+          description: A team name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax.
+          maxLength: 512
+        revoke:
+          type: boolean
+          description: Revoke the permission if a user does not meet this rule.
+        triggers:
+          description: Required. Trigger conditions dictionary that determines when this map applies. See /trigger_definition/ for structure details. Only one top-level key per request.
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The order in which this rule should be processed, smaller numbers are of higher precedence. Items with the same order will be executed in random order.
     Authenticator:
       type: object
       properties:
@@ -864,115 +1111,6 @@ components:
       - configuration
       - name
       - type
-    AuthenticatorDisassociate:
-      type: object
-      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of authenticators to remove from this relationship.
-      required:
-      - instances
-    PatchedAuthenticatorMap:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        authenticator:
-          type: integer
-          description: The authenticator this mapping belongs to.
-        map_type:
-          enum:
-          - allow
-          - is_superuser
-          - role
-          - organization
-          - team
-          type: string
-          x-spec-enum-id: 4064e71cef1ae1e7
-          description: 'What will the map grant the user? System access (allow) a team or organization membership, the superuser flag or a role in the system.
-
-
-            * `allow` - allow
-
-            * `is_superuser` - is_superuser
-
-            * `role` - role
-
-            * `organization` - organization
-
-            * `team` - team'
-        role:
-          type:
-          - string
-          - 'null'
-          description: The role this map will grant the authenticating user to the targeted object. Will expand {% for_attr_value(user_orgs) %} syntax
-          maxLength: 512
-        organization:
-          type:
-          - string
-          - 'null'
-          description: An organization name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax
-          maxLength: 512
-        team:
-          type:
-          - string
-          - 'null'
-          description: A team name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax.
-          maxLength: 512
-        revoke:
-          type: boolean
-          description: Revoke the permission if a user does not meet this rule.
-        triggers:
-          description: Required. Trigger conditions dictionary that determines when this map applies. See /trigger_definition/ for structure details. Only one top-level key per request.
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The order in which this rule should be processed, smaller numbers are of higher precedence. Items with the same order will be executed in random order.
     PaginatedAuthenticatorMapList:
       type: object
       required:
@@ -998,144 +1136,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthenticatorMap'
-    PaginatedAuthenticatorList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Authenticator'
-    AuthenticatorAssociate:
-      type: object
-      description: Serializer used for adding objects to a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of authenticators to add to this relationship.
-      required:
-      - instances
-    AuthenticatorMap:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        authenticator:
-          type: integer
-          description: The authenticator this mapping belongs to.
-        map_type:
-          enum:
-          - allow
-          - is_superuser
-          - role
-          - organization
-          - team
-          type: string
-          x-spec-enum-id: 4064e71cef1ae1e7
-          description: 'What will the map grant the user? System access (allow) a team or organization membership, the superuser flag or a role in the system.
-
-
-            * `allow` - allow
-
-            * `is_superuser` - is_superuser
-
-            * `role` - role
-
-            * `organization` - organization
-
-            * `team` - team'
-        role:
-          type:
-          - string
-          - 'null'
-          description: The role this map will grant the authenticating user to the targeted object. Will expand {% for_attr_value(user_orgs) %} syntax
-          maxLength: 512
-        organization:
-          type:
-          - string
-          - 'null'
-          description: An organization name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax
-          maxLength: 512
-        team:
-          type:
-          - string
-          - 'null'
-          description: A team name this rule works on. Will expand {% for_attr_value(user_orgs) %} syntax.
-          maxLength: 512
-        revoke:
-          type: boolean
-          description: Revoke the permission if a user does not meet this rule.
-        triggers:
-          description: Required. Trigger conditions dictionary that determines when this map applies. See /trigger_definition/ for structure details. Only one top-level key per request.
-        order:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The order in which this rule should be processed, smaller numbers are of higher precedence. Items with the same order will be executed in random order.
-      required:
-      - authenticator
-      - name
-      - triggers
   securitySchemes:
     Basic_Authentication:
       type: http

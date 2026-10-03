@@ -440,6 +440,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TeamAccessViewSet_Team_'
+    TeamAccessViewSet_Team_:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 512
+        organization:
+          type: integer
+        object_role_assignments:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - organization
     TeamAccessAssignment:
       type: object
       properties:
@@ -526,31 +551,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TeamAccessAssignment'
-    TeamAccessViewSet_Team_:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        name:
-          type: string
-          maxLength: 512
-        organization:
-          type: integer
-        object_role_assignments:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - organization
     PaginatedTeamAccessViewSet_Team_List_2:
       type: object
       properties:
@@ -583,6 +583,37 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TeamAccessViewSet_Team__2'
+    TeamAccessViewSet_Team__2:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        organization:
+          type: integer
+          description: The organization of this team.
+        object_role_assignments:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - name
+      - object_role_assignments
+      - organization
+      - related
+      - url
     TeamAccessAssignment_2:
       type: object
       properties:
@@ -683,37 +714,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TeamAccessAssignment_2'
-    TeamAccessViewSet_Team__2:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        organization:
-          type: integer
-          description: The organization of this team.
-        object_role_assignments:
-          type: string
-          readOnly: true
-      required:
-      - id
-      - name
-      - object_role_assignments
-      - organization
-      - related
-      - url
     TeamAccessViewSet_Team__3:
       type: object
       properties:

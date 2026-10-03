@@ -623,6 +623,132 @@ paths:
     - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
 components:
   schemas:
+    PaginatedRoleList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        first_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        last_name:
+          type:
+          - string
+          - 'null'
+          maxLength: 150
+        email:
+          type:
+          - string
+          - 'null'
+          title: Email address
+          maxLength: 254
+        is_superuser:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        is_system_auditor:
+          type: boolean
+          default: false
+        password:
+          type: string
+          default: ''
+          description: Field used to change the password.
+      required:
+      - username
+    TeamRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type: integer
+      required:
+      - name
+      - organization
     User:
       type: object
       properties:
@@ -692,49 +818,31 @@ components:
           readOnly: true
       required:
       - username
-    UserRequest:
+    PaginatedUserList:
       type: object
-      properties:
-        username:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        first_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        last_name:
-          type:
-          - string
-          - 'null'
-          maxLength: 150
-        email:
-          type:
-          - string
-          - 'null'
-          title: Email address
-          maxLength: 254
-        is_superuser:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        is_system_auditor:
-          type: boolean
-          default: false
-        password:
-          type: string
-          default: ''
-          description: Field used to change the password.
       required:
-      - username
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     Role:
       type: object
       properties:
@@ -784,114 +892,63 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Team'
-    TeamRequest:
+    PatchedRole:
       type: object
+      description: Serializer for Role.
       properties:
         name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
           type:
           - string
           - 'null'
           minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type: integer
-      required:
-      - name
-      - organization
-    Team:
+          description: An optional description.
+        permissions:
+          type: array
+          items:
+            type: string
+          description: List of permissions defining the role.
+    RoleResponse:
       type: object
+      description: Serializer for Role.
       properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
+        pulp_href:
           type: string
+          format: uri
           readOnly: true
-        url:
+        pulp_created:
           type: string
+          format: date-time
           readOnly: true
-        related:
+          description: Timestamp of creation.
+        pulp_last_updated:
           type: string
+          format: date-time
           readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
+          type: string
+          description: The name of this role.
         description:
           type:
           - string
           - 'null'
-          default: ''
-        organization:
-          type: integer
+          description: An optional description.
+        permissions:
+          type: array
+          items:
+            type: string
+          description: List of permissions defining the role.
+        locked:
+          type: boolean
+          readOnly: true
+          description: True if the role is system managed.
       required:
       - name
-      - organization
-    PaginatedRoleList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
-    PaginatedUserList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
+      - permissions
     Role_2:
       type: object
       description: Serializer for Role.
@@ -939,63 +996,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RoleResponse'
-    RoleResponse:
-      type: object
-      description: Serializer for Role.
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        name:
-          type: string
-          description: The name of this role.
-        description:
-          type:
-          - string
-          - 'null'
-          description: An optional description.
-        permissions:
-          type: array
-          items:
-            type: string
-          description: List of permissions defining the role.
-        locked:
-          type: boolean
-          readOnly: true
-          description: True if the role is system managed.
-      required:
-      - name
-      - permissions
-    PatchedRole:
-      type: object
-      description: Serializer for Role.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        permissions:
-          type: array
-          items:
-            type: string
-          description: List of permissions defining the role.
 x-refined-from:
 - red-hat-ansible-automation-platform-automation-controller-openapi.json
 - red-hat-ansible-automation-platform-automation-hub-openapi.json

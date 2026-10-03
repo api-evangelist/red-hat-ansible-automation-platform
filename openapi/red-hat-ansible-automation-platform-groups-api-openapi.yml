@@ -1537,76 +1537,6 @@ paths:
     - url: http://automation-hub-backend-cwa.automation-hub-prod.svc.cluster.local:8000/
 components:
   schemas:
-    PaginatedJobEventList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobEvent'
-    Group:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
     Host:
       type: object
       properties:
@@ -1688,56 +1618,181 @@ components:
       required:
       - inventory
       - name
-    PaginatedJobHostSummaryList:
+    JobHostSummary:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type: integer
+          readOnly: true
+        host:
           type:
-          - string
+          - integer
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          readOnly: true
+        constructed_host:
           type:
-          - string
+          - integer
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobHostSummary'
-    PaginatedInventorySourceList:
+          readOnly: true
+          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
+        host_name:
+          type: string
+          readOnly: true
+          default: ''
+        changed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        dark:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+        ok:
+          type: integer
+          minimum: 0
+          readOnly: true
+        processed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        skipped:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        ignored:
+          type: integer
+          minimum: 0
+          readOnly: true
+        rescued:
+          type: integer
+          minimum: 0
+          readOnly: true
+    ActivityStream:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InventorySource'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
+    PatchedGroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
     JobEvent:
       type: object
       properties:
@@ -1933,15 +1988,76 @@ components:
           readOnly: true
       required:
       - event
-    GroupVariableData:
+    PaginatedInventorySourceList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventorySource'
+    Group:
       type: object
       properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
         variables:
           type:
           - string
           - 'null'
           default: ''
           description: Group variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
     AdHocCommandListRequest:
       type: object
       properties:
@@ -2125,193 +2241,6 @@ components:
       required:
       - inventory
       - name
-    ActivityStream:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
-          type:
-          - string
-          - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
-      required:
-      - object1
-      - object2
-      - operation
-    GroupRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
-    JobHostSummary:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        job:
-          type: integer
-          readOnly: true
-        host:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        constructed_host:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
-        host_name:
-          type: string
-          readOnly: true
-          default: ''
-        changed:
-          type: integer
-          minimum: 0
-          readOnly: true
-        dark:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failures:
-          type: integer
-          minimum: 0
-          readOnly: true
-        ok:
-          type: integer
-          minimum: 0
-          readOnly: true
-        processed:
-          type: integer
-          minimum: 0
-          readOnly: true
-        skipped:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        ignored:
-          type: integer
-          minimum: 0
-          readOnly: true
-        rescued:
-          type: integer
-          minimum: 0
-          readOnly: true
-    GroupVariableDataRequest:
-      type: object
-      properties:
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
     PaginatedHostList:
       type: object
       required:
@@ -2337,7 +2266,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Host'
-    PaginatedGroupList:
+    PaginatedAdHocCommandListList:
       type: object
       required:
       - count
@@ -2361,257 +2290,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Group'
-    InventorySource:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        source:
-          enum:
-          - azure_rm
-          - controller
-          - ec2
-          - gce
-          - insights
-          - openshift_virtualization
-          - openstack
-          - rhv
-          - satellite6
-          - terraform
-          - vmware
-          - scm
-          - constructed
-          type: string
-          description: '* `azure_rm` - Microsoft Azure Resource Manager
-
-            * `controller` - Red Hat Ansible Automation Platform
-
-            * `ec2` - Amazon EC2
-
-            * `gce` - Google Compute Engine
-
-            * `insights` - Red Hat Insights
-
-            * `openshift_virtualization` - OpenShift Virtualization
-
-            * `openstack` - OpenStack
-
-            * `rhv` - Red Hat Virtualization
-
-            * `satellite6` - Red Hat Satellite 6
-
-            * `terraform` - Terraform State
-
-            * `vmware` - VMware vCenter
-
-            * `scm` - Sourced from a Project
-
-            * `constructed` - Template additional groups and hostvars at runtime'
-          x-spec-enum-id: 2e54dfe09d4f7d8d
-        source_path:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        source_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory source variables in YAML or JSON format.
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
-          maxLength: 1024
-        credential:
-          type:
-          - integer
-          - 'null'
-          minimum: 1
-          description: Cloud credential to use for inventory updates.
-        enabled_var:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
-        enabled_value:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
-        host_filter:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
-        overwrite:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Overwrite local groups and hosts from remote inventory source.
-        overwrite_vars:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Overwrite local variables from remote inventory source.
-        custom_virtualenv:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: Local absolute file path containing a custom Python virtualenv to use
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          type: integer
-          description: '* `0` - 0 (WARNING)
-
-            * `1` - 1 (INFO)
-
-            * `2` - 2 (DEBUG)'
-          x-spec-enum-id: 48197bd695a06691
-          default: 1
-          minimum: 0
-          maximum: 9223372036854775807
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Enter host, group or pattern match
-        last_job_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        last_job_failed:
-          type: boolean
-          readOnly: true
-        next_job_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          - never updated
-          - none
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled
-
-            * `never updated` - Never Updated
-
-            * `none` - No External Source'
-          x-spec-enum-id: 697673f6ed4abf52
-          readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        inventory:
-          type:
-          - integer
-          - 'null'
-        update_on_launch:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        update_cache_timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        source_project:
-          type:
-          - integer
-          - 'null'
-          description: Project containing inventory file used as source.
-        last_update_failed:
-          type: boolean
-          readOnly: true
-        last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - inventory
-      - name
-      - source
+            $ref: '#/components/schemas/AdHocCommandList'
     AdHocCommandList:
       type: object
       properties:
@@ -2893,32 +2572,7 @@ components:
           - boolean
           - 'null'
           default: false
-    PaginatedAdHocCommandListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdHocCommandList'
-    PatchedGroupVariableDataRequest:
+    GroupVariableDataRequest:
       type: object
       properties:
         variables:
@@ -2952,7 +2606,350 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ActivityStream'
-    PatchedGroupRequest:
+    InventorySource:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        source:
+          enum:
+          - azure_rm
+          - controller
+          - ec2
+          - gce
+          - insights
+          - openshift_virtualization
+          - openstack
+          - rhv
+          - satellite6
+          - terraform
+          - vmware
+          - scm
+          - constructed
+          type: string
+          description: '* `azure_rm` - Microsoft Azure Resource Manager
+
+            * `controller` - Red Hat Ansible Automation Platform
+
+            * `ec2` - Amazon EC2
+
+            * `gce` - Google Compute Engine
+
+            * `insights` - Red Hat Insights
+
+            * `openshift_virtualization` - OpenShift Virtualization
+
+            * `openstack` - OpenStack
+
+            * `rhv` - Red Hat Virtualization
+
+            * `satellite6` - Red Hat Satellite 6
+
+            * `terraform` - Terraform State
+
+            * `vmware` - VMware vCenter
+
+            * `scm` - Sourced from a Project
+
+            * `constructed` - Template additional groups and hostvars at runtime'
+          x-spec-enum-id: 2e54dfe09d4f7d8d
+        source_path:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        source_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source variables in YAML or JSON format.
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        credential:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          description: Cloud credential to use for inventory updates.
+        enabled_var:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
+        enabled_value:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
+        overwrite:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local groups and hosts from remote inventory source.
+        overwrite_vars:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local variables from remote inventory source.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Local absolute file path containing a custom Python virtualenv to use
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: '* `0` - 0 (WARNING)
+
+            * `1` - 1 (INFO)
+
+            * `2` - 2 (DEBUG)'
+          x-spec-enum-id: 48197bd695a06691
+          default: 1
+          minimum: 0
+          maximum: 9223372036854775807
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Enter host, group or pattern match
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - none
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `none` - No External Source'
+          x-spec-enum-id: 697673f6ed4abf52
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        inventory:
+          type:
+          - integer
+          - 'null'
+        update_on_launch:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        update_cache_timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        source_project:
+          type:
+          - integer
+          - 'null'
+          description: Project containing inventory file used as source.
+        last_update_failed:
+          type: boolean
+          readOnly: true
+        last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - inventory
+      - name
+      - source
+    PaginatedJobEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobEvent'
+    GroupVariableData:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+    PaginatedGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    PatchedGroupVariableDataRequest:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+    PaginatedJobHostSummaryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobHostSummary'
+    GroupRequest:
       type: object
       properties:
         name:
@@ -2974,57 +2971,9 @@ components:
           - 'null'
           default: ''
           description: Group variables in JSON or YAML format.
-    GroupResponse:
-      type: object
-      description: Serializer for Group.
-      properties:
-        name:
-          type: string
-          description: Name
-          maxLength: 150
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        id:
-          type: integer
-          format: int64
-          readOnly: true
       required:
+      - inventory
       - name
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
     Group_2:
       type: object
       description: Serializer for Group.
@@ -3043,6 +2992,24 @@ components:
           type: string
           minLength: 1
           maxLength: 150
+    GroupResponse:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          description: Name
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+      required:
+      - name
     MyPermissionsResponse:
       type: object
       properties:
@@ -3052,33 +3019,6 @@ components:
             type: string
       required:
       - permissions
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
     PaginatedGroupResponseList:
       type: object
       properties:
@@ -3111,6 +3051,66 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GroupResponse'
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
 x-refined-from:
 - red-hat-ansible-automation-platform-automation-controller-openapi.json
 - red-hat-ansible-automation-platform-automation-hub-openapi.json

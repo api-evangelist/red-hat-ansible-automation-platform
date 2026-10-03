@@ -423,12 +423,213 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AdHocCommandListRequest:
+      type: object
+      properties:
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential:
+          type:
+          - integer
+          - 'null'
+        module_name:
+          enum:
+          - command
+          - shell
+          - yum
+          - apt
+          - apt_key
+          - apt_repository
+          - apt_rpm
+          - service
+          - group
+          - user
+          - mount
+          - ping
+          - selinux
+          - setup
+          - win_ping
+          - win_service
+          - win_updates
+          - win_group
+          - win_user
+          type: string
+          description: '* `command` - command
+
+            * `shell` - shell
+
+            * `yum` - yum
+
+            * `apt` - apt
+
+            * `apt_key` - apt_key
+
+            * `apt_repository` - apt_repository
+
+            * `apt_rpm` - apt_rpm
+
+            * `service` - service
+
+            * `group` - group
+
+            * `user` - user
+
+            * `mount` - mount
+
+            * `ping` - ping
+
+            * `selinux` - selinux
+
+            * `setup` - setup
+
+            * `win_ping` - win_ping
+
+            * `win_service` - win_service
+
+            * `win_updates` - win_updates
+
+            * `win_group` - win_group
+
+            * `win_user` - win_user'
+          x-spec-enum-id: 857230cdbb58eda2
+          default: command
+        module_args:
+          type:
+          - string
+          - 'null'
+          default: ''
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+    AdHocCommandCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
     UnifiedJobStdout:
       type: object
       properties:
         result_stdout:
           type: string
           readOnly: true
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
     PaginatedAdHocCommandEventList:
       type: object
       required:
@@ -454,6 +655,31 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdHocCommandEvent'
+    PaginatedAdHocCommandListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdHocCommandList'
     AdHocCommandList:
       type: object
       properties:
@@ -735,201 +961,6 @@ components:
           - boolean
           - 'null'
           default: false
-    PaginatedAdHocCommandListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdHocCommandList'
-    AdHocCommandListRequest:
-      type: object
-      properties:
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential:
-          type:
-          - integer
-          - 'null'
-        module_name:
-          enum:
-          - command
-          - shell
-          - yum
-          - apt
-          - apt_key
-          - apt_repository
-          - apt_rpm
-          - service
-          - group
-          - user
-          - mount
-          - ping
-          - selinux
-          - setup
-          - win_ping
-          - win_service
-          - win_updates
-          - win_group
-          - win_user
-          type: string
-          description: '* `command` - command
-
-            * `shell` - shell
-
-            * `yum` - yum
-
-            * `apt` - apt
-
-            * `apt_key` - apt_key
-
-            * `apt_repository` - apt_repository
-
-            * `apt_rpm` - apt_rpm
-
-            * `service` - service
-
-            * `group` - group
-
-            * `user` - user
-
-            * `mount` - mount
-
-            * `ping` - ping
-
-            * `selinux` - selinux
-
-            * `setup` - setup
-
-            * `win_ping` - win_ping
-
-            * `win_service` - win_service
-
-            * `win_updates` - win_updates
-
-            * `win_group` - win_group
-
-            * `win_user` - win_user'
-          x-spec-enum-id: 857230cdbb58eda2
-          default: command
-        module_args:
-          type:
-          - string
-          - 'null'
-          default: ''
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
     Notification:
       type: object
       properties:
@@ -1024,6 +1055,188 @@ components:
           description: Notification body
       required:
       - notification_type
+    AdHocCommandEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        ad_hoc_command:
+          type: integer
+          readOnly: true
+        event:
+          enum:
+          - runner_on_failed
+          - runner_on_ok
+          - runner_on_unreachable
+          - runner_on_skipped
+          - debug
+          - verbose
+          - deprecated
+          - warning
+          - system_warning
+          - error
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `runner_on_failed` - Host Failed
+
+            * `runner_on_ok` - Host OK
+
+            * `runner_on_unreachable` - Host Unreachable
+
+            * `runner_on_skipped` - Host Skipped
+
+            * `debug` - Debug
+
+            * `verbose` - Verbose
+
+            * `deprecated` - Deprecated
+
+            * `warning` - Warning
+
+            * `system_warning` - System Warning
+
+            * `error` - Error'
+          x-spec-enum-id: 3c8188cd2c554d8a
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
+          type: string
+          readOnly: true
+        event_data:
+          default: {}
+        failed:
+          type: boolean
+          readOnly: true
+        changed:
+          type: boolean
+          readOnly: true
+        uuid:
+          type: string
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        host_name:
+          type: string
+          readOnly: true
+        stdout:
+          type: string
+          readOnly: true
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+      required:
+      - event
+    ActivityStream:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+        operation:
+          enum:
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
+
+
+            * `create` - Entity Created
+
+            * `update` - Entity Updated
+
+            * `delete` - Entity Deleted
+
+            * `associate` - Entity Associated with another Entity
+
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
+          type: string
+          readOnly: true
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
+          type: string
+          readOnly: true
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
+          type: string
+          readOnly: true
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
+      required:
+      - object1
+      - object2
+      - operation
     AdHocCommandDetail:
       type: object
       properties:
@@ -1323,216 +1536,3 @@ components:
         host_status_counts:
           readOnly: true
           description: Playbook stats from the Ansible playbook_on_stats event.
-    ActivityStream:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
-          type:
-          - string
-          - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
-      required:
-      - object1
-      - object2
-      - operation
-    AdHocCommandCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
-    AdHocCommandEvent:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        ad_hoc_command:
-          type: integer
-          readOnly: true
-        event:
-          enum:
-          - runner_on_failed
-          - runner_on_ok
-          - runner_on_unreachable
-          - runner_on_skipped
-          - debug
-          - verbose
-          - deprecated
-          - warning
-          - system_warning
-          - error
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `runner_on_failed` - Host Failed
-
-            * `runner_on_ok` - Host OK
-
-            * `runner_on_unreachable` - Host Unreachable
-
-            * `runner_on_skipped` - Host Skipped
-
-            * `debug` - Debug
-
-            * `verbose` - Verbose
-
-            * `deprecated` - Deprecated
-
-            * `warning` - Warning
-
-            * `system_warning` - System Warning
-
-            * `error` - Error'
-          x-spec-enum-id: 3c8188cd2c554d8a
-        counter:
-          type: integer
-          minimum: 0
-          readOnly: true
-        event_display:
-          type: string
-          readOnly: true
-        event_data:
-          default: {}
-        failed:
-          type: boolean
-          readOnly: true
-        changed:
-          type: boolean
-          readOnly: true
-        uuid:
-          type: string
-          readOnly: true
-        host:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        host_name:
-          type: string
-          readOnly: true
-        stdout:
-          type: string
-          readOnly: true
-        start_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        end_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        verbosity:
-          type: integer
-          minimum: 0
-          readOnly: true
-      required:
-      - event
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'

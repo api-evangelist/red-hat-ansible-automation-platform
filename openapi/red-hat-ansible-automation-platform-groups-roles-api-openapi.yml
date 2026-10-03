@@ -261,19 +261,39 @@ paths:
           description: No response body
 components:
   schemas:
-    GroupRole:
+    GroupRoleResponse:
       type: object
       description: Serializer for GroupRole.
       properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         role:
           type: string
-          minLength: 1
         content_object:
           type:
           - string
           - 'null'
-          minLength: 1
           description: pulp_href of the object for which role permissions should be asserted. If set to 'null', permissions will act on the model-level.
+        description:
+          type: string
+          readOnly: true
+        permissions:
+          type: array
+          items:
+            type: string
+          readOnly: true
         domain:
           type:
           - string
@@ -308,39 +328,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GroupRoleResponse'
-    GroupRoleResponse:
+    GroupRole:
       type: object
       description: Serializer for GroupRole.
       properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         role:
           type: string
+          minLength: 1
         content_object:
           type:
           - string
           - 'null'
+          minLength: 1
           description: pulp_href of the object for which role permissions should be asserted. If set to 'null', permissions will act on the model-level.
-        description:
-          type: string
-          readOnly: true
-        permissions:
-          type: array
-          items:
-            type: string
-          readOnly: true
         domain:
           type:
           - string
