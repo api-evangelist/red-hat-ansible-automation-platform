@@ -9473,6 +9473,9 @@ apis:
   - type: Console
     url: https://console.redhat.com/ansible/ansible-dashboard
 common:
+  - type: CapabilityMap
+    url: capabilities/red-hat-ansible-automation-platform-capability-edges.yml
+    name: Red Hat Ansible Automation Platform Business Capability Map
   - type: Overlay
     url: overlays/red-hat-ansible-automation-platform-automation-controller-overlay.yaml
   - type: Overlay

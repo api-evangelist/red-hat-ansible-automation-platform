@@ -1,0 +1,400 @@
+slug: red-hat-ansible-automation-platform
+provider: Red Hat Ansible Automation Platform
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 40
+edges:
+- tag: role_team_assignments
+  spec_file: red-hat-ansible-automation-platform-role-team-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: POST /api/v2/role_team_assignments/ 'Role team assignments create'; DELETE ... 'Role team
+    assignments destroy'; schema 'RoleTeamAssignmentCreate'
+  reason: Grants and revokes roles to teams on platform resources — direct management of access rights,
+    i.e. Identity & Access Management.
+- tag: role_user_assignments
+  spec_file: red-hat-ansible-automation-platform-role-user-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.9
+  evidence: POST /api/v2/role_user_assignments/ 'Role user assignments create'; schema 'RoleUserAssignmentCreate'
+  reason: Creates and removes role grants for individual users across the platform — core authorisation
+    administration under Identity & Access Management.
+- tag: role_definitions
+  spec_file: red-hat-ansible-automation-platform-role-definitions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.88
+  evidence: POST /api/v2/role_definitions/ 'Role definitions create'; GET /api/v2/role_definitions/{id}/user_assignments/
+    'Role definitions user assignments list'; schemas 'RoleDefinition', 'RoleUserAssignment', 'RoleTeamAssignment'
+  reason: Full CRUD over RBAC role definitions plus their user and team assignments — this is access-control/authorisation
+    administration, i.e. Identity & Access Management.
+- tag: 'Api: _Ui V1 Users'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v1-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '''Create an user'', ''Update an user'', ''Delete an user''; schemas UserResponse, PatchedUser'
+  reason: Full CRUD lifecycle over platform user accounts in Automation Hub — joiner/mover/leaver style
+    account administration, which is Identity & Access Management for an IT automation platform, not HR
+    employee records.
+- tag: 'Api: _Ui V2 Role_Definitions'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-role-definitions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '''Create a role definition'', ''Update a role definition''; schemas RoleDefinition, RoleDefinitionDetail'
+  reason: Defines named sets of permissions (role definitions) used for RBAC in the platform — squarely
+    authorisation/role administration under Identity & Access Management.
+- tag: 'Api: _Ui V2 Role_Team_Assignments'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-role-team-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: POST /api/automation-hub/_ui/v2/role_team_assignments/ create and DELETE ...{id}/; schema
+    RoleTeamAssignment
+  reason: Grants and revokes RBAC roles to teams within the automation platform — direct provisioning
+    of access rights, Identity & Access Management.
+- tag: Roles
+  spec_file: red-hat-ansible-automation-platform-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '"Roles teams create", "Roles users create", "Create a role", schemas Role, Team, User, PaginatedRoleList'
+  reason: Operations define roles and assign them to users and teams across Automation Controller and
+    Automation Hub — role-based access control administration, which is Identity & Access Management.
+    Slight ambiguity only in that it could be read as generic platform admin.
+- tag: Users - Roles
+  spec_file: red-hat-ansible-automation-platform-users-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: '"users_roles_create  Create an user role", "users_roles_delete  Delete an user role"; schema
+    "UserRole"'
+  reason: Assignment and revocation of roles to users — role-based access control administration, squarely
+    Identity & Access Management.
+- tag: role_team_access
+  spec_file: red-hat-ansible-automation-platform-role-team-access-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /api/v2/role_team_access/{model_name}/{id}/ 'Role team access list'; schemas 'TeamAccessAssignment',
+    'TeamAccessViewSet_Team_'
+  reason: Lists which teams hold access to a given resource via role assignments — authorisation/access
+    review, squarely Identity & Access Management.
+- tag: role_user_access
+  spec_file: red-hat-ansible-automation-platform-role-user-access-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.85
+  evidence: GET /api/v2/role_user_access/{model_name}/{id}/ 'Role user access list'; schemas 'UserAccessAssignment',
+    'UserAccessViewSet_User_'
+  reason: Lists which users have access to a given object through role assignments — access review/authorisation,
+    mapping to Identity & Access Management.
+- tag: 'Api: Service-Index Role-Team-Assignments'
+  spec_file: red-hat-ansible-automation-platform-api-service-index-role-team-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: '"List role team assignments", schema "ServiceRoleTeamAssignmentResponse"'
+  reason: Role assignments to teams are RBAC administration for the automation platform, i.e. Identity
+    & Access Management. No other candidate fits team-to-role authorisation records.
+- tag: 'Api: Service-Index Role-Team-Assignments Assign'
+  spec_file: red-hat-ansible-automation-platform-api-service-index-role-team-assignments-assign-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /api/automation-hub/service-index/role-team-assignments/assign/ with "ServiceRoleTeamAssignment"
+  reason: Grants a role to a team — a direct access-grant operation, mapping to Identity & Access Management.
+- tag: 'Api: Service-Index Role-Team-Assignments Unassign'
+  spec_file: red-hat-ansible-automation-platform-api-service-index-role-team-assignments-unassign-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /api/automation-hub/service-index/role-team-assignments/unassign/ with "ServiceRoleTeamAssignment"
+  reason: Revokes a role from a team — access revocation, part of Identity & Access Management.
+- tag: 'Api: Service-Index Role-User-Assignments'
+  spec_file: red-hat-ansible-automation-platform-api-service-index-role-user-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: '"List role user assignments", schema "ServiceRoleUserAssignmentResponse"'
+  reason: User-to-role authorisation records for the platform — Identity & Access Management, not any
+    HR or business-role concept.
+- tag: 'Api: Service-Index Role-User-Assignments Assign'
+  spec_file: red-hat-ansible-automation-platform-api-service-index-role-user-assignments-assign-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /api/automation-hub/service-index/role-user-assignments/assign/ with "ServiceRoleUserAssignment"
+  reason: Assigns a role to a user, i.e. granting access rights — Identity & Access Management.
+- tag: 'Api: Service-Index Role-User-Assignments Unassign'
+  spec_file: red-hat-ansible-automation-platform-api-service-index-role-user-assignments-unassign-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /api/automation-hub/service-index/role-user-assignments/unassign/ with "ServiceRoleUserAssignment"
+  reason: Removes a user's role assignment — access revocation under Identity & Access Management.
+- tag: 'Groups: Roles'
+  spec_file: red-hat-ansible-automation-platform-groups-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: '"Create a group role", "List group roles"; schema "GroupRoleResponse"'
+  reason: Assignment of roles to groups is role-based access control administration for the platform,
+    squarely identity and access management.
+- tag: 'Api: _Ui V2 Groups'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-groups-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '''Create a group'', ''Inspect a group'', ''Delete a group''; schemas GroupResponse, PatchedGroup'
+  reason: Groups in Automation Hub are the aggregation units to which permissions are granted; CRUD over
+    them is access administration (IAM), not organisational HR structure.
+- tag: 'Api: _Ui V2 Role_Definitions Team_Assignments'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-role-definitions-team-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET .../role_definitions/{id}/team_assignments/; schema RoleTeamAssignmentResponse
+  reason: Enumerates which teams a given RBAC role definition is assigned to — an access-rights review
+    surface, i.e. Identity & Access Management.
+- tag: 'Api: _Ui V2 Role_Definitions User_Assignments'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-role-definitions-user-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET .../role_definitions/{id}/user_assignments/; schema RoleUserAssignmentResponse
+  reason: Lists user-to-role assignments for a role definition, i.e. who holds which permissions — access
+    administration and review under IAM.
+- tag: 'Api: _Ui V2 Role_User_Assignments'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-role-user-assignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: 'POST /api/automation-hub/_ui/v2/role_user_assignments/ ... schemas: RoleUserAssignmentResponse,
+    RoleUserAssignment'
+  reason: CRUD over assignments of roles to users — role-based access control administration, mapping
+    to Identity & Access Management.
+- tag: Authenticators
+  spec_file: red-hat-ansible-automation-platform-authenticators-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '''Authenticators create'', ''Authenticators authenticator maps list''; schemas: Authenticator,
+    AuthenticatorMap, User'
+  reason: Configures authentication providers (authenticators) and their mapping to users/roles — identity
+    federation configuration, which is Identity & Access Management.
+- tag: Users
+  spec_file: red-hat-ansible-automation-platform-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"users_create  Users create", "users_access_list_list", "users_credentials_create", "users_admin_of_organizations_retrieve";
+    schemas "RoleSerializerWithParentAccess", "ResourceAccessListElement", "Team"'
+  reason: CRUD over platform user accounts plus their roles, credentials, teams and organisation access
+    — identity and access administration for the automation platform.
+- tag: ad_hoc_commands
+  spec_file: red-hat-ansible-automation-platform-ad-hoc-commands-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.8
+  evidence: '"ad_hoc_commands_create", "ad_hoc_commands_cancel_create", "ad_hoc_commands_stdout_retrieve";
+    schema "AdHocCommandDetail"'
+  reason: Launching, cancelling and inspecting ad hoc automation commands executed against managed infrastructure
+    — operational IT automation.
+- tag: authenticator_maps
+  spec_file: red-hat-ansible-automation-platform-authenticator-maps-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"authenticator_maps_authenticators_associate_create", schemas "AuthenticatorMap", "Authenticator"'
+  reason: Configuration of rules mapping external authenticators (identity providers) to platform access
+    — federated identity and access management administration.
+- tag: Groups > Users
+  spec_file: red-hat-ansible-automation-platform-groups-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.78
+  evidence: POST /api/automation-hub/pulp/api/v3/groups/{group_pk}/users/ "Create an user"; DELETE "Delete
+    an user"; schema "GroupUserResponse"
+  reason: Manages membership of users within authorization groups in Automation Hub, which is identity
+    and access administration. Mapped to IAM rather than HR since these are platform accounts, not employee
+    records.
+- tag: 'Api: _Ui V2 Role_Team_Access'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-role-team-access-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /api/automation-hub/_ui/v2/role_team_access/{model_name}/{id}/; schemas TeamAccessAssignmentResponse,
+    TeamAccessViewSet_Team_Response
+  reason: Reads which teams have access to a given object via role assignments — object-level permission
+    inspection, a classic access-management surface rather than any team/HR function.
+- tag: 'Api: _Ui V2 Role_User_Access'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-role-user-access-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: 'GET /api/automation-hub/_ui/v2/role_user_access/{model_name}/{id}/ ... schemas: UserAccessAssignmentResponse'
+  reason: Operations list which users hold access/role assignments on objects in Automation Hub — role-based
+    access control administration, i.e. Identity & Access Management. Technical RBAC plumbing but squarely
+    IAM.
+- tag: 'Api: _Ui V2 Users'
+  spec_file: red-hat-ansible-automation-platform-api-ui-v2-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: '''List users'', ''Create an user'', ''Delete an user''; schemas: UserCreateUpdateDelete'
+  reason: Platform user account lifecycle (create/update/delete) in Automation Hub — joiners-movers-leavers
+    style account administration, i.e. Identity & Access Management, not HR employee records.
+- tag: Feature Flags
+  spec_file: red-hat-ansible-automation-platform-feature-flags-api-openapi.yml
+  capability_id: BC-4210.50
+  capability_id_l1: BC-4210
+  capability_name: Feature Flag Management
+  confidence: 0.75
+  evidence: GET /api/gateway/v1/feature_flags/ "Feature flags list"; PATCH "Feature flags partial update";
+    schemas "FeatureFlagPatch", "FeatureFlagStates"
+  reason: Operations read and patch feature flag definitions and their runtime states, which is exactly
+    lifecycle and runtime control of feature flags. Some uncertainty because the flags are read-mostly
+    platform toggles rather than a full experimentation/targeting surface.
+- tag: Workflow Job Templates
+  spec_file: red-hat-ansible-automation-platform-workflow-job-templates-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.75
+  evidence: '"workflow_job_templates_create", schemas "WorkflowJobLaunch", "Schedule", "NotificationTemplateRequest"'
+  reason: Definition, scheduling and launching of IT automation workflow templates in Automation Controller
+    — day-to-day IT operations automation.
+- tag: Workflow Jobs
+  spec_file: red-hat-ansible-automation-platform-workflow-jobs-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.75
+  evidence: '"workflow_jobs_cancel_create", "workflow_jobs_relaunch_create", schema "WorkflowJob"'
+  reason: Execution control (run, cancel, relaunch, inspect) of automation workflow jobs against infrastructure
+    — IT operations automation execution.
+- tag: system_job_templates
+  spec_file: red-hat-ansible-automation-platform-system-job-templates-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.75
+  evidence: POST /api/v2/system_job_templates/{id}/launch/ 'System job templates launch create'; GET .../schedules/
+    'System job templates schedules list'
+  reason: AWX system job templates define scheduled, launchable platform maintenance automation jobs with
+    notification hooks — day-to-day IT operations automation and monitoring, squarely BC-600.40. Not a
+    business-domain 'job' in the HR or manufacturing sense.
+- tag: system_jobs
+  spec_file: red-hat-ansible-automation-platform-system-jobs-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.75
+  evidence: POST /api/v2/system_jobs/{id}/cancel/ 'System jobs cancel create'; GET /api/v2/system_jobs/{id}/events/
+    'System jobs events list'
+  reason: Run-time records of executed automation jobs with cancel, event and notification inspection
+    — operational execution and monitoring of IT automation runs, i.e. IT Operations Management.
+- tag: role_metadata
+  spec_file: red-hat-ansible-automation-platform-role-metadata-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.72
+  evidence: GET /api/v2/role_metadata/ 'Role metadata retrieve'; schema 'RoleMetadata'
+  reason: Exposes the available role/permission metadata underpinning the platform's RBAC model, supporting
+    access administration. Single read operation, so confidence is moderate.
+- tag: Access Policies
+  spec_file: red-hat-ansible-automation-platform-access-policies-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /api/automation-hub/pulp/api/v3/access_policies/ access_policies_list List access policys;
+    PUT .../{pulp_id}/ Update an access policy
+  reason: Operations manage role-based access policies governing who may act on Automation Hub resources,
+    which is identity and access management; it is platform RBAC configuration rather than enterprise
+    IAM programme work, hence 0.7.
+- tag: Applications
+  spec_file: red-hat-ansible-automation-platform-applications-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: 'schemas: PaginatedOAuth2ApplicationList, OAuth2Application, OAuth2Token; GET /api/gateway/v1/applications/{id}/tokens/'
+  reason: Manages OAuth2 applications and their tokens — credential/client registration for API access.
+    IAM is the honest cross-industry fit; BC-4270.40 would apply to an external developer ecosystem, which
+    is not evidenced here.
+- tag: Teams
+  spec_file: red-hat-ansible-automation-platform-teams-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: GET /api/v2/teams/{id}/object_roles/ 'Teams object roles list'; GET /api/v2/teams/{id}/access_list/;
+    schemas Role, ResourceAccessListElement, User
+  reason: Teams here are user groupings carrying roles, credentials and resource access lists — i.e. managing
+    access grants for principals, which is Identity & Access Management rather than HR team structure.
+- tag: authenticator_users
+  spec_file: red-hat-ansible-automation-platform-authenticator-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: POST /api/gateway/v1/authenticator_users/{id}/move/ 'Authenticator users move create'; schema
+    AuthenticatorUserMove, AuthenticatorUser
+  reason: Operations list and move user accounts between authenticators (identity providers) in the AAP
+    gateway — lifecycle administration of user identities against federated auth sources, which is Identity
+    & Access Management. Not a business 'user' domain object.
+- tag: inventory_updates
+  spec_file: red-hat-ansible-automation-platform-inventory-updates-api-openapi.yml
+  capability_id: BC-600.40
+  capability_id_l1: BC-600
+  capability_name: IT Operations Management
+  confidence: 0.7
+  evidence: POST /api/v2/inventory_updates/{id}/cancel/ 'Inventory updates cancel create'; GET .../stdout/
+    'Inventory updates stdout retrieve'; schemas InventoryUpdateEvent, UnifiedJobStdout
+  reason: These are automation job runs that synchronise host inventory from infrastructure sources, with
+    cancellation, event streams, stdout and notifications — day-to-day IT operations automation and monitoring.
+    Nothing here relates to stock/materials inventory.
