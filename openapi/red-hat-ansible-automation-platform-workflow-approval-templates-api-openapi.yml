@@ -164,31 +164,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedWorkflowApprovalListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkflowApprovalList'
     WorkflowApprovalList:
       type: object
       properties:
@@ -347,6 +322,32 @@ components:
           readOnly: true
       required:
       - name
+    PatchedWorkflowApprovalTemplateRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) before the approval node expires and fails.
     WorkflowApprovalTemplate:
       type: object
       properties:
@@ -453,32 +454,31 @@ components:
           description: The amount of time (in seconds) before the approval node expires and fails.
       required:
       - name
-    PatchedWorkflowApprovalTemplateRequest:
+    PaginatedWorkflowApprovalListList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        timeout:
+        count:
           type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) before the approval node expires and fails.
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowApprovalList'
     WorkflowApprovalTemplateRequest:
       type: object
       properties:

@@ -347,6 +347,42 @@ paths:
           description: ''
 components:
   schemas:
+    MethodEnum:
+      enum:
+      - write
+      - hardlink
+      - symlink
+      type: string
+      description: '* `write` - Export by writing
+
+        * `hardlink` - Export by hardlinking
+
+        * `symlink` - Export by symlinking'
+    PaginatedFilesystemExporterResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilesystemExporterResponse'
     FilesystemExporterResponse:
       type: object
       description: Serializer for FilesystemExporters.
@@ -410,41 +446,6 @@ components:
             * `hardlink` - Export by hardlinking
 
             * `symlink` - Export by symlinking'
-    PaginatedFilesystemExporterResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FilesystemExporterResponse'
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     FilesystemExporter:
       type: object
       description: Serializer for FilesystemExporters.
@@ -472,14 +473,13 @@ components:
       required:
       - name
       - path
-    MethodEnum:
-      enum:
-      - write
-      - hardlink
-      - symlink
-      type: string
-      description: '* `write` - Export by writing
-
-        * `hardlink` - Export by hardlinking
-
-        * `symlink` - Export by symlinking'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

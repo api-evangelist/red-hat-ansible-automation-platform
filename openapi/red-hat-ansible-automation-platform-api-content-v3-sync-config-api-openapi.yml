@@ -92,6 +92,38 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AnsibleRepositoryResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        next_version:
+          type: integer
+          format: int64
+          maximum: 2147483647
+          minimum: 0
+        distributions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnsibleDistributionResponse'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        last_sync_task:
+          type: string
+          readOnly: true
+      required:
+      - created_at
+      - name
+      - updated_at
     ansible.CollectionRemoteResponse:
       type: object
       description: A serializer for Collection Remotes.
@@ -196,6 +228,37 @@ components:
           description: Sync only collections that have a signature
       required:
       - url
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
+    AnsibleDistributionResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        base_path:
+          type: string
+        content_guard:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - base_path
+      - created_at
+      - name
+      - updated_at
     ansible.CollectionRemote:
       type: object
       description: A serializer for Collection Remotes.
@@ -312,66 +375,3 @@ components:
           description: Sync only collections that have a signature
       required:
       - url
-    PolicyDb6Enum:
-      enum:
-      - immediate
-      - When syncing, download all metadata and content now.
-      type: string
-      description: '* `immediate` - immediate
-
-        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
-    AnsibleDistributionResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        base_path:
-          type: string
-        content_guard:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - base_path
-      - created_at
-      - name
-      - updated_at
-    AnsibleRepositoryResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        next_version:
-          type: integer
-          format: int64
-          maximum: 2147483647
-          minimum: 0
-        distributions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnsibleDistributionResponse'
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-        updated_at:
-          type: string
-          format: date-time
-        last_sync_task:
-          type: string
-          readOnly: true
-      required:
-      - created_at
-      - name
-      - updated_at

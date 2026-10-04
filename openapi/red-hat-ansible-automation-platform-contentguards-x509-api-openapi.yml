@@ -337,6 +337,31 @@ paths:
           description: No response body
 components:
   schemas:
+    Paginatedcertguard.X509CertGuardResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/certguard.X509CertGuardResponse'
     certguard.X509CertGuardResponse:
       type: object
       description: X.509 Content Guard Serializer.
@@ -408,28 +433,3 @@ components:
           type: string
           minLength: 1
           description: A Certificate Authority (CA) certificate (or a bundle thereof) used to verify client-certificate authenticity.
-    Paginatedcertguard.X509CertGuardResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/certguard.X509CertGuardResponse'

@@ -677,56 +677,84 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedOAuth2ApplicationList:
+    OAuth2Token:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
           type:
-          - string
+          - integer
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
           type:
-          - string
+          - integer
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OAuth2Application'
-    PaginatedOAuth2TokenList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+          readOnly: true
+          description: The user who last modified this resource.
+        expires:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+          description: The user representing the token owner.
+        application:
+          type:
+          - integer
+          - 'null'
+          description: The related application. If None, this is a user token instead of an application token.
+        description:
+          type: string
+          description: A description for this token.
+        last_used:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
+          format: date-time
+          readOnly: true
+          description: A timestamp of when this token was last used.
+        scope:
+          type: string
+          description: Allowed scopes, further restricts user permissions. Must be a simple space-separated string with allowed scopes ['read', 'write', 'openid', 'roles'].
+          maxLength: 128
+        token:
+          type: string
+          readOnly: true
+          description: The generated token value.
+        refresh_token:
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OAuth2Token'
+          readOnly: true
     PatchedOAuth2Application:
       type: object
       properties:
@@ -844,6 +872,31 @@ components:
             * `authorization-code` - Authorization code
 
             * `password` - Resource owner password-based'
+    PaginatedOAuth2ApplicationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuth2Application'
     OAuth2Application:
       type: object
       properties:
@@ -966,84 +1019,31 @@ components:
       - client_type
       - name
       - organization
-    OAuth2Token:
+    PaginatedOAuth2TokenList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        expires:
-          type: string
-          format: date-time
-          readOnly: true
-        user:
-          type: integer
-          readOnly: true
-          description: The user representing the token owner.
-        application:
-          type:
-          - integer
-          - 'null'
-          description: The related application. If None, this is a user token instead of an application token.
-        description:
-          type: string
-          description: A description for this token.
-        last_used:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          format: date-time
-          readOnly: true
-          description: A timestamp of when this token was last used.
-        scope:
-          type: string
-          description: Allowed scopes, further restricts user permissions. Must be a simple space-separated string with allowed scopes ['read', 'write', 'openid', 'roles'].
-          maxLength: 128
-        token:
-          type: string
-          readOnly: true
-          description: The generated token value.
-        refresh_token:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
           - string
           - 'null'
-          readOnly: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuth2Token'
   securitySchemes:
     Basic_Authentication:
       type: http

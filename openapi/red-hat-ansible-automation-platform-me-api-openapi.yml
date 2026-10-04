@@ -172,66 +172,6 @@ paths:
       x-operation-id-original: me_list
 components:
   schemas:
-    UserPlan:
-      type: object
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        expired_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        accept_marketing:
-          type: boolean
-        plan:
-          $ref: '#/components/schemas/Plan'
-      required:
-      - created_at
-      - plan
-    Plan:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-          maxLength: 80
-      required:
-      - id
-      - name
-    MarkdownUserResponse:
-      type: object
-      properties:
-        content:
-          type: string
-          readOnly: true
-      required:
-      - content
-    Organization:
-      type: object
-      properties:
-        id:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-        name:
-          type: string
-          readOnly: true
-        has_api_key:
-          type: boolean
-          readOnly: true
-        has_telemetry_opt_out:
-          type: string
-          readOnly: true
-      required:
-      - has_api_key
-      - has_telemetry_opt_out
-      - id
-      - name
     UserResponse:
       type: object
       properties:
@@ -271,6 +211,91 @@ components:
       - username
       - userplan_set
       - uuid
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        name:
+          type: string
+          readOnly: true
+        has_api_key:
+          type: boolean
+          readOnly: true
+        has_telemetry_opt_out:
+          type: string
+          readOnly: true
+      required:
+      - has_api_key
+      - has_telemetry_opt_out
+      - id
+      - name
+    Plan:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 80
+      required:
+      - id
+      - name
+    UserPlan:
+      type: object
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        expired_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        accept_marketing:
+          type: boolean
+        plan:
+          $ref: '#/components/schemas/Plan'
+      required:
+      - created_at
+      - plan
+    MarkdownUserResponse:
+      type: object
+      properties:
+        content:
+          type: string
+          readOnly: true
+      required:
+      - content
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     User:
       type: object
       properties:
@@ -340,31 +365,6 @@ components:
           readOnly: true
       required:
       - username
-    PaginatedUserList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/User'
     User_2:
       type: object
       description: Disallows editing of system user and enforces superuser requirement.

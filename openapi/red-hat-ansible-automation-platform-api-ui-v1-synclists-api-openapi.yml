@@ -292,6 +292,18 @@ components:
       - groups
       - name
       - namespaces
+    SyncListCollectionSummaryResponse:
+      type: object
+      properties:
+        namespace:
+          type: string
+          maxLength: 64
+        name:
+          type: string
+          maxLength: 64
+      required:
+      - name
+      - namespace
     PaginatedSyncListResponseList:
       type: object
       properties:
@@ -364,18 +376,6 @@ components:
         name:
           type: string
           minLength: 1
-          maxLength: 64
-      required:
-      - name
-      - namespace
-    SyncListCollectionSummaryResponse:
-      type: object
-      properties:
-        namespace:
-          type: string
-          maxLength: 64
-        name:
-          type: string
           maxLength: 64
       required:
       - name

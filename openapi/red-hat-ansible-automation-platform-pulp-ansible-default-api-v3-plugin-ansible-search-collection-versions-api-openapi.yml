@@ -303,93 +303,6 @@ components:
       - is_signed
       - namespace_metadata
       - repository
-    ansible.TagResponse:
-      type: object
-      description: A serializer for nesting in the CollectionVersion model.
-      properties:
-        name:
-          type: string
-          readOnly: true
-          description: The name of the Tag.
-    RepositoryResponse:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        pulp_id:
-          type: string
-          format: uuid
-          readOnly: true
-        pulp_last_updated:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        content_count:
-          type: integer
-          readOnly: true
-        gpgkey:
-          type: string
-      required:
-      - gpgkey
-      - name
-    CollectionSummary:
-      type: object
-      description: Collection Version serializer without docs blob.
-      properties: {}
-    ansible.AnsibleNamespaceMetadataResponse:
-      type: object
-      description: A serializer for Namespaces.
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        name:
-          type: string
-          description: Required named, only accepts lowercase, numbers and underscores.
-          maxLength: 64
-          minLength: 3
-          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
-        company:
-          type: string
-          description: Optional namespace company owner.
-          maxLength: 64
-        email:
-          type: string
-          description: Optional namespace contact email.
-          maxLength: 256
-        description:
-          type: string
-          description: Optional short description.
-          maxLength: 256
-        resources:
-          type: string
-          description: Optional resource page in markdown format.
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/NamespaceLinkResponse'
-          description: Labeled related links.
-        avatar_sha256:
-          type: string
-          readOnly: true
-          description: SHA256 digest of avatar image if present.
-          maxLength: 64
-        avatar_url:
-          type: string
-          readOnly: true
-          description: Download link for avatar image if present.
-        metadata_sha256:
-          type: string
-          readOnly: true
-      required:
-      - name
     CollectionSummaryResponse:
       type: object
       description: Collection Version serializer without docs blob.
@@ -443,43 +356,6 @@ components:
           items:
             $ref: '#/components/schemas/ansible.TagResponse'
           readOnly: true
-    ansible.AnsibleNamespaceMetadata:
-      type: object
-      description: A serializer for Namespaces.
-      properties:
-        name:
-          type: string
-          minLength: 3
-          description: Required named, only accepts lowercase, numbers and underscores.
-          maxLength: 64
-          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
-        company:
-          type: string
-          description: Optional namespace company owner.
-          maxLength: 64
-        email:
-          type: string
-          description: Optional namespace contact email.
-          maxLength: 256
-        description:
-          type: string
-          description: Optional short description.
-          maxLength: 256
-        resources:
-          type: string
-          description: Optional resource page in markdown format.
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/NamespaceLink'
-          description: Labeled related links.
-        avatar:
-          type: string
-          format: binary
-          writeOnly: true
-          description: Optional avatar image for Namespace
-      required:
-      - name
     NamespaceLink:
       type: object
       properties:
@@ -526,18 +402,41 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CollectionVersionSearchListResponse'
-    NamespaceLinkResponse:
+    ansible.TagResponse:
+      type: object
+      description: A serializer for nesting in the CollectionVersion model.
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the Tag.
+    RepositoryResponse:
       type: object
       properties:
         name:
           type: string
-          maxLength: 32
-        url:
+        description:
+          type:
+          - string
+          - 'null'
+        pulp_id:
           type: string
-          maxLength: 256
+          format: uuid
+          readOnly: true
+        pulp_last_updated:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        content_count:
+          type: integer
+          readOnly: true
+        gpgkey:
+          type: string
       required:
+      - gpgkey
       - name
-      - url
     CollectionVersionSearchList:
       type: object
       description: Cross-repo search results.
@@ -562,3 +461,104 @@ components:
       - is_signed
       - namespace_metadata
       - repository
+    ansible.AnsibleNamespaceMetadata:
+      type: object
+      description: A serializer for Namespaces.
+      properties:
+        name:
+          type: string
+          minLength: 3
+          description: Required named, only accepts lowercase, numbers and underscores.
+          maxLength: 64
+          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
+        company:
+          type: string
+          description: Optional namespace company owner.
+          maxLength: 64
+        email:
+          type: string
+          description: Optional namespace contact email.
+          maxLength: 256
+        description:
+          type: string
+          description: Optional short description.
+          maxLength: 256
+        resources:
+          type: string
+          description: Optional resource page in markdown format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLink'
+          description: Labeled related links.
+        avatar:
+          type: string
+          format: binary
+          writeOnly: true
+          description: Optional avatar image for Namespace
+      required:
+      - name
+    ansible.AnsibleNamespaceMetadataResponse:
+      type: object
+      description: A serializer for Namespaces.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          description: Required named, only accepts lowercase, numbers and underscores.
+          maxLength: 64
+          minLength: 3
+          pattern: ^(?!.*__)[a-z]+[0-9a-z_]*$
+        company:
+          type: string
+          description: Optional namespace company owner.
+          maxLength: 64
+        email:
+          type: string
+          description: Optional namespace contact email.
+          maxLength: 256
+        description:
+          type: string
+          description: Optional short description.
+          maxLength: 256
+        resources:
+          type: string
+          description: Optional resource page in markdown format.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/NamespaceLinkResponse'
+          description: Labeled related links.
+        avatar_sha256:
+          type: string
+          readOnly: true
+          description: SHA256 digest of avatar image if present.
+          maxLength: 64
+        avatar_url:
+          type: string
+          readOnly: true
+          description: Download link for avatar image if present.
+        metadata_sha256:
+          type: string
+          readOnly: true
+      required:
+      - name
+    CollectionSummary:
+      type: object
+      description: Collection Version serializer without docs blob.
+      properties: {}
+    NamespaceLinkResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 32
+        url:
+          type: string
+          maxLength: 256
+      required:
+      - name
+      - url

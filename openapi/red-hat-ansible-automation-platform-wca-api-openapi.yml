@@ -237,14 +237,6 @@ paths:
       x-ai-description: Get wca model id validator
 components:
   schemas:
-    WcaKeyRequest:
-      type: object
-      properties:
-        key:
-          type: string
-          description: WCA API Key.
-      required:
-      - key
     WcaModelIdRequest:
       type: object
       properties:
@@ -253,6 +245,14 @@ components:
           description: WCA Model Id.
       required:
       - model_id
+    WcaKeyRequest:
+      type: object
+      properties:
+        key:
+          type: string
+          description: WCA API Key.
+      required:
+      - key
   securitySchemes:
     cookieAuth:
       type: apiKey

@@ -293,6 +293,16 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     CollectionResponse:
       type: object
       description: A serializer for a Collection.
@@ -333,22 +343,6 @@ components:
           readOnly: true
       required:
       - deprecated
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    PatchedCollection:
-      type: object
-      description: A serializer for a Collection.
-      properties:
-        deprecated:
-          type: boolean
     PaginatedCollectionResponseList:
       type: object
       properties:
@@ -381,3 +375,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CollectionResponse'
+    PatchedCollection:
+      type: object
+      description: A serializer for a Collection.
+      properties:
+        deprecated:
+          type: boolean

@@ -917,82 +917,6 @@ paths:
           description: ''
 components:
   schemas:
-    ansible.AnsibleRepository:
-      type: object
-      description: Serializer for Ansible Repositories.
-      properties:
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        remote:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An optional remote to use by default when syncing.
-        last_synced_metadata_time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Last synced metadata time.
-        gpgkey:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: Gpg public key to verify collection signatures against
-        private:
-          type: boolean
-      required:
-      - name
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
     SetLabel:
       type: object
       description: Serializer for synchronously setting a label.
@@ -1008,50 +932,40 @@ components:
       required:
       - key
       - value
-    RepositoryAddRemoveContent:
+    MyPermissionsResponse:
       type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
       properties:
-        add_content_units:
+        permissions:
           type: array
           items:
             type: string
-            minLength: 1
-          description: A list of content units to add to a new repository version. This content is added after remove_content_units are removed.
-        remove_content_units:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: A list of content units to remove from the latest repository version. You may also specify '*' as an entry to remove all content. This content is removed before add_content_units are added.
-        base_version:
-          type: string
-          format: uri
-          description: A repository version whose content will be used as the initial set of content for the new repository version
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
       required:
-      - key
+      - permissions
+    AnsibleRepositoryMark:
+      type: object
+      description: A serializer for the mark action.
+      properties:
+        content_units:
+          type: array
+          items: {}
+          description: List of collection version hrefs to mark, use * to mark all content in repository
+        value:
+          type: string
+          minLength: 1
+          description: The string value of this mark.
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - content_units
       - value
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
     CollectionVersionCopyMove:
       type: object
       description: 'Copy or move collections from a source repository into one or more destinations.
@@ -1078,152 +992,6 @@ components:
       required:
       - collection_versions
       - destination_repositories
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    AnsibleRepositoryMark:
-      type: object
-      description: A serializer for the mark action.
-      properties:
-        content_units:
-          type: array
-          items: {}
-          description: List of collection version hrefs to mark, use * to mark all content in repository
-        value:
-          type: string
-          minLength: 1
-          description: The string value of this mark.
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - content_units
-      - value
-    AnsibleRepositorySignature:
-      type: object
-      description: A serializer for the signing action.
-      properties:
-        content_units:
-          type: array
-          items: {}
-          description: List of collection version hrefs to sign, use * to sign all content in repository
-        signing_service:
-          type: string
-          format: uri
-          description: A signing service to use to sign the collections
-      required:
-      - content_units
-      - signing_service
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
-      required:
-      - key
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    AnsibleRepositorySyncURL:
-      type: object
-      description: Serializer for Ansible Repository Sync URL.
-      properties:
-        remote:
-          type: string
-          format: uri
-          description: A remote to sync from. This will override a remote set on repository.
-        mirror:
-          type: boolean
-          default: false
-          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
-        optimize:
-          type: boolean
-          default: true
-          description: Whether to optimize sync or not.
-    Paginatedansible.AnsibleRepositoryResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.AnsibleRepositoryResponse'
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
     ansible.AnsibleRepositoryResponse:
       type: object
       description: Serializer for Ansible Repositories.
@@ -1294,6 +1062,55 @@ components:
           type: boolean
       required:
       - name
+    ansible.AnsibleRepository:
+      type: object
+      description: Serializer for Ansible Repositories.
+      properties:
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        remote:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An optional remote to use by default when syncing.
+        last_synced_metadata_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Last synced metadata time.
+        gpgkey:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: Gpg public key to verify collection signatures against
+        private:
+          type: boolean
+      required:
+      - name
     AnsibleRepositoryRebuild:
       type: object
       description: Serializer for Ansible Repository Rebuild.
@@ -1313,6 +1130,78 @@ components:
           - string
           - 'null'
           minLength: 1
+    AnsibleRepositorySyncURL:
+      type: object
+      description: Serializer for Ansible Repository Sync URL.
+      properties:
+        remote:
+          type: string
+          format: uri
+          description: A remote to sync from. This will override a remote set on repository.
+        mirror:
+          type: boolean
+          default: false
+          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
+        optimize:
+          type: boolean
+          default: true
+          description: Whether to optimize sync or not.
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    AnsibleRepositorySignature:
+      type: object
+      description: A serializer for the signing action.
+      properties:
+        content_units:
+          type: array
+          items: {}
+          description: List of collection version hrefs to sign, use * to sign all content in repository
+        signing_service:
+          type: string
+          format: uri
+          description: A signing service to use to sign the collections
+      required:
+      - content_units
+      - signing_service
     Patchedansible.AnsibleRepository:
       type: object
       description: Serializer for Ansible Repositories.
@@ -1360,3 +1249,114 @@ components:
           description: Gpg public key to verify collection signatures against
         private:
           type: boolean
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    Paginatedansible.AnsibleRepositoryResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.AnsibleRepositoryResponse'
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    RepositoryAddRemoveContent:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        add_content_units:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: A list of content units to add to a new repository version. This content is added after remove_content_units are removed.
+        remove_content_units:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: A list of content units to remove from the latest repository version. You may also specify '*' as an entry to remove all content. This content is removed before add_content_units are added.
+        base_version:
+          type: string
+          format: uri
+          description: A repository version whose content will be used as the initial set of content for the new repository version

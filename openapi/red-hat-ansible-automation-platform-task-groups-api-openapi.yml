@@ -168,6 +168,69 @@ paths:
           description: ''
 components:
   schemas:
+    GroupProgressReportResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        message:
+          type: string
+          readOnly: true
+          description: The message shown to the user for the group progress report.
+        code:
+          type: string
+          readOnly: true
+          description: Identifies the type of group progress report'.
+        total:
+          type: integer
+          format: int64
+          readOnly: true
+          description: The total count of items.
+        done:
+          type: integer
+          format: int64
+          readOnly: true
+          description: The count of items already processed. Defaults to 0.
+        suffix:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The suffix to be shown with the group progress report.
+    PaginatedTaskGroupResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskGroupResponse'
     MinimalTaskResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -297,66 +360,3 @@ components:
       required:
       - all_tasks_dispatched
       - description
-    GroupProgressReportResponse:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        message:
-          type: string
-          readOnly: true
-          description: The message shown to the user for the group progress report.
-        code:
-          type: string
-          readOnly: true
-          description: Identifies the type of group progress report'.
-        total:
-          type: integer
-          format: int64
-          readOnly: true
-          description: The total count of items.
-        done:
-          type: integer
-          format: int64
-          readOnly: true
-          description: The count of items already processed. Defaults to 0.
-        suffix:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The suffix to be shown with the group progress report.
-    PaginatedTaskGroupResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/TaskGroupResponse'

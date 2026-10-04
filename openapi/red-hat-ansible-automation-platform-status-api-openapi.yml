@@ -100,105 +100,6 @@ paths:
       x-operation-id-original: status_retrieve
 components:
   schemas:
-    DatabaseConnectionResponse:
-      type: object
-      description: Serializer for the database connection information
-      properties:
-        connected:
-          type: boolean
-          description: Info about whether the app can connect to the database
-      required:
-      - connected
-    ApiAppStatusResponse:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        name:
-          type: string
-          readOnly: true
-          description: The name of the worker.
-        last_heartbeat:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the last time the worker talked to the service.
-        versions:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-          readOnly: true
-          description: Versions of the components installed.
-    WorkerResponse:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        name:
-          type: string
-          readOnly: true
-          description: The name of the worker.
-        last_heartbeat:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the last time the worker talked to the service.
-        versions:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-          readOnly: true
-          description: Versions of the components installed.
-        current_task:
-          type: string
-          format: uri
-          readOnly: true
-          description: The task this worker is currently executing, or empty if the worker is not currently assigned to a task.
-    RedisConnectionResponse:
-      type: object
-      description: Serializer for information about the Redis connection
-      properties:
-        connected:
-          type: boolean
-          description: Info about whether the app can connect to Redis
-      required:
-      - connected
     VersionResponse:
       type: object
       description: Serializer for the version information of Pulp components
@@ -224,35 +125,6 @@ components:
       - module
       - package
       - version
-    StorageResponse:
-      type: object
-      description: Serializer for information about the storage system
-      properties:
-        total:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of bytes
-          minimum: 0
-        used:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Number of bytes in use
-          minimum: 0
-        free:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Number of free bytes
-          minimum: 0
-      required:
-      - free
-      - total
-      - used
     ContentAppStatusResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -297,6 +169,35 @@ components:
       required:
       - content_origin
       - content_path_prefix
+    StorageResponse:
+      type: object
+      description: Serializer for information about the storage system
+      properties:
+        total:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of bytes
+          minimum: 0
+        used:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Number of bytes in use
+          minimum: 0
+        free:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Number of free bytes
+          minimum: 0
+      required:
+      - free
+      - total
+      - used
     StatusResponse:
       type: object
       description: Serializer for the status information of the app
@@ -348,6 +249,105 @@ components:
       - online_content_apps
       - online_workers
       - versions
+    ApiAppStatusResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
+    DatabaseConnectionResponse:
+      type: object
+      description: Serializer for the database connection information
+      properties:
+        connected:
+          type: boolean
+          description: Info about whether the app can connect to the database
+      required:
+      - connected
+    RedisConnectionResponse:
+      type: object
+      description: Serializer for information about the Redis connection
+      properties:
+        connected:
+          type: boolean
+          description: Info about whether the app can connect to Redis
+      required:
+      - connected
+    WorkerResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          readOnly: true
+          description: The name of the worker.
+        last_heartbeat:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the last time the worker talked to the service.
+        versions:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+          readOnly: true
+          description: Versions of the components installed.
+        current_task:
+          type: string
+          format: uri
+          readOnly: true
+          description: The task this worker is currently executing, or empty if the worker is not currently assigned to a task.
     StatusResponse_2:
       type: object
       properties:
@@ -357,10 +357,31 @@ components:
           type: string
       required:
       - status
-    StatusResponseOptions:
-      oneOf:
-      - $ref: '#/components/schemas/Status'
-      - $ref: '#/components/schemas/ServiceKeysStatus'
+    Status:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        time:
+          type: string
+          format: date-time
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusService'
+      required:
+      - services
+      - time
     StatusNode:
       type: object
       properties:
@@ -412,111 +433,6 @@ components:
           type: boolean
         body:
           type: string
-    Status:
-      type: object
-      properties:
-        status:
-          enum:
-          - good
-          - degraded
-          - failed
-          type: string
-          description: '* `good` - good
-
-            * `degraded` - degraded
-
-            * `failed` - failed'
-          x-spec-enum-id: 8f053d7a7629b617
-        time:
-          type: string
-          format: date-time
-        services:
-          type: array
-          items:
-            $ref: '#/components/schemas/StatusService'
-      required:
-      - services
-      - time
-    StatusService:
-      type: object
-      properties:
-        status:
-          enum:
-          - good
-          - degraded
-          - failed
-          type: string
-          description: '* `good` - good
-
-            * `degraded` - degraded
-
-            * `failed` - failed'
-          x-spec-enum-id: 8f053d7a7629b617
-        service_name:
-          type: string
-        nodes:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/StatusNode'
-        response:
-          $ref: '#/components/schemas/RedisResponse'
-      required:
-      - nodes
-    Ping:
-      type: object
-      properties:
-        status:
-          enum:
-          - good
-          - degraded
-          - failed
-          type: string
-          description: '* `good` - good
-
-            * `degraded` - degraded
-
-            * `failed` - failed'
-          x-spec-enum-id: 8f053d7a7629b617
-        version:
-          type: string
-        pong:
-          type: string
-          format: date-time
-        db_connected:
-          type: boolean
-        db_exception:
-          type: string
-        proxy_connected:
-          type: boolean
-        proxy_status_code:
-          type: integer
-        proxy_exception_type:
-          type: string
-    ServiceKeysStatus:
-      type: object
-      properties:
-        status:
-          enum:
-          - good
-          - degraded
-          - failed
-          type: string
-          description: '* `good` - good
-
-            * `degraded` - degraded
-
-            * `failed` - failed'
-          x-spec-enum-id: 8f053d7a7629b617
-        time:
-          type: string
-          format: date-time
-        services:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/StatusService'
-      required:
-      - services
-      - time
     RedisResponse:
       type: object
       properties:
@@ -548,6 +464,31 @@ components:
           type: boolean
         cluster_info:
           $ref: '#/components/schemas/ClusterInfo'
+    StatusService:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        service_name:
+          type: string
+        nodes:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StatusNode'
+        response:
+          $ref: '#/components/schemas/RedisResponse'
+      required:
+      - nodes
     ClusterInfo:
       type: object
       properties:
@@ -581,6 +522,65 @@ components:
           type: string
         cluster_stats_messages_received:
           type: string
+    ServiceKeysStatus:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        time:
+          type: string
+          format: date-time
+        services:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StatusService'
+      required:
+      - services
+      - time
+    Ping:
+      type: object
+      properties:
+        status:
+          enum:
+          - good
+          - degraded
+          - failed
+          type: string
+          description: '* `good` - good
+
+            * `degraded` - degraded
+
+            * `failed` - failed'
+          x-spec-enum-id: 8f053d7a7629b617
+        version:
+          type: string
+        pong:
+          type: string
+          format: date-time
+        db_connected:
+          type: boolean
+        db_exception:
+          type: string
+        proxy_connected:
+          type: boolean
+        proxy_status_code:
+          type: integer
+        proxy_exception_type:
+          type: string
+    StatusResponseOptions:
+      oneOf:
+      - $ref: '#/components/schemas/Status'
+      - $ref: '#/components/schemas/ServiceKeysStatus'
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

@@ -906,7 +906,154 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Host:
+    PaginatedActivityStreamList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityStream'
+    PaginatedInventoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Inventory'
+    HostRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    PatchedHostVariableDataRequest:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+    PaginatedAdHocCommandListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdHocCommandList'
+    PaginatedHostList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Host'
+    Group:
       type: object
       properties:
         id:
@@ -942,128 +1089,65 @@ components:
           default: ''
         inventory:
           type: integer
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Is this host online and available for running jobs?
-        instance_id:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The value used by the remote inventory source to uniquely identify the host
-          maxLength: 1024
         variables:
           type:
           - string
           - 'null'
           default: ''
-          description: Host variables in JSON or YAML format.
-        has_active_failures:
-          type: string
-          readOnly: true
-        has_inventory_sources:
-          type: string
-          readOnly: true
-        last_job:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        last_job_host_summary:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        ansible_facts_modified:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time ansible_facts was last modified.
+          description: Group variables in JSON or YAML format.
       required:
       - inventory
       - name
-    JobHostSummary:
+    PaginatedInventorySourceList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        id:
+        count:
           type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        job:
-          type: integer
-          readOnly: true
-        host:
+          example: 123
+        next:
           type:
-          - integer
+          - string
           - 'null'
-          readOnly: true
-        constructed_host:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
           type:
-          - integer
+          - string
           - 'null'
-          readOnly: true
-          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
-        host_name:
-          type: string
-          readOnly: true
-          default: ''
-        changed:
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventorySource'
+    PaginatedJobEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
           type: integer
-          minimum: 0
-          readOnly: true
-        dark:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failures:
-          type: integer
-          minimum: 0
-          readOnly: true
-        ok:
-          type: integer
-          minimum: 0
-          readOnly: true
-        processed:
-          type: integer
-          minimum: 0
-          readOnly: true
-        skipped:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        ignored:
-          type: integer
-          minimum: 0
-          readOnly: true
-        rescued:
-          type: integer
-          minimum: 0
-          readOnly: true
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobEvent'
     ActivityStream:
       type: object
       properties:
@@ -1149,7 +1233,42 @@ components:
           - 'null'
           default: ''
           description: Host variables in JSON or YAML format.
-    PaginatedInventoryList:
+    PatchedHostRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+    PaginatedAdHocCommandEventList:
       type: object
       required:
       - count
@@ -1173,7 +1292,235 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Inventory'
+            $ref: '#/components/schemas/AdHocCommandEvent'
+    AnsibleFacts:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+      required:
+      - name
+    Host:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+        has_active_failures:
+          type: string
+          readOnly: true
+        has_inventory_sources:
+          type: string
+          readOnly: true
+        last_job:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        last_job_host_summary:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        ansible_facts_modified:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time ansible_facts was last modified.
+      required:
+      - inventory
+      - name
+    GroupRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        inventory:
+          type: integer
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Group variables in JSON or YAML format.
+      required:
+      - inventory
+      - name
+    HostVariableData:
+      type: object
+      properties:
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+    JobHostSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type: integer
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        constructed_host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
+        host_name:
+          type: string
+          readOnly: true
+          default: ''
+        changed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        dark:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+        ok:
+          type: integer
+          minimum: 0
+          readOnly: true
+        processed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        skipped:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        ignored:
+          type: integer
+          minimum: 0
+          readOnly: true
+        rescued:
+          type: integer
+          minimum: 0
+          readOnly: true
     JobEvent:
       type: object
       properties:
@@ -1369,309 +1716,6 @@ components:
           readOnly: true
       required:
       - event
-    PaginatedInventorySourceList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InventorySource'
-    Group:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
-    AdHocCommandListRequest:
-      type: object
-      properties:
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential:
-          type:
-          - integer
-          - 'null'
-        module_name:
-          enum:
-          - command
-          - shell
-          - yum
-          - apt
-          - apt_key
-          - apt_repository
-          - apt_rpm
-          - service
-          - group
-          - user
-          - mount
-          - ping
-          - selinux
-          - setup
-          - win_ping
-          - win_service
-          - win_updates
-          - win_group
-          - win_user
-          type: string
-          description: '* `command` - command
-
-            * `shell` - shell
-
-            * `yum` - yum
-
-            * `apt` - apt
-
-            * `apt_key` - apt_key
-
-            * `apt_repository` - apt_repository
-
-            * `apt_rpm` - apt_rpm
-
-            * `service` - service
-
-            * `group` - group
-
-            * `user` - user
-
-            * `mount` - mount
-
-            * `ping` - ping
-
-            * `selinux` - selinux
-
-            * `setup` - setup
-
-            * `win_ping` - win_ping
-
-            * `win_service` - win_service
-
-            * `win_updates` - win_updates
-
-            * `win_group` - win_group
-
-            * `win_user` - win_user'
-          x-spec-enum-id: 857230cdbb58eda2
-          default: command
-        module_args:
-          type:
-          - string
-          - 'null'
-          default: ''
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
-    PaginatedHostList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Host'
-    HostRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Is this host online and available for running jobs?
-        instance_id:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The value used by the remote inventory source to uniquely identify the host
-          maxLength: 1024
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
-    PaginatedAdHocCommandListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdHocCommandList'
     AdHocCommandList:
       type: object
       properties:
@@ -1953,49 +1997,6 @@ components:
           - boolean
           - 'null'
           default: false
-    PatchedHostVariableDataRequest:
-      type: object
-      properties:
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-    HostVariableData:
-      type: object
-      properties:
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'
     InventorySource:
       type: object
       properties:
@@ -2246,7 +2247,113 @@ components:
       - inventory
       - name
       - source
-    PaginatedAdHocCommandEventList:
+    AdHocCommandEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        ad_hoc_command:
+          type: integer
+          readOnly: true
+        event:
+          enum:
+          - runner_on_failed
+          - runner_on_ok
+          - runner_on_unreachable
+          - runner_on_skipped
+          - debug
+          - verbose
+          - deprecated
+          - warning
+          - system_warning
+          - error
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `runner_on_failed` - Host Failed
+
+            * `runner_on_ok` - Host OK
+
+            * `runner_on_unreachable` - Host Unreachable
+
+            * `runner_on_skipped` - Host Skipped
+
+            * `debug` - Debug
+
+            * `verbose` - Verbose
+
+            * `deprecated` - Deprecated
+
+            * `warning` - Warning
+
+            * `system_warning` - System Warning
+
+            * `error` - Error'
+          x-spec-enum-id: 3c8188cd2c554d8a
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
+          type: string
+          readOnly: true
+        event_data:
+          default: {}
+        failed:
+          type: boolean
+          readOnly: true
+        changed:
+          type: boolean
+          readOnly: true
+        uuid:
+          type: string
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        host_name:
+          type: string
+          readOnly: true
+        stdout:
+          type: string
+          readOnly: true
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+      required:
+      - event
+    PaginatedJobHostSummaryList:
       type: object
       required:
       - count
@@ -2270,67 +2377,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/AdHocCommandEvent'
-    PatchedHostRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        inventory:
-          type: integer
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Is this host online and available for running jobs?
-        instance_id:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The value used by the remote inventory source to uniquely identify the host
-          maxLength: 1024
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-    PaginatedJobEventList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobEvent'
+            $ref: '#/components/schemas/JobHostSummary'
     PaginatedGroupList:
       type: object
       required:
@@ -2477,195 +2524,148 @@ components:
       required:
       - name
       - organization
-    AnsibleFacts:
+    AdHocCommandListRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
+        execution_environment:
           type:
-          - string
+          - integer
           - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-      required:
-      - name
-    PaginatedJobHostSummaryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobHostSummary'
-    AdHocCommandEvent:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        ad_hoc_command:
-          type: integer
-          readOnly: true
-        event:
+          description: The container image to be used for execution.
+        job_type:
           enum:
-          - runner_on_failed
-          - runner_on_ok
-          - runner_on_unreachable
-          - runner_on_skipped
-          - debug
-          - verbose
-          - deprecated
-          - warning
-          - system_warning
-          - error
+          - run
+          - check
           - null
           type:
           - string
           - 'null'
-          description: '* `runner_on_failed` - Host Failed
+          description: '* `run` - Run
 
-            * `runner_on_ok` - Host OK
-
-            * `runner_on_unreachable` - Host Unreachable
-
-            * `runner_on_skipped` - Host Skipped
-
-            * `debug` - Debug
-
-            * `verbose` - Verbose
-
-            * `deprecated` - Deprecated
-
-            * `warning` - Warning
-
-            * `system_warning` - System Warning
-
-            * `error` - Error'
-          x-spec-enum-id: 3c8188cd2c554d8a
-        counter:
-          type: integer
-          minimum: 0
-          readOnly: true
-        event_display:
-          type: string
-          readOnly: true
-        event_data:
-          default: {}
-        failed:
-          type: boolean
-          readOnly: true
-        changed:
-          type: boolean
-          readOnly: true
-        uuid:
-          type: string
-          readOnly: true
-        host:
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
           type:
           - integer
           - 'null'
-          readOnly: true
-        host_name:
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        credential:
+          type:
+          - integer
+          - 'null'
+        module_name:
+          enum:
+          - command
+          - shell
+          - yum
+          - apt
+          - apt_key
+          - apt_repository
+          - apt_rpm
+          - service
+          - group
+          - user
+          - mount
+          - ping
+          - selinux
+          - setup
+          - win_ping
+          - win_service
+          - win_updates
+          - win_group
+          - win_user
           type: string
-          readOnly: true
-        stdout:
-          type: string
-          readOnly: true
-        start_line:
+          description: '* `command` - command
+
+            * `shell` - shell
+
+            * `yum` - yum
+
+            * `apt` - apt
+
+            * `apt_key` - apt_key
+
+            * `apt_repository` - apt_repository
+
+            * `apt_rpm` - apt_rpm
+
+            * `service` - service
+
+            * `group` - group
+
+            * `user` - user
+
+            * `mount` - mount
+
+            * `ping` - ping
+
+            * `selinux` - selinux
+
+            * `setup` - setup
+
+            * `win_ping` - win_ping
+
+            * `win_service` - win_service
+
+            * `win_updates` - win_updates
+
+            * `win_group` - win_group
+
+            * `win_user` - win_user'
+          x-spec-enum-id: 857230cdbb58eda2
+          default: command
+        module_args:
+          type:
+          - string
+          - 'null'
+          default: ''
+        forks:
           type: integer
+          maximum: 9223372036854775807
           minimum: 0
-          readOnly: true
-        end_line:
-          type: integer
-          minimum: 0
-          readOnly: true
+          format: int64
+          default: 0
         verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
           type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
           minimum: 0
-          readOnly: true
-      required:
-      - event
-    GroupRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
+          maximum: 9223372036854775807
+        extra_vars:
           type:
           - string
           - 'null'
           default: ''
-        inventory:
-          type: integer
-        variables:
+        become_enabled:
           type:
-          - string
+          - boolean
           - 'null'
-          default: ''
-          description: Group variables in JSON or YAML format.
-      required:
-      - inventory
-      - name
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false

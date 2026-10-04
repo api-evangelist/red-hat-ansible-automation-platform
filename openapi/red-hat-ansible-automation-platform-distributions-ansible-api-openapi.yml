@@ -611,81 +611,30 @@ paths:
           description: ''
 components:
   schemas:
-    MyPermissionsResponse:
+    ObjectRolesResponse:
       type: object
       properties:
-        permissions:
+        roles:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/NestedRoleResponse'
       required:
-      - permissions
-    NestedRole:
+      - roles
+    SetLabel:
       type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
+      description: Serializer for synchronously setting a label.
       properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
+        key:
           type: string
           minLength: 1
-      required:
-      - role
-    ansible.AnsibleDistribution:
-      type: object
-      description: Serializer for Ansible Distributions.
-      properties:
-        base_path:
-          type: string
-          minLength: 1
-          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
-        content_guard:
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
           type:
           - string
           - 'null'
-          format: uri
-          description: An optional content-guard.
-        name:
-          type: string
-          minLength: 1
-          description: A unique name. Ex, `rawhide` and `stable`.
-        repository:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The latest RepositoryVersion for this Repository will be served.
-        repository_version:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: RepositoryVersion to be served
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
       required:
-      - base_path
-      - name
+      - key
+      - value
     ansible.AnsibleDistributionResponse:
       type: object
       description: Serializer for Ansible Distributions.
@@ -736,64 +685,16 @@ components:
       required:
       - base_path
       - name
-    UnsetLabel:
+    MyPermissionsResponse:
       type: object
-      description: Serializer for synchronously setting a label.
       properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    Paginatedansible.AnsibleDistributionResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
+        permissions:
           type: array
           items:
-            $ref: '#/components/schemas/ansible.AnsibleDistributionResponse'
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
+            type: string
       required:
-      - key
-    NestedRoleResponse:
+      - permissions
+    NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -806,41 +707,32 @@ components:
           type: array
           items:
             type: string
+            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
+            minLength: 1
           default: []
         role:
           type: string
+          minLength: 1
       required:
       - role
-    SetLabel:
+    UnsetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
       properties:
         key:
           type: string
-          minLength: 1
           pattern: ^[-a-zA-Z0-9_]+$
         value:
-          type:
-          - string
-          - 'null'
+          type: string
+          readOnly: true
       required:
       - key
-      - value
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
     Patchedansible.AnsibleDistribution:
       type: object
       description: Serializer for Ansible Distributions.
@@ -877,6 +769,104 @@ components:
             type:
             - string
             - 'null'
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
+    ansible.AnsibleDistribution:
+      type: object
+      description: Serializer for Ansible Distributions.
+      properties:
+        base_path:
+          type: string
+          minLength: 1
+          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
+        content_guard:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An optional content-guard.
+        name:
+          type: string
+          minLength: 1
+          description: A unique name. Ex, `rawhide` and `stable`.
+        repository:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The latest RepositoryVersion for this Repository will be served.
+        repository_version:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: RepositoryVersion to be served
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+      required:
+      - base_path
+      - name
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    Paginatedansible.AnsibleDistributionResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.AnsibleDistributionResponse'
     SetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
@@ -891,3 +881,13 @@ components:
       required:
       - key
       - value
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

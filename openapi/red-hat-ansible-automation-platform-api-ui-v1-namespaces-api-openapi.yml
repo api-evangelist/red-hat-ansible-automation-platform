@@ -253,72 +253,6 @@ paths:
           description: No response body
 components:
   schemas:
-    galaxy.NamespaceResponse:
-      type: object
-      description: 'NamespaceSerializer but without ''links'' or ''resources''.
-
-
-        For use in _ui/collection detail views.'
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        id:
-          type: integer
-          format: int64
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        company:
-          type: string
-          maxLength: 64
-        email:
-          type: string
-          maxLength: 256
-        avatar_url:
-          type: string
-          format: uri
-        description:
-          type: string
-          maxLength: 256
-        groups:
-          type: string
-        users:
-          type: string
-        related_fields:
-          allOf:
-          - $ref: '#/components/schemas/NamespaceRelatedFieldResponse'
-          readOnly: true
-        metadata_sha256:
-          type: string
-          readOnly: true
-        avatar_sha256:
-          type: string
-          readOnly: true
-    NamespaceRelatedFieldResponse:
-      type: object
-      description: "Serializer only returns fields specified in 'include_related' query param.\n\nThis allows for fields that require more database queries to be optionally\nincluded in API responses, which lowers the load on the backend. This is\nintended as a way to include extra data in list views.\n\nUsage:\n\nThis functions the same as DRF's base `serializers.Serializer` class with the\nexception that it will only return fields specified in the `?include_related=`\nquery parameter.\n\nExample:\n\nMySerializer(RelatedFieldsBaseSerializer):\n    foo = CharField()\n    bar = CharField()\n\nMySerializer will return:\n\n{\"foo\": None} when called with `?include_related=foo` and {\"foo\": None, \"bar\" None}\nwhen called with `?include_related=foo&include_related=bar`."
-      properties:
-        my_permissions:
-          allOf:
-          - $ref: '#/components/schemas/MyPermissionsFieldResponse'
-          readOnly: true
-    NamespaceLink:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 32
-        url:
-          type: string
-          minLength: 1
-          maxLength: 256
-      required:
-      - name
-      - url
     Paginatedgalaxy.NamespaceResponseList:
       type: object
       properties:
@@ -351,8 +285,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/galaxy.NamespaceResponse'
-    MyPermissionsFieldResponse:
+    NamespaceRelatedFieldResponse:
       type: object
+      description: "Serializer only returns fields specified in 'include_related' query param.\n\nThis allows for fields that require more database queries to be optionally\nincluded in API responses, which lowers the load on the backend. This is\nintended as a way to include extra data in list views.\n\nUsage:\n\nThis functions the same as DRF's base `serializers.Serializer` class with the\nexception that it will only return fields specified in the `?include_related=`\nquery parameter.\n\nExample:\n\nMySerializer(RelatedFieldsBaseSerializer):\n    foo = CharField()\n    bar = CharField()\n\nMySerializer will return:\n\n{\"foo\": None} when called with `?include_related=foo` and {\"foo\": None, \"bar\" None}\nwhen called with `?include_related=foo&include_related=bar`."
+      properties:
+        my_permissions:
+          allOf:
+          - $ref: '#/components/schemas/MyPermissionsFieldResponse'
+          readOnly: true
+    NamespaceLink:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 32
+        url:
+          type: string
+          minLength: 1
+          maxLength: 256
+      required:
+      - name
+      - url
     Patchedgalaxy.Namespace:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -435,3 +389,49 @@ components:
           type: string
       required:
       - name
+    MyPermissionsFieldResponse:
+      type: object
+    galaxy.NamespaceResponse:
+      type: object
+      description: 'NamespaceSerializer but without ''links'' or ''resources''.
+
+
+        For use in _ui/collection detail views.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        company:
+          type: string
+          maxLength: 64
+        email:
+          type: string
+          maxLength: 256
+        avatar_url:
+          type: string
+          format: uri
+        description:
+          type: string
+          maxLength: 256
+        groups:
+          type: string
+        users:
+          type: string
+        related_fields:
+          allOf:
+          - $ref: '#/components/schemas/NamespaceRelatedFieldResponse'
+          readOnly: true
+        metadata_sha256:
+          type: string
+          readOnly: true
+        avatar_sha256:
+          type: string
+          readOnly: true

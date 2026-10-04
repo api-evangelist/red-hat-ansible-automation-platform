@@ -658,396 +658,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    JobCreateSchedule:
-      type: object
-      properties:
-        can_schedule:
-          type: string
-          readOnly: true
-        prompts:
-          type: string
-          readOnly: true
-    JobList:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        unified_job_template:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        launch_type:
-          enum:
-          - manual
-          - relaunch
-          - callback
-          - scheduled
-          - dependency
-          - workflow
-          - webhook
-          - sync
-          - scm
-          type: string
-          description: '* `manual` - Manual
-
-            * `relaunch` - Relaunch
-
-            * `callback` - Callback
-
-            * `scheduled` - Scheduled
-
-            * `dependency` - Dependency
-
-            * `workflow` - Workflow
-
-            * `webhook` - Webhook
-
-            * `sync` - Sync
-
-            * `scm` - SCM Update'
-          x-spec-enum-id: e5bed25c2e652da3
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled'
-          x-spec-enum-id: 6021859c28387823
-          readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        failed:
-          type: boolean
-          readOnly: true
-        started:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job was queued for starting.
-        finished:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job finished execution.
-        canceled_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time when the cancel request was sent.
-        elapsed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
-          readOnly: true
-          description: Elapsed time in seconds that the job ran.
-        job_explanation:
-          type: string
-          readOnly: true
-          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
-        execution_node:
-          type: string
-          readOnly: true
-          description: The node the job executed on.
-        controller_node:
-          type: string
-          readOnly: true
-          description: The instance that managed the execution environment.
-        launched_by:
-          type: string
-          readOnly: true
-        work_unit_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The Receptor work unit ID associated with this job.
-        job_type:
-          enum:
-          - run
-          - check
-          - scan
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check
-
-            * `scan` - Scan'
-          x-spec-enum-id: b0ae05beb5a5e8ab
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        project:
-          type:
-          - integer
-          - 'null'
-        playbook:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
-          maxLength: 1024
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        job_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        force_handlers:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        skip_tags:
-          type:
-          - string
-          - 'null'
-          default: ''
-        start_at_task:
-          type:
-          - string
-          - 'null'
-          default: ''
-          maxLength: 1024
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        use_fact_cache:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
-        organization:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The organization used to determine access to this unified job.
-        job_template:
-          type:
-          - integer
-          - 'null'
-        passwords_needed_to_start:
-          type: string
-          readOnly: true
-        allow_simultaneous:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        artifacts:
-          type: string
-          readOnly: true
-        scm_revision:
-          type: string
-          readOnly: true
-          description: The SCM Revision from the Project used for this job, if available
-        instance_group:
-          type:
-          - integer
-          - 'null'
-          description: The Instance group the job was run under
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
-        job_slice_number:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-          description: If part of a sliced job, the ID of the inventory slice operated on. If not part of sliced job, parameter is not used.
-        job_slice_count:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 1
-          description: If ran as part of sliced jobs, the total number of slices. If 1, job is not part of a sliced job.
-        webhook_service:
-          enum:
-          - github
-          - gitlab
-          - bitbucket_dc
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: eee3a42406ba2781
-          description: 'Service that webhook requests will be accepted from
-
-
-            * `github` - GitHub
-
-            * `gitlab` - GitLab
-
-            * `bitbucket_dc` - BitBucket DataCenter'
-        webhook_credential:
-          type:
-          - integer
-          - 'null'
-          description: Personal Access Token for posting back the status to the service API
-        webhook_guid:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier of the event that triggered this webhook
-          maxLength: 128
-      required:
-      - name
-    JobRelaunchRequest:
-      type: object
-      properties:
-        hosts:
-          enum:
-          - all
-          - failed
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `all` - No change to job limit
-
-            * `failed` - All failed and unreachable hosts'
-          x-spec-enum-id: 8755f71f4bbbbdab
-          writeOnly: true
-          default: all
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          writeOnly: true
-        credential_passwords:
-          type: string
-          writeOnly: true
-    PaginatedNotificationList:
+    PaginatedActivityStreamList:
       type: object
       required:
       - count
@@ -1071,160 +682,50 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Notification'
-    JobHostSummary:
+            $ref: '#/components/schemas/ActivityStream'
+    JobRelaunch:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
+        passwords_needed_to_start:
           type: string
           readOnly: true
-        url:
+        retry_counts:
           type: string
           readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        job:
-          type: integer
-          readOnly: true
-        host:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        constructed_host:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
-        host_name:
-          type: string
-          readOnly: true
-          default: ''
-        changed:
-          type: integer
-          minimum: 0
-          readOnly: true
-        dark:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failures:
-          type: integer
-          minimum: 0
-          readOnly: true
-        ok:
-          type: integer
-          minimum: 0
-          readOnly: true
-        processed:
-          type: integer
-          minimum: 0
-          readOnly: true
-        skipped:
-          type: integer
-          minimum: 0
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        ignored:
-          type: integer
-          minimum: 0
-          readOnly: true
-        rescued:
-          type: integer
-          minimum: 0
-          readOnly: true
-    ActivityStream:
+    JobCreateSchedule:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
+        can_schedule:
           type: string
           readOnly: true
-        url:
+        prompts:
           type: string
           readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
-          enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
-          - null
-          type:
-          - string
-          - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
-
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
-          type:
-          - string
-          - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
-          type:
-          - string
-          - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
+    PaginatedLabelList:
+      type: object
       required:
-      - object1
-      - object2
-      - operation
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Label'
     Notification:
       type: object
       properties:
@@ -1319,7 +820,32 @@ components:
           description: Notification body
       required:
       - notification_type
-    JobEvent:
+    PaginatedJobEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobEvent'
+    ActivityStream:
       type: object
       properties:
         id:
@@ -1337,189 +863,64 @@ components:
         summary_fields:
           type: string
           readOnly: true
-        created:
+        timestamp:
           type: string
+          format: date-time
           readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        job:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        event:
+        operation:
           enum:
-          - runner_on_failed
-          - runner_on_start
-          - runner_on_ok
-          - runner_on_error
-          - runner_on_skipped
-          - runner_on_unreachable
-          - runner_on_no_hosts
-          - runner_on_async_poll
-          - runner_on_async_ok
-          - runner_on_async_failed
-          - runner_item_on_ok
-          - runner_item_on_failed
-          - runner_item_on_skipped
-          - runner_retry
-          - runner_on_file_diff
-          - playbook_on_start
-          - playbook_on_notify
-          - playbook_on_include
-          - playbook_on_no_hosts_matched
-          - playbook_on_no_hosts_remaining
-          - playbook_on_task_start
-          - playbook_on_vars_prompt
-          - playbook_on_setup
-          - playbook_on_import_for_host
-          - playbook_on_not_import_for_host
-          - playbook_on_play_start
-          - playbook_on_stats
-          - debug
-          - verbose
-          - deprecated
-          - warning
-          - system_warning
-          - error
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
           - null
           type:
           - string
           - 'null'
-          description: '* `runner_on_failed` - Host Failed
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
 
-            * `runner_on_start` - Host Started
 
-            * `runner_on_ok` - Host OK
+            * `create` - Entity Created
 
-            * `runner_on_error` - Host Failure
+            * `update` - Entity Updated
 
-            * `runner_on_skipped` - Host Skipped
+            * `delete` - Entity Deleted
 
-            * `runner_on_unreachable` - Host Unreachable
+            * `associate` - Entity Associated with another Entity
 
-            * `runner_on_no_hosts` - No Hosts Remaining
-
-            * `runner_on_async_poll` - Host Polling
-
-            * `runner_on_async_ok` - Host Async OK
-
-            * `runner_on_async_failed` - Host Async Failure
-
-            * `runner_item_on_ok` - Item OK
-
-            * `runner_item_on_failed` - Item Failed
-
-            * `runner_item_on_skipped` - Item Skipped
-
-            * `runner_retry` - Host Retry
-
-            * `runner_on_file_diff` - File Difference
-
-            * `playbook_on_start` - Playbook Started
-
-            * `playbook_on_notify` - Running Handlers
-
-            * `playbook_on_include` - Including File
-
-            * `playbook_on_no_hosts_matched` - No Hosts Matched
-
-            * `playbook_on_no_hosts_remaining` - No Hosts Remaining
-
-            * `playbook_on_task_start` - Task Started
-
-            * `playbook_on_vars_prompt` - Variables Prompted
-
-            * `playbook_on_setup` - Gathering Facts
-
-            * `playbook_on_import_for_host` - internal: on Import for Host
-
-            * `playbook_on_not_import_for_host` - internal: on Not Import for Host
-
-            * `playbook_on_play_start` - Play Started
-
-            * `playbook_on_stats` - Playbook Complete
-
-            * `debug` - Debug
-
-            * `verbose` - Verbose
-
-            * `deprecated` - Deprecated
-
-            * `warning` - Warning
-
-            * `system_warning` - System Warning
-
-            * `error` - Error'
-          x-spec-enum-id: c0ba91bdee205c59
-        counter:
-          type: integer
-          minimum: 0
-          readOnly: true
-        event_display:
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
           type: string
           readOnly: true
-        event_data:
-          default: {}
-        event_level:
-          type: integer
-          readOnly: true
-        failed:
-          type: boolean
-          readOnly: true
-        changed:
-          type: boolean
-          readOnly: true
-        uuid:
-          type: string
-          readOnly: true
-        parent_uuid:
-          type: string
-          readOnly: true
-        host:
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
           type:
-          - integer
+          - string
           - 'null'
-          readOnly: true
-        host_name:
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
           type: string
           readOnly: true
-        playbook:
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
           type: string
           readOnly: true
-        play:
+          description: The cluster node the activity took place on.
+        object_type:
           type: string
           readOnly: true
-        task:
-          type: string
-          readOnly: true
-        role:
-          type: string
-          readOnly: true
-        stdout:
-          type: string
-          readOnly: true
-        start_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        end_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        verbosity:
-          type: integer
-          minimum: 0
-          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
       required:
-      - event
-    JobCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
+      - object1
+      - object2
+      - operation
     JobDetail:
       type: object
       properties:
@@ -1895,7 +1296,13 @@ components:
           readOnly: true
       required:
       - name
-    PaginatedLabelList:
+    JobCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
+    PaginatedJobListList:
       type: object
       required:
       - count
@@ -1919,13 +1326,775 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Label'
+            $ref: '#/components/schemas/JobList'
+    JobHostSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type: integer
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        constructed_host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: Only for jobs run against constructed inventories, this links to the host inside the constructed inventory.
+        host_name:
+          type: string
+          readOnly: true
+          default: ''
+        changed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        dark:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failures:
+          type: integer
+          minimum: 0
+          readOnly: true
+        ok:
+          type: integer
+          minimum: 0
+          readOnly: true
+        processed:
+          type: integer
+          minimum: 0
+          readOnly: true
+        skipped:
+          type: integer
+          minimum: 0
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        ignored:
+          type: integer
+          minimum: 0
+          readOnly: true
+        rescued:
+          type: integer
+          minimum: 0
+          readOnly: true
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    JobEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        job:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        event:
+          enum:
+          - runner_on_failed
+          - runner_on_start
+          - runner_on_ok
+          - runner_on_error
+          - runner_on_skipped
+          - runner_on_unreachable
+          - runner_on_no_hosts
+          - runner_on_async_poll
+          - runner_on_async_ok
+          - runner_on_async_failed
+          - runner_item_on_ok
+          - runner_item_on_failed
+          - runner_item_on_skipped
+          - runner_retry
+          - runner_on_file_diff
+          - playbook_on_start
+          - playbook_on_notify
+          - playbook_on_include
+          - playbook_on_no_hosts_matched
+          - playbook_on_no_hosts_remaining
+          - playbook_on_task_start
+          - playbook_on_vars_prompt
+          - playbook_on_setup
+          - playbook_on_import_for_host
+          - playbook_on_not_import_for_host
+          - playbook_on_play_start
+          - playbook_on_stats
+          - debug
+          - verbose
+          - deprecated
+          - warning
+          - system_warning
+          - error
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `runner_on_failed` - Host Failed
+
+            * `runner_on_start` - Host Started
+
+            * `runner_on_ok` - Host OK
+
+            * `runner_on_error` - Host Failure
+
+            * `runner_on_skipped` - Host Skipped
+
+            * `runner_on_unreachable` - Host Unreachable
+
+            * `runner_on_no_hosts` - No Hosts Remaining
+
+            * `runner_on_async_poll` - Host Polling
+
+            * `runner_on_async_ok` - Host Async OK
+
+            * `runner_on_async_failed` - Host Async Failure
+
+            * `runner_item_on_ok` - Item OK
+
+            * `runner_item_on_failed` - Item Failed
+
+            * `runner_item_on_skipped` - Item Skipped
+
+            * `runner_retry` - Host Retry
+
+            * `runner_on_file_diff` - File Difference
+
+            * `playbook_on_start` - Playbook Started
+
+            * `playbook_on_notify` - Running Handlers
+
+            * `playbook_on_include` - Including File
+
+            * `playbook_on_no_hosts_matched` - No Hosts Matched
+
+            * `playbook_on_no_hosts_remaining` - No Hosts Remaining
+
+            * `playbook_on_task_start` - Task Started
+
+            * `playbook_on_vars_prompt` - Variables Prompted
+
+            * `playbook_on_setup` - Gathering Facts
+
+            * `playbook_on_import_for_host` - internal: on Import for Host
+
+            * `playbook_on_not_import_for_host` - internal: on Not Import for Host
+
+            * `playbook_on_play_start` - Play Started
+
+            * `playbook_on_stats` - Playbook Complete
+
+            * `debug` - Debug
+
+            * `verbose` - Verbose
+
+            * `deprecated` - Deprecated
+
+            * `warning` - Warning
+
+            * `system_warning` - System Warning
+
+            * `error` - Error'
+          x-spec-enum-id: c0ba91bdee205c59
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
+          type: string
+          readOnly: true
+        event_data:
+          default: {}
+        event_level:
+          type: integer
+          readOnly: true
+        failed:
+          type: boolean
+          readOnly: true
+        changed:
+          type: boolean
+          readOnly: true
+        uuid:
+          type: string
+          readOnly: true
+        parent_uuid:
+          type: string
+          readOnly: true
+        host:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        host_name:
+          type: string
+          readOnly: true
+        playbook:
+          type: string
+          readOnly: true
+        play:
+          type: string
+          readOnly: true
+        task:
+          type: string
+          readOnly: true
+        role:
+          type: string
+          readOnly: true
+        stdout:
+          type: string
+          readOnly: true
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+      required:
+      - event
+    JobList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        execution_node:
+          type: string
+          readOnly: true
+          description: The node the job executed on.
+        controller_node:
+          type: string
+          readOnly: true
+          description: The instance that managed the execution environment.
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        job_type:
+          enum:
+          - run
+          - check
+          - scan
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check
+
+            * `scan` - Scan'
+          x-spec-enum-id: b0ae05beb5a5e8ab
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        project:
+          type:
+          - integer
+          - 'null'
+        playbook:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Branch to use in job run. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        job_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        force_handlers:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        skip_tags:
+          type:
+          - string
+          - 'null'
+          default: ''
+        start_at_task:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        use_fact_cache:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, the service will act as an Ansible Fact Cache Plugin; persisting facts at the end of a playbook run to the database and caching facts for use by Ansible.
+        organization:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The organization used to determine access to this unified job.
+        job_template:
+          type:
+          - integer
+          - 'null'
+        passwords_needed_to_start:
+          type: string
+          readOnly: true
+        allow_simultaneous:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        artifacts:
+          type: string
+          readOnly: true
+        scm_revision:
+          type: string
+          readOnly: true
+          description: The SCM Revision from the Project used for this job, if available
+        instance_group:
+          type:
+          - integer
+          - 'null'
+          description: The Instance group the job was run under
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: If enabled, textual changes made to any templated files on the host are shown in the standard output
+        job_slice_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+          description: If part of a sliced job, the ID of the inventory slice operated on. If not part of sliced job, parameter is not used.
+        job_slice_count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 1
+          description: If ran as part of sliced jobs, the total number of slices. If 1, job is not part of a sliced job.
+        webhook_service:
+          enum:
+          - github
+          - gitlab
+          - bitbucket_dc
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          x-spec-enum-id: eee3a42406ba2781
+          description: 'Service that webhook requests will be accepted from
+
+
+            * `github` - GitHub
+
+            * `gitlab` - GitLab
+
+            * `bitbucket_dc` - BitBucket DataCenter'
+        webhook_credential:
+          type:
+          - integer
+          - 'null'
+          description: Personal Access Token for posting back the status to the service API
+        webhook_guid:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier of the event that triggered this webhook
+          maxLength: 128
+      required:
+      - name
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
+      required:
+      - name
+      - organization
     UnifiedJobStdout:
       type: object
       properties:
         result_stdout:
           type: string
           readOnly: true
+    PaginatedJobHostSummaryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JobHostSummary'
+    PaginatedCredentialList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Credential'
+    JobRelaunchRequest:
+      type: object
+      properties:
+        hosts:
+          enum:
+          - all
+          - failed
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `all` - No change to job limit
+
+            * `failed` - All failed and unreachable hosts'
+          x-spec-enum-id: 8755f71f4bbbbdab
+          writeOnly: true
+          default: all
+        job_type:
+          enum:
+          - run
+          - check
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          writeOnly: true
+        credential_passwords:
+          type: string
+          writeOnly: true
     Credential:
       type: object
       properties:
@@ -1985,172 +2154,3 @@ components:
       required:
       - credential_type
       - name
-    JobRelaunch:
-      type: object
-      properties:
-        passwords_needed_to_start:
-          type: string
-          readOnly: true
-        retry_counts:
-          type: string
-          readOnly: true
-    PaginatedActivityStreamList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivityStream'
-    PaginatedCredentialList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Credential'
-    Label:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.
-      required:
-      - name
-      - organization
-    PaginatedJobEventList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobEvent'
-    PaginatedJobHostSummaryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobHostSummary'
-    PaginatedJobListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/JobList'

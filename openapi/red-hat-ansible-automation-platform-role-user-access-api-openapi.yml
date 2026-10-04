@@ -415,41 +415,6 @@ paths:
       x-operation-id-original: role_user_access_list_2
 components:
   schemas:
-    UserAccessViewSet_User_:
-      type: object
-      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        is_superuser:
-          type: boolean
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        object_role_assignments:
-          type: string
-          readOnly: true
-      required:
-      - username
     PaginatedUserAccessViewSet_User_List:
       type: object
       required:
@@ -564,7 +529,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserAccessAssignment'
-    UserAccessViewSet_User__2:
+    UserAccessViewSet_User_:
       type: object
       description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
       properties:
@@ -598,10 +563,6 @@ components:
           type: string
           readOnly: true
       required:
-      - id
-      - object_role_assignments
-      - related
-      - url
       - username
     PaginatedUserAccessViewSet_User_List_2:
       type: object
@@ -739,6 +700,45 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserAccessAssignment_2'
+    UserAccessViewSet_User__2:
+      type: object
+      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        object_role_assignments:
+          type: string
+          readOnly: true
+      required:
+      - id
+      - object_role_assignments
+      - related
+      - url
+      - username
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

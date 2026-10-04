@@ -222,166 +222,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    EventStreamOut:
-      type: object
-      properties:
-        name:
-          type: string
-        test_mode:
-          type: boolean
-          description: Enable test mode
-        additional_data_headers:
-          type: string
-          description: The additional http headers which will be added to the event data. The headers are comma delimited
-        organization:
-          type: string
-          readOnly: true
-        eda_credential:
-          $ref: '#/components/schemas/EdaCredentialRef'
-        event_stream_type:
-          type: string
-          description: The type of the event stream based on credential type
-        uuid:
-          type: string
-          format: uuid
-        created_by:
-          type: object
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-        modified_by:
-          type: object
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-        id:
-          type: integer
-          readOnly: true
-        owner:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-        test_content_type:
-          type: string
-          readOnly: true
-          description: The content type of test data, when in test mode
-        test_content:
-          type: string
-          readOnly: true
-          description: The content recieved, when in test mode, stored as a yaml string
-        test_error_message:
-          type: string
-          readOnly: true
-          description: The error message,  when in test mode
-        test_headers:
-          type: string
-          readOnly: true
-          description: The headers recieved, when in test mode, stored as a yaml string
-        events_received:
-          type: integer
-          readOnly: true
-          description: The total number of events received by event stream
-        last_event_received_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date/time when the last event was received
-      required:
-      - created_at
-      - created_by
-      - eda_credential
-      - events_received
-      - id
-      - last_event_received_at
-      - modified_at
-      - modified_by
-      - name
-      - organization
-      - owner
-      - test_content
-      - test_content_type
-      - test_error_message
-      - test_headers
-      - url
-    CredentialTypeRef:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-        namespace:
-          type:
-          - string
-          - 'null'
-        kind:
-          type: string
-      required:
-      - id
-      - name
-    ProjectRef:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        git_hash:
-          type: string
-        url:
-          type: string
-        scm_type:
-          $ref: '#/components/schemas/ScmTypeEnum'
-        name:
-          type: string
-        description:
-          type: string
-        organization_id:
-          type: integer
-          readOnly: true
-        update_revision_on_launch:
-          type: boolean
-          description: Enable automatic project sync on activation launch
-        scm_update_cache_timeout:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
-      required:
-      - git_hash
-      - id
-      - name
-      - organization_id
-      - url
-    ScmTypeEnum:
-      enum:
-      - git
-      type: string
-      description: '* `git` - Git'
     EdaCredential:
       type: object
       properties:
@@ -450,136 +290,28 @@ components:
       - modified_by
       - name
       - organization
-    RestartPolicyEnum:
+    ScmTypeEnum:
       enum:
-      - always
-      - on-failure
-      - never
+      - git
       type: string
-      description: '* `always` - always
-
-        * `on-failure` - on-failure
-
-        * `never` - never'
-    StatusEnum:
-      enum:
-      - starting
-      - running
-      - pending
-      - failed
-      - stopping
-      - stopped
-      - deleting
-      - completed
-      - unresponsive
-      - error
-      - workers offline
-      type: string
-      description: '* `starting` - starting
-
-        * `running` - running
-
-        * `pending` - pending
-
-        * `failed` - failed
-
-        * `stopping` - stopping
-
-        * `stopped` - stopped
-
-        * `deleting` - deleting
-
-        * `completed` - completed
-
-        * `unresponsive` - unresponsive
-
-        * `error` - error
-
-        * `workers offline` - workers offline'
-    EdaCredentialRef:
+      description: '* `git` - Git'
+    CredentialTypeRef:
       type: object
-      description: Serializer for EdaCredential reference.
       properties:
         id:
           type: integer
           readOnly: true
         name:
           type: string
-        description:
-          type: string
-        inputs:
-          type: object
-          additionalProperties: true
-          readOnly: true
-        managed:
-          type: boolean
-        credential_type_id:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-        organization_id:
-          type: integer
-          readOnly: true
-      required:
-      - credential_type_id
-      - id
-      - inputs
-      - name
-      - organization_id
-    EdaCredentialReference:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Type of the related resource
-        id:
-          type: integer
-          description: ID of the related resource
-        name:
-          type: string
-          description: Name of the related resource
-        uri:
-          type: string
-          format: uri
-          description: URI of the related resource
-      required:
-      - id
-      - name
-      - type
-      - uri
-    PaginatedActivationListList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
+        namespace:
           type:
           - string
           - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivationList'
+        kind:
+          type: string
+      required:
+      - id
+      - name
     PatchedEventStreamIn:
       type: object
       properties:
@@ -616,49 +348,72 @@ components:
       required:
       - id
       - name
-    PaginatedEventStreamOutList:
+    EdaCredentialRef:
       type: object
+      description: Serializer for EdaCredential reference.
       properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        inputs:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        managed:
+          type: boolean
+        credential_type_id:
           type:
           - integer
           - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventStreamOut'
-    LogLevelEnum:
+          readOnly: true
+        organization_id:
+          type: integer
+          readOnly: true
+      required:
+      - credential_type_id
+      - id
+      - inputs
+      - name
+      - organization_id
+    StatusEnum:
       enum:
-      - debug
-      - info
+      - starting
+      - running
+      - pending
+      - failed
+      - stopping
+      - stopped
+      - deleting
+      - completed
+      - unresponsive
       - error
+      - workers offline
       type: string
-      description: '* `debug` - debug
+      description: '* `starting` - starting
 
-        * `info` - info
+        * `running` - running
 
-        * `error` - error'
+        * `pending` - pending
+
+        * `failed` - failed
+
+        * `stopping` - stopping
+
+        * `stopped` - stopped
+
+        * `deleting` - deleting
+
+        * `completed` - completed
+
+        * `unresponsive` - unresponsive
+
+        * `error` - error
+
+        * `workers offline` - workers offline'
     EventStreamIn:
       type: object
       properties:
@@ -683,6 +438,50 @@ components:
       - eda_credential_id
       - name
       - organization_id
+    ProjectRef:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        git_hash:
+          type: string
+        url:
+          type: string
+        scm_type:
+          $ref: '#/components/schemas/ScmTypeEnum'
+        name:
+          type: string
+        description:
+          type: string
+        organization_id:
+          type: integer
+          readOnly: true
+        update_revision_on_launch:
+          type: boolean
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
+      required:
+      - git_hash
+      - id
+      - name
+      - organization_id
+      - url
+    RestartPolicyEnum:
+      enum:
+      - always
+      - on-failure
+      - never
+      type: string
+      description: '* `always` - always
+
+        * `on-failure` - on-failure
+
+        * `never` - never'
     ActivationList:
       type: object
       description: Serializer for listing the Activation model objects.
@@ -863,6 +662,207 @@ components:
       - rulebook_name
       - rules_count
       - rules_fired_count
+    EdaCredentialReference:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the related resource
+        id:
+          type: integer
+          description: ID of the related resource
+        name:
+          type: string
+          description: Name of the related resource
+        uri:
+          type: string
+          format: uri
+          description: URI of the related resource
+      required:
+      - id
+      - name
+      - type
+      - uri
+    PaginatedActivationListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivationList'
+    PaginatedEventStreamOutList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventStreamOut'
+    EventStreamOut:
+      type: object
+      properties:
+        name:
+          type: string
+        test_mode:
+          type: boolean
+          description: Enable test mode
+        additional_data_headers:
+          type: string
+          description: The additional http headers which will be added to the event data. The headers are comma delimited
+        organization:
+          type: string
+          readOnly: true
+        eda_credential:
+          $ref: '#/components/schemas/EdaCredentialRef'
+        event_stream_type:
+          type: string
+          description: The type of the event stream based on credential type
+        uuid:
+          type: string
+          format: uuid
+        created_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        modified_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        id:
+          type: integer
+          readOnly: true
+        owner:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+        test_content_type:
+          type: string
+          readOnly: true
+          description: The content type of test data, when in test mode
+        test_content:
+          type: string
+          readOnly: true
+          description: The content recieved, when in test mode, stored as a yaml string
+        test_error_message:
+          type: string
+          readOnly: true
+          description: The error message,  when in test mode
+        test_headers:
+          type: string
+          readOnly: true
+          description: The headers recieved, when in test mode, stored as a yaml string
+        events_received:
+          type: integer
+          readOnly: true
+          description: The total number of events received by event stream
+        last_event_received_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date/time when the last event was received
+      required:
+      - created_at
+      - created_by
+      - eda_credential
+      - events_received
+      - id
+      - last_event_received_at
+      - modified_at
+      - modified_by
+      - name
+      - organization
+      - owner
+      - test_content
+      - test_content_type
+      - test_error_message
+      - test_headers
+      - url
+    LogLevelEnum:
+      enum:
+      - debug
+      - info
+      - error
+      type: string
+      description: '* `debug` - debug
+
+        * `info` - info
+
+        * `error` - error'
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

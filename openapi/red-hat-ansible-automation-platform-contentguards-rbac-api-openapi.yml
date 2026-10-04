@@ -501,57 +501,15 @@ paths:
           description: ''
 components:
   schemas:
-    PatchedRBACContentGuard:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-    GroupResponse:
-      type: object
-      description: Serializer for Group.
-      properties:
-        name:
-          type: string
-          description: Name
-          maxLength: 150
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        id:
-          type: integer
-          format: int64
-          readOnly: true
-      required:
-      - name
-    MyPermissionsResponse:
+    ObjectRolesResponse:
       type: object
       properties:
-        permissions:
+        roles:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/NestedRoleResponse'
       required:
-      - permissions
+      - roles
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -604,6 +562,119 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RBACContentGuardResponse'
+    GroupResponse:
+      type: object
+      description: Serializer for Group.
+      properties:
+        name:
+          type: string
+          description: Name
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+      required:
+      - name
+    GroupUserResponse:
+      type: object
+      description: Serializer for Users that belong to a Group.
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+      - username
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    PatchedRBACContentGuard:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+    RBACContentGuardResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          description: An optional description.
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupUserResponse'
+          readOnly: true
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupResponse'
+          readOnly: true
+      required:
+      - name
     NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -652,76 +723,5 @@ components:
           - 'null'
           minLength: 1
           description: An optional description.
-      required:
-      - name
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    GroupUserResponse:
-      type: object
-      description: Serializer for Users that belong to a Group.
-      properties:
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          maxLength: 150
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-      required:
-      - username
-    RBACContentGuardResponse:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        name:
-          type: string
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          description: An optional description.
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/GroupUserResponse'
-          readOnly: true
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/GroupResponse'
-          readOnly: true
       required:
       - name

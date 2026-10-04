@@ -403,37 +403,24 @@ paths:
           description: ''
 components:
   schemas:
-    container.ContainerNamespaceResponse:
+    container.ContainerNamespace:
       type: object
       description: Serializer for ContainerNamespaces.
       properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         name:
           type: string
+          minLength: 1
       required:
       - name
-    MyPermissionsResponse:
+    ObjectRolesResponse:
       type: object
       properties:
-        permissions:
+        roles:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/NestedRoleResponse'
       required:
-      - permissions
+      - roles
     NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -461,6 +448,15 @@ components:
           minLength: 1
       required:
       - role
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
     Paginatedcontainer.ContainerNamespaceResponseList:
       type: object
       required:
@@ -486,16 +482,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/container.ContainerNamespaceResponse'
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
@@ -520,21 +506,35 @@ components:
           type: string
       required:
       - role
-    ObjectRolesResponse:
+    AsyncOperationResponse:
       type: object
+      description: Serializer for asynchronous operations.
       properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
       required:
-      - roles
-    container.ContainerNamespace:
+      - task
+    container.ContainerNamespaceResponse:
       type: object
       description: Serializer for ContainerNamespaces.
       properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
         name:
           type: string
-          minLength: 1
       required:
       - name

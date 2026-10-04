@@ -404,7 +404,32 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    OAuth2Token:
+    PaginatedOAuth2TokenList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OAuth2Token'
+    PatchedOAuth2Token:
       type: object
       properties:
         id:
@@ -482,32 +507,7 @@ components:
           - string
           - 'null'
           readOnly: true
-    PaginatedOAuth2TokenList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/OAuth2Token'
-    PatchedOAuth2Token:
+    OAuth2Token:
       type: object
       properties:
         id:

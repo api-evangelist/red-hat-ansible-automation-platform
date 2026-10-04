@@ -51,13 +51,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    session_view_404:
-      type: object
-      properties:
-        detail:
-          type: string
-      required:
-      - detail
     session_view:
       type: object
       properties:
@@ -80,6 +73,13 @@ components:
           type: string
       required:
       - message
+    session_view_404:
+      type: object
+      properties:
+        detail:
+          type: string
+      required:
+      - detail
   securitySchemes:
     Basic_Authentication:
       type: http

@@ -368,69 +368,6 @@ paths:
           description: ''
 components:
   schemas:
-    PaginatedDomainResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainResponse'
-    PatchedDomain:
-      type: object
-      description: Serializer for Domain.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: A name for this domain.
-          maxLength: 50
-          pattern: ^[-a-zA-Z0-9_]+$
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        storage_class:
-          allOf:
-          - $ref: '#/components/schemas/StorageClassEnum'
-          description: 'Backend storage class for domain.
-
-
-            * `pulpcore.app.models.storage.FileSystem` - Use local filesystem as storage
-
-            * `storages.backends.s3boto3.S3Boto3Storage` - Use Amazon S3 as storage
-
-            * `storages.backends.azure_storage.AzureStorage` - Use Azure Blob as storage'
-        storage_settings:
-          type: object
-          description: Settings for storage class.
-        redirect_to_object_storage:
-          type: boolean
-          default: true
-          description: Boolean to have the content app redirect to object storage.
-        hide_guarded_distributions:
-          type: boolean
-          default: false
-          description: Boolean to hide distributions with a content guard in the content app.
     Domain:
       type: object
       description: Serializer for Domain.
@@ -473,16 +410,69 @@ components:
       - name
       - storage_class
       - storage_settings
-    AsyncOperationResponse:
+    PatchedDomain:
       type: object
-      description: Serializer for asynchronous operations.
+      description: Serializer for Domain.
       properties:
-        task:
+        name:
           type: string
-          format: uri
-          description: The href of the task.
+          minLength: 1
+          description: A name for this domain.
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        storage_class:
+          allOf:
+          - $ref: '#/components/schemas/StorageClassEnum'
+          description: 'Backend storage class for domain.
+
+
+            * `pulpcore.app.models.storage.FileSystem` - Use local filesystem as storage
+
+            * `storages.backends.s3boto3.S3Boto3Storage` - Use Amazon S3 as storage
+
+            * `storages.backends.azure_storage.AzureStorage` - Use Azure Blob as storage'
+        storage_settings:
+          type: object
+          description: Settings for storage class.
+        redirect_to_object_storage:
+          type: boolean
+          default: true
+          description: Boolean to have the content app redirect to object storage.
+        hide_guarded_distributions:
+          type: boolean
+          default: false
+          description: Boolean to hide distributions with a content guard in the content app.
+    PaginatedDomainResponseList:
+      type: object
       required:
-      - task
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainResponse'
     DomainResponse:
       type: object
       description: Serializer for Domain.
@@ -548,3 +538,13 @@ components:
         * `storages.backends.s3boto3.S3Boto3Storage` - Use Amazon S3 as storage
 
         * `storages.backends.azure_storage.AzureStorage` - Use Azure Blob as storage'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

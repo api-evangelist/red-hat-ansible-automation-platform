@@ -167,32 +167,6 @@ paths:
           description: No response body
 components:
   schemas:
-    TaskGroupOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations that return a task group.
-      properties:
-        task_group:
-          type: string
-          format: uri
-          description: The href of the task group.
-      required:
-      - task_group
-    PulpImport:
-      type: object
-      description: Serializer for call to import into Pulp.
-      properties:
-        path:
-          type: string
-          minLength: 1
-          description: Path to export that will be imported.
-        toc:
-          type: string
-          minLength: 1
-          description: Path to a table-of-contents file describing chunks to be validated, reassembled, and imported.
-        create_repositories:
-          type: boolean
-          default: false
-          description: If True, missing repositories will be automatically created during the import.
     ImportResponse:
       type: object
       description: Serializer for Imports.
@@ -246,3 +220,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ImportResponse'
+    TaskGroupOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations that return a task group.
+      properties:
+        task_group:
+          type: string
+          format: uri
+          description: The href of the task group.
+      required:
+      - task_group
+    PulpImport:
+      type: object
+      description: Serializer for call to import into Pulp.
+      properties:
+        path:
+          type: string
+          minLength: 1
+          description: Path to export that will be imported.
+        toc:
+          type: string
+          minLength: 1
+          description: Path to a table-of-contents file describing chunks to be validated, reassembled, and imported.
+        create_repositories:
+          type: boolean
+          default: false
+          description: If True, missing repositories will be automatically created during the import.

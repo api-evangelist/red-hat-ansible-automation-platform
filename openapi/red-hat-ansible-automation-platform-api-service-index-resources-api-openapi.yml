@@ -264,27 +264,6 @@ components:
           readOnly: true
       required:
       - resource_data
-    Resource:
-      type: object
-      properties:
-        ansible_id:
-          type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-          minLength: 1
-        resource_data:
-          type: object
-      required:
-      - resource_data
     PaginatedResourceListResponseList:
       type: object
       required:
@@ -310,6 +289,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ResourceListResponse'
+    Resource:
+      type: object
+      properties:
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+          minLength: 1
+        resource_data:
+          type: object
+      required:
+      - resource_data
     ResourceListResponse:
       type: object
       properties:

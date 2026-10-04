@@ -85,21 +85,6 @@ components:
           readOnly: true
       required:
       - pubkey_fingerprint
-    ArtifactRefResponse:
-      type: object
-      description: A serializer for an Artifact reference.
-      properties:
-        filename:
-          type: string
-        sha256:
-          type: string
-        size:
-          type: integer
-          format: int64
-      required:
-      - filename
-      - sha256
-      - size
     CollectionMetadataResponse:
       type: object
       description: A serializer for a CollectionVersion metadata.
@@ -143,34 +128,6 @@ components:
             type: string
       required:
       - tags
-    CollectionNamespaceResponse:
-      type: object
-      description: A serializer for a Collection Version namespace field.
-      properties:
-        name:
-          type: string
-        metadata_sha256:
-          type:
-          - string
-          - 'null'
-      required:
-      - metadata_sha256
-      - name
-    CollectionRefResponse:
-      type: object
-      description: A serializer for a Collection reference.
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        href:
-          type: string
-          description: Returns link to a collection.
-          readOnly: true
-      required:
-      - id
-      - name
     UnpaginatedCollectionVersionResponse:
       type: object
       description: A serializer for unpaginated CollectionVersion.
@@ -239,3 +196,46 @@ components:
       - signatures
       - updated_at
       - version
+    ArtifactRefResponse:
+      type: object
+      description: A serializer for an Artifact reference.
+      properties:
+        filename:
+          type: string
+        sha256:
+          type: string
+        size:
+          type: integer
+          format: int64
+      required:
+      - filename
+      - sha256
+      - size
+    CollectionRefResponse:
+      type: object
+      description: A serializer for a Collection reference.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        href:
+          type: string
+          description: Returns link to a collection.
+          readOnly: true
+      required:
+      - id
+      - name
+    CollectionNamespaceResponse:
+      type: object
+      description: A serializer for a Collection Version namespace field.
+      properties:
+        name:
+          type: string
+        metadata_sha256:
+          type:
+          - string
+          - 'null'
+      required:
+      - metadata_sha256
+      - name

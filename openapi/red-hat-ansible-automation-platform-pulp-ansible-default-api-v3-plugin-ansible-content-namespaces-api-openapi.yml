@@ -438,7 +438,46 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Patchedansible.AnsibleNamespaceMetadata:
+    Paginatedansible.AnsibleNamespaceMetadataResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadataResponse'
+    NamespaceLink:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 32
+        url:
+          type: string
+          minLength: 1
+          maxLength: 256
+      required:
+      - name
+      - url
+    ansible.AnsibleNamespaceMetadata:
       type: object
       description: A serializer for Namespaces.
       properties:
@@ -473,6 +512,8 @@ components:
           format: binary
           writeOnly: true
           description: Optional avatar image for Namespace
+      required:
+      - name
     ansible.AnsibleNamespaceMetadataResponse:
       type: object
       description: A serializer for Namespaces.
@@ -521,68 +562,7 @@ components:
           readOnly: true
       required:
       - name
-    NamespaceLink:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 32
-        url:
-          type: string
-          minLength: 1
-          maxLength: 256
-      required:
-      - name
-      - url
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    Paginatedansible.AnsibleNamespaceMetadataResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.AnsibleNamespaceMetadataResponse'
-    NamespaceLinkResponse:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 32
-        url:
-          type: string
-          maxLength: 256
-      required:
-      - name
-      - url
-    ansible.AnsibleNamespaceMetadata:
+    Patchedansible.AnsibleNamespaceMetadata:
       type: object
       description: A serializer for Namespaces.
       properties:
@@ -617,5 +597,25 @@ components:
           format: binary
           writeOnly: true
           description: Optional avatar image for Namespace
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    NamespaceLinkResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 32
+        url:
+          type: string
+          maxLength: 256
       required:
       - name
+      - url

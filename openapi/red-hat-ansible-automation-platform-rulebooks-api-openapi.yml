@@ -147,58 +147,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Rulebook:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        rulesets:
-          type: string
-        project_id:
-          type:
-          - integer
-          - 'null'
-          description: ID of the project
-        organization_id:
-          type: integer
-          description: ID of the organization
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - created_at
-      - id
-      - modified_at
-      - name
-      - organization_id
-    Source:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the source
-        source_info:
-          type: string
-          description: The information about the source
-        rulebook_hash:
-          type: string
-          description: Hash of the rulebook
-      required:
-      - name
-      - rulebook_hash
-      - source_info
     PaginatedRulebookList:
       type: object
       properties:
@@ -263,6 +211,58 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Source'
+    Source:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the source
+        source_info:
+          type: string
+          description: The information about the source
+        rulebook_hash:
+          type: string
+          description: Hash of the rulebook
+      required:
+      - name
+      - rulebook_hash
+      - source_info
+    Rulebook:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        rulesets:
+          type: string
+        project_id:
+          type:
+          - integer
+          - 'null'
+          description: ID of the project
+        organization_id:
+          type: integer
+          description: ID of the organization
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - modified_at
+      - name
+      - organization_id
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

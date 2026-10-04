@@ -224,6 +224,14 @@ components:
           maxLength: 512
       required:
       - name
+    PatchedOrganization:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of this resource.
+          maxLength: 512
     PaginatedOrganizationResponseList:
       type: object
       required:
@@ -249,14 +257,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrganizationResponse'
-    PatchedOrganization:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The name of this resource.
-          maxLength: 512
     OrganizationResponse:
       type: object
       properties:

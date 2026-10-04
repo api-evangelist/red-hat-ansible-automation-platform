@@ -24,13 +24,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PasswordAuthenticator:
-      type: object
-      description: Serializer for password authenticator items in UI auth response.
-      properties:
-        name:
-          type: string
-          readOnly: true
     SSOAuthenticator:
       type: object
       description: Serializer for SSO authenticator items in UI auth response.
@@ -43,6 +36,13 @@ components:
           format: uri
           readOnly: true
         type:
+          type: string
+          readOnly: true
+    PasswordAuthenticator:
+      type: object
+      description: Serializer for password authenticator items in UI auth response.
+      properties:
+        name:
           type: string
           readOnly: true
     UIAuthResponse:

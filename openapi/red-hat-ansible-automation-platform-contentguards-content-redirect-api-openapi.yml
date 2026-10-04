@@ -477,42 +477,15 @@ paths:
           description: ''
 components:
   schemas:
-    MyPermissionsResponse:
+    ObjectRolesResponse:
       type: object
       properties:
-        permissions:
+        roles:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/NestedRoleResponse'
       required:
-      - permissions
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
+      - roles
     PaginatedContentRedirectContentGuardResponseList:
       type: object
       required:
@@ -538,30 +511,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ContentRedirectContentGuardResponse'
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
     ContentRedirectContentGuardResponse:
       type: object
       description: A serializer for ContentRedirectContentGuard.
@@ -590,20 +539,33 @@ components:
           description: An optional description.
       required:
       - name
-    PatchedContentRedirectContentGuard:
+    NestedRole:
       type: object
-      description: A serializer for ContentRedirectContentGuard.
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        name:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
           type: string
           minLength: 1
-          description: The unique name.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
+      required:
+      - role
     ContentRedirectContentGuard:
       type: object
       description: A serializer for ContentRedirectContentGuard.
@@ -620,12 +582,50 @@ components:
           description: An optional description.
       required:
       - name
-    ObjectRolesResponse:
+    MyPermissionsResponse:
       type: object
       properties:
-        roles:
+        permissions:
           type: array
           items:
-            $ref: '#/components/schemas/NestedRoleResponse'
+            type: string
       required:
-      - roles
+      - permissions
+    PatchedContentRedirectContentGuard:
+      type: object
+      description: A serializer for ContentRedirectContentGuard.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The unique name.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role

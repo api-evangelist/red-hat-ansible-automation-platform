@@ -177,56 +177,6 @@ components:
           description: The href of the task.
       required:
       - task
-    FilesystemExport:
-      type: object
-      description: Serializer for FilesystemExports.
-      properties:
-        task:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A URI of the task that ran the Export.
-        publication:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of the publication to be exported.
-        repository_version:
-          type: string
-          format: uri
-          writeOnly: true
-          description: A URI of the repository version export.
-        start_repository_version:
-          type: string
-          format: uri
-          writeOnly: true
-          description: The URI of the last-exported-repo-version.
-    PaginatedFilesystemExportResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FilesystemExportResponse'
     FilesystemExportResponse:
       type: object
       description: Serializer for FilesystemExports.
@@ -262,3 +212,53 @@ components:
           type: object
           readOnly: true
           description: Any additional parameters that were used to create the export.
+    PaginatedFilesystemExportResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilesystemExportResponse'
+    FilesystemExport:
+      type: object
+      description: Serializer for FilesystemExports.
+      properties:
+        task:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A URI of the task that ran the Export.
+        publication:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of the publication to be exported.
+        repository_version:
+          type: string
+          format: uri
+          writeOnly: true
+          description: A URI of the repository version export.
+        start_repository_version:
+          type: string
+          format: uri
+          writeOnly: true
+          description: The URI of the last-exported-repo-version.

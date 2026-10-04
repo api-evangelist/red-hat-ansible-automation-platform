@@ -204,6 +204,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedRoleUserAssignmentResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignmentResponse'
     RoleUserAssignmentResponse:
       type: object
       properties:
@@ -295,28 +320,3 @@ components:
           description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
       required:
       - role_definition
-    PaginatedRoleUserAssignmentResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleUserAssignmentResponse'

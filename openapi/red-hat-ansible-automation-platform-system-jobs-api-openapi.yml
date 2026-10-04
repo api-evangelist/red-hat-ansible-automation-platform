@@ -270,7 +270,7 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedSystemJobEventList:
+    PaginatedNotificationList:
       type: object
       required:
       - count
@@ -294,7 +294,95 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/SystemJobEvent'
+            $ref: '#/components/schemas/Notification'
+    PaginatedSystemJobListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemJobList'
+    SystemJobEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        event:
+          type: string
+          readOnly: true
+        counter:
+          type: integer
+          minimum: 0
+          readOnly: true
+        event_display:
+          type: string
+          readOnly: true
+        event_data:
+          default: {}
+        failed:
+          type: string
+          readOnly: true
+        changed:
+          type: string
+          readOnly: true
+        uuid:
+          type: string
+          readOnly: true
+        stdout:
+          type: string
+          readOnly: true
+        start_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        end_line:
+          type: integer
+          minimum: 0
+          readOnly: true
+        verbosity:
+          type: integer
+          minimum: 0
+          readOnly: true
+        system_job:
+          type: integer
+          readOnly: true
     SystemJobList:
       type: object
       properties:
@@ -476,6 +564,37 @@ components:
           readOnly: true
       required:
       - name
+    PaginatedSystemJobEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemJobEvent'
+    SystemJobCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
     SystemJob:
       type: object
       properties:
@@ -672,100 +791,6 @@ components:
           readOnly: true
       required:
       - name
-    SystemJobCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
-    SystemJobEvent:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        event:
-          type: string
-          readOnly: true
-        counter:
-          type: integer
-          minimum: 0
-          readOnly: true
-        event_display:
-          type: string
-          readOnly: true
-        event_data:
-          default: {}
-        failed:
-          type: string
-          readOnly: true
-        changed:
-          type: string
-          readOnly: true
-        uuid:
-          type: string
-          readOnly: true
-        stdout:
-          type: string
-          readOnly: true
-        start_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        end_line:
-          type: integer
-          minimum: 0
-          readOnly: true
-        verbosity:
-          type: integer
-          minimum: 0
-          readOnly: true
-        system_job:
-          type: integer
-          readOnly: true
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
     Notification:
       type: object
       properties:
@@ -860,28 +885,3 @@ components:
           description: Notification body
       required:
       - notification_type
-    PaginatedSystemJobListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/SystemJobList'

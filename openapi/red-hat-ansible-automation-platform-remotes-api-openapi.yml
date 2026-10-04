@@ -444,39 +444,6 @@ paths:
           description: ''
 components:
   schemas:
-    PolicyDb6Enum:
-      enum:
-      - immediate
-      - When syncing, download all metadata and content now.
-      type: string
-      description: '* `immediate` - immediate
-
-        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'
-    PaginatedRemoteResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RemoteResponse'
     RemoteResponse:
       type: object
       description: 'Every remote defined by a plugin should have a Remote serializer that inherits from this
@@ -606,3 +573,36 @@ components:
       required:
       - name
       - url
+    PaginatedRemoteResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RemoteResponse'
+    PolicyDb6Enum:
+      enum:
+      - immediate
+      - When syncing, download all metadata and content now.
+      type: string
+      description: '* `immediate` - immediate
+
+        * `When syncing, download all metadata and content now.` - When syncing, download all metadata and content now.'

@@ -627,6 +627,134 @@ paths:
           description: ''
 components:
   schemas:
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    SetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    file.FileDistribution:
+      type: object
+      description: Serializer for File Distributions.
+      properties:
+        base_path:
+          type: string
+          minLength: 1
+          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
+        content_guard:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An optional content-guard.
+        hidden:
+          type: boolean
+          default: false
+          description: Whether this distribution should be shown in the content app.
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name. Ex, `rawhide` and `stable`.
+        repository:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The latest RepositoryVersion for this Repository will be served.
+        publication:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Publication to be served
+      required:
+      - base_path
+      - name
+    Paginatedfile.FileDistributionResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.FileDistributionResponse'
     Patchedfile.FileDistribution:
       type: object
       description: Serializer for File Distributions.
@@ -667,16 +795,17 @@ components:
           - 'null'
           format: uri
           description: Publication to be served
-    MyPermissionsResponse:
+    UnsetLabel:
       type: object
+      description: Serializer for synchronously setting a label.
       properties:
-        permissions:
-          type: array
-          items:
-            type: string
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
       required:
-      - permissions
-    NestedRole:
+      - key
+    NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -689,20 +818,29 @@ components:
           type: array
           items:
             type: string
-            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
-            minLength: 1
           default: []
         role:
           type: string
-          minLength: 1
       required:
       - role
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
     file.FileDistributionResponse:
       type: object
       description: Serializer for File Distributions.
@@ -762,154 +900,6 @@ components:
       required:
       - base_path
       - name
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    SetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
-      required:
-      - key
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    file.FileDistribution:
-      type: object
-      description: Serializer for File Distributions.
-      properties:
-        base_path:
-          type: string
-          minLength: 1
-          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
-        content_guard:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An optional content-guard.
-        hidden:
-          type: boolean
-          default: false
-          description: Whether this distribution should be shown in the content app.
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name. Ex, `rawhide` and `stable`.
-        repository:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The latest RepositoryVersion for this Repository will be served.
-        publication:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Publication to be served
-      required:
-      - base_path
-      - name
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    Paginatedfile.FileDistributionResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/file.FileDistributionResponse'
     SetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
@@ -924,3 +914,13 @@ components:
       required:
       - key
       - value
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

@@ -1032,7 +1032,7 @@ components:
       required:
       - name
       - state
-    FeatureFlagPatch:
+    PatchedFeatureFlagPatch:
       type: object
       properties:
         value:
@@ -1138,7 +1138,7 @@ components:
         state:
           type: string
           readOnly: true
-    PatchedFeatureFlagPatch:
+    FeatureFlagPatch:
       type: object
       properties:
         value:

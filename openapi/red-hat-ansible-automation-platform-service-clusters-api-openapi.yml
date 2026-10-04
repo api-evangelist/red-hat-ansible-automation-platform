@@ -1840,63 +1840,8 @@ components:
       required:
       - mark_previous_inactive
       - service_cluster
-    ServiceTypeDisassociate:
+    ServiceNode:
       type: object
-      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of service types to remove from this relationship.
-      required:
-      - instances
-    PaginatedAdditionalRouteList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdditionalRoute'
-    AdditionalRoute:
-      type: object
-      description: 'Base serializer for route models.
-
-
-        Provides common validation logic for routes including:
-
-        - Gateway authentication validation for internal routes
-
-        - Mutual TLS (mTLS) validation with gateway authentication
-
-        - Gateway path normalization (collapsing consecutive slashes)
-
-        - Node tags normalization
-
-        - Timeout floor enforcement (request_timeout_seconds & idle_timeout_seconds)
-
-
-        Subclasses can override validate() and call super().validate()
-
-        to add their own validation logic.'
       properties:
         id:
           type: integer
@@ -1941,77 +1886,292 @@ components:
           type: string
           description: The name of this resource.
           maxLength: 512
-        request_timeout_seconds:
-          type:
-          - integer
-          - 'null'
-          maximum: 604800
-          minimum: 0
-          description: The request timeout in seconds for this route. Values below the global proxy request_timeout setting are rejected. Leave null to use the global proxy timeout setting. See effective_timeout_seconds for the computed value applied to the route.
-        idle_timeout_seconds:
-          type:
-          - integer
-          - 'null'
-          maximum: 86400
-          minimum: 0
-          description: The idle timeout in seconds for this route. Connections with no data transmitted within this period are closed. Values below the global proxy idle_timeout setting are rejected. Leave null to use the global proxy idle timeout setting. See effective_idle_timeout_seconds for the computed value applied to the route.
-        effective_timeout_seconds:
+        address:
           type: string
-          readOnly: true
-          description: 'Read-only. The effective request timeout: max(request_timeout_seconds, global request_timeout setting).'
-        effective_idle_timeout_seconds:
-          type: string
-          readOnly: true
-          description: 'Read-only. The effective idle timeout: max(idle_timeout_seconds, global idle_timeout setting).'
-        http_port:
-          type: integer
-          description: The port on the AAP gateway to listen to traffic on.
+          description: The network address to route traffic for this service to.
+          maxLength: 255
         service_cluster:
           type: integer
-          description: The AAP Service to route traffic to.
-        service_port:
+          description: The AAP Service cluster that this node belongs to.
+        tags:
+          type: string
+          description: A comma-separated list of roles to assign to a node; to be selective about which routes point to it.
+          maxLength: 255
+      required:
+      - address
+      - name
+      - service_cluster
+    AdditionalRouteDisassociate:
+      type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of additional routes to remove from this relationship.
+      required:
+      - instances
+    ServiceTypeDisassociate:
+      type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of service types to remove from this relationship.
+      required:
+      - instances
+    PaginatedAdditionalRouteList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
           type: integer
-          maximum: 65535
-          minimum: 1
-          description: The port on the service cluster to route traffic to.
-        is_service_https:
-          type: boolean
-          description: Set this to true if the service cluster requires HTTPS.
-        is_internal_route:
-          type: boolean
-          description: If true, the AAP gateway will only allow other AAP services to access this route. Requires gateway auth to be enabled.
-        service_path:
-          type: string
-          description: The URL path on the AAP Service cluster to route traffic to.
-          maxLength: 255
-        gateway_path:
-          type: string
-          description: The path on the AAP gateway to listen to traffic on.
-          maxLength: 255
-        description:
+          example: 123
+        next:
           type:
           - string
           - 'null'
-          description: A description of this route.
-          maxLength: 255
-        enable_gateway_auth:
-          type: boolean
-          description: If false, the AAP gateway will not insert a gateway token into the proxied request.
-        node_tags:
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalRoute'
+    PatchedServiceCluster:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
           type: string
-          description: A comma-separated list of nodes in the service cluster to receive traffic from this route.  Leave blank to select all nodes.
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        service_type:
+          type: integer
+          description: The AAP service type of this service cluster.
+        service_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          readOnly: true
+          description: The unique service ID provided by the service.
+        auth_type:
+          enum:
+          - JWT
+          - BASIC
+          - TOKEN
+          type: string
+          x-spec-enum-id: e24087e68e36b686
+          description: 'The authorization type for this service.
+
+
+            * `JWT` - JWT
+
+            * `BASIC` - Basic auth
+
+            * `TOKEN` - Bearer token'
+        upstream_hostname:
+          type: string
+          description: Set this value to enable server name identification on associated routes.
           maxLength: 255
-        enable_mtls:
+        dns_discovery_type:
+          enum:
+          - LOGICAL_DNS
+          - STRICT_DNS
+          type: string
+          x-spec-enum-id: 47856b6b6c25790f
+          description: 'The DNS service discovery type for this service.
+
+
+            * `LOGICAL_DNS` - Logical DNS
+
+            * `STRICT_DNS` - Strict DNS'
+        dns_lookup_family:
+          enum:
+          - V4_ONLY
+          - V6_ONLY
+          - AUTO
+          - ALL
+          - V4_PREFERRED
+          type: string
+          x-spec-enum-id: 65c5f314f2d8baed
+          description: 'DNS lookup type for this service.
+
+
+            * `V4_ONLY` - IPv4 only
+
+            * `V6_ONLY` - IPv6 only
+
+            * `AUTO` - Auto (IPv6 preferred)
+
+            * `ALL` - All IPv4 and IPv6 addresses
+
+            * `V4_PREFERRED` - IPv4 preferred'
+        outlier_detection_enabled:
           type: boolean
-          description: If true, the route requires mutual TLS. Connecting clients have to provide one or more certificates.
+          description: If true, outlier detection will be used to determine if a node is unhealthy and should be ejected from the cluster.
+        outlier_detection_consecutive_5xx:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The number of consecutive 5xx responses to consider a node unhealthy.
+        outlier_detection_interval_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The time interval between ejection analysis sweeps.
+        outlier_detection_base_ejection_time_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The base time a node will be ejected for.
+        outlier_detection_max_ejection_percent:
+          type: integer
+          maximum: 100
+          minimum: 0
+          description: The maximum percent of nodes that can be ejected from the cluster.
+        health_checks_enabled:
+          type: boolean
+          description: If true, health checks will be used to determine if a node is healthy.
+        health_check_timeout_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The time to wait for a health check to complete.
+        health_check_interval_seconds:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The time between health check requests.
+        health_check_unhealthy_threshold:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The number of consecutive failed health checks before a node is considered unhealthy.
+        health_check_healthy_threshold:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          description: The number of consecutive successful health checks before a node is considered healthy.
+        healthy_panic_threshold:
+          type: integer
+          maximum: 100
+          minimum: 0
+          description: The percentage of failed hosts when the proxy will panic and start routing traffic to all nodes. Set to 0 to disable this.
+        effective_health_check_timeout_seconds:
+          type: string
+          readOnly: true
+          description: The effective health check timeout Envoy will use, computed as the maximum of the cluster's health_check_timeout_seconds, the highest route request_timeout_seconds, and the global request_timeout preference.
+    PaginatedServiceTypeList:
+      type: object
       required:
-      - gateway_path
-      - http_port
-      - is_service_https
-      - name
-      - service_cluster
-      - service_path
-      - service_port
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceType'
+    AdditionalRouteAssociate:
+      type: object
+      description: Serializer used for adding objects to a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of additional routes to add to this relationship.
+      required:
+      - instances
+    PaginatedServiceNodeList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceNode'
     ServiceCluster:
       type: object
       properties:
@@ -2178,338 +2338,6 @@ components:
       required:
       - name
       - service_type
-    ServiceTypeAssociate:
-      type: object
-      description: Serializer used for adding objects to a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of service types to add to this relationship.
-      required:
-      - instances
-    PatchedServiceCluster:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        service_type:
-          type: integer
-          description: The AAP service type of this service cluster.
-        service_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          readOnly: true
-          description: The unique service ID provided by the service.
-        auth_type:
-          enum:
-          - JWT
-          - BASIC
-          - TOKEN
-          type: string
-          x-spec-enum-id: e24087e68e36b686
-          description: 'The authorization type for this service.
-
-
-            * `JWT` - JWT
-
-            * `BASIC` - Basic auth
-
-            * `TOKEN` - Bearer token'
-        upstream_hostname:
-          type: string
-          description: Set this value to enable server name identification on associated routes.
-          maxLength: 255
-        dns_discovery_type:
-          enum:
-          - LOGICAL_DNS
-          - STRICT_DNS
-          type: string
-          x-spec-enum-id: 47856b6b6c25790f
-          description: 'The DNS service discovery type for this service.
-
-
-            * `LOGICAL_DNS` - Logical DNS
-
-            * `STRICT_DNS` - Strict DNS'
-        dns_lookup_family:
-          enum:
-          - V4_ONLY
-          - V6_ONLY
-          - AUTO
-          - ALL
-          - V4_PREFERRED
-          type: string
-          x-spec-enum-id: 65c5f314f2d8baed
-          description: 'DNS lookup type for this service.
-
-
-            * `V4_ONLY` - IPv4 only
-
-            * `V6_ONLY` - IPv6 only
-
-            * `AUTO` - Auto (IPv6 preferred)
-
-            * `ALL` - All IPv4 and IPv6 addresses
-
-            * `V4_PREFERRED` - IPv4 preferred'
-        outlier_detection_enabled:
-          type: boolean
-          description: If true, outlier detection will be used to determine if a node is unhealthy and should be ejected from the cluster.
-        outlier_detection_consecutive_5xx:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The number of consecutive 5xx responses to consider a node unhealthy.
-        outlier_detection_interval_seconds:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The time interval between ejection analysis sweeps.
-        outlier_detection_base_ejection_time_seconds:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The base time a node will be ejected for.
-        outlier_detection_max_ejection_percent:
-          type: integer
-          maximum: 100
-          minimum: 0
-          description: The maximum percent of nodes that can be ejected from the cluster.
-        health_checks_enabled:
-          type: boolean
-          description: If true, health checks will be used to determine if a node is healthy.
-        health_check_timeout_seconds:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The time to wait for a health check to complete.
-        health_check_interval_seconds:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The time between health check requests.
-        health_check_unhealthy_threshold:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The number of consecutive failed health checks before a node is considered unhealthy.
-        health_check_healthy_threshold:
-          type: integer
-          maximum: 2147483647
-          minimum: 0
-          description: The number of consecutive successful health checks before a node is considered healthy.
-        healthy_panic_threshold:
-          type: integer
-          maximum: 100
-          minimum: 0
-          description: The percentage of failed hosts when the proxy will panic and start routing traffic to all nodes. Set to 0 to disable this.
-        effective_health_check_timeout_seconds:
-          type: string
-          readOnly: true
-          description: The effective health check timeout Envoy will use, computed as the maximum of the cluster's health_check_timeout_seconds, the highest route request_timeout_seconds, and the global request_timeout preference.
-    ServiceNode:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        address:
-          type: string
-          description: The network address to route traffic for this service to.
-          maxLength: 255
-        service_cluster:
-          type: integer
-          description: The AAP Service cluster that this node belongs to.
-        tags:
-          type: string
-          description: A comma-separated list of roles to assign to a node; to be selective about which routes point to it.
-          maxLength: 255
-      required:
-      - address
-      - name
-      - service_cluster
-    AdditionalRouteAssociate:
-      type: object
-      description: Serializer used for adding objects to a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of additional routes to add to this relationship.
-      required:
-      - instances
-    PaginatedServiceClusterList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceCluster'
-    AdditionalRouteDisassociate:
-      type: object
-      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of additional routes to remove from this relationship.
-      required:
-      - instances
-    PaginatedServiceTypeList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceType'
-    PaginatedServiceNodeList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServiceNode'
     PaginatedServiceKeyList:
       type: object
       required:
@@ -2535,6 +2363,178 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ServiceKey'
+    PaginatedServiceClusterList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServiceCluster'
+    ServiceTypeAssociate:
+      type: object
+      description: Serializer used for adding objects to a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of service types to add to this relationship.
+      required:
+      - instances
+    AdditionalRoute:
+      type: object
+      description: 'Base serializer for route models.
+
+
+        Provides common validation logic for routes including:
+
+        - Gateway authentication validation for internal routes
+
+        - Mutual TLS (mTLS) validation with gateway authentication
+
+        - Gateway path normalization (collapsing consecutive slashes)
+
+        - Node tags normalization
+
+        - Timeout floor enforcement (request_timeout_seconds & idle_timeout_seconds)
+
+
+        Subclasses can override validate() and call super().validate()
+
+        to add their own validation logic.'
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        request_timeout_seconds:
+          type:
+          - integer
+          - 'null'
+          maximum: 604800
+          minimum: 0
+          description: The request timeout in seconds for this route. Values below the global proxy request_timeout setting are rejected. Leave null to use the global proxy timeout setting. See effective_timeout_seconds for the computed value applied to the route.
+        idle_timeout_seconds:
+          type:
+          - integer
+          - 'null'
+          maximum: 86400
+          minimum: 0
+          description: The idle timeout in seconds for this route. Connections with no data transmitted within this period are closed. Values below the global proxy idle_timeout setting are rejected. Leave null to use the global proxy idle timeout setting. See effective_idle_timeout_seconds for the computed value applied to the route.
+        effective_timeout_seconds:
+          type: string
+          readOnly: true
+          description: 'Read-only. The effective request timeout: max(request_timeout_seconds, global request_timeout setting).'
+        effective_idle_timeout_seconds:
+          type: string
+          readOnly: true
+          description: 'Read-only. The effective idle timeout: max(idle_timeout_seconds, global idle_timeout setting).'
+        http_port:
+          type: integer
+          description: The port on the AAP gateway to listen to traffic on.
+        service_cluster:
+          type: integer
+          description: The AAP Service to route traffic to.
+        service_port:
+          type: integer
+          maximum: 65535
+          minimum: 1
+          description: The port on the service cluster to route traffic to.
+        is_service_https:
+          type: boolean
+          description: Set this to true if the service cluster requires HTTPS.
+        is_internal_route:
+          type: boolean
+          description: If true, the AAP gateway will only allow other AAP services to access this route. Requires gateway auth to be enabled.
+        service_path:
+          type: string
+          description: The URL path on the AAP Service cluster to route traffic to.
+          maxLength: 255
+        gateway_path:
+          type: string
+          description: The path on the AAP gateway to listen to traffic on.
+          maxLength: 255
+        description:
+          type:
+          - string
+          - 'null'
+          description: A description of this route.
+          maxLength: 255
+        enable_gateway_auth:
+          type: boolean
+          description: If false, the AAP gateway will not insert a gateway token into the proxied request.
+        node_tags:
+          type: string
+          description: A comma-separated list of nodes in the service cluster to receive traffic from this route.  Leave blank to select all nodes.
+          maxLength: 255
+        enable_mtls:
+          type: boolean
+          description: If true, the route requires mutual TLS. Connecting clients have to provide one or more certificates.
+      required:
+      - gateway_path
+      - http_port
+      - is_service_https
+      - name
+      - service_cluster
+      - service_path
+      - service_port
     ServiceType:
       type: object
       properties:

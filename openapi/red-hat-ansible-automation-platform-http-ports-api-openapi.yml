@@ -816,6 +816,17 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AdditionalRouteDisassociate:
+      type: object
+      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of additional routes to remove from this relationship.
+      required:
+      - instances
     PaginatedAdditionalRouteList:
       type: object
       required:
@@ -841,6 +852,77 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdditionalRoute'
+    HTTPPort:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who created this resource.
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+          description: The user who last modified this resource.
+        name:
+          type: string
+          description: The name of this resource.
+          maxLength: 512
+        number:
+          type: integer
+          maximum: 65535
+          minimum: 1
+          description: The port number to listen on.
+        use_https:
+          type: boolean
+          description: Secure this port with HTTPS.
+        is_api_port:
+          type: boolean
+          description: If true, this port will be used to serve the AAP service APIs. Only one port can be the API port.
+      required:
+      - name
+      - number
+    AdditionalRouteAssociate:
+      type: object
+      description: Serializer used for adding objects to a many-to-many relationship
+      properties:
+        instances:
+          type: array
+          items:
+            type: integer
+          description: A list of additional routes to add to this relationship.
+      required:
+      - instances
     PaginatedHTTPPortList:
       type: object
       required:
@@ -1059,88 +1141,6 @@ components:
         is_api_port:
           type: boolean
           description: If true, this port will be used to serve the AAP service APIs. Only one port can be the API port.
-    AdditionalRouteAssociate:
-      type: object
-      description: Serializer used for adding objects to a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of additional routes to add to this relationship.
-      required:
-      - instances
-    AdditionalRouteDisassociate:
-      type: object
-      description: Serializer used for removing objects that are currently associated via a many-to-many relationship
-      properties:
-        instances:
-          type: array
-          items:
-            type: integer
-          description: A list of additional routes to remove from this relationship.
-      required:
-      - instances
-    HTTPPort:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-            additionalProperties: {}
-          readOnly: true
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who created this resource.
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        modified_by:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
-          description: The user who last modified this resource.
-        name:
-          type: string
-          description: The name of this resource.
-          maxLength: 512
-        number:
-          type: integer
-          maximum: 65535
-          minimum: 1
-          description: The port number to listen on.
-        use_https:
-          type: boolean
-          description: Secure this port with HTTPS.
-        is_api_port:
-          type: boolean
-          description: If true, this port will be used to serve the AAP service APIs. Only one port can be the API port.
-      required:
-      - name
-      - number
   securitySchemes:
     Basic_Authentication:
       type: http

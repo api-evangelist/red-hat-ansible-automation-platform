@@ -239,6 +239,13 @@ components:
           maxLength: 150
       required:
       - name
+    PatchedGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 150
     PaginatedGroupResponseList:
       type: object
       properties:
@@ -271,10 +278,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GroupResponse'
-    PatchedGroup:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 150

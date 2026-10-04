@@ -284,94 +284,69 @@ paths:
           description: No response body
 components:
   schemas:
-    PatchedRoleDefinition:
+    RoleDefinitionDetailResponse:
       type: object
       properties:
-        permissions:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: String to use for references to this type from other models in the API.
-        content_type:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: String to use for references to this type from other models in the API.
-        name:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        description:
-          type: string
-          description: A description of this role.
-    RoleDefinition:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: String to use for references to this type from other models in the API.
-        content_type:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: String to use for references to this type from other models in the API.
-        name:
-          type: string
-          minLength: 1
-          description: The name of this role.
-        description:
-          type: string
-          description: A description of this role.
-      required:
-      - name
-      - permissions
-    PaginatedRoleDefinitionResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
+        id:
           type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleDefinitionResponse'
-    RoleDefinitionDetail:
-      type: object
-      properties:
+          format: int64
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        summary_fields:
+          type: object
+          additionalProperties:
+            type: object
+          readOnly: true
         permissions:
           type: array
           items:
             type: string
-            minLength: 1
             description: String to use for references to this type from other models in the API.
+        content_type:
+          type: string
+          description: String to use for references to this type from other models in the API.
+          readOnly: true
+        modified:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: The date/time this resource was created.
         name:
           type: string
-          minLength: 1
           description: The name of this role.
         description:
           type: string
           description: A description of this role.
+        managed:
+          type: boolean
+          readOnly: true
+          description: Is this role managed by the system (not changeable by the users).
+        modified_by:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          readOnly: true
+          description: The user who last modified this resource.
+        created_by:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          readOnly: true
+          description: The user who created this resource.
       required:
       - name
       - permissions
@@ -442,69 +417,94 @@ components:
       required:
       - name
       - permissions
-    RoleDefinitionDetailResponse:
+    PaginatedRoleDefinitionResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleDefinitionResponse'
+    PatchedRoleDefinition:
       type: object
       properties:
-        id:
-          type: integer
-          format: int64
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        summary_fields:
-          type: object
-          additionalProperties:
-            type: object
-          readOnly: true
         permissions:
           type: array
           items:
             type: string
+            minLength: 1
             description: String to use for references to this type from other models in the API.
         content_type:
-          type: string
+          type:
+          - string
+          - 'null'
+          minLength: 1
           description: String to use for references to this type from other models in the API.
-          readOnly: true
-        modified:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
-        created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: The date/time this resource was created.
         name:
           type: string
+          minLength: 1
           description: The name of this role.
         description:
           type: string
           description: A description of this role.
-        managed:
-          type: boolean
-          readOnly: true
-          description: Is this role managed by the system (not changeable by the users).
-        modified_by:
+    RoleDefinitionDetail:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
+      required:
+      - name
+      - permissions
+    RoleDefinition:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: String to use for references to this type from other models in the API.
+        content_type:
           type:
-          - integer
+          - string
           - 'null'
-          format: int64
-          readOnly: true
-          description: The user who last modified this resource.
-        created_by:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          readOnly: true
-          description: The user who created this resource.
+          minLength: 1
+          description: String to use for references to this type from other models in the API.
+        name:
+          type: string
+          minLength: 1
+          description: The name of this role.
+        description:
+          type: string
+          description: A description of this role.
       required:
       - name
       - permissions

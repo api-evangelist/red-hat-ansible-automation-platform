@@ -225,6 +225,31 @@ paths:
           description: No response body
 components:
   schemas:
+    GroupUserResponse:
+      type: object
+      description: Serializer for Users that belong to a Group.
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          maxLength: 150
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+      required:
+      - username
+    GroupUser:
+      type: object
+      description: Serializer for Users that belong to a Group.
+      properties:
+        username:
+          type: string
+          minLength: 1
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          maxLength: 150
+      required:
+      - username
     PaginatedGroupUserResponseList:
       type: object
       properties:
@@ -257,28 +282,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GroupUserResponse'
-    GroupUserResponse:
-      type: object
-      description: Serializer for Users that belong to a Group.
-      properties:
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          maxLength: 150
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-      required:
-      - username
-    GroupUser:
-      type: object
-      description: Serializer for Users that belong to a Group.
-      properties:
-        username:
-          type: string
-          minLength: 1
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          maxLength: 150
-      required:
-      - username

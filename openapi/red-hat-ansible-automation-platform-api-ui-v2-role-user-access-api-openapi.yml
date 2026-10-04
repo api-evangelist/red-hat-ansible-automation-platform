@@ -154,6 +154,31 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedUserAccessAssignmentResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserAccessAssignmentResponse'
     PaginatedUserAccessViewSet_User_ResponseList:
       type: object
       required:
@@ -179,6 +204,42 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserAccessViewSet_User_Response'
+    UserAccessViewSet_User_Response:
+      type: object
+      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: object
+          additionalProperties:
+            type: string
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly assigning them.
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        object_role_assignments:
+          type: string
+          readOnly: true
+      required:
+      - username
     UserAccessAssignmentResponse:
       type: object
       properties:
@@ -244,64 +305,3 @@ components:
           readOnly: true
       required:
       - role_definition
-    PaginatedUserAccessAssignmentResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserAccessAssignmentResponse'
-    UserAccessViewSet_User_Response:
-      type: object
-      description: controller uses auth.User model so this needs to be as compatible as possible, thus ModelSerializer
-      properties:
-        id:
-          type: integer
-          format: int64
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: object
-          additionalProperties:
-            type: string
-          readOnly: true
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+$
-          maxLength: 150
-        is_superuser:
-          type: boolean
-          title: Superuser status
-          description: Designates that this user has all permissions without explicitly assigning them.
-        first_name:
-          type: string
-          maxLength: 150
-        last_name:
-          type: string
-          maxLength: 150
-        object_role_assignments:
-          type: string
-          readOnly: true
-      required:
-      - username
