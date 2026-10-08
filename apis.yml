@@ -9473,6 +9473,8 @@ apis:
   - type: Console
     url: https://console.redhat.com/ansible/ansible-dashboard
 common:
+  - type: FinOps
+    url: finops/red-hat-ansible-automation-platform-finops.yml
   - type: CapabilityMap
     url: capabilities/red-hat-ansible-automation-platform-capability-edges.yml
     name: Red Hat Ansible Automation Platform Business Capability Map
