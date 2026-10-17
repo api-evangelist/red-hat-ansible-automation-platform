@@ -258,6 +258,31 @@ paths:
           description: ''
 components:
   schemas:
+    Paginatedansible.RoleResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.RoleResponse'
     ansible.RoleResponse:
       type: object
       description: A serializer for Role versions.
@@ -291,31 +316,6 @@ components:
       - name
       - namespace
       - version
-    Paginatedansible.RoleResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.RoleResponse'
     ansible.Role:
       type: object
       description: A serializer for Role versions.

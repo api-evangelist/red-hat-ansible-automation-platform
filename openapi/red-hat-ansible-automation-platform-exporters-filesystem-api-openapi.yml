@@ -347,17 +347,6 @@ paths:
           description: ''
 components:
   schemas:
-    MethodEnum:
-      enum:
-      - write
-      - hardlink
-      - symlink
-      type: string
-      description: '* `write` - Export by writing
-
-        * `hardlink` - Export by hardlinking
-
-        * `symlink` - Export by symlinking'
     PaginatedFilesystemExporterResponseList:
       type: object
       required:
@@ -383,45 +372,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FilesystemExporterResponse'
-    FilesystemExporterResponse:
-      type: object
-      description: Serializer for FilesystemExporters.
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        name:
-          type: string
-          description: Unique name of the file system exporter.
-        path:
-          type: string
-          description: File system location to export to.
-        method:
-          allOf:
-          - $ref: '#/components/schemas/MethodEnum'
-          default: write
-          description: 'Method of exporting
+    MethodEnum:
+      enum:
+      - write
+      - hardlink
+      - symlink
+      type: string
+      description: '* `write` - Export by writing
 
+        * `hardlink` - Export by hardlinking
 
-            * `write` - Export by writing
-
-            * `hardlink` - Export by hardlinking
-
-            * `symlink` - Export by symlinking'
-      required:
-      - name
-      - path
+        * `symlink` - Export by symlinking'
     PatchedFilesystemExporter:
       type: object
       description: Serializer for FilesystemExporters.
@@ -457,6 +418,45 @@ components:
         path:
           type: string
           minLength: 1
+          description: File system location to export to.
+        method:
+          allOf:
+          - $ref: '#/components/schemas/MethodEnum'
+          default: write
+          description: 'Method of exporting
+
+
+            * `write` - Export by writing
+
+            * `hardlink` - Export by hardlinking
+
+            * `symlink` - Export by symlinking'
+      required:
+      - name
+      - path
+    FilesystemExporterResponse:
+      type: object
+      description: Serializer for FilesystemExporters.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        name:
+          type: string
+          description: Unique name of the file system exporter.
+        path:
+          type: string
           description: File system location to export to.
         method:
           allOf:

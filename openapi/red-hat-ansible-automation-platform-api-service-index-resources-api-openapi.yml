@@ -206,6 +206,31 @@ paths:
           description: No response body
 components:
   schemas:
+    PaginatedResourceListResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceListResponse'
     PatchedResource:
       type: object
       properties:
@@ -225,6 +250,38 @@ components:
           minLength: 1
         resource_data:
           type: object
+    ResourceListResponse:
+      type: object
+      properties:
+        object_id:
+          type: string
+          readOnly: true
+          description: The object id for this resource.
+        name:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The name of this resource.
+        ansible_id:
+          type: string
+          format: uuid
+          description: A unique ID identifying this resource by the resource server.
+        service_id:
+          type: string
+          format: uuid
+          description: ID of the service responsible for managing this resource.
+        is_partially_migrated:
+          type: boolean
+          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
+        resource_type:
+          type: string
+        has_serializer:
+          type: boolean
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
     ResourceResponse:
       type: object
       properties:
@@ -264,31 +321,6 @@ components:
           readOnly: true
       required:
       - resource_data
-    PaginatedResourceListResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ResourceListResponse'
     Resource:
       type: object
       properties:
@@ -310,35 +342,3 @@ components:
           type: object
       required:
       - resource_data
-    ResourceListResponse:
-      type: object
-      properties:
-        object_id:
-          type: string
-          readOnly: true
-          description: The object id for this resource.
-        name:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The name of this resource.
-        ansible_id:
-          type: string
-          format: uuid
-          description: A unique ID identifying this resource by the resource server.
-        service_id:
-          type: string
-          format: uuid
-          description: ID of the service responsible for managing this resource.
-        is_partially_migrated:
-          type: boolean
-          description: A flag indicating that the resource has been copied into the resource server, but the service_id hasn't been updated yet.
-        resource_type:
-          type: string
-        has_serializer:
-          type: boolean
-          readOnly: true
-        url:
-          type: string
-          readOnly: true

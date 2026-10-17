@@ -708,45 +708,7 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    Policy8e2Enum:
-      enum:
-      - on_demand
-      type: string
-      description: '* `on_demand` - on_demand'
-    SetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    NestedRole:
+    NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -759,18 +721,15 @@ components:
           type: array
           items:
             type: string
-            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
-            minLength: 1
           default: []
         role:
           type: string
-          minLength: 1
       required:
       - role
     Patchedcontainer.ContainerPullThroughRemote:
@@ -903,7 +862,7 @@ components:
           - 'null'
           format: int64
           description: Limits requests per second for each concurrent downloader
-    UnsetLabel:
+    SetLabel:
       type: object
       description: Serializer for synchronously setting a label.
       properties:
@@ -911,8 +870,13 @@ components:
           type: string
           minLength: 1
           pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
       required:
       - key
+      - value
     Paginatedcontainer.ContainerPullThroughRemoteResponseList:
       type: object
       required:
@@ -938,7 +902,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/container.ContainerPullThroughRemoteResponse'
-    NestedRoleResponse:
+    NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -951,17 +915,191 @@ components:
           type: array
           items:
             type: string
+            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
+            minLength: 1
           default: []
         role:
           type: string
+          minLength: 1
       required:
       - role
+    container.ContainerPullThroughRemoteResponse:
+      type: object
+      description: A serializer for a remote used in the pull-through distribution.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of the most recent update of the remote.
+        name:
+          type: string
+          description: A unique name for this remote.
+        url:
+          type: string
+          description: The URL of an external content source.
+        ca_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
+        client_cert:
+          type:
+          - string
+          - 'null'
+          description: A PEM encoded client certificate used for authentication.
+        tls_validation:
+          type: boolean
+          description: If True, TLS peer validation must be performed.
+        proxy_url:
+          type:
+          - string
+          - 'null'
+          description: 'The proxy URL. Format: scheme://host:port'
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        download_concurrency:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Total number of simultaneous connections. If not set then the default value will be used.
+          minimum: 1
+        max_retries:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Maximum number of retry attempts after a download failure. If not set then the default value (3) will be used.
+        policy:
+          allOf:
+          - $ref: '#/components/schemas/Policy8e2Enum'
+          default: on_demand
+        total_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.total (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        connect_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        sock_connect_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.sock_connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        sock_read_timeout:
+          type:
+          - number
+          - 'null'
+          format: double
+          minimum: 0.0
+          description: aiohttp.ClientTimeout.sock_read (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
+        headers:
+          type: array
+          items:
+            type: object
+          description: Headers for aiohttp.Clientsession
+        rate_limit:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Limits requests per second for each concurrent downloader
+        hidden_fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              is_set:
+                type: boolean
+            required:
+            - is_set
+            - name
+          readOnly: true
+          description: List of hidden (write only) fields
+      required:
+      - name
+      - url
+    Policy8e2Enum:
+      enum:
+      - on_demand
+      type: string
+      description: '* `on_demand` - on_demand'
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
     container.ContainerPullThroughRemote:
       type: object
       description: A serializer for a remote used in the pull-through distribution.
@@ -1095,160 +1233,22 @@ components:
       required:
       - name
       - url
-    UnsetLabelResponse:
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    UnsetLabel:
       type: object
       description: Serializer for synchronously setting a label.
       properties:
         key:
           type: string
+          minLength: 1
           pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
       required:
       - key
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    container.ContainerPullThroughRemoteResponse:
-      type: object
-      description: A serializer for a remote used in the pull-through distribution.
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of the most recent update of the remote.
-        name:
-          type: string
-          description: A unique name for this remote.
-        url:
-          type: string
-          description: The URL of an external content source.
-        ca_cert:
-          type:
-          - string
-          - 'null'
-          description: A PEM encoded CA certificate used to validate the server certificate presented by the remote server.
-        client_cert:
-          type:
-          - string
-          - 'null'
-          description: A PEM encoded client certificate used for authentication.
-        tls_validation:
-          type: boolean
-          description: If True, TLS peer validation must be performed.
-        proxy_url:
-          type:
-          - string
-          - 'null'
-          description: 'The proxy URL. Format: scheme://host:port'
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        download_concurrency:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Total number of simultaneous connections. If not set then the default value will be used.
-          minimum: 1
-        max_retries:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Maximum number of retry attempts after a download failure. If not set then the default value (3) will be used.
-        policy:
-          allOf:
-          - $ref: '#/components/schemas/Policy8e2Enum'
-          default: on_demand
-        total_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.total (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        connect_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        sock_connect_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.sock_connect (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        sock_read_timeout:
-          type:
-          - number
-          - 'null'
-          format: double
-          minimum: 0.0
-          description: aiohttp.ClientTimeout.sock_read (q.v.) for download-connections. The default is null, which will cause the default from the aiohttp library to be used.
-        headers:
-          type: array
-          items:
-            type: object
-          description: Headers for aiohttp.Clientsession
-        rate_limit:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Limits requests per second for each concurrent downloader
-        hidden_fields:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              is_set:
-                type: boolean
-            required:
-            - is_set
-            - name
-          readOnly: true
-          description: List of hidden (write only) fields
-      required:
-      - name
-      - url

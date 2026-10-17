@@ -258,36 +258,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AuthenticatorUserMove:
-      type: object
-      properties:
-        new_authenticator:
-          type: integer
-          description: The ID of the authenticator to which the user will be moved.
-        keep_memberships:
-          type: boolean
-          description: If false, remove the user's existing memberships and let the authenticator map for the new authenticator manage it instead.
-        merge_with_user:
-          type:
-          - integer
-          - 'null'
-          description: An optional user to merge this account with.
-        new_uid:
-          type:
-          - string
-          - 'null'
-          description: Provide a new UID for the user. This value is used to link the users login with the local AAP account.  It must match the user identifier from the new authentication provider.
-        merge_accounts_with_same_uid:
-          type: boolean
-          description: If true, automatically merge accounts with the same uid. Mutually exclusive with merge_with_user.
-        remove_other_authenticators:
-          type: boolean
-          description: If true, delete any other authenticator_user entries the user has from old_authenticator.
-      required:
-      - keep_memberships
-      - merge_accounts_with_same_uid
-      - new_authenticator
-      - remove_other_authenticators
     AuthenticatorUser:
       type: object
       properties:
@@ -363,6 +333,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AuthenticatorUser'
+    AuthenticatorUserMove:
+      type: object
+      properties:
+        new_authenticator:
+          type: integer
+          description: The ID of the authenticator to which the user will be moved.
+        keep_memberships:
+          type: boolean
+          description: If false, remove the user's existing memberships and let the authenticator map for the new authenticator manage it instead.
+        merge_with_user:
+          type:
+          - integer
+          - 'null'
+          description: An optional user to merge this account with.
+        new_uid:
+          type:
+          - string
+          - 'null'
+          description: Provide a new UID for the user. This value is used to link the users login with the local AAP account.  It must match the user identifier from the new authentication provider.
+        merge_accounts_with_same_uid:
+          type: boolean
+          description: If true, automatically merge accounts with the same uid. Mutually exclusive with merge_with_user.
+        remove_other_authenticators:
+          type: boolean
+          description: If true, delete any other authenticator_user entries the user has from old_authenticator.
+      required:
+      - keep_memberships
+      - merge_accounts_with_same_uid
+      - new_authenticator
+      - remove_other_authenticators
   securitySchemes:
     Basic_Authentication:
       type: http

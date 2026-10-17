@@ -941,346 +941,6 @@ paths:
           description: ''
 components:
   schemas:
-    Paginatedcontainer.ContainerRepositoryResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/container.ContainerRepositoryResponse'
-    SetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    ContainerRepositorySyncURL:
-      type: object
-      description: Serializer for Container Sync.
-      properties:
-        remote:
-          type: string
-          format: uri
-          description: A remote to sync from. This will override a remote set on repository.
-        mirror:
-          type: boolean
-          default: false
-          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
-        signed_only:
-          type: boolean
-          default: false
-          description: If ``True``, only signed content will be synced. Signatures are not verified.
-    MediaTypesEnum:
-      enum:
-      - application/vnd.docker.distribution.manifest.v1+json
-      - application/vnd.docker.distribution.manifest.v2+json
-      - application/vnd.docker.distribution.manifest.list.v2+json
-      - application/vnd.oci.image.manifest.v1+json
-      - application/vnd.oci.image.index.v1+json
-      type: string
-      description: '* `application/vnd.docker.distribution.manifest.v1+json` - application/vnd.docker.distribution.manifest.v1+json
-
-        * `application/vnd.docker.distribution.manifest.v2+json` - application/vnd.docker.distribution.manifest.v2+json
-
-        * `application/vnd.docker.distribution.manifest.list.v2+json` - application/vnd.docker.distribution.manifest.list.v2+json
-
-        * `application/vnd.oci.image.manifest.v1+json` - application/vnd.oci.image.manifest.v1+json
-
-        * `application/vnd.oci.image.index.v1+json` - application/vnd.oci.image.index.v1+json'
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    RecursiveManage:
-      type: object
-      description: Serializer for adding and removing content to/from a Container repository.
-      properties:
-        content_units:
-          type: array
-          items: {}
-          description: A list of content units to operate on.
-    RepositorySign:
-      type: object
-      description: Serializer for container images signing.
-      properties:
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A signing service to sign with. This will override a signing service set on the repo.
-        future_base_path:
-          type: string
-          minLength: 1
-          description: Future base path content will be distributed at for sync repos
-        tags_list:
-          type: array
-          items: {}
-          description: A list of tags to sign.
-    TagCopy:
-      type: object
-      description: Serializer for copying tags from a source repository to a destination repository.
-      properties:
-        source_repository:
-          type: string
-          format: uri
-          title: Repository
-          description: A URI of the repository to copy content from.
-        source_repository_version:
-          type: string
-          format: uri
-          description: A URI of the repository version to copy content from.
-        names:
-          type: array
-          items: {}
-          description: A list of tag names to copy.
-    ManifestCopy:
-      type: object
-      description: Serializer for copying manifests from a source repository to a destination repository.
-      properties:
-        source_repository:
-          type: string
-          format: uri
-          title: Repository
-          description: A URI of the repository to copy content from.
-        source_repository_version:
-          type: string
-          format: uri
-          description: A URI of the repository version to copy content from.
-        digests:
-          type: array
-          items: {}
-          description: A list of manifest digests to copy.
-        media_types:
-          type: array
-          items:
-            $ref: '#/components/schemas/MediaTypesEnum'
-          description: A list of media_types to copy.
-    SetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    TagImage:
-      type: object
-      description: A serializer for parsing and validating data associated with a manifest tagging.
-      properties:
-        tag:
-          type: string
-          minLength: 1
-          description: A tag name
-          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
-        digest:
-          type: string
-          minLength: 1
-          description: sha256 of the Manifest file
-      required:
-      - digest
-      - tag
-    UnTagImage:
-      type: object
-      description: A serializer for parsing and validating data associated with a manifest untagging.
-      properties:
-        tag:
-          type: string
-          minLength: 1
-          description: A tag name
-          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
-      required:
-      - tag
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
-      required:
-      - key
-    container.ContainerRepository:
-      type: object
-      description: Serializer for Container Repositories.
-      properties:
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        remote:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An optional remote to use by default when syncing.
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A reference to an associated signing service.
-      required:
-      - name
-    Patchedcontainer.ContainerRepository:
-      type: object
-      description: Serializer for Container Repositories.
-      properties:
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        remote:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: An optional remote to use by default when syncing.
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A reference to an associated signing service.
     container.ContainerRepositoryResponse:
       type: object
       description: Serializer for Container Repositories.
@@ -1342,26 +1002,6 @@ components:
           description: A reference to an associated signing service.
       required:
       - name
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     OCIBuildImage:
       type: object
       description: 'Serializer for building an OCI container image from a Containerfile.
@@ -1387,3 +1027,363 @@ components:
         artifacts:
           type: object
           description: A JSON string where each key is an artifact href and the value is it's relative path (name) inside the /pulp_working_directory of the build container executing the Containerfile.
+    RecursiveManage:
+      type: object
+      description: Serializer for adding and removing content to/from a Container repository.
+      properties:
+        content_units:
+          type: array
+          items: {}
+          description: A list of content units to operate on.
+    container.ContainerRepository:
+      type: object
+      description: Serializer for Container Repositories.
+      properties:
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        remote:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An optional remote to use by default when syncing.
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A reference to an associated signing service.
+      required:
+      - name
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    TagCopy:
+      type: object
+      description: Serializer for copying tags from a source repository to a destination repository.
+      properties:
+        source_repository:
+          type: string
+          format: uri
+          title: Repository
+          description: A URI of the repository to copy content from.
+        source_repository_version:
+          type: string
+          format: uri
+          description: A URI of the repository version to copy content from.
+        names:
+          type: array
+          items: {}
+          description: A list of tag names to copy.
+    UnsetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - key
+    TagImage:
+      type: object
+      description: A serializer for parsing and validating data associated with a manifest tagging.
+      properties:
+        tag:
+          type: string
+          minLength: 1
+          description: A tag name
+          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
+        digest:
+          type: string
+          minLength: 1
+          description: sha256 of the Manifest file
+      required:
+      - digest
+      - tag
+    MediaTypesEnum:
+      enum:
+      - application/vnd.docker.distribution.manifest.v1+json
+      - application/vnd.docker.distribution.manifest.v2+json
+      - application/vnd.docker.distribution.manifest.list.v2+json
+      - application/vnd.oci.image.manifest.v1+json
+      - application/vnd.oci.image.index.v1+json
+      type: string
+      description: '* `application/vnd.docker.distribution.manifest.v1+json` - application/vnd.docker.distribution.manifest.v1+json
+
+        * `application/vnd.docker.distribution.manifest.v2+json` - application/vnd.docker.distribution.manifest.v2+json
+
+        * `application/vnd.docker.distribution.manifest.list.v2+json` - application/vnd.docker.distribution.manifest.list.v2+json
+
+        * `application/vnd.oci.image.manifest.v1+json` - application/vnd.oci.image.manifest.v1+json
+
+        * `application/vnd.oci.image.index.v1+json` - application/vnd.oci.image.index.v1+json'
+    ContainerRepositorySyncURL:
+      type: object
+      description: Serializer for Container Sync.
+      properties:
+        remote:
+          type: string
+          format: uri
+          description: A remote to sync from. This will override a remote set on repository.
+        mirror:
+          type: boolean
+          default: false
+          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
+        signed_only:
+          type: boolean
+          default: false
+          description: If ``True``, only signed content will be synced. Signatures are not verified.
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    ManifestCopy:
+      type: object
+      description: Serializer for copying manifests from a source repository to a destination repository.
+      properties:
+        source_repository:
+          type: string
+          format: uri
+          title: Repository
+          description: A URI of the repository to copy content from.
+        source_repository_version:
+          type: string
+          format: uri
+          description: A URI of the repository version to copy content from.
+        digests:
+          type: array
+          items: {}
+          description: A list of manifest digests to copy.
+        media_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/MediaTypesEnum'
+          description: A list of media_types to copy.
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
+    SetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
+      required:
+      - role
+    UnTagImage:
+      type: object
+      description: A serializer for parsing and validating data associated with a manifest untagging.
+      properties:
+        tag:
+          type: string
+          minLength: 1
+          description: A tag name
+          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
+      required:
+      - tag
+    Paginatedcontainer.ContainerRepositoryResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/container.ContainerRepositoryResponse'
+    RepositorySign:
+      type: object
+      description: Serializer for container images signing.
+      properties:
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A signing service to sign with. This will override a signing service set on the repo.
+        future_base_path:
+          type: string
+          minLength: 1
+          description: Future base path content will be distributed at for sync repos
+        tags_list:
+          type: array
+          items: {}
+          description: A list of tags to sign.
+    Patchedcontainer.ContainerRepository:
+      type: object
+      description: Serializer for Container Repositories.
+      properties:
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        remote:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: An optional remote to use by default when syncing.
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A reference to an associated signing service.
+    SetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

@@ -214,16 +214,6 @@ paths:
           description: No response body
 components:
   schemas:
-    Organization:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The name of this resource.
-          maxLength: 512
-      required:
-      - name
     PatchedOrganization:
       type: object
       properties:
@@ -270,5 +260,15 @@ components:
         resource:
           type: string
           readOnly: true
+      required:
+      - name
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of this resource.
+          maxLength: 512
       required:
       - name

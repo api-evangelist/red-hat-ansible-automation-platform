@@ -53,15 +53,6 @@ paths:
           description: ''
 components:
   schemas:
-    Copy:
-      type: object
-      description: A serializer for Content Copy API.
-      properties:
-        config:
-          type: object
-          description: A JSON document describing sources, destinations, and content to be copied
-      required:
-      - config
     AsyncOperationResponse:
       type: object
       description: Serializer for asynchronous operations.
@@ -72,3 +63,12 @@ components:
           description: The href of the task.
       required:
       - task
+    Copy:
+      type: object
+      description: A serializer for Content Copy API.
+      properties:
+        config:
+          type: object
+          description: A JSON document describing sources, destinations, and content to be copied
+      required:
+      - config

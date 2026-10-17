@@ -643,15 +643,55 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
+    Paginatedcontainer.ContainerDistributionResponseList:
       type: object
+      required:
+      - count
+      - results
       properties:
-        roles:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
           type: array
           items:
-            $ref: '#/components/schemas/NestedRoleResponse'
+            $ref: '#/components/schemas/container.ContainerDistributionResponse'
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
       required:
-      - roles
+      - role
     SetLabel:
       type: object
       description: Serializer for synchronously setting a label.
@@ -667,6 +707,151 @@ components:
       required:
       - key
       - value
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    Patchedcontainer.ContainerDistribution:
+      type: object
+      description: A serializer for ContainerDistribution.
+      properties:
+        base_path:
+          type: string
+          minLength: 1
+          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
+        repository:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The latest RepositoryVersion for this Repository will be served.
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name. Ex, `rawhide` and `stable`.
+        content_guard:
+          type: string
+          format: uri
+          description: An optional content-guard. If none is specified, a default one will be used.
+        hidden:
+          type: boolean
+          default: false
+          description: Whether this distribution should be shown in the content app.
+        repository_version:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: RepositoryVersion to be served
+        private:
+          type: boolean
+          description: Restrict pull access to explicitly authorized users. Defaults to unrestricted pull access.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    container.ContainerDistribution:
+      type: object
+      description: A serializer for ContainerDistribution.
+      properties:
+        base_path:
+          type: string
+          minLength: 1
+          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
+        repository:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The latest RepositoryVersion for this Repository will be served.
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name. Ex, `rawhide` and `stable`.
+        content_guard:
+          type: string
+          format: uri
+          description: An optional content-guard. If none is specified, a default one will be used.
+        hidden:
+          type: boolean
+          default: false
+          description: Whether this distribution should be shown in the content app.
+        repository_version:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: RepositoryVersion to be served
+        private:
+          type: boolean
+          description: Restrict pull access to explicitly authorized users. Defaults to unrestricted pull access.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+      required:
+      - base_path
+      - name
     container.ContainerDistributionResponse:
       type: object
       description: A serializer for ContainerDistribution.
@@ -742,210 +927,25 @@ components:
       required:
       - base_path
       - name
-    MyPermissionsResponse:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    ObjectRolesResponse:
       type: object
       properties:
-        permissions:
+        roles:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/NestedRoleResponse'
       required:
-      - permissions
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
-    container.ContainerDistribution:
-      type: object
-      description: A serializer for ContainerDistribution.
-      properties:
-        base_path:
-          type: string
-          minLength: 1
-          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
-        repository:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The latest RepositoryVersion for this Repository will be served.
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name. Ex, `rawhide` and `stable`.
-        content_guard:
-          type: string
-          format: uri
-          description: An optional content-guard. If none is specified, a default one will be used.
-        hidden:
-          type: boolean
-          default: false
-          description: Whether this distribution should be shown in the content app.
-        repository_version:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: RepositoryVersion to be served
-        private:
-          type: boolean
-          description: Restrict pull access to explicitly authorized users. Defaults to unrestricted pull access.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-      required:
-      - base_path
-      - name
-    Paginatedcontainer.ContainerDistributionResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/container.ContainerDistributionResponse'
-    UnsetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    Patchedcontainer.ContainerDistribution:
-      type: object
-      description: A serializer for ContainerDistribution.
-      properties:
-        base_path:
-          type: string
-          minLength: 1
-          description: The base (relative) path component of the published url. Avoid paths that                     overlap with other distribution base paths (e.g. "foo" and "foo/bar")
-        repository:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The latest RepositoryVersion for this Repository will be served.
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name. Ex, `rawhide` and `stable`.
-        content_guard:
-          type: string
-          format: uri
-          description: An optional content-guard. If none is specified, a default one will be used.
-        hidden:
-          type: boolean
-          default: false
-          description: Whether this distribution should be shown in the content app.
-        repository_version:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: RepositoryVersion to be served
-        private:
-          type: boolean
-          description: Restrict pull access to explicitly authorized users. Defaults to unrestricted pull access.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
-      required:
-      - role
-    UnsetLabelResponse:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
-      required:
-      - key
+      - roles
     SetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
@@ -960,13 +960,13 @@ components:
       required:
       - key
       - value
-    AsyncOperationResponse:
+    UnsetLabel:
       type: object
-      description: Serializer for asynchronous operations.
+      description: Serializer for synchronously setting a label.
       properties:
-        task:
+        key:
           type: string
-          format: uri
-          description: The href of the task.
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
       required:
-      - task
+      - key

@@ -69,41 +69,6 @@ components:
       description: '* `exclude` - exclude
 
         * `include` - include'
-    SyncList:
-      type: object
-      properties:
-        name:
-          type: string
-          minLength: 1
-          maxLength: 64
-        policy:
-          $ref: '#/components/schemas/Policy8baEnum'
-        upstream_repository:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        distribution:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        collections:
-          type: array
-          items:
-            $ref: '#/components/schemas/SyncListCollectionSummary'
-        namespaces:
-          type: array
-          items:
-            type: string
-            minLength: 1
-        groups:
-          type: string
-      required:
-      - collections
-      - groups
-      - name
-      - namespaces
     SyncListResponse:
       type: object
       properties:
@@ -159,6 +124,41 @@ components:
       required:
       - name
       - namespace
+    SyncList:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        policy:
+          $ref: '#/components/schemas/Policy8baEnum'
+        upstream_repository:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        distribution:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        collections:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncListCollectionSummary'
+        namespaces:
+          type: array
+          items:
+            type: string
+            minLength: 1
+        groups:
+          type: string
+      required:
+      - collections
+      - groups
+      - name
+      - namespaces
     SyncListCollectionSummary:
       type: object
       properties:

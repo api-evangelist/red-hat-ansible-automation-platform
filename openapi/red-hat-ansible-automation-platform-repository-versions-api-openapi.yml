@@ -218,51 +218,6 @@ paths:
           description: ''
 components:
   schemas:
-    RepositoryVersionResponse:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        number:
-          type: integer
-          format: int64
-          readOnly: true
-        repository:
-          type: string
-          format: uri
-          readOnly: true
-        base_version:
-          type: string
-          format: uri
-          description: A repository version whose content was used as the initial set of content for this repository version
-        content_summary:
-          allOf:
-          - $ref: '#/components/schemas/ContentSummaryResponse'
-          readOnly: true
-          description: Various count summaries of the content in the version and the HREF to view them.
     ContentSummaryResponse:
       type: object
       description: Serializer for the RepositoryVersion content summary
@@ -308,3 +263,48 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RepositoryVersionResponse'
+    RepositoryVersionResponse:
+      type: object
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        number:
+          type: integer
+          format: int64
+          readOnly: true
+        repository:
+          type: string
+          format: uri
+          readOnly: true
+        base_version:
+          type: string
+          format: uri
+          description: A repository version whose content was used as the initial set of content for this repository version
+        content_summary:
+          allOf:
+          - $ref: '#/components/schemas/ContentSummaryResponse'
+          readOnly: true
+          description: Various count summaries of the content in the version and the HREF to view them.

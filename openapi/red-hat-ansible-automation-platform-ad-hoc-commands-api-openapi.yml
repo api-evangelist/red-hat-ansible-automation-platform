@@ -423,31 +423,106 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedNotificationList:
+    UnifiedJobStdout:
       type: object
-      required:
-      - count
-      - results
       properties:
-        count:
+        result_stdout:
+          type: string
+          readOnly: true
+    Notification:
+      type: object
+      properties:
+        id:
           type: integer
-          example: 123
-        next:
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        notification_template:
+          type: integer
+          readOnly: true
+        error:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - pending
+          - successful
+          - failed
+          type: string
+          description: '* `pending` - Pending
+
+            * `successful` - Successful
+
+            * `failed` - Failed'
+          x-spec-enum-id: 91d6a0571e1ae0e7
+          readOnly: true
+        notifications_sent:
+          type: integer
+          readOnly: true
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
           type:
           - string
           - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        recipients:
+          type: string
+          readOnly: true
+        subject:
+          type: string
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+          description: Notification body
+      required:
+      - notification_type
     PaginatedActivityStreamList:
       type: object
       required:
@@ -473,82 +548,151 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ActivityStream'
-    ActivityStream:
+    AdHocCommandListRequest:
       type: object
       properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-        operation:
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        job_type:
           enum:
-          - create
-          - update
-          - delete
-          - associate
-          - disassociate
+          - run
+          - check
           - null
           type:
           - string
           - 'null'
-          x-spec-enum-id: d1cf1307b8aa394e
-          description: 'The action taken with respect to the given object(s).
+          description: '* `run` - Run
 
-
-            * `create` - Entity Created
-
-            * `update` - Entity Updated
-
-            * `delete` - Entity Deleted
-
-            * `associate` - Entity Associated with another Entity
-
-            * `disassociate` - Entity was Disassociated with another Entity'
-        changes:
-          type: string
-          readOnly: true
-          description: A summary of the new and changed values when an object is created, updated, or deleted
-        object1:
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+          default: run
+        inventory:
+          type:
+          - integer
+          - 'null'
+        limit:
           type:
           - string
           - 'null'
-          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
-        object2:
+          default: ''
+        credential:
+          type:
+          - integer
+          - 'null'
+        module_name:
+          enum:
+          - command
+          - shell
+          - yum
+          - apt
+          - apt_key
+          - apt_repository
+          - apt_rpm
+          - service
+          - group
+          - user
+          - mount
+          - ping
+          - selinux
+          - setup
+          - win_ping
+          - win_service
+          - win_updates
+          - win_group
+          - win_user
+          type: string
+          description: '* `command` - command
+
+            * `shell` - shell
+
+            * `yum` - yum
+
+            * `apt` - apt
+
+            * `apt_key` - apt_key
+
+            * `apt_repository` - apt_repository
+
+            * `apt_rpm` - apt_rpm
+
+            * `service` - service
+
+            * `group` - group
+
+            * `user` - user
+
+            * `mount` - mount
+
+            * `ping` - ping
+
+            * `selinux` - selinux
+
+            * `setup` - setup
+
+            * `win_ping` - win_ping
+
+            * `win_service` - win_service
+
+            * `win_updates` - win_updates
+
+            * `win_group` - win_group
+
+            * `win_user` - win_user'
+          x-spec-enum-id: 857230cdbb58eda2
+          default: command
+        module_args:
           type:
           - string
           - 'null'
-          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
-        object_association:
-          type: string
-          readOnly: true
-          description: When present, shows the field name of the role or relationship that changed.
-        action_node:
-          type: string
-          readOnly: true
-          description: The cluster node the activity took place on.
-        object_type:
-          type: string
-          readOnly: true
-          description: When present, shows the model on which the role or relationship was defined.
-      required:
-      - object1
-      - object2
-      - operation
+          default: ''
+        forks:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+          default: 0
+          minimum: 0
+          maximum: 9223372036854775807
+        extra_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+        become_enabled:
+          type:
+          - boolean
+          - 'null'
+          default: false
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+          default: false
     AdHocCommandList:
       type: object
       properties:
@@ -855,11 +999,61 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AdHocCommandEvent'
-    UnifiedJobStdout:
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+    PaginatedAdHocCommandListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdHocCommandList'
+    AdHocCommandCancel:
       type: object
       properties:
-        result_stdout:
-          type: string
+        can_cancel:
+          type: boolean
           readOnly: true
     AdHocCommandEvent:
       type: object
@@ -1266,183 +1460,7 @@ components:
         host_status_counts:
           readOnly: true
           description: Playbook stats from the Ansible playbook_on_stats event.
-    AdHocCommandCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
-    PaginatedAdHocCommandListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/AdHocCommandList'
-    AdHocCommandListRequest:
-      type: object
-      properties:
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        job_type:
-          enum:
-          - run
-          - check
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-          default: run
-        inventory:
-          type:
-          - integer
-          - 'null'
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-        credential:
-          type:
-          - integer
-          - 'null'
-        module_name:
-          enum:
-          - command
-          - shell
-          - yum
-          - apt
-          - apt_key
-          - apt_repository
-          - apt_rpm
-          - service
-          - group
-          - user
-          - mount
-          - ping
-          - selinux
-          - setup
-          - win_ping
-          - win_service
-          - win_updates
-          - win_group
-          - win_user
-          type: string
-          description: '* `command` - command
-
-            * `shell` - shell
-
-            * `yum` - yum
-
-            * `apt` - apt
-
-            * `apt_key` - apt_key
-
-            * `apt_repository` - apt_repository
-
-            * `apt_rpm` - apt_rpm
-
-            * `service` - service
-
-            * `group` - group
-
-            * `user` - user
-
-            * `mount` - mount
-
-            * `ping` - ping
-
-            * `selinux` - selinux
-
-            * `setup` - setup
-
-            * `win_ping` - win_ping
-
-            * `win_service` - win_service
-
-            * `win_updates` - win_updates
-
-            * `win_group` - win_group
-
-            * `win_user` - win_user'
-          x-spec-enum-id: 857230cdbb58eda2
-          default: command
-        module_args:
-          type:
-          - string
-          - 'null'
-          default: ''
-        forks:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: 0
-          format: int64
-          default: 0
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-          default: 0
-          minimum: 0
-          maximum: 9223372036854775807
-        extra_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-        become_enabled:
-          type:
-          - boolean
-          - 'null'
-          default: false
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-          default: false
-    Notification:
+    ActivityStream:
       type: object
       properties:
         id:
@@ -1460,79 +1478,61 @@ components:
         summary_fields:
           type: string
           readOnly: true
-        created:
+        timestamp:
           type: string
+          format: date-time
           readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        notification_template:
-          type: integer
-          readOnly: true
-        error:
-          type: string
-          readOnly: true
-        status:
+        operation:
           enum:
-          - pending
-          - successful
-          - failed
-          type: string
-          description: '* `pending` - Pending
-
-            * `successful` - Successful
-
-            * `failed` - Failed'
-          x-spec-enum-id: 91d6a0571e1ae0e7
-          readOnly: true
-        notifications_sent:
-          type: integer
-          readOnly: true
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
+          - create
+          - update
+          - delete
+          - associate
+          - disassociate
           - null
           type:
           - string
           - 'null'
-          description: '* `awssns` - AWS SNS
+          x-spec-enum-id: d1cf1307b8aa394e
+          description: 'The action taken with respect to the given object(s).
 
-            * `email` - Email
 
-            * `grafana` - Grafana
+            * `create` - Entity Created
 
-            * `irc` - IRC
+            * `update` - Entity Updated
 
-            * `mattermost` - Mattermost
+            * `delete` - Entity Deleted
 
-            * `pagerduty` - Pagerduty
+            * `associate` - Entity Associated with another Entity
 
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        recipients:
+            * `disassociate` - Entity was Disassociated with another Entity'
+        changes:
           type: string
           readOnly: true
-        subject:
+          description: A summary of the new and changed values when an object is created, updated, or deleted
+        object1:
+          type:
+          - string
+          - 'null'
+          description: For create, update, and delete events this is the object type that was affected. For associate and disassociate events this is the object type associated or disassociated with object2.
+        object2:
+          type:
+          - string
+          - 'null'
+          description: Unpopulated for create, update, and delete events. For associate and disassociate events this is the object type that object1 is being associated with.
+        object_association:
           type: string
           readOnly: true
-        body:
+          description: When present, shows the field name of the role or relationship that changed.
+        action_node:
           type: string
           readOnly: true
-          description: Notification body
+          description: The cluster node the activity took place on.
+        object_type:
+          type: string
+          readOnly: true
+          description: When present, shows the model on which the role or relationship was defined.
       required:
-      - notification_type
+      - object1
+      - object2
+      - operation

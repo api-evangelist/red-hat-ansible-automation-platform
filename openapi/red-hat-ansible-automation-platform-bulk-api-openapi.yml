@@ -152,6 +152,58 @@ components:
           minLength: 1
       required:
       - jobs
+    BulkHostRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Is this host online and available for running jobs?
+        instance_id:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: The value used by the remote inventory source to uniquely identify the host
+          maxLength: 1024
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        variables:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Host variables in JSON or YAML format.
+      required:
+      - name
+    BulkHostCreateRequest:
+      type: object
+      properties:
+        inventory:
+          type: integer
+          writeOnly: true
+          description: Primary Key ID of inventory to add hosts to.
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkHostRequest'
+          writeOnly: true
+          description: 'List of hosts to be created, JSON. e.g. [{"name": "example.com"}, {"name": "127.0.0.1"}]'
+          maxItems: 100000
+      required:
+      - hosts
+      - inventory
     BulkJobNodeRequest:
       type: object
       properties:
@@ -281,23 +333,6 @@ components:
             minimum: 1
       required:
       - unified_job_template
-    BulkHostCreateRequest:
-      type: object
-      properties:
-        inventory:
-          type: integer
-          writeOnly: true
-          description: Primary Key ID of inventory to add hosts to.
-        hosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/BulkHostRequest'
-          writeOnly: true
-          description: 'List of hosts to be created, JSON. e.g. [{"name": "example.com"}, {"name": "127.0.0.1"}]'
-          maxItems: 100000
-      required:
-      - hosts
-      - inventory
     BulkHostDeleteRequest:
       type: object
       properties:
@@ -309,38 +344,3 @@ components:
           maxItems: 100000
       required:
       - hosts
-    BulkHostRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Is this host online and available for running jobs?
-        instance_id:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: The value used by the remote inventory source to uniquely identify the host
-          maxLength: 1024
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        variables:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Host variables in JSON or YAML format.
-      required:
-      - name

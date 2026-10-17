@@ -227,6 +227,38 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedSearchResultsResponseList:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 123
+        links:
+          type: object
+          properties:
+            first:
+              type:
+              - string
+              - 'null'
+            previous:
+              type:
+              - string
+              - 'null'
+            next:
+              type:
+              - string
+              - 'null'
+            last:
+              type:
+              - string
+              - 'null'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchResultsResponse'
     SearchResultsResponse:
       type: object
       properties:
@@ -276,35 +308,3 @@ components:
       - search
       - tags
       - type
-    PaginatedSearchResultsResponseList:
-      type: object
-      properties:
-        meta:
-          type: object
-          properties:
-            count:
-              type: integer
-              example: 123
-        links:
-          type: object
-          properties:
-            first:
-              type:
-              - string
-              - 'null'
-            previous:
-              type:
-              - string
-              - 'null'
-            next:
-              type:
-              - string
-              - 'null'
-            last:
-              type:
-              - string
-              - 'null'
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SearchResultsResponse'

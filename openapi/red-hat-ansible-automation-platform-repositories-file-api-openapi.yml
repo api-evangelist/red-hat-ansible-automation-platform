@@ -712,79 +712,7 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    RepositorySyncURL:
-      type: object
-      description: A mixin for validating unknown serializers' fields.
-      properties:
-        remote:
-          type: string
-          format: uri
-          description: A remote to sync from. This will override a remote set on repository.
-        mirror:
-          type: boolean
-          default: false
-          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
-    SetLabel:
-      type: object
-      description: Serializer for synchronously setting a label.
-      properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type:
-          - string
-          - 'null'
-      required:
-      - key
-      - value
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    NestedRole:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
-          type: array
-          items:
-            type: string
-            minLength: 1
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          default: []
-        role:
-          type: string
-          minLength: 1
-      required:
-      - role
-    file.FileRepository:
+    Patchedfile.FileRepository:
       type: object
       description: Serializer for File Repositories.
       properties:
@@ -828,8 +756,72 @@ components:
           minLength: 1
           default: PULP_MANIFEST
           description: Filename to use for manifest file containing metadata for all the files.
+    NestedRoleResponse:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
       required:
-      - name
+      - role
+    SetLabel:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type:
+          - string
+          - 'null'
+      required:
+      - key
+      - value
+    NestedRole:
+      type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          default: []
+        role:
+          type: string
+          minLength: 1
+      required:
+      - role
     file.FileRepositoryResponse:
       type: object
       description: Serializer for File Repositories.
@@ -895,53 +887,74 @@ components:
           description: Filename to use for manifest file containing metadata for all the files.
       required:
       - name
-    UnsetLabel:
+    RepositoryAddRemoveContent:
       type: object
-      description: Serializer for synchronously setting a label.
+      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
+
+
+        This ensures that all Serializers provide values for the ''pulp_href` field.
+
+
+        The class provides a default for the ``ref_name`` attribute in the
+
+        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
+
+        of plugins are namespaced properly.'
       properties:
-        key:
-          type: string
-          minLength: 1
-          pattern: ^[-a-zA-Z0-9_]+$
-      required:
-      - key
-    NestedRoleResponse:
-      type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
-      properties:
-        users:
+        add_content_units:
           type: array
           items:
             type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
+            minLength: 1
+          description: A list of content units to add to a new repository version. This content is added after remove_content_units are removed.
+        remove_content_units:
           type: array
           items:
             type: string
-          default: []
-        role:
+            minLength: 1
+          description: A list of content units to remove from the latest repository version. You may also specify '*' as an entry to remove all content. This content is removed before add_content_units are added.
+        base_version:
           type: string
-      required:
-      - role
-    UnsetLabelResponse:
+          format: uri
+          description: A repository version whose content will be used as the initial set of content for the new repository version
+    RepositorySyncURL:
       type: object
-      description: Serializer for synchronously setting a label.
+      description: A mixin for validating unknown serializers' fields.
       properties:
-        key:
+        remote:
           type: string
-          pattern: ^[-a-zA-Z0-9_]+$
-        value:
-          type: string
-          readOnly: true
+          format: uri
+          description: A remote to sync from. This will override a remote set on repository.
+        mirror:
+          type: boolean
+          default: false
+          description: If ``True``, synchronization will remove all content that is not present in the remote repository. If ``False``, sync will be additive only.
+    Paginatedfile.FileRepositoryResponseList:
+      type: object
       required:
-      - key
-    Patchedfile.FileRepository:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/file.FileRepositoryResponse'
+    file.FileRepository:
       type: object
       description: Serializer for File Repositories.
       properties:
@@ -985,6 +998,48 @@ components:
           minLength: 1
           default: PULP_MANIFEST
           description: Filename to use for manifest file containing metadata for all the files.
+      required:
+      - name
+    UnsetLabelResponse:
+      type: object
+      description: Serializer for synchronously setting a label.
+      properties:
+        key:
+          type: string
+          pattern: ^[-a-zA-Z0-9_]+$
+        value:
+          type: string
+          readOnly: true
+      required:
+      - key
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
     SetLabelResponse:
       type: object
       description: Serializer for synchronously setting a label.
@@ -999,68 +1054,13 @@ components:
       required:
       - key
       - value
-    AsyncOperationResponse:
+    UnsetLabel:
       type: object
-      description: Serializer for asynchronous operations.
+      description: Serializer for synchronously setting a label.
       properties:
-        task:
+        key:
           type: string
-          format: uri
-          description: The href of the task.
+          minLength: 1
+          pattern: ^[-a-zA-Z0-9_]+$
       required:
-      - task
-    Paginatedfile.FileRepositoryResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/file.FileRepositoryResponse'
-    RepositoryAddRemoveContent:
-      type: object
-      description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
-
-
-        This ensures that all Serializers provide values for the ''pulp_href` field.
-
-
-        The class provides a default for the ``ref_name`` attribute in the
-
-        ModelSerializers''s ``Meta`` class. This ensures that the OpenAPI definitions
-
-        of plugins are namespaced properly.'
-      properties:
-        add_content_units:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: A list of content units to add to a new repository version. This content is added after remove_content_units are removed.
-        remove_content_units:
-          type: array
-          items:
-            type: string
-            minLength: 1
-          description: A list of content units to remove from the latest repository version. You may also specify '*' as an entry to remove all content. This content is removed before add_content_units are added.
-        base_version:
-          type: string
-          format: uri
-          description: A repository version whose content will be used as the initial set of content for the new repository version
+      - key

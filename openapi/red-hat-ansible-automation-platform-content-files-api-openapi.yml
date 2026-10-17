@@ -298,16 +298,6 @@ components:
           description: The SHA-512 checksum if available.
       required:
       - relative_path
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     file.FileContent:
       type: object
       description: Serializer for File Content.
@@ -337,6 +327,16 @@ components:
           description: An uncommitted upload that may be turned into the content unit.
       required:
       - relative_path
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     Paginatedfile.FileContentResponseList:
       type: object
       required:

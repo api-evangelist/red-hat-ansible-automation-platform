@@ -432,31 +432,6 @@ paths:
       x-operation-id-original: role_user_assignments_destroy
 components:
   schemas:
-    PaginatedRoleUserAssignmentList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/RoleUserAssignment'
     RoleUserAssignment:
       type: object
       properties:
@@ -518,8 +493,11 @@ components:
           description: The resource ID of the user who will receive permissions from this assignment. An alternative to user field.
       required:
       - role_definition
-    PaginatedRoleUserAssignmentList_2:
+    PaginatedRoleUserAssignmentList:
       type: object
+      required:
+      - count
+      - results
       properties:
         count:
           type: integer
@@ -529,27 +507,17 @@ components:
           - string
           - 'null'
           format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
+          example: http://api.example.org/accounts/?page=4
         previous:
           type:
           - string
           - 'null'
           format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
+          example: http://api.example.org/accounts/?page=2
         results:
           type: array
           items:
-            $ref: '#/components/schemas/RoleUserAssignment_2'
+            $ref: '#/components/schemas/RoleUserAssignment'
     RoleUserAssignmentCreate:
       type: object
       properties:
@@ -647,6 +615,38 @@ components:
       - role_definition
       - summary_fields
       - url
+    PaginatedRoleUserAssignmentList_2:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleUserAssignment_2'
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

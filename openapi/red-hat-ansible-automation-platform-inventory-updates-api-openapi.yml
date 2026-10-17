@@ -369,69 +369,13 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    InventoryUpdateCancel:
-      type: object
-      properties:
-        can_cancel:
-          type: boolean
-          readOnly: true
-    PaginatedNotificationList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Notification'
-    PaginatedInventoryUpdateEventList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InventoryUpdateEvent'
     UnifiedJobStdout:
       type: object
       properties:
         result_stdout:
           type: string
           readOnly: true
-    InventoryUpdateList:
+    Notification:
       type: object
       properties:
         id:
@@ -455,406 +399,76 @@ components:
         modified:
           type: string
           readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        unified_job_template:
-          type:
-          - integer
-          - 'null'
+        notification_template:
+          type: integer
           readOnly: true
-        launch_type:
-          enum:
-          - manual
-          - relaunch
-          - callback
-          - scheduled
-          - dependency
-          - workflow
-          - webhook
-          - sync
-          - scm
+        error:
           type: string
-          description: '* `manual` - Manual
-
-            * `relaunch` - Relaunch
-
-            * `callback` - Callback
-
-            * `scheduled` - Scheduled
-
-            * `dependency` - Dependency
-
-            * `workflow` - Workflow
-
-            * `webhook` - Webhook
-
-            * `sync` - Sync
-
-            * `scm` - SCM Update'
-          x-spec-enum-id: e5bed25c2e652da3
           readOnly: true
         status:
           enum:
-          - new
           - pending
-          - waiting
-          - running
           - successful
           - failed
-          - error
-          - canceled
           type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
+          description: '* `pending` - Pending
 
             * `successful` - Successful
 
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled'
-          x-spec-enum-id: 6021859c28387823
+            * `failed` - Failed'
+          x-spec-enum-id: 91d6a0571e1ae0e7
           readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        failed:
-          type: boolean
+        notifications_sent:
+          type: integer
           readOnly: true
-        started:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job was queued for starting.
-        finished:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time the job finished execution.
-        canceled_on:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date and time when the cancel request was sent.
-        elapsed:
-          type: string
-          format: decimal
-          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
-          readOnly: true
-          description: Elapsed time in seconds that the job ran.
-        job_explanation:
-          type: string
-          readOnly: true
-          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
-        execution_node:
-          type: string
-          readOnly: true
-          description: The node the job executed on.
-        controller_node:
-          type: string
-          readOnly: true
-          description: The instance that managed the execution environment.
-        launched_by:
-          type: string
-          readOnly: true
-        work_unit_id:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: The Receptor work unit ID associated with this job.
-        source:
+        notification_type:
           enum:
-          - azure_rm
-          - controller
-          - ec2
-          - gce
-          - insights
-          - openshift_virtualization
-          - openstack
-          - rhv
-          - satellite6
-          - terraform
-          - vmware
-          - scm
-          - constructed
-          type: string
-          description: '* `azure_rm` - Microsoft Azure Resource Manager
-
-            * `controller` - Red Hat Ansible Automation Platform
-
-            * `ec2` - Amazon EC2
-
-            * `gce` - Google Compute Engine
-
-            * `insights` - Red Hat Insights
-
-            * `openshift_virtualization` - OpenShift Virtualization
-
-            * `openstack` - OpenStack
-
-            * `rhv` - Red Hat Virtualization
-
-            * `satellite6` - Red Hat Satellite 6
-
-            * `terraform` - Terraform State
-
-            * `vmware` - VMware vCenter
-
-            * `scm` - Sourced from a Project
-
-            * `constructed` - Template additional groups and hostvars at runtime'
-          x-spec-enum-id: 2e54dfe09d4f7d8d
-        source_path:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
           type:
           - string
           - 'null'
-          default: ''
-          maxLength: 1024
-        source_vars:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory source variables in YAML or JSON format.
-        scm_branch:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
-          maxLength: 1024
-        credential:
-          type:
-          - integer
-          - 'null'
-          minimum: 1
-          description: Cloud credential to use for inventory updates.
-        enabled_var:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
-        enabled_value:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
-        host_filter:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
-        overwrite:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Overwrite local groups and hosts from remote inventory source.
-        overwrite_vars:
-          type:
-          - boolean
-          - 'null'
-          default: false
-          description: Overwrite local variables from remote inventory source.
-        custom_virtualenv:
-          type:
-          - string
-          - 'null'
-          description: Local absolute file path containing a custom Python virtualenv to use
-          readOnly: true
-        timeout:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-          default: 0
-          description: The amount of time (in seconds) to run before the task is canceled.
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          type: integer
-          description: '* `0` - 0 (WARNING)
+          description: '* `awssns` - AWS SNS
 
-            * `1` - 1 (INFO)
+            * `email` - Email
 
-            * `2` - 2 (DEBUG)'
-          x-spec-enum-id: 48197bd695a06691
-          default: 1
-          minimum: 0
-          maximum: 9223372036854775807
-        limit:
-          type:
-          - string
-          - 'null'
-          default: ''
-          description: Enter host, group or pattern match
-        inventory:
-          type:
-          - integer
-          - 'null'
-        inventory_source:
-          type: integer
-          readOnly: true
-        license_error:
-          type: boolean
-          readOnly: true
-        org_host_limit_error:
-          type: boolean
-          readOnly: true
-        source_project_update:
-          type:
-          - integer
-          - 'null'
-          description: Inventory files from this Project Update were used for the inventory update.
-        instance_group:
-          type:
-          - integer
-          - 'null'
-          description: The Instance group the job was run under
-        scm_revision:
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        recipients:
           type: string
           readOnly: true
-          description: The SCM Revision from the Project used for this inventory update.  Only applicable to inventories source from scm
+        subject:
+          type: string
+          readOnly: true
+        body:
+          type: string
+          readOnly: true
+          description: Notification body
       required:
-      - name
-      - source
-    PaginatedCredentialList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Credential'
-    PaginatedInventoryUpdateListList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/InventoryUpdateList'
-    Credential:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        credential_type:
-          type: integer
-          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
-        managed:
-          type: boolean
-          readOnly: true
-        inputs:
-          default: {}
-          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
-        kind:
-          type: string
-          readOnly: true
-        cloud:
-          type: string
-          readOnly: true
-        kubernetes:
-          type: string
-          readOnly: true
-      required:
-      - credential_type
-      - name
+      - notification_type
     InventoryUpdateEvent:
       type: object
       properties:
@@ -918,6 +532,31 @@ components:
         inventory_update:
           type: integer
           readOnly: true
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
     InventoryUpdateDetail:
       type: object
       properties:
@@ -1252,7 +891,57 @@ components:
       required:
       - name
       - source
-    Notification:
+    PaginatedCredentialList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Credential'
+    PaginatedInventoryUpdateEventList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryUpdateEvent'
+    Credential:
       type: object
       properties:
         id:
@@ -1276,73 +965,384 @@ components:
         modified:
           type: string
           readOnly: true
-        notification_template:
-          type: integer
-          readOnly: true
-        error:
-          type: string
-          readOnly: true
-        status:
-          enum:
-          - pending
-          - successful
-          - failed
-          type: string
-          description: '* `pending` - Pending
-
-            * `successful` - Successful
-
-            * `failed` - Failed'
-          x-spec-enum-id: 91d6a0571e1ae0e7
-          readOnly: true
-        notifications_sent:
-          type: integer
-          readOnly: true
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
+        name:
           type:
           - string
           - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        recipients:
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        credential_type:
+          type: integer
+          description: Specify the type of credential you want to create. Refer to the documentation for details on each type.
+        managed:
+          type: boolean
+          readOnly: true
+        inputs:
+          default: {}
+          description: Enter inputs using either JSON or YAML syntax. Refer to the documentation for example syntax.
+        kind:
           type: string
           readOnly: true
-        subject:
+        cloud:
           type: string
           readOnly: true
-        body:
+        kubernetes:
           type: string
           readOnly: true
-          description: Notification body
       required:
-      - notification_type
+      - credential_type
+      - name
+    InventoryUpdateCancel:
+      type: object
+      properties:
+        can_cancel:
+          type: boolean
+          readOnly: true
+    InventoryUpdateList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        unified_job_template:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        launch_type:
+          enum:
+          - manual
+          - relaunch
+          - callback
+          - scheduled
+          - dependency
+          - workflow
+          - webhook
+          - sync
+          - scm
+          type: string
+          description: '* `manual` - Manual
+
+            * `relaunch` - Relaunch
+
+            * `callback` - Callback
+
+            * `scheduled` - Scheduled
+
+            * `dependency` - Dependency
+
+            * `workflow` - Workflow
+
+            * `webhook` - Webhook
+
+            * `sync` - Sync
+
+            * `scm` - SCM Update'
+          x-spec-enum-id: e5bed25c2e652da3
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled'
+          x-spec-enum-id: 6021859c28387823
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        failed:
+          type: boolean
+          readOnly: true
+        started:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job was queued for starting.
+        finished:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time the job finished execution.
+        canceled_on:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date and time when the cancel request was sent.
+        elapsed:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,9}(?:\.\d{0,3})?$
+          readOnly: true
+          description: Elapsed time in seconds that the job ran.
+        job_explanation:
+          type: string
+          readOnly: true
+          description: A status field to indicate the state of the job if it wasn't able to run and capture stdout
+        execution_node:
+          type: string
+          readOnly: true
+          description: The node the job executed on.
+        controller_node:
+          type: string
+          readOnly: true
+          description: The instance that managed the execution environment.
+        launched_by:
+          type: string
+          readOnly: true
+        work_unit_id:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: The Receptor work unit ID associated with this job.
+        source:
+          enum:
+          - azure_rm
+          - controller
+          - ec2
+          - gce
+          - insights
+          - openshift_virtualization
+          - openstack
+          - rhv
+          - satellite6
+          - terraform
+          - vmware
+          - scm
+          - constructed
+          type: string
+          description: '* `azure_rm` - Microsoft Azure Resource Manager
+
+            * `controller` - Red Hat Ansible Automation Platform
+
+            * `ec2` - Amazon EC2
+
+            * `gce` - Google Compute Engine
+
+            * `insights` - Red Hat Insights
+
+            * `openshift_virtualization` - OpenShift Virtualization
+
+            * `openstack` - OpenStack
+
+            * `rhv` - Red Hat Virtualization
+
+            * `satellite6` - Red Hat Satellite 6
+
+            * `terraform` - Terraform State
+
+            * `vmware` - VMware vCenter
+
+            * `scm` - Sourced from a Project
+
+            * `constructed` - Template additional groups and hostvars at runtime'
+          x-spec-enum-id: 2e54dfe09d4f7d8d
+        source_path:
+          type:
+          - string
+          - 'null'
+          default: ''
+          maxLength: 1024
+        source_vars:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source variables in YAML or JSON format.
+        scm_branch:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Inventory source SCM branch. Project default used if blank. Only allowed if project allow_override field is set to true.
+          maxLength: 1024
+        credential:
+          type:
+          - integer
+          - 'null'
+          minimum: 1
+          description: Cloud credential to use for inventory updates.
+        enabled_var:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Retrieve the enabled state from the given dict of host variables. The enabled variable may be specified as "foo.bar", in which case the lookup will traverse into nested dicts, equivalent to: from_dict.get("foo", {}).get("bar", default)'
+        enabled_value:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: 'Only used when enabled_var is set. Value when the host is considered enabled. For example if enabled_var="status.power_state"and enabled_value="powered_on" with host variables:{   "status": {     "power_state": "powered_on",     "created": "2020-08-04T18:13:04+00:00",     "healthy": true    },    "name": "foobar",    "ip_address": "192.168.2.1"}The host would be marked enabled. If power_state where any value other than powered_on then the host would be disabled when imported. If the key is not found then the host will be enabled'
+        host_filter:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: This field is deprecated and will be removed in a future release. Regex where only matching hosts will be imported.
+        overwrite:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local groups and hosts from remote inventory source.
+        overwrite_vars:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          description: Overwrite local variables from remote inventory source.
+        custom_virtualenv:
+          type:
+          - string
+          - 'null'
+          description: Local absolute file path containing a custom Python virtualenv to use
+          readOnly: true
+        timeout:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          default: 0
+          description: The amount of time (in seconds) to run before the task is canceled.
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          type: integer
+          description: '* `0` - 0 (WARNING)
+
+            * `1` - 1 (INFO)
+
+            * `2` - 2 (DEBUG)'
+          x-spec-enum-id: 48197bd695a06691
+          default: 1
+          minimum: 0
+          maximum: 9223372036854775807
+        limit:
+          type:
+          - string
+          - 'null'
+          default: ''
+          description: Enter host, group or pattern match
+        inventory:
+          type:
+          - integer
+          - 'null'
+        inventory_source:
+          type: integer
+          readOnly: true
+        license_error:
+          type: boolean
+          readOnly: true
+        org_host_limit_error:
+          type: boolean
+          readOnly: true
+        source_project_update:
+          type:
+          - integer
+          - 'null'
+          description: Inventory files from this Project Update were used for the inventory update.
+        instance_group:
+          type:
+          - integer
+          - 'null'
+          description: The Instance group the job was run under
+        scm_revision:
+          type: string
+          readOnly: true
+          description: The SCM Revision from the Project used for this inventory update.  Only applicable to inventories source from scm
+      required:
+      - name
+      - source
+    PaginatedInventoryUpdateListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryUpdateList'

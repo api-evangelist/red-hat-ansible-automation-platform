@@ -109,6 +109,16 @@ paths:
           description: ''
 components:
   schemas:
+    LegacyRoleTagResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          readOnly: true
+        count:
+          type: integer
+          format: int64
+          readOnly: true
     PaginatedLegacyRoleTagResponseList:
       type: object
       properties:
@@ -141,13 +151,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LegacyRoleTagResponse'
-    LegacyRoleTagResponse:
-      type: object
-      properties:
-        name:
-          type: string
-          readOnly: true
-        count:
-          type: integer
-          format: int64
-          readOnly: true

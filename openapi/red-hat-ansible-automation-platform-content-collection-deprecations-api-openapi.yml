@@ -189,6 +189,16 @@ paths:
           description: ''
 components:
   schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
     Paginatedansible.AnsibleCollectionDeprecatedResponseList:
       type: object
       required:
@@ -234,16 +244,6 @@ components:
       required:
       - name
       - namespace
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     ansible.AnsibleCollectionDeprecatedResponse:
       type: object
       description: A serializer for Ansible Collection Deprecations.

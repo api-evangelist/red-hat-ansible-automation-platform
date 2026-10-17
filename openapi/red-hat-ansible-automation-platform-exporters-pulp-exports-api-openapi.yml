@@ -167,6 +167,82 @@ paths:
           description: No response body
 components:
   schemas:
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task
+    PaginatedPulpExportResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PulpExportResponse'
+    PulpExport:
+      type: object
+      description: Serializer for PulpExports.
+      properties:
+        task:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A URI of the task that ran the Export.
+        full:
+          type: boolean
+          writeOnly: true
+          default: true
+          description: Do a Full (true) or Incremental (false) export.
+        dry_run:
+          type: boolean
+          writeOnly: true
+          default: false
+          description: Generate report on what would be exported and disk-space required.
+        versions:
+          type: array
+          items:
+            type: string
+            format: uri
+            writeOnly: true
+          writeOnly: true
+          description: List of explicit repo-version hrefs to export (replaces current_version).
+        chunk_size:
+          type: string
+          writeOnly: true
+          minLength: 1
+          description: Chunk export-tarfile into pieces of chunk_size bytes. Recognizes units of B/KB/MB/GB/TB. A chunk has a maximum size of 1TB.
+        start_versions:
+          type: array
+          items:
+            type: string
+            format: uri
+            writeOnly: true
+          writeOnly: true
+          description: List of explicit last-exported-repo-version hrefs (replaces last_export).
     PulpExportResponse:
       type: object
       description: Serializer for PulpExports.
@@ -210,79 +286,3 @@ components:
           type: object
           readOnly: true
           description: Filename and sha256-checksum of table-of-contents for this export
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
-    PulpExport:
-      type: object
-      description: Serializer for PulpExports.
-      properties:
-        task:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A URI of the task that ran the Export.
-        full:
-          type: boolean
-          writeOnly: true
-          default: true
-          description: Do a Full (true) or Incremental (false) export.
-        dry_run:
-          type: boolean
-          writeOnly: true
-          default: false
-          description: Generate report on what would be exported and disk-space required.
-        versions:
-          type: array
-          items:
-            type: string
-            format: uri
-            writeOnly: true
-          writeOnly: true
-          description: List of explicit repo-version hrefs to export (replaces current_version).
-        chunk_size:
-          type: string
-          writeOnly: true
-          minLength: 1
-          description: Chunk export-tarfile into pieces of chunk_size bytes. Recognizes units of B/KB/MB/GB/TB. A chunk has a maximum size of 1TB.
-        start_versions:
-          type: array
-          items:
-            type: string
-            format: uri
-            writeOnly: true
-          writeOnly: true
-          description: List of explicit last-exported-repo-version hrefs (replaces last_export).
-    PaginatedPulpExportResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/PulpExportResponse'

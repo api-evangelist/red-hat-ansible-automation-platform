@@ -211,6 +211,18 @@ components:
       required:
       - name
       - organization
+    PatchedLabelRequest:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        organization:
+          type: integer
+          description: Organization this label belongs to.
     PaginatedLabelList:
       type: object
       required:
@@ -236,15 +248,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Label'
-    PatchedLabelRequest:
-      type: object
-      properties:
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        organization:
-          type: integer
-          description: Organization this label belongs to.

@@ -345,34 +345,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    CredentialTypeRef:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-        namespace:
-          type:
-          - string
-          - 'null'
-        kind:
-          type: string
-      required:
-      - id
-      - name
-    PullPolicyEnum:
-      enum:
-      - always
-      - missing
-      - never
-      type: string
-      description: '* `always` - Always pull container before running.
-
-        * `missing` - Only pull the image if not present before running.
-
-        * `never` - Never pull container before running.'
     StatusEnum:
       enum:
       - starting
@@ -408,17 +380,49 @@ components:
         * `error` - error
 
         * `workers offline` - workers offline'
-    RestartPolicyEnum:
+    LogLevelEnum:
       enum:
-      - always
-      - on-failure
-      - never
+      - debug
+      - info
+      - error
       type: string
-      description: '* `always` - always
+      description: '* `debug` - debug
 
-        * `on-failure` - on-failure
+        * `info` - info
 
-        * `never` - never'
+        * `error` - error'
+    PaginatedActivationListList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=51&page_size=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: /eda/api/v1/example/?page=49&page_size=100
+        page_size:
+          type:
+          - integer
+          - 'null'
+          example: 100
+        page:
+          type:
+          - integer
+          - 'null'
+          example: 50
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivationList'
     ActivationList:
       type: object
       description: Serializer for listing the Activation model objects.
@@ -599,9 +603,14 @@ components:
       - rulebook_name
       - rules_count
       - rules_fired_count
-    ActivationCreate:
+    ScmTypeEnum:
+      enum:
+      - git
+      type: string
+      description: '* `git` - Git'
+    PatchedActivationUpdate:
       type: object
-      description: Serializer for creating the Activation.
+      description: Serializer for updating the Activation.
       properties:
         name:
           type: string
@@ -622,6 +631,10 @@ components:
           - 'null'
         organization_id:
           type: integer
+        user:
+          type:
+          - integer
+          - 'null'
         restart_policy:
           $ref: '#/components/schemas/RestartPolicyEnum'
         awx_token_id:
@@ -659,137 +672,24 @@ components:
         k8s_pod_annotations: {}
         k8s_pod_node_selector: {}
         k8s_pod_tolerations: {}
-      required:
-      - decision_environment_id
-      - name
-      - organization_id
-      - rulebook_id
-    EdaCredentialReference:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Type of the related resource
-        id:
-          type: integer
-          description: ID of the related resource
-        name:
-          type: string
-          description: Name of the related resource
-        uri:
-          type: string
-          format: uri
-          description: URI of the related resource
-      required:
-      - id
-      - name
-      - type
-      - uri
-    EventStreamOut:
+    PullPolicyEnum:
+      enum:
+      - always
+      - missing
+      - never
+      type: string
+      description: '* `always` - Always pull container before running.
+
+        * `missing` - Only pull the image if not present before running.
+
+        * `never` - Never pull container before running.'
+    ActivationCopy:
       type: object
       properties:
         name:
           type: string
-        test_mode:
-          type: boolean
-          description: Enable test mode
-        additional_data_headers:
-          type: string
-          description: The additional http headers which will be added to the event data. The headers are comma delimited
-        organization:
-          type: string
-          readOnly: true
-        eda_credential:
-          $ref: '#/components/schemas/EdaCredentialRef'
-        event_stream_type:
-          type: string
-          description: The type of the event stream based on credential type
-        uuid:
-          type: string
-          format: uuid
-        created_by:
-          type: object
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-        modified_by:
-          type: object
-          properties:
-            id:
-              type: integer
-            username:
-              type: string
-            first_name:
-              type: string
-            last_name:
-              type: string
-        id:
-          type: integer
-          readOnly: true
-        owner:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        modified_at:
-          type: string
-          format: date-time
-          readOnly: true
-        test_content_type:
-          type: string
-          readOnly: true
-          description: The content type of test data, when in test mode
-        test_content:
-          type: string
-          readOnly: true
-          description: The content recieved, when in test mode, stored as a yaml string
-        test_error_message:
-          type: string
-          readOnly: true
-          description: The error message,  when in test mode
-        test_headers:
-          type: string
-          readOnly: true
-          description: The headers recieved, when in test mode, stored as a yaml string
-        events_received:
-          type: integer
-          readOnly: true
-          description: The total number of events received by event stream
-        last_event_received_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The date/time when the last event was received
       required:
-      - created_at
-      - created_by
-      - eda_credential
-      - events_received
-      - id
-      - last_event_received_at
-      - modified_at
-      - modified_by
       - name
-      - organization
-      - owner
-      - test_content
-      - test_content_type
-      - test_error_message
-      - test_headers
-      - url
     ActivationRead:
       type: object
       description: Serializer for reading the Activation with related objects info.
@@ -977,96 +877,6 @@ components:
       - rules_count
       - rules_fired_count
       - ruleset_stats
-    ProjectRef:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        git_hash:
-          type: string
-        url:
-          type: string
-        scm_type:
-          $ref: '#/components/schemas/ScmTypeEnum'
-        name:
-          type: string
-        description:
-          type: string
-        organization_id:
-          type: integer
-          readOnly: true
-        update_revision_on_launch:
-          type: boolean
-          description: Enable automatic project sync on activation launch
-        scm_update_cache_timeout:
-          type: integer
-          maximum: 2147483647
-          minimum: -2147483648
-          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
-      required:
-      - git_hash
-      - id
-      - name
-      - organization_id
-      - url
-    RulebookRef:
-      type: object
-      description: Serializer for Rulebook reference.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
-        description:
-          type:
-          - string
-          - 'null'
-        organization_id:
-          type: integer
-          readOnly: true
-      required:
-      - id
-      - name
-      - organization_id
-    PaginatedActivationInstanceList:
-      type: object
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=51&page_size=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: /eda/api/v1/example/?page=49&page_size=100
-        page_size:
-          type:
-          - integer
-          - 'null'
-          example: 100
-        page:
-          type:
-          - integer
-          - 'null'
-          example: 50
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActivationInstance'
-    ScmTypeEnum:
-      enum:
-      - git
-      type: string
-      description: '* `git` - Git'
     ActivationInstance:
       type: object
       description: Serializer for the Activation Instance model.
@@ -1114,6 +924,37 @@ components:
       - organization_id
       - queue_name
       - started_at
+    EdaCredentialRef:
+      type: object
+      description: Serializer for EdaCredential reference.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        inputs:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        managed:
+          type: boolean
+        credential_type_id:
+          type:
+          - integer
+          - 'null'
+          readOnly: true
+        organization_id:
+          type: integer
+          readOnly: true
+      required:
+      - credential_type_id
+      - id
+      - inputs
+      - name
+      - organization_id
     OrganizationRef:
       type: object
       properties:
@@ -1130,9 +971,217 @@ components:
       required:
       - id
       - name
-    DecisionEnvironmentRef:
+    EdaCredentialReference:
       type: object
-      description: Serializer for DecisionEnvironment reference.
+      properties:
+        type:
+          type: string
+          description: Type of the related resource
+        id:
+          type: integer
+          description: ID of the related resource
+        name:
+          type: string
+          description: Name of the related resource
+        uri:
+          type: string
+          format: uri
+          description: URI of the related resource
+      required:
+      - id
+      - name
+      - type
+      - uri
+    ActivationCreate:
+      type: object
+      description: Serializer for creating the Activation.
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_enabled:
+          type: boolean
+        restart_on_project_update:
+          type: boolean
+          description: Auto-restart when rulebook changes after project sync
+        decision_environment_id:
+          type: integer
+        rulebook_id:
+          type: integer
+        extra_var:
+          type:
+          - string
+          - 'null'
+        organization_id:
+          type: integer
+        restart_policy:
+          $ref: '#/components/schemas/RestartPolicyEnum'
+        awx_token_id:
+          type:
+          - integer
+          - 'null'
+        log_level:
+          $ref: '#/components/schemas/LogLevelEnum'
+        eda_credentials:
+          type: array
+          items:
+            type: integer
+        k8s_service_name:
+          type:
+          - string
+          - 'null'
+        source_mappings:
+          type: string
+          description: Mapping between sources and event streams
+        skip_audit_events:
+          type: boolean
+          description: Skip audit events for activation
+        enable_persistence:
+          type: boolean
+          description: Enable persistence for activation
+        rule_engine_credential_id:
+          type:
+          - integer
+          - 'null'
+        k8s_pod_service_account_name:
+          type:
+          - string
+          - 'null'
+        k8s_pod_labels: {}
+        k8s_pod_annotations: {}
+        k8s_pod_node_selector: {}
+        k8s_pod_tolerations: {}
+      required:
+      - decision_environment_id
+      - name
+      - organization_id
+      - rulebook_id
+    CredentialTypeRef:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        namespace:
+          type:
+          - string
+          - 'null'
+        kind:
+          type: string
+      required:
+      - id
+      - name
+    EventStreamOut:
+      type: object
+      properties:
+        name:
+          type: string
+        test_mode:
+          type: boolean
+          description: Enable test mode
+        additional_data_headers:
+          type: string
+          description: The additional http headers which will be added to the event data. The headers are comma delimited
+        organization:
+          type: string
+          readOnly: true
+        eda_credential:
+          $ref: '#/components/schemas/EdaCredentialRef'
+        event_stream_type:
+          type: string
+          description: The type of the event stream based on credential type
+        uuid:
+          type: string
+          format: uuid
+        created_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        modified_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            username:
+              type: string
+            first_name:
+              type: string
+            last_name:
+              type: string
+        id:
+          type: integer
+          readOnly: true
+        owner:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+        test_content_type:
+          type: string
+          readOnly: true
+          description: The content type of test data, when in test mode
+        test_content:
+          type: string
+          readOnly: true
+          description: The content recieved, when in test mode, stored as a yaml string
+        test_error_message:
+          type: string
+          readOnly: true
+          description: The error message,  when in test mode
+        test_headers:
+          type: string
+          readOnly: true
+          description: The headers recieved, when in test mode, stored as a yaml string
+        events_received:
+          type: integer
+          readOnly: true
+          description: The total number of events received by event stream
+        last_event_received_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The date/time when the last event was received
+      required:
+      - created_at
+      - created_by
+      - eda_credential
+      - events_received
+      - id
+      - last_event_received_at
+      - modified_at
+      - modified_by
+      - name
+      - organization
+      - owner
+      - test_content
+      - test_content_type
+      - test_error_message
+      - test_headers
+      - url
+    RulebookRef:
+      type: object
+      description: Serializer for Rulebook reference.
       properties:
         id:
           type: integer
@@ -1140,39 +1189,27 @@ components:
         name:
           type: string
         description:
-          type: string
-        image_url:
-          type: string
-        pull_policy:
-          allOf:
-          - $ref: '#/components/schemas/PullPolicyEnum'
-          description: 'Pull policy for the image before running
-
-
-            * `always` - Always pull container before running.
-
-            * `missing` - Only pull the image if not present before running.
-
-            * `never` - Never pull container before running.'
+          type:
+          - string
+          - 'null'
         organization_id:
           type: integer
           readOnly: true
       required:
       - id
-      - image_url
       - name
       - organization_id
-    LogLevelEnum:
+    RestartPolicyEnum:
       enum:
-      - debug
-      - info
-      - error
+      - always
+      - on-failure
+      - never
       type: string
-      description: '* `debug` - debug
+      description: '* `always` - always
 
-        * `info` - info
+        * `on-failure` - on-failure
 
-        * `error` - error'
+        * `never` - never'
     EdaCredential:
       type: object
       properties:
@@ -1241,71 +1278,39 @@ components:
       - modified_by
       - name
       - organization
-    PatchedActivationUpdate:
+    DecisionEnvironmentRef:
       type: object
-      description: Serializer for updating the Activation.
+      description: Serializer for DecisionEnvironment reference.
       properties:
+        id:
+          type: integer
+          readOnly: true
         name:
           type: string
         description:
           type: string
-        is_enabled:
-          type: boolean
-        restart_on_project_update:
-          type: boolean
-          description: Auto-restart when rulebook changes after project sync
-        decision_environment_id:
-          type: integer
-        rulebook_id:
-          type: integer
-        extra_var:
-          type:
-          - string
-          - 'null'
+        image_url:
+          type: string
+        pull_policy:
+          allOf:
+          - $ref: '#/components/schemas/PullPolicyEnum'
+          description: 'Pull policy for the image before running
+
+
+            * `always` - Always pull container before running.
+
+            * `missing` - Only pull the image if not present before running.
+
+            * `never` - Never pull container before running.'
         organization_id:
           type: integer
-        user:
-          type:
-          - integer
-          - 'null'
-        restart_policy:
-          $ref: '#/components/schemas/RestartPolicyEnum'
-        awx_token_id:
-          type:
-          - integer
-          - 'null'
-        log_level:
-          $ref: '#/components/schemas/LogLevelEnum'
-        eda_credentials:
-          type: array
-          items:
-            type: integer
-        k8s_service_name:
-          type:
-          - string
-          - 'null'
-        source_mappings:
-          type: string
-          description: Mapping between sources and event streams
-        skip_audit_events:
-          type: boolean
-          description: Skip audit events for activation
-        enable_persistence:
-          type: boolean
-          description: Enable persistence for activation
-        rule_engine_credential_id:
-          type:
-          - integer
-          - 'null'
-        k8s_pod_service_account_name:
-          type:
-          - string
-          - 'null'
-        k8s_pod_labels: {}
-        k8s_pod_annotations: {}
-        k8s_pod_node_selector: {}
-        k8s_pod_tolerations: {}
-    PaginatedActivationListList:
+          readOnly: true
+      required:
+      - id
+      - image_url
+      - name
+      - organization_id
+    PaginatedActivationInstanceList:
       type: object
       properties:
         count:
@@ -1336,45 +1341,40 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ActivationList'
-    EdaCredentialRef:
+            $ref: '#/components/schemas/ActivationInstance'
+    ProjectRef:
       type: object
-      description: Serializer for EdaCredential reference.
       properties:
         id:
           type: integer
           readOnly: true
+        git_hash:
+          type: string
+        url:
+          type: string
+        scm_type:
+          $ref: '#/components/schemas/ScmTypeEnum'
         name:
           type: string
         description:
           type: string
-        inputs:
-          type: object
-          additionalProperties: true
-          readOnly: true
-        managed:
-          type: boolean
-        credential_type_id:
-          type:
-          - integer
-          - 'null'
-          readOnly: true
         organization_id:
           type: integer
           readOnly: true
+        update_revision_on_launch:
+          type: boolean
+          description: Enable automatic project sync on activation launch
+        scm_update_cache_timeout:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          description: Cache timeout in seconds for project updates (0 = always update, max 86400)
       required:
-      - credential_type_id
+      - git_hash
       - id
-      - inputs
       - name
       - organization_id
-    ActivationCopy:
-      type: object
-      properties:
-        name:
-          type: string
-      required:
-      - name
+      - url
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

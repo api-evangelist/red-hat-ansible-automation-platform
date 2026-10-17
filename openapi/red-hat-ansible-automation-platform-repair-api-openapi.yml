@@ -53,6 +53,13 @@ paths:
           description: ''
 components:
   schemas:
+    Repair:
+      type: object
+      properties:
+        verify_checksums:
+          type: boolean
+          default: true
+          description: Will verify that the checksum of all stored files matches what saved in the database. Otherwise only the existence of the files will be checked. Enabled by default
     AsyncOperationResponse:
       type: object
       description: Serializer for asynchronous operations.
@@ -63,10 +70,3 @@ components:
           description: The href of the task.
       required:
       - task
-    Repair:
-      type: object
-      properties:
-        verify_checksums:
-          type: boolean
-          default: true
-          description: Will verify that the checksum of all stored files matches what saved in the database. Otherwise only the existence of the files will be checked. Enabled by default

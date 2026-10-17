@@ -95,6 +95,13 @@ components:
           type: string
       required:
       - refresh
+    JWTToken:
+      type: object
+      properties:
+        access:
+          type: string
+      required:
+      - access
     Login:
       type: object
       properties:
@@ -105,13 +112,6 @@ components:
       required:
       - password
       - username
-    JWTToken:
-      type: object
-      properties:
-        access:
-          type: string
-      required:
-      - access
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

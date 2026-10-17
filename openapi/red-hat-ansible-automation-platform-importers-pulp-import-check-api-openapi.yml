@@ -64,27 +64,6 @@ paths:
           description: ''
 components:
   schemas:
-    PulpImportCheck:
-      type: object
-      description: 'Check validity of provided import-options.
-
-
-        Provides the ability to check that an import is ''sane'' without having to actually
-
-        create an importer.'
-      properties:
-        path:
-          type: string
-          minLength: 1
-          description: Path to export-tar-gz that will be imported.
-        toc:
-          type: string
-          minLength: 1
-          description: Path to a table-of-contents file describing chunks to be validated, reassembled, and imported.
-        repo_mapping:
-          type: string
-          minLength: 1
-          description: 'Mapping of repo names in an export file to the repo names in Pulp. For example, if the export has a repo named ''foo'' and the repo to import content into was ''bar'', the mapping would be "{''foo'': ''bar''}".'
     EvaluationResponse:
       type: object
       description: Results from evaluating a proposed parameter to a PulpImport call.
@@ -120,3 +99,24 @@ components:
           allOf:
           - $ref: '#/components/schemas/EvaluationResponse'
           description: Evaluation of proposed 'repo_mapping' file for PulpImport
+    PulpImportCheck:
+      type: object
+      description: 'Check validity of provided import-options.
+
+
+        Provides the ability to check that an import is ''sane'' without having to actually
+
+        create an importer.'
+      properties:
+        path:
+          type: string
+          minLength: 1
+          description: Path to export-tar-gz that will be imported.
+        toc:
+          type: string
+          minLength: 1
+          description: Path to a table-of-contents file describing chunks to be validated, reassembled, and imported.
+        repo_mapping:
+          type: string
+          minLength: 1
+          description: 'Mapping of repo names in an export file to the repo names in Pulp. For example, if the export has a repo named ''foo'' and the repo to import content into was ''bar'', the mapping would be "{''foo'': ''bar''}".'

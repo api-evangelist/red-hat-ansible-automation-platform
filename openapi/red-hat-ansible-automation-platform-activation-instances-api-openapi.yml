@@ -116,7 +116,42 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedActivationInstanceLogList:
+    StatusEnum:
+      enum:
+      - starting
+      - running
+      - pending
+      - failed
+      - stopping
+      - stopped
+      - deleting
+      - completed
+      - unresponsive
+      - error
+      - workers offline
+      type: string
+      description: '* `starting` - starting
+
+        * `running` - running
+
+        * `pending` - pending
+
+        * `failed` - failed
+
+        * `stopping` - stopping
+
+        * `stopped` - stopped
+
+        * `deleting` - deleting
+
+        * `completed` - completed
+
+        * `unresponsive` - unresponsive
+
+        * `error` - error
+
+        * `workers offline` - workers offline'
+    PaginatedActivationInstanceList:
       type: object
       properties:
         count:
@@ -147,7 +182,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ActivationInstanceLog'
+            $ref: '#/components/schemas/ActivationInstance'
     ActivationInstance:
       type: object
       description: Serializer for the Activation Instance model.
@@ -195,67 +230,7 @@ components:
       - organization_id
       - queue_name
       - started_at
-    StatusEnum:
-      enum:
-      - starting
-      - running
-      - pending
-      - failed
-      - stopping
-      - stopped
-      - deleting
-      - completed
-      - unresponsive
-      - error
-      - workers offline
-      type: string
-      description: '* `starting` - starting
-
-        * `running` - running
-
-        * `pending` - pending
-
-        * `failed` - failed
-
-        * `stopping` - stopping
-
-        * `stopped` - stopped
-
-        * `deleting` - deleting
-
-        * `completed` - completed
-
-        * `unresponsive` - unresponsive
-
-        * `error` - error
-
-        * `workers offline` - workers offline'
-    ActivationInstanceLog:
-      type: object
-      description: Serializer for the Activation Instance Log model.
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        log:
-          type: string
-        log_timestamp:
-          type: integer
-          maximum: 9223372036854775807
-          minimum: -9223372036854775808
-          format: int64
-        log_created_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        activation_instance:
-          type: integer
-      required:
-      - activation_instance
-      - id
-      - log
-    PaginatedActivationInstanceList:
+    PaginatedActivationInstanceLogList:
       type: object
       properties:
         count:
@@ -286,7 +261,32 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ActivationInstance'
+            $ref: '#/components/schemas/ActivationInstanceLog'
+    ActivationInstanceLog:
+      type: object
+      description: Serializer for the Activation Instance Log model.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        log:
+          type: string
+        log_timestamp:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        log_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        activation_instance:
+          type: integer
+      required:
+      - activation_instance
+      - id
+      - log
   securitySchemes:
     EDAJWTAuthentication:
       type: apiKey

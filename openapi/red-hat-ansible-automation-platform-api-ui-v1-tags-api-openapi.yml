@@ -67,17 +67,6 @@ paths:
           description: ''
 components:
   schemas:
-    TagResponse:
-      type: object
-      description: A serializer for the Tag model.
-      properties:
-        name:
-          type: string
-          readOnly: true
-        count:
-          type: integer
-          format: int64
-          readOnly: true
     PaginatedTagResponseList:
       type: object
       properties:
@@ -110,3 +99,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TagResponse'
+    TagResponse:
+      type: object
+      description: A serializer for the Tag model.
+      properties:
+        name:
+          type: string
+          readOnly: true
+        count:
+          type: integer
+          format: int64
+          readOnly: true

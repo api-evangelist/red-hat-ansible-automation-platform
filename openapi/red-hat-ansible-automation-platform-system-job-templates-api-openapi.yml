@@ -531,6 +531,233 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PaginatedNotificationTemplateList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationTemplate'
+    ScheduleRequest:
+      type: object
+      properties:
+        rrule:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: A value representing the schedules iCal recurrence rule.
+        name:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        extra_data:
+          default: {}
+        inventory:
+          type:
+          - integer
+          - 'null'
+          description: Inventory applied as a prompt, assuming job template prompts for inventory
+        scm_branch:
+          type:
+          - string
+          - 'null'
+        job_type:
+          enum:
+          - run
+          - check
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `run` - Run
+
+            * `check` - Check'
+          x-spec-enum-id: 726608a431c1f104
+        job_tags:
+          type:
+          - string
+          - 'null'
+        skip_tags:
+          type:
+          - string
+          - 'null'
+        limit:
+          type:
+          - string
+          - 'null'
+        diff_mode:
+          type:
+          - boolean
+          - 'null'
+        verbosity:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - null
+          type:
+          - integer
+          - 'null'
+          description: '* `0` - 0 (Normal)
+
+            * `1` - 1 (Verbose)
+
+            * `2` - 2 (More Verbose)
+
+            * `3` - 3 (Debug)
+
+            * `4` - 4 (Connection Debug)
+
+            * `5` - 5 (WinRM Debug)'
+          x-spec-enum-id: 8cfb81af905b865a
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        forks:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        job_slice_count:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        timeout:
+          type:
+          - integer
+          - 'null'
+        unified_job_template:
+          type: integer
+        enabled:
+          type:
+          - boolean
+          - 'null'
+          default: true
+          description: Enables processing of this schedule.
+      required:
+      - name
+      - rrule
+      - unified_job_template
+    NotificationTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        organization:
+          type:
+          - integer
+          - 'null'
+        notification_type:
+          enum:
+          - awssns
+          - email
+          - grafana
+          - irc
+          - mattermost
+          - pagerduty
+          - rocketchat
+          - slack
+          - twilio
+          - webhook
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `awssns` - AWS SNS
+
+            * `email` - Email
+
+            * `grafana` - Grafana
+
+            * `irc` - IRC
+
+            * `mattermost` - Mattermost
+
+            * `pagerduty` - Pagerduty
+
+            * `rocketchat` - Rocket.Chat
+
+            * `slack` - Slack
+
+            * `twilio` - Twilio
+
+            * `webhook` - Webhook'
+          x-spec-enum-id: 867d131dea32a033
+        notification_configuration:
+          default: {}
+        messages:
+          default:
+            started: null
+            success: null
+            error: null
+            workflow_approval: null
+          description: Optional custom messages for notification template.
+      required:
+      - name
+      - notification_type
+      - organization
     PaginatedSystemJobListList:
       type: object
       required:
@@ -556,7 +783,123 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SystemJobList'
-    PaginatedSystemJobTemplateList:
+    SystemJobTemplate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        related:
+          type: string
+          readOnly: true
+        summary_fields:
+          type: string
+          readOnly: true
+        created:
+          type: string
+          readOnly: true
+        modified:
+          type: string
+          readOnly: true
+        name:
+          type:
+          - string
+          - 'null'
+          maxLength: 512
+        description:
+          type:
+          - string
+          - 'null'
+          default: ''
+        last_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_job_failed:
+          type: boolean
+          readOnly: true
+        next_job_run:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        status:
+          enum:
+          - new
+          - pending
+          - waiting
+          - running
+          - successful
+          - failed
+          - error
+          - canceled
+          - never updated
+          - ok
+          - missing
+          - none
+          - updating
+          type: string
+          description: '* `new` - New
+
+            * `pending` - Pending
+
+            * `waiting` - Waiting
+
+            * `running` - Running
+
+            * `successful` - Successful
+
+            * `failed` - Failed
+
+            * `error` - Error
+
+            * `canceled` - Canceled
+
+            * `never updated` - Never Updated
+
+            * `ok` - OK
+
+            * `missing` - Missing
+
+            * `none` - No External Source
+
+            * `updating` - Updating'
+          x-spec-enum-id: b387d72f4f16647d
+          readOnly: true
+        execution_environment:
+          type:
+          - integer
+          - 'null'
+          description: The container image to be used for execution.
+        job_type:
+          enum:
+          - cleanup_jobs
+          - cleanup_activitystream
+          - cleanup_sessions
+          - ''
+          - null
+          type:
+          - string
+          - 'null'
+          description: '* `cleanup_jobs` - Remove jobs older than a certain number of days
+
+            * `cleanup_activitystream` - Remove activity stream entries older than a certain number of days
+
+            * `cleanup_sessions` - Removes expired browser sessions from the database'
+          x-spec-enum-id: c3fb7965187f07c2
+          default: ''
+      required:
+      - name
+    PaginatedScheduleList:
       type: object
       required:
       - count
@@ -580,7 +923,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/SystemJobTemplate'
+            $ref: '#/components/schemas/Schedule'
     SystemJobList:
       type: object
       properties:
@@ -925,7 +1268,7 @@ components:
       - name
       - rrule
       - unified_job_template
-    PaginatedScheduleList:
+    PaginatedSystemJobTemplateList:
       type: object
       required:
       - count
@@ -949,147 +1292,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Schedule'
-    PaginatedNotificationTemplateList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/NotificationTemplate'
-    ScheduleRequest:
-      type: object
-      properties:
-        rrule:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: A value representing the schedules iCal recurrence rule.
-        name:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        extra_data:
-          default: {}
-        inventory:
-          type:
-          - integer
-          - 'null'
-          description: Inventory applied as a prompt, assuming job template prompts for inventory
-        scm_branch:
-          type:
-          - string
-          - 'null'
-        job_type:
-          enum:
-          - run
-          - check
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `run` - Run
-
-            * `check` - Check'
-          x-spec-enum-id: 726608a431c1f104
-        job_tags:
-          type:
-          - string
-          - 'null'
-        skip_tags:
-          type:
-          - string
-          - 'null'
-        limit:
-          type:
-          - string
-          - 'null'
-        diff_mode:
-          type:
-          - boolean
-          - 'null'
-        verbosity:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          - null
-          type:
-          - integer
-          - 'null'
-          description: '* `0` - 0 (Normal)
-
-            * `1` - 1 (Verbose)
-
-            * `2` - 2 (More Verbose)
-
-            * `3` - 3 (Debug)
-
-            * `4` - 4 (Connection Debug)
-
-            * `5` - 5 (WinRM Debug)'
-          x-spec-enum-id: 8cfb81af905b865a
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        forks:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        job_slice_count:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-        timeout:
-          type:
-          - integer
-          - 'null'
-        unified_job_template:
-          type: integer
-        enabled:
-          type:
-          - boolean
-          - 'null'
-          default: true
-          description: Enables processing of this schedule.
-      required:
-      - name
-      - rrule
-      - unified_job_template
+            $ref: '#/components/schemas/SystemJobTemplate'
     NotificationTemplateRequest:
       type: object
       properties:
@@ -1098,209 +1301,6 @@ components:
           - string
           - 'null'
           minLength: 1
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        organization:
-          type:
-          - integer
-          - 'null'
-        notification_type:
-          enum:
-          - awssns
-          - email
-          - grafana
-          - irc
-          - mattermost
-          - pagerduty
-          - rocketchat
-          - slack
-          - twilio
-          - webhook
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `awssns` - AWS SNS
-
-            * `email` - Email
-
-            * `grafana` - Grafana
-
-            * `irc` - IRC
-
-            * `mattermost` - Mattermost
-
-            * `pagerduty` - Pagerduty
-
-            * `rocketchat` - Rocket.Chat
-
-            * `slack` - Slack
-
-            * `twilio` - Twilio
-
-            * `webhook` - Webhook'
-          x-spec-enum-id: 867d131dea32a033
-        notification_configuration:
-          default: {}
-        messages:
-          default:
-            started: null
-            success: null
-            error: null
-            workflow_approval: null
-          description: Optional custom messages for notification template.
-      required:
-      - name
-      - notification_type
-      - organization
-    SystemJobTemplate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
-          maxLength: 512
-        description:
-          type:
-          - string
-          - 'null'
-          default: ''
-        last_job_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        last_job_failed:
-          type: boolean
-          readOnly: true
-        next_job_run:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        status:
-          enum:
-          - new
-          - pending
-          - waiting
-          - running
-          - successful
-          - failed
-          - error
-          - canceled
-          - never updated
-          - ok
-          - missing
-          - none
-          - updating
-          type: string
-          description: '* `new` - New
-
-            * `pending` - Pending
-
-            * `waiting` - Waiting
-
-            * `running` - Running
-
-            * `successful` - Successful
-
-            * `failed` - Failed
-
-            * `error` - Error
-
-            * `canceled` - Canceled
-
-            * `never updated` - Never Updated
-
-            * `ok` - OK
-
-            * `missing` - Missing
-
-            * `none` - No External Source
-
-            * `updating` - Updating'
-          x-spec-enum-id: b387d72f4f16647d
-          readOnly: true
-        execution_environment:
-          type:
-          - integer
-          - 'null'
-          description: The container image to be used for execution.
-        job_type:
-          enum:
-          - cleanup_jobs
-          - cleanup_activitystream
-          - cleanup_sessions
-          - ''
-          - null
-          type:
-          - string
-          - 'null'
-          description: '* `cleanup_jobs` - Remove jobs older than a certain number of days
-
-            * `cleanup_activitystream` - Remove activity stream entries older than a certain number of days
-
-            * `cleanup_sessions` - Removes expired browser sessions from the database'
-          x-spec-enum-id: c3fb7965187f07c2
-          default: ''
-      required:
-      - name
-    NotificationTemplate:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        type:
-          type: string
-          readOnly: true
-        url:
-          type: string
-          readOnly: true
-        related:
-          type: string
-          readOnly: true
-        summary_fields:
-          type: string
-          readOnly: true
-        created:
-          type: string
-          readOnly: true
-        modified:
-          type: string
-          readOnly: true
-        name:
-          type:
-          - string
-          - 'null'
           maxLength: 512
         description:
           type:

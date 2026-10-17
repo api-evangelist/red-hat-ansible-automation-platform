@@ -346,15 +346,30 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
+    NestedRoleResponse:
       type: object
+      description: 'Serializer to add/remove object roles to/from users/groups.
+
+
+        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
+
+        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        roles:
+        users:
           type: array
           items:
-            $ref: '#/components/schemas/NestedRoleResponse'
+            type: string
+            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          default: []
+        groups:
+          type: array
+          items:
+            type: string
+          default: []
+        role:
+          type: string
       required:
-      - roles
+      - role
     TaskScheduleResponse:
       type: object
       description: 'Base serializer for use with :class:`pulpcore.app.models.Model`
@@ -471,27 +486,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TaskScheduleResponse'
-    NestedRoleResponse:
+    ObjectRolesResponse:
       type: object
-      description: 'Serializer to add/remove object roles to/from users/groups.
-
-
-        This is used in conjunction with ``pulpcore.app.viewsets.base.RolesMixin`` and requires the
-
-        underlying object to be passed as ``content_object`` in the context.'
       properties:
-        users:
+        roles:
           type: array
           items:
-            type: string
-            description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          default: []
-        groups:
-          type: array
-          items:
-            type: string
-          default: []
-        role:
-          type: string
+            $ref: '#/components/schemas/NestedRoleResponse'
       required:
-      - role
+      - roles

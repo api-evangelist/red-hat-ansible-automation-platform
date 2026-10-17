@@ -178,31 +178,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PaginatedConstructedInventoryList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=4
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?page=2
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConstructedInventory'
     PatchedConstructedInventoryRequest:
       type: object
       properties:
@@ -318,6 +293,31 @@ components:
       required:
       - name
       - organization
+    PaginatedConstructedInventoryList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConstructedInventory'
     ConstructedInventory:
       type: object
       properties:

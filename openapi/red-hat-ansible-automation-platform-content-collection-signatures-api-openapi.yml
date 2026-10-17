@@ -266,16 +266,6 @@ paths:
           description: ''
 components:
   schemas:
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task
     ansible.CollectionVersionSignature:
       type: object
       description: A serializer for signature models.
@@ -301,31 +291,16 @@ components:
           description: The content this signature is pointing to.
       required:
       - signed_collection
-    Paginatedansible.CollectionVersionSignatureResponseList:
+    AsyncOperationResponse:
       type: object
-      required:
-      - count
-      - results
+      description: Serializer for asynchronous operations.
       properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
+        task:
+          type: string
           format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ansible.CollectionVersionSignatureResponse'
+          description: The href of the task.
+      required:
+      - task
     ansible.CollectionVersionSignatureResponse:
       type: object
       description: A serializer for signature models.
@@ -361,3 +336,28 @@ components:
           description: The signing service used to create the signature.
       required:
       - signed_collection
+    Paginatedansible.CollectionVersionSignatureResponseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ansible.CollectionVersionSignatureResponse'

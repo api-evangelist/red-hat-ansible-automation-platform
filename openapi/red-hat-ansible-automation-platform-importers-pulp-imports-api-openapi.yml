@@ -167,34 +167,6 @@ paths:
           description: No response body
 components:
   schemas:
-    ImportResponse:
-      type: object
-      description: Serializer for Imports.
-      properties:
-        pulp_href:
-          type: string
-          format: uri
-          readOnly: true
-        pulp_created:
-          type: string
-          format: date-time
-          readOnly: true
-          description: Timestamp of creation.
-        pulp_last_updated:
-          type: string
-          format: date-time
-          readOnly: true
-          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
-        task:
-          type: string
-          format: uri
-          description: A URI of the Task that ran the Import.
-        params:
-          type: object
-          description: Any parameters that were used to create the import.
-      required:
-      - params
-      - task
     PaginatedImportResponseList:
       type: object
       required:
@@ -230,6 +202,34 @@ components:
           description: The href of the task group.
       required:
       - task_group
+    ImportResponse:
+      type: object
+      description: Serializer for Imports.
+      properties:
+        pulp_href:
+          type: string
+          format: uri
+          readOnly: true
+        pulp_created:
+          type: string
+          format: date-time
+          readOnly: true
+          description: Timestamp of creation.
+        pulp_last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+          description: 'Timestamp of the last time this resource was updated. Note: for immutable resources - like content, repository versions, and publication - pulp_created and pulp_last_updated dates will be the same.'
+        task:
+          type: string
+          format: uri
+          description: A URI of the Task that ran the Import.
+        params:
+          type: object
+          description: Any parameters that were used to create the import.
+      required:
+      - params
+      - task
     PulpImport:
       type: object
       description: Serializer for call to import into Pulp.

@@ -341,6 +341,56 @@ paths:
           description: ''
 components:
   schemas:
+    PatchedPulpExporter:
+      type: object
+      description: Serializer for pulp exporters.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Unique name of the file system exporter.
+        path:
+          type: string
+          minLength: 1
+          description: File system directory to store exported tar.gzs.
+        repositories:
+          type: array
+          items:
+            type: string
+            format: uri
+        last_export:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Last attempted export for this PulpExporter
+    PulpExporter:
+      type: object
+      description: Serializer for pulp exporters.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Unique name of the file system exporter.
+        path:
+          type: string
+          minLength: 1
+          description: File system directory to store exported tar.gzs.
+        repositories:
+          type: array
+          items:
+            type: string
+            format: uri
+        last_export:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Last attempted export for this PulpExporter
+      required:
+      - name
+      - path
+      - repositories
     PaginatedPulpExporterResponseList:
       type: object
       required:
@@ -366,29 +416,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PulpExporterResponse'
-    PatchedPulpExporter:
+    AsyncOperationResponse:
       type: object
-      description: Serializer for pulp exporters.
+      description: Serializer for asynchronous operations.
       properties:
-        name:
+        task:
           type: string
-          minLength: 1
-          description: Unique name of the file system exporter.
-        path:
-          type: string
-          minLength: 1
-          description: File system directory to store exported tar.gzs.
-        repositories:
-          type: array
-          items:
-            type: string
-            format: uri
-        last_export:
-          type:
-          - string
-          - 'null'
           format: uri
-          description: Last attempted export for this PulpExporter
+          description: The href of the task.
+      required:
+      - task
     PulpExporterResponse:
       type: object
       description: Serializer for pulp exporters.
@@ -428,40 +465,3 @@ components:
       - name
       - path
       - repositories
-    PulpExporter:
-      type: object
-      description: Serializer for pulp exporters.
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: Unique name of the file system exporter.
-        path:
-          type: string
-          minLength: 1
-          description: File system directory to store exported tar.gzs.
-        repositories:
-          type: array
-          items:
-            type: string
-            format: uri
-        last_export:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Last attempted export for this PulpExporter
-      required:
-      - name
-      - path
-      - repositories
-    AsyncOperationResponse:
-      type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
-      required:
-      - task

@@ -286,6 +286,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserRoleResponse'
+    UserRole:
+      type: object
+      description: Serializer for UserRole.
+      properties:
+        role:
+          type: string
+          minLength: 1
+        content_object:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: pulp_href of the object for which role permissions should be asserted. If set to 'null', permissions will act on either domain or model-level.
+        domain:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Domain this role should be applied on, mutually exclusive with content_object.
+      required:
+      - content_object
+      - role
     UserRoleResponse:
       type: object
       description: Serializer for UserRole.
@@ -319,28 +341,6 @@ components:
           items:
             type: string
           readOnly: true
-        domain:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: Domain this role should be applied on, mutually exclusive with content_object.
-      required:
-      - content_object
-      - role
-    UserRole:
-      type: object
-      description: Serializer for UserRole.
-      properties:
-        role:
-          type: string
-          minLength: 1
-        content_object:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: pulp_href of the object for which role permissions should be asserted. If set to 'null', permissions will act on either domain or model-level.
         domain:
           type:
           - string

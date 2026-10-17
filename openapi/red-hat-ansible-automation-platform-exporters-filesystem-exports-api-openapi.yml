@@ -167,16 +167,31 @@ paths:
           description: No response body
 components:
   schemas:
-    AsyncOperationResponse:
+    PaginatedFilesystemExportResponseList:
       type: object
-      description: Serializer for asynchronous operations.
-      properties:
-        task:
-          type: string
-          format: uri
-          description: The href of the task.
       required:
-      - task
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type:
+          - string
+          - 'null'
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilesystemExportResponse'
     FilesystemExportResponse:
       type: object
       description: Serializer for FilesystemExports.
@@ -212,31 +227,6 @@ components:
           type: object
           readOnly: true
           description: Any additional parameters that were used to create the export.
-    PaginatedFilesystemExportResponseList:
-      type: object
-      required:
-      - count
-      - results
-      properties:
-        count:
-          type: integer
-          example: 123
-        next:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=400&limit=100
-        previous:
-          type:
-          - string
-          - 'null'
-          format: uri
-          example: http://api.example.org/accounts/?offset=200&limit=100
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/FilesystemExportResponse'
     FilesystemExport:
       type: object
       description: Serializer for FilesystemExports.
@@ -262,3 +252,13 @@ components:
           format: uri
           writeOnly: true
           description: The URI of the last-exported-repo-version.
+    AsyncOperationResponse:
+      type: object
+      description: Serializer for asynchronous operations.
+      properties:
+        task:
+          type: string
+          format: uri
+          description: The href of the task.
+      required:
+      - task

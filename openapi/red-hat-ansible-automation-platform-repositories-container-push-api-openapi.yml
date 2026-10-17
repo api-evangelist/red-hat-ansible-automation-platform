@@ -709,54 +709,6 @@ paths:
           description: ''
 components:
   schemas:
-    ObjectRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedRoleResponse'
-      required:
-      - roles
-    RemoveSignatures:
-      type: object
-      description: A serializer for parsing and validating data associated with the signatures removal.
-      properties:
-        signed_with_key_id:
-          type: string
-          minLength: 1
-          description: key_id of the key the signatures were produced with
-      required:
-      - signed_with_key_id
-    RepositorySign:
-      type: object
-      description: Serializer for container images signing.
-      properties:
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A signing service to sign with. This will override a signing service set on the repo.
-        future_base_path:
-          type: string
-          minLength: 1
-          description: Future base path content will be distributed at for sync repos
-        tags_list:
-          type: array
-          items: {}
-          description: A list of tags to sign.
-    UnTagImage:
-      type: object
-      description: A serializer for parsing and validating data associated with a manifest untagging.
-      properties:
-        tag:
-          type: string
-          minLength: 1
-          description: A tag name
-          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
-      required:
-      - tag
     RemoveImage:
       type: object
       description: A serializer for parsing and validating data associated with the image removal.
@@ -767,16 +719,7 @@ components:
           description: sha256 of the Manifest file
       required:
       - digest
-    MyPermissionsResponse:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            type: string
-      required:
-      - permissions
-    NestedRole:
+    NestedRoleResponse:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -789,71 +732,17 @@ components:
           type: array
           items:
             type: string
-            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
-            minLength: 1
           default: []
         role:
           type: string
-          minLength: 1
       required:
       - role
-    TagImage:
-      type: object
-      description: A serializer for parsing and validating data associated with a manifest tagging.
-      properties:
-        tag:
-          type: string
-          minLength: 1
-          description: A tag name
-          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
-        digest:
-          type: string
-          minLength: 1
-          description: sha256 of the Manifest file
-      required:
-      - digest
-      - tag
-    container.ContainerPushRepository:
-      type: object
-      description: Serializer for Container Push Repositories.
-      properties:
-        retain_repo_versions:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Retain X versions of the repository. Default is null which retains all versions.
-          minimum: 1
-        pulp_labels:
-          type: object
-          additionalProperties:
-            type:
-            - string
-            - 'null'
-        name:
-          type: string
-          minLength: 1
-          description: A unique name for this repository.
-        description:
-          type:
-          - string
-          - 'null'
-          minLength: 1
-          description: An optional description.
-        manifest_signing_service:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: A reference to an associated signing service.
-      required:
-      - name
     container.ContainerPushRepositoryResponse:
       type: object
       description: Serializer for Container Push Repositories.
@@ -909,7 +798,36 @@ components:
           readOnly: true
       required:
       - name
-    NestedRoleResponse:
+    UnTagImage:
+      type: object
+      description: A serializer for parsing and validating data associated with a manifest untagging.
+      properties:
+        tag:
+          type: string
+          minLength: 1
+          description: A tag name
+          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
+      required:
+      - tag
+    RepositorySign:
+      type: object
+      description: Serializer for container images signing.
+      properties:
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A signing service to sign with. This will override a signing service set on the repo.
+        future_base_path:
+          type: string
+          minLength: 1
+          description: Future base path content will be distributed at for sync repos
+        tags_list:
+          type: array
+          items: {}
+          description: A list of tags to sign.
+    NestedRole:
       type: object
       description: 'Serializer to add/remove object roles to/from users/groups.
 
@@ -922,17 +840,30 @@ components:
           type: array
           items:
             type: string
+            minLength: 1
             description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
           default: []
         groups:
           type: array
           items:
             type: string
+            minLength: 1
           default: []
         role:
           type: string
+          minLength: 1
       required:
       - role
+    RemoveSignatures:
+      type: object
+      description: A serializer for parsing and validating data associated with the signatures removal.
+      properties:
+        signed_with_key_id:
+          type: string
+          minLength: 1
+          description: key_id of the key the signatures were produced with
+      required:
+      - signed_with_key_id
     RemoveSignaturesResponse:
       type: object
       description: A serializer for parsing and validating data associated with the signatures removal.
@@ -942,6 +873,41 @@ components:
           description: key_id of the key the signatures were produced with
       required:
       - signed_with_key_id
+    container.ContainerPushRepository:
+      type: object
+      description: Serializer for Container Push Repositories.
+      properties:
+        retain_repo_versions:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Retain X versions of the repository. Default is null which retains all versions.
+          minimum: 1
+        pulp_labels:
+          type: object
+          additionalProperties:
+            type:
+            - string
+            - 'null'
+        name:
+          type: string
+          minLength: 1
+          description: A unique name for this repository.
+        description:
+          type:
+          - string
+          - 'null'
+          minLength: 1
+          description: An optional description.
+        manifest_signing_service:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: A reference to an associated signing service.
+      required:
+      - name
     Patchedcontainer.ContainerPushRepository:
       type: object
       description: Serializer for Container Push Repositories.
@@ -975,6 +941,31 @@ components:
           - 'null'
           format: uri
           description: A reference to an associated signing service.
+    TagImage:
+      type: object
+      description: A serializer for parsing and validating data associated with a manifest tagging.
+      properties:
+        tag:
+          type: string
+          minLength: 1
+          description: A tag name
+          pattern: ^[A-Za-z0-9][A-Za-z0-9._-]*$
+        digest:
+          type: string
+          minLength: 1
+          description: sha256 of the Manifest file
+      required:
+      - digest
+      - tag
+    MyPermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            type: string
+      required:
+      - permissions
     AsyncOperationResponse:
       type: object
       description: Serializer for asynchronous operations.
@@ -1010,3 +1001,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/container.ContainerPushRepositoryResponse'
+    ObjectRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedRoleResponse'
+      required:
+      - roles
