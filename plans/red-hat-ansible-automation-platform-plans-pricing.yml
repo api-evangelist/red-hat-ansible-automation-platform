@@ -1,0 +1,55 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://www.redhat.com/en/technologies/management/ansible/pricing
+sources:
+- https://www.redhat.com/en/technologies/management/ansible/pricing
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T141238
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: negotiated
+delivery:
+  delivery: managed+licensed
+  method: page
+  read: '2026-10-28'
+  evidence: Whether running self-managed Ansible Automation Platform on your own infrastructure, or a
+    managed or self-managed instance in a public cloud, there’s a plan to match your needs.
+  managed_tier: Standard
+published: false
+note: No numeric price is published on the pricing page; Page describes Standard/Premium subscription
+  tiers and managed/self-managed deployment options but shows no numeric prices; pricing is quoted via
+  sales or partners.
+plan_count: 2
+plans:
+- name: Standard
+  price_text: Talk to a Red Hatter or one of our authorized partners for a customized quote.
+  period: none
+  included_quota: 9 AM to 5 PM support; Maintenance and upgrades; Full access to Ansible Automation Platform
+    built-in resources
+- name: Premium
+  price_text: Talk to a Red Hatter or one of our authorized partners for a customized quote.
+  period: none
+  included_quota: 24x7 support; Maintenance and upgrades; Full access to Ansible Automation Platform built-in
+    resources
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Standard
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Premium
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
