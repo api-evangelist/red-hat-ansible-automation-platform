@@ -34,7 +34,7 @@ plans:
   included_quota: 24x7 support; Maintenance and upgrades; Full access to Ansible Automation Platform built-in
     resources
 x-canonical:
-  generated: '2026-11-01'
+  generated: '2026-11-02'
   vocabulary: engine/economics/plans-canonical.yml
   models: []
   units: []

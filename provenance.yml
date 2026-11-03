@@ -44,7 +44,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-10-31T095417.yml:
+  kin/checks-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/pointer-liveness-2026-08-29.yml:
@@ -102,6 +102,15 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-10-31T095417.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T171331.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T200237.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/red-hat-ansible-automation-platform-lifecycle.yml:
@@ -1156,11 +1165,17 @@ artifacts:
   packages/red-hat-ansible-automation-platform-packages.yml:
     method: searched
     evidence: declared in the artifact
+  patterns/red-hat-ansible-automation-platform-patterns.yml:
+    method: derived
+    evidence: declared in the artifact
   plans/red-hat-ansible-automation-platform-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
   rate-limits/red-hat-ansible-automation-platform-rate-limits.yml:
     method: searched
+    evidence: declared in the artifact
+  rules/red-hat-ansible-automation-platform-rules.yml:
+    method: generated
     evidence: declared in the artifact
   sandbox/red-hat-ansible-automation-platform-sandbox.yml:
     method: searched
@@ -1193,6 +1208,9 @@ artifacts:
     method: generated
     evidence: declared in the artifact
   skills/red-hat-ansible-automation-platform-publish-and-certify-collections.md:
+    method: generated
+    evidence: declared in the artifact
+  sla/red-hat-ansible-automation-platform-sla.yml:
     method: generated
     evidence: declared in the artifact
   well-known/red-hat-ansible-automation-platform-security.txt:
