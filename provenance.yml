@@ -11,11 +11,20 @@ artifacts:
   capabilities/red-hat-ansible-automation-platform-capability-edges.yml:
     method: unknown
     evidence: no authorship recorded
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/red-hat-ansible-automation-platform-changelog.yml:
     method: unknown
     evidence: no authorship recorded
   cli/red-hat-ansible-automation-platform-cli.yml:
     method: searched
+    evidence: declared in the artifact
+  compliance/red-hat-ansible-automation-platform-compliance.yml:
+    method: harvested
     evidence: declared in the artifact
   conformance/red-hat-ansible-automation-platform-conformance.yml:
     method: searched
@@ -44,7 +53,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/pointer-liveness-2026-08-29.yml:
@@ -111,6 +120,9 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-11-02T082323.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/red-hat-ansible-automation-platform-lifecycle.yml:
@@ -1170,6 +1182,9 @@ artifacts:
     evidence: declared in the artifact
   plans/red-hat-ansible-automation-platform-plans-pricing.yml:
     method: searched
+    evidence: declared in the artifact
+  privacy/red-hat-ansible-automation-platform-privacy-policy.yml:
+    method: harvested
     evidence: declared in the artifact
   rate-limits/red-hat-ansible-automation-platform-rate-limits.yml:
     method: searched
